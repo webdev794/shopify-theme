@@ -1,0 +1,39 @@
+<section class="about-features">
+  <div class="page-width">
+    <div class="feature">
+      <h3>Premium Quality</h3>
+      <p>Carefully crafted products using quality ingredients.</p>
+    </div>
+
+    <div class="feature">
+      <h3>Natural Beauty</h3>
+      <p>Designed to enhance your natural glow.</p>
+    </div>
+
+    <div class="feature">
+      <h3>Trusted Results</h3>
+      <p>Loved by customers worldwide.</p>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.about-features{
+  padding:80px 20px;
+}
+.about-features .page-width{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+.feature{
+  text-align:center;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name":"About Features",
+  "settings":[]
+}
+{% endschema %}

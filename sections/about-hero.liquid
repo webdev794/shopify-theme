@@ -1,0 +1,29 @@
+<section class="about-hero">
+  <div class="page-width">
+    <h1>{{ page.title }}</h1>
+    <p>Creating beauty experiences that inspire confidence and elegance.</p>
+  </div>
+</section>
+
+{% stylesheet %}
+.about-hero{
+  padding:120px 20px;
+  text-align:center;
+  background:#f8f4ef;
+}
+.about-hero h1{
+  font-size:48px;
+  margin-bottom:15px;
+}
+.about-hero p{
+  max-width:700px;
+  margin:auto;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name":"About Hero",
+  "settings":[]
+}
+{% endschema %}

@@ -9,12 +9,30 @@
  */
 {
   "sections": {
-    "main": {
+    "hero": {
+      "type": "about-hero",
+      "settings": {}
+    },
+    "content": {
       "type": "page",
+      "custom_css": [
+        "h1{display:none;}"
+      ],
+      "settings": {}
+    },
+    "features": {
+      "type": "about-features",
+      "settings": {}
+    },
+    "cta": {
+      "type": "about-cta",
       "settings": {}
     }
   },
   "order": [
-    "main"
+    "hero",
+    "content",
+    "features",
+    "cta"
   ]
 }
