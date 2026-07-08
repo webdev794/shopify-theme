@@ -1,0 +1,149 @@
+{% comment %}
+  Search overlay with predictive results
+{% endcomment %}
+
+<div class="serach-fullwidth" data-search-parent>
+  <div class="scheme-primary search-content hidden" data-suggestionstatus="true" data-search-drawer data-fullwidth="true">
+    <div class="container">
+      <div class="header-search search-bar-med">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search">
+          <input type="hidden" name="type" value="product,collection">
+          <div class="predective-search-box">
+            <button type="submit" class="search__button body-font" aria-label="Search">
+              {% render 'icon-search' %}
+            </button>
+            <input class="search__input form-control" 
+                   type="text" 
+                   name="q" 
+                   value="" 
+                   placeholder="What are you looking for..." 
+                   autocomplete="off" 
+                   data-search-input>
+            <button type="reset" class="search__button body-font" data-search-reset>Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="predictive-search-suggestion-wrapper" data-suggestions-container>
+        <div class="predictive-search-suggestion">
+          <span class="predictive-search--label heading-font">SYSTEM</span>
+          <div class="predictive-suggestion-list">
+            <a title="Headphone" href="/search?q=Headphone">Headphone</a>
+            <a title="Watch" href="/search?q=Watch">Watch</a>
+            <a title="Speaker" href="/search?q=Speaker">Speaker</a>
+            <a title="Headsets" href="/search?q=Headsets">Headsets</a>
+          </div>
+        </div>
+      </div>
+      <div class="predictive-search-results hidden" data-result-container></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.98);
+    z-index: 9999;
+    padding: 2rem 0;
+    overflow-y: auto;
+  }
+  .search-content.hidden {
+    display: none;
+  }
+  .predective-search-box {
+    display: flex;
+    align-items: center;
+    border: 2px solid #000;
+    border-radius: 6px;
+    padding: 0 10px;
+    background: #fff;
+  }
+  .predective-search-box input {
+    flex: 1;
+    border: none;
+    padding: 12px 10px;
+    font-size: 16px;
+    outline: none;
+  }
+  .search__button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .predictive-search-suggestion-wrapper {
+    margin-top: 2rem;
+  }
+  .predictive-search--label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  .predictive-suggestion-list {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .predictive-suggestion-list a {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+  }
+  .predictive-search-results.hidden {
+    display: none;
+  }
+  .search-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchOpen = document.querySelector('[data-search-open]');
+    const searchDrawer = document.querySelector('[data-search-drawer]');
+    const searchClose = document.querySelector('[data-search-close]');
+    const searchReset = document.querySelector('[data-search-reset]');
+    const searchInput = document.querySelector('[data-search-input]');
+
+    if (searchOpen) {
+      searchOpen.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (searchDrawer) {
+          searchDrawer.classList.remove('hidden');
+          if (searchInput) searchInput.focus();
+        }
+      });
+    }
+
+    if (searchReset && searchInput) {
+      searchReset.addEventListener('click', function() {
+        searchInput.value = '';
+        searchInput.focus();
+      });
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && searchDrawer && !searchDrawer.classList.contains('hidden')) {
+        searchDrawer.classList.add('hidden');
+      }
+    });
+  });
+</script>

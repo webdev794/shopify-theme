@@ -1,76 +1,108 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+{% comment %}
+  Primary Header - Main header with logo, navigation and icons
+{% endcomment %}
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
+<div class="primary-header" data-header-section>
+  <div class="container">
+    <div class="primary-header-blocks logo-left">
+      
+      <!-- Mobile Menu Toggle -->
+      <button href="#mobileMenu" class="mobileMenu no-js-hidden cursor-pointer" title="mobileMenu" data-mobile-menu>
+        <div class="menu-toggler-icon">
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+        </div>
+      </button>
+
+      <!-- Logo -->
+      <a href="/" class="logo h6" aria-label="{{ shop.name }}">
+        {% if section.settings.logo != blank %}
+          <img src="{{ section.settings.logo | img_url: '200x' }}" 
+               alt="{{ shop.name }}" 
+               width="150" 
+               height="{{ 150 | divided_by: section.settings.logo.aspect_ratio | round }}"
+               class="header__heading-logo"
+               loading="lazy">
+        {% else %}
+          <span class="h4">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      <!-- Desktop Search -->
+      <div class="header-search search-bar-med d-none d-lg-block" data-search-parent>
+        <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search">
+          <input type="hidden" name="type" value="product,collection">
+          <div class="predective-search-box">
+            <button type="submit" class="search__button body-font" aria-label="Search">
+              {% render 'icon-search' %}
+            </button>
+            <input class="search__input form-control" 
+                   type="text" 
+                   name="q" 
+                   value="" 
+                   placeholder="What are you looking for..." 
+                   autocomplete="off" 
+                   data-search-input>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right Icons -->
+      <div class="header-options">
+        <div class="support-content-wrapper cursor-pointer" data-store-details-toggle>
+          <div class="support-icon">
+            {% render 'icon-support' %}
+          </div>
+            <div class="support-content">
+                <div class="support-content-inner">
+                    <span class="text-small">24/7 Support Center</span>
+                    <span class="heading-font">123-456-7890</span>
+                </div>
+                <div class="angle-down">
+                    {% render 'icon-angle-down' %}
+                </div>
+            </div>
+          {% render 'store-details' %}
+        </div>
+
+        <ul class="header-icons-list list-inline">
+          <li class="header-icons d-block d-lg-none">
+            <a class="header-icons-link search" href="/search" data-search-open aria-label="search">
+              {% render 'icon-search' %}
+            </a>
+          </li>
+          <li class="header-icons">
+            <a class="header-icons-link cart" href="{{ routes.cart_url }}" aria-label="Cart">
+              {% render 'cart-icon' %}
+              <span class="cart-count hidden" data-header-cart-count>{{ cart.item_count }}</span>
+            </a>
+          </li>
+          <li class="header-icons d-none d-lg-block">
+            <a class="header-icons-link account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">
+              {% render 'icon-account' %}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
-
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      <shopify-account menu="{{ section.settings.customer_account_menu }}">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </shopify-account>
-    {% endif %}
-
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
-
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
-  </div>
-</header>
-
-{% stylesheet %}
-  header {
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
+</div>
 
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "Primary Header",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
     },
     {
       "type": "link_list",
-      "id": "customer_account_menu",
-      "label": "t:labels.customer_account_menu",
-      "default": "customer-account-main-menu"
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
     }
   ]
 }

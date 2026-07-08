@@ -14,12 +14,34 @@
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu",
-        "customer_account_menu": "main-menu"
+        "logo": "shopify://shop_images/logo.svg",
+        "menu": "main-menu"
       }
+    },
+    "header-categories": {
+      "type": "header-categories",
+      "settings": {
+        "category_menu": "categories",
+        "main_menu": "main-menu",
+        "quick_links": "quick-links"
+      }
+    },
+    "header-mobile": {
+      "type": "header-mobile",
+      "settings": {
+        "menu": "main-menu",
+        "category_menu": "categories"
+      }
+    },
+    "header-search": {
+      "type": "header-search",
+      "settings": {}
     }
   },
   "order": [
-    "header"
+    "header",
+    "header-categories",
+    "header-mobile",
+    "header-search"
   ]
 }

@@ -10,11 +10,36 @@
 {
   "sections": {
     "main": {
-      "type": "hello-world",
-      "settings": {}
+      "type": "slideshow",
+      "blocks": {
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Slide 1",
+            "subheading": "This is a test slide",
+            "button_label": "Shop Now",
+            "link": "/collections/all",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "heading": "Slide 2",
+            "subheading": "Another test slide",
+            "button_label": "Learn More",
+            "link": "/pages/about-us",
+            "color_scheme": "scheme-2"
+          }
+        }
+      },
+      "block_order": ["slide-1", "slide-2"],
+      "settings": {
+        "slide_height": "medium",
+        "auto_rotate": true,
+        "change_slides_speed": 5
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

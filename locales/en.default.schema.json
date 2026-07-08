@@ -81,6 +81,135 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
+    }
+  },
+  "sections": {
+    "all": {
+      "heading_size": {
+        "label": "Heading size",
+        "options__1": { "label": "Small" },
+        "options__2": { "label": "Medium" },
+        "options__3": { "label": "Large" },
+        "options__4": { "label": "Extra large" },
+        "options__5": { "label": "XXL" }
+      },
+      "colors": {
+        "label": "Colors"
+      },
+      "animation": {
+        "image_behavior": {
+          "label": "Image behavior",
+          "options__1": { "label": "None" },
+          "options__2": { "label": "Ambient" },
+          "options__3": { "label": "Fixed" },
+          "options__4": { "label": "Zoom in" }
+        }
+      }
     },
+    "heading_size": {
+      "label": "Heading size",
+      "options__1": { "label": "Small" },
+      "options__2": { "label": "Medium" },
+      "options__3": { "label": "Large" },
+      "options__4": { "label": "Extra large" },
+      "options__5": { "label": "XX-large" }
+    },
+    "slideshow": {
+      "name": "Slideshow",
+      "carousel": "Slideshow",
+      "load_slide": "Load slide",
+      "previous_slideshow": "Previous slide",
+      "next_slideshow": "Next slide",
+      "pause_slideshow": "Pause slideshow",
+      "play_slideshow": "Play slideshow",
+      "slide": "Slide",
+      "settings": {
+        "layout": {
+          "label": "Layout",
+          "options__1": { "label": "Full width" },
+          "options__2": { "label": "Grid" }
+        },
+        "slide_height": {
+          "label": "Slide height",
+          "options__1": { "label": "Adapt to image" },
+          "options__2": { "label": "Small" },
+          "options__3": { "label": "Medium" },
+          "options__4": { "label": "Large" }
+        },
+        "slider_visual": {
+          "label": "Slider visual",
+          "options__1": { "label": "Counter" },
+          "options__2": { "label": "Dots" },
+          "options__3": { "label": "Numbers" }
+        },
+        "auto_rotate": { "label": "Auto-rotate slides" },
+        "change_slides_speed": { "label": "Change slides speed" },
+        "mobile": { "content": "Mobile" },
+        "show_text_below": {
+          "label": "Show text below on mobile"
+        },
+        "accessibility": {
+          "content": "Accessibility",
+          "label": "Accessibility info",
+          "info": "Add a label for screen readers",
+          "default": "Slideshow"
+        }
+      },
+      "blocks": {
+        "slide": {
+          "name": "Slide",
+          "settings": {
+            "image": { "label": "Image" },
+            "image_overlay_opacity": { "label": "Image overlay opacity" },
+            "header_text": { "content": "Text" },
+            "heading": {
+              "label": "Heading",
+              "default": "Slide title"
+            },
+            "subheading": {
+              "label": "Subheading",
+              "default": "Slide description"
+            },
+            "header_button": { "content": "Button" },
+            "button_label": {
+              "label": "Button label",
+              "default": "Shop now",
+              "info": "Leave blank to hide button"
+            },
+            "link": { "label": "Button link" },
+            "secondary_style": { "label": "Use secondary button style" },
+            "header_layout": { "content": "Layout" },
+            "show_text_box": { "label": "Show text box background" },
+            "box_align": {
+              "label": "Text box position",
+              "options__1": { "label": "Top left" },
+              "options__2": { "label": "Top center" },
+              "options__3": { "label": "Top right" },
+              "options__4": { "label": "Middle left" },
+              "options__5": { "label": "Middle center" },
+              "options__6": { "label": "Middle right" },
+              "options__7": { "label": "Bottom left" },
+              "options__8": { "label": "Bottom center" },
+              "options__9": { "label": "Bottom right" }
+            },
+            "text_alignment": {
+              "label": "Text alignment",
+              "option_1": { "label": "Left" },
+              "option_2": { "label": "Center" },
+              "option_3": { "label": "Right" }
+            },
+            "text_alignment_mobile": {
+              "label": "Mobile text alignment",
+              "options__1": { "label": "Left" },
+              "options__2": { "label": "Center" },
+              "options__3": { "label": "Right" }
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Slideshow"
+      }
+    }
   }
 }

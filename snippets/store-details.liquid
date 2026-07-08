@@ -1,0 +1,18 @@
+{% comment %}
+  Store details dropdown for support information
+{% endcomment %}
+
+<div class="store-details-dropdown-body" data-storedetails-dropdown style="display:none;">
+  <ul class="list-unstyled store-details-dropdown-content">
+    <li class="store-details-dropdown-item">
+      <span class="heading-font text-large store-details-heading">{{ section.settings.store_name | default: 'Star mart' }}</span>
+      <a href="tel:{{ section.settings.phone | default: '+91 0123456789' }}" class="store-details-number">
+        {{ section.settings.phone | default: '+91 0123456789' }}
+      </a>
+      <p>{{ section.settings.address | default: '123 Main Street<br>Anytown, USA' }}</p>
+      <a href="mailto:{{ section.settings.email | default: 'starlite@shinedezign.com' }}">
+        {{ section.settings.email | default: 'starlite@shinedezign.com' }}
+      </a>
+    </li>
+  </ul>
+</div>

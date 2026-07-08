@@ -68,7 +68,13 @@
     "layout": "Layout",
     "colors": "Colors",
     "fonts": "Fonts",
-    "primary": "Primary Font"
+    "primary": "Primary Font",
+    "slider": {
+      "of": "of",
+      "next_slide": "Slide right",
+      "previous_slide": "Slide left",
+      "name": "Slider"
+    }
   },
   "options": {
     "page_width": {

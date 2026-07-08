@@ -8,6 +8,41 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
+    "name": "t:general.colors",
+    "settings": [
+      {
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+          { "type": "color_background", "id": "background_gradient", "label": "Background gradient", "default": "#FFFFFF" },
+          { "type": "color", "id": "text", "label": "Text", "default": "#121212" },
+          { "type": "color", "id": "button", "label": "Button", "default": "#121212" },
+          { "type": "color", "id": "button_label", "label": "Button label", "default": "#FFFFFF" },
+          { "type": "color", "id": "secondary_button", "label": "Secondary button", "default": "#FFFFFF" },
+          { "type": "color", "id": "on_secondary_button", "label": "On secondary button", "default": "#121212" },
+          { "type": "color", "id": "primary_button_border", "label": "Primary button border", "default": "#121212" },
+          { "type": "color", "id": "secondary_button_border", "label": "Secondary button border", "default": "#121212" },
+          { "type": "color", "id": "links", "label": "Links", "default": "#121212" },
+          { "type": "color", "id": "icons", "label": "Icons", "default": "#121212" },
+          { "type": "color", "id": "shadow", "label": "Shadow", "default": "#121212" }
+        ],
+        "role": {
+          "background": "background",
+          "text": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "secondary_button": "secondary_button",
+          "on_secondary_button": "on_secondary_button",
+          "primary_button_border": "primary_button_border",
+          "secondary_button_border": "secondary_button_border",
+          "links": "links",
+          "icons": "icons"
+        }
+      }
+    ]
+  },
+  {
     "name": "t:general.typography",
     "settings": [
       {
@@ -30,14 +65,8 @@
         "id": "max_page_width",
         "label": "t:labels.page_width",
         "options": [
-          {
-            "value": "90rem",
-            "label": "t:options.page_width.narrow"
-          },
-          {
-            "value": "110rem",
-            "label": "t:options.page_width.wide"
-          }
+          { "value": "90rem", "label": "t:options.page_width.narrow" },
+          { "value": "110rem", "label": "t:options.page_width.wide" }
         ],
         "default": "90rem"
       },
@@ -50,33 +79,6 @@
         "unit": "px",
         "label": "t:labels.page_margin",
         "default": 20
-      }
-    ]
-  },
-  {
-    "name": "t:general.colors",
-    "settings": [
-      {
-        "type": "color",
-        "id": "background_color",
-        "default": "#FFFFFF",
-        "label": "t:labels.background"
-      },
-      {
-        "type": "color",
-        "id": "foreground_color",
-        "default": "#333333",
-        "label": "t:labels.foreground"
-      },
-      {
-        "type": "range",
-        "id": "input_corner_radius",
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "unit": "px",
-        "label": "t:labels.input_corner_radius",
-        "default": 4
       }
     ]
   },
