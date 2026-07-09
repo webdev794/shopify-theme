@@ -1,0 +1,38 @@
+.text-with-icon__heading {
+  text-align: center;
+  margin: 0 0 28px;
+}
+
+.text-with-icon__row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+@media screen and (min-width: 750px) {
+  .text-with-icon__row--3-col,
+  .text-with-icon__row--4-col,
+  .text-with-icon__row--5-col,
+  .text-with-icon__row--6-col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.text-with-icon__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.text-with-icon__icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.text-with-icon__label {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}

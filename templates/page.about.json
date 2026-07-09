@@ -15,10 +15,7 @@
     },
     "content": {
       "type": "page",
-      "custom_css": [
-        "h1{display:none;}"
-      ],
-      "settings": {}
+      "settings": { "show_title": false }
     },
     "features": {
       "type": "about-features",

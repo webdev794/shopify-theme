@@ -73,12 +73,6 @@
       "wide": "Wide"
     }
   },
-  "newsletter": {
-    "label": "Email",
-    "button_label": "Subscribe",
-    "success": "Thank you for subscribing!",
-    "error": "Please enter a valid email address."
-  },
   "sections": {
     "collection-list": {
       "settings": {
@@ -242,20 +236,6 @@
         "text": {
           "label": "Text"
         }
-      },
-      "blocks": {
-        "heading": {
-          "name": "Heading"
-        },
-        "paragraph": {
-          "name": "Paragraph"
-        },
-        "email_form": {
-          "name": "Email form"
-        }
-      },
-      "presets": {
-        "name": "Newsletter"
       }
     },
     "featured_blog": {

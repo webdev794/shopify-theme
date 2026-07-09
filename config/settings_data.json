@@ -201,7 +201,10 @@
       "cart_type": "notification",
       "show_vendor": false,
       "show_cart_note": false,
-      "cart_color_scheme": "scheme-1"
+      "cart_color_scheme": "scheme-1",
+      "background_color": "#FAF6F1",
+      "foreground_color": "#2B2420",
+      "input_corner_radius": 8
     }
   }
 }

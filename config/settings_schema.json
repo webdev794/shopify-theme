@@ -2,8 +2,8 @@
   {
     "name": "theme_info",
     "theme_name": "Suvara",
-    "theme_version": "0.1.0",
-    "theme_author": "Shopify",
+    "theme_version": "0.2.0",
+    "theme_author": "Your Studio",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
   },
@@ -79,6 +79,37 @@
         "unit": "px",
         "label": "t:labels.page_margin",
         "default": 20
+      },
+      {
+        "type": "range",
+        "id": "input_corner_radius",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "label": "Input corner radius",
+        "default": 8
+      }
+    ]
+  },
+  {
+    "name": "Global colors",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Base page background/text shown before any section's color scheme applies (e.g. behind the very top of the page). Individual sections use their own color scheme setting above and override this."
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Page background",
+        "default": "#FAF6F1"
+      },
+      {
+        "type": "color",
+        "id": "foreground_color",
+        "label": "Page text",
+        "default": "#2B2420"
       }
     ]
   },

@@ -1,0 +1,239 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .best-selling__view-all {
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .best-selling__empty-state {
+    opacity: 0.6;
+    font-size: 14px;
+    padding: 24px 0;
+  }
+{%- endstyle -%}
+
+{%- liquid
+  # Shopify has no native "best selling across the whole store" object in Liquid.
+  # The reliable approach: point this section at a collection sorted by
+  # "Best selling" (set in Shopify admin), then just render products: collection.products
+  # already returns them in the collection's chosen sort order.
+  assign collection_to_use = section.settings.collection
+  assign products_to_display = collection_to_use.all_products_count
+
+  if products_to_display > section.settings.products_to_show
+    assign products_to_display = section.settings.products_to_show
+  endif
+
+  assign show_slider = false
+  if products_to_display > section.settings.columns_desktop
+    assign show_slider = true
+  endif
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} isolate gradient">
+  <div class="collection section-{{ section.id }}-padding">
+    <div class="collection__title title-wrapper page-width">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="title {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+
+    <slider-component class="{% if show_slider %}slider-component-desktop{% endif %} page-width">
+      <ul
+        id="BestSelling-{{ section.id }}"
+        class="grid product-grid contains-card contains-card--product grid--{{ section.settings.columns_desktop }}-col-desktop grid--2-col-tablet-down{% if show_slider %} slider slider--desktop{% endif %}"
+        role="list"
+      >
+        {%- if collection_to_use != blank -%}
+          {%- for product in collection_to_use.products limit: section.settings.products_to_show -%}
+            <li id="BestSelling-{{ section.id }}-{{ forloop.index }}" class="grid__item{% if show_slider %} slider__slide{% endif %}">
+              {% render 'card-product',
+                card_product: product,
+                media_aspect_ratio: section.settings.image_ratio,
+                show_vendor: section.settings.show_vendor,
+                show_rating: section.settings.show_rating,
+                quick_add: section.settings.quick_add,
+                section_id: section.id
+              %}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          <li class="best-selling__empty-state">
+            Select a collection sorted by "Best selling" in the section settings to populate this row.
+          </li>
+        {%- endif -%}
+      </ul>
+
+      {%- if show_slider -%}
+        <div class="slider-buttons">
+          <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="Previous" aria-controls="BestSelling-{{ section.id }}">
+            <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+          </button>
+          <div class="slider-counter caption">
+            <span class="slider-counter--current">1</span>
+            <span aria-hidden="true"> / </span>
+            <span class="slider-counter--total">{{ products_to_display }}</span>
+          </div>
+          <button type="button" class="slider-button slider-button--next" name="next" aria-label="Next" aria-controls="BestSelling-{{ section.id }}">
+            <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+          </button>
+        </div>
+      {%- endif -%}
+    </slider-component>
+
+    {%- if section.settings.show_view_all and collection_to_use != blank -%}
+      <div class="best-selling__view-all page-width">
+        <a href="{{ collection_to_use.url }}" class="link">View all</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Best Selling Products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Point this at a collection whose sort order (in the Shopify admin) is set to \"Best selling\" — Liquid has no store-wide best-seller object, so the collection's own sort order is the source of truth."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection (sorted by Best selling)"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best sellers"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "label": "Quick add button",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "standard", "label": "Standard" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show \"View all\" link",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 52
+    }
+  ],
+  "presets": [
+    { "name": "Best Selling Products" }
+  ]
+}
+{% endschema %}
