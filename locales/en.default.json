@@ -37,6 +37,11 @@
     "expires_on": "Expires on {{ expires_on }}",
     "use_at_checkout": "Use this gift card at checkout"
   },
+  "newsletter": {
+    "label": "Email",
+    "button_label": "Subscribe",
+    "success": "Thanks for subscribing"
+  },
   "password": {
     "title": "This shop is private",
     "password": "Password",
@@ -90,10 +95,18 @@
         },
         "image_ratio": {
           "label": "Image ratio",
-          "options__1": { "label": "Portrait" },
-          "options__2": { "label": "Square" },
-          "options__3": { "label": "Landscape" },
-          "options__4": { "label": "Adapt to image" }
+          "options__1": {
+            "label": "Portrait"
+          },
+          "options__2": {
+            "label": "Square"
+          },
+          "options__3": {
+            "label": "Landscape"
+          },
+          "options__4": {
+            "label": "Adapt to image"
+          }
         },
         "items_per_row": {
           "label": "Items per row"
@@ -138,9 +151,15 @@
         },
         "column_content": {
           "label": "Column content type",
-          "options__1": { "label": "Image" },
-          "options__2": { "label": "Text" },
-          "options__3": { "label": "Image and text" }
+          "options__1": {
+            "label": "Image"
+          },
+          "options__2": {
+            "label": "Text"
+          },
+          "options__3": {
+            "label": "Image and text"
+          }
         },
         "image_ratio": {
           "label": "Image ratio"
@@ -148,6 +167,7 @@
       }
     },
     "video": {
+      "load_video": "Load video: {{ description }}",
       "settings": {
         "heading": {
           "default": "Watch Our Story"
@@ -223,8 +243,12 @@
         },
         "image_position": {
           "label": "Image position",
-          "options__1": { "label": "Left" },
-          "options__2": { "label": "Right" }
+          "options__1": {
+            "label": "Left"
+          },
+          "options__2": {
+            "label": "Right"
+          }
         }
       }
     },
@@ -240,10 +264,65 @@
     },
     "featured_blog": {
       "onboarding_title": "Blog post title",
-      "onboarding_content": "Blog post content"
+      "onboarding_content": "Blog post content",
+      "view_all": "View all"
+    },
+    "slideshow": {
+      "carousel": "Carousel",
+      "slide": "Slide",
+      "load_slide": "Load slide",
+      "previous_slideshow": "Previous slide",
+      "next_slideshow": "Next slide",
+      "pause_slideshow": "Pause slideshow",
+      "play_slideshow": "Play slideshow"
+    },
+    "collection_list": {
+      "view_all": "View all"
+    },
+    "featured_collection": {
+      "view_all": "View all",
+      "view_all_label": "View all products in the {{ collection_name }} collection"
+    },
+    "quick_order_list": {
+      "each": "{{ money }}/ea"
     }
   },
   "onboarding": {
-    "product_title": "Product title"
+    "product_title": "Product title",
+    "collection_title": "Collection title"
+  },
+  "accessibility": {
+    "close": "Close",
+    "vendor": "Vendor:",
+    "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars",
+    "total_reviews": "total reviews"
+  },
+  "blogs": {
+    "article": {
+      "blog": "Blog",
+      "comments": {
+        "one": "{{ count }} comment",
+        "other": "{{ count }} comments"
+      }
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "on_sale": "Sale",
+      "vendor": "Vendor",
+      "choose_options": "Choose options",
+      "choose_product_options": "Choose options for {{ product_name }}",
+      "view_full_details": "View full details",
+      "quantity": {
+        "multiples_of": "Increments of {{ quantity }}",
+        "min_of": "Minimum of {{ quantity }}",
+        "max_of": "Maximum of {{ quantity }}"
+      },
+      "volume_pricing": {
+        "note": "Volume pricing available"
+      }
+    }
   }
 }

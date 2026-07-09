@@ -1,18 +1,194 @@
 {% style %}
-  {% # Loads all font variantions with display: swap %}
+  {% # Loads all font variations with display: swap %}
   {{ settings.type_primary_font | font_face: font_display: 'swap' }}
   {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
   {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
   {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
 
+  {%- liquid
+    assign body_font_bold = settings.type_primary_font | font_modify: 'weight', 'bold'
+  -%}
+
+  {% # Generate a CSS class for every color scheme, so `color-scheme-N gradient` classes work %}
+  {% for scheme in settings.color_schemes -%}
+    {%- assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id -%}
+    .color-{{ scheme.id }} {
+      --color-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
+      {%- if scheme.settings.background_gradient != empty %}
+      --gradient-background: {{ scheme.settings.background_gradient }};
+      {%- else %}
+      --gradient-background: {{ scheme.settings.background }};
+      {%- endif %}
+      --color-foreground: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
+      --color-button: {{ scheme.settings.button.red }},{{ scheme.settings.button.green }},{{ scheme.settings.button.blue }};
+      --color-button-text: {{ scheme.settings.button_label.red }},{{ scheme.settings.button_label.green }},{{ scheme.settings.button_label.blue }};
+      --color-secondary-button: {{ scheme.settings.secondary_button.red }},{{ scheme.settings.secondary_button.green }},{{ scheme.settings.secondary_button.blue }};
+      --color-secondary-button-text: {{ scheme.settings.on_secondary_button.red }},{{ scheme.settings.on_secondary_button.green }},{{ scheme.settings.on_secondary_button.blue }};
+      --color-link: {{ scheme.settings.links.red }},{{ scheme.settings.links.green }},{{ scheme.settings.links.blue }};
+      --color-shadow: {{ scheme.settings.shadow.red }},{{ scheme.settings.shadow.green }},{{ scheme.settings.shadow.blue }};
+      --color-badge-background: var(--color-background);
+      --color-badge-border: var(--color-foreground);
+      --color-badge-foreground: var(--color-foreground);
+      color: rgba(var(--color-foreground), 0.75);
+    }
+  {%- endfor %}
+
   :root {
+    /* ---- Original Suvara variables (kept for header.css / critical.css) ---- */
     --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
     --font-primary--style: {{ settings.type_primary_font.style }};
     --font-primary--weight: {{ settings.type_primary_font.weight }};
-    --page-width: {{ settings.max_page_width }};
     --page-margin: {{ settings.min_page_margin }}px;
-    --color-background: {{ settings.background_color }};
-    --color-foreground: {{ settings.foreground_color }};
     --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+
+    /* ---- Base page colors as RGB triplets (usable as rgb(var(--color-background))) ---- */
+    --color-background: {{ settings.background_color.red }},{{ settings.background_color.green }},{{ settings.background_color.blue }};
+    --color-foreground: {{ settings.foreground_color.red }},{{ settings.foreground_color.green }},{{ settings.foreground_color.blue }};
+    --gradient-background: {{ settings.background_color }};
+    --color-link: var(--color-foreground);
+    --color-button: var(--color-foreground);
+    --color-button-text: var(--color-background);
+    --color-secondary-button: var(--color-background);
+    --color-secondary-button-text: var(--color-foreground);
+    --color-shadow: 18,18,18;
+    --color-badge-background: var(--color-background);
+    --color-badge-border: var(--color-foreground);
+    --color-badge-foreground: var(--color-foreground);
+
+    /* ---- Typography (base.css) ---- */
+    --font-body-family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
+    --font-body-style: {{ settings.type_primary_font.style }};
+    --font-body-weight: {{ settings.type_primary_font.weight }};
+    --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+    --font-heading-family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
+    --font-heading-style: {{ settings.type_primary_font.style }};
+    --font-heading-weight: {{ settings.type_primary_font.weight }};
+    --font-body-scale: 1.0;
+    --font-heading-scale: 1.0;
+
+    /* ---- Layout ---- */
+    --page-width: {{ settings.max_page_width | default: '90rem' }};
+    --page-width-margin: 0rem;
+    --spacing-sections-desktop: 0px;
+    --spacing-sections-mobile: 0px;
+    --grid-desktop-vertical-spacing: 8px;
+    --grid-desktop-horizontal-spacing: 8px;
+    --grid-mobile-vertical-spacing: 4px;
+    --grid-mobile-horizontal-spacing: 4px;
+
+    /* ---- Buttons ---- */
+    --buttons-radius: 0px;
+    --buttons-radius-outset: 0px;
+    --buttons-border-width: 1px;
+    --buttons-border-opacity: 1;
+    --buttons-border-offset: 0px;
+    --buttons-shadow-opacity: 0;
+    --buttons-shadow-visible: 0;
+    --buttons-shadow-horizontal-offset: 0px;
+    --buttons-shadow-vertical-offset: 4px;
+    --buttons-shadow-blur-radius: 5px;
+
+    /* ---- Variant pills ---- */
+    --variant-pills-radius: 40px;
+    --variant-pills-border-width: 1px;
+    --variant-pills-border-opacity: 0.55;
+    --variant-pills-shadow-opacity: 0;
+    --variant-pills-shadow-visible: 0;
+    --variant-pills-shadow-horizontal-offset: 0px;
+    --variant-pills-shadow-vertical-offset: 4px;
+    --variant-pills-shadow-blur-radius: 5px;
+
+    /* ---- Inputs ---- */
+    --inputs-radius: {{ settings.input_corner_radius }}px;
+    --inputs-radius-outset: {% if settings.input_corner_radius > 0 %}{{ settings.input_corner_radius | plus: 1 }}px{% else %}0px{% endif %};
+    --inputs-border-width: 1px;
+    --inputs-border-opacity: 0.55;
+    --inputs-shadow-opacity: 0;
+    --inputs-shadow-visible: 0;
+    --inputs-shadow-horizontal-offset: 0px;
+    --inputs-shadow-vertical-offset: 4px;
+    --inputs-shadow-blur-radius: 5px;
+    --inputs-margin-offset: 0px;
+
+    /* ---- Product cards ---- */
+    --product-card-corner-radius: 0px;
+    --product-card-border-width: 0px;
+    --product-card-border-opacity: 0.1;
+    --product-card-image-padding: 0px;
+    --product-card-text-alignment: left;
+    --product-card-shadow-opacity: 0;
+    --product-card-shadow-visible: 0;
+    --product-card-shadow-horizontal-offset: 0px;
+    --product-card-shadow-vertical-offset: 4px;
+    --product-card-shadow-blur-radius: 5px;
+
+    /* ---- Collection cards ---- */
+    --collection-card-corner-radius: 0px;
+    --collection-card-border-width: 0px;
+    --collection-card-border-opacity: 0.1;
+    --collection-card-image-padding: 0px;
+    --collection-card-text-alignment: left;
+    --collection-card-shadow-opacity: 0;
+    --collection-card-shadow-visible: 0;
+    --collection-card-shadow-horizontal-offset: 0px;
+    --collection-card-shadow-vertical-offset: 4px;
+    --collection-card-shadow-blur-radius: 5px;
+
+    /* ---- Blog cards ---- */
+    --blog-card-corner-radius: 0px;
+    --blog-card-border-width: 0px;
+    --blog-card-border-opacity: 0.1;
+    --blog-card-image-padding: 0px;
+    --blog-card-text-alignment: left;
+    --blog-card-shadow-opacity: 0;
+    --blog-card-shadow-visible: 0;
+    --blog-card-shadow-horizontal-offset: 0px;
+    --blog-card-shadow-vertical-offset: 4px;
+    --blog-card-shadow-blur-radius: 5px;
+
+    /* ---- Text boxes / content containers ---- */
+    --text-boxes-radius: 0px;
+    --text-boxes-border-width: 0px;
+    --text-boxes-border-opacity: 0.1;
+    --text-boxes-shadow-opacity: 0;
+    --text-boxes-shadow-visible: 0;
+    --text-boxes-shadow-horizontal-offset: 0px;
+    --text-boxes-shadow-vertical-offset: 4px;
+    --text-boxes-shadow-blur-radius: 5px;
+
+    /* ---- Media ---- */
+    --media-radius: 0px;
+    --media-border-width: 1px;
+    --media-border-opacity: 0.05;
+    --media-shadow-opacity: 0;
+    --media-shadow-visible: 0;
+    --media-shadow-horizontal-offset: 0px;
+    --media-shadow-vertical-offset: 4px;
+    --media-shadow-blur-radius: 5px;
+
+    /* ---- Popups & drawers ---- */
+    --popup-corner-radius: 0px;
+    --popup-border-width: 1px;
+    --popup-border-opacity: 0.1;
+    --popup-shadow-opacity: 0.05;
+    --popup-shadow-visible: 1;
+    --popup-shadow-horizontal-offset: 0px;
+    --popup-shadow-vertical-offset: 4px;
+    --popup-shadow-blur-radius: 5px;
+    --drawer-border-width: 1px;
+    --drawer-border-opacity: 0.1;
+    --drawer-shadow-opacity: 0;
+    --drawer-shadow-visible: 0;
+    --drawer-shadow-horizontal-offset: 0px;
+    --drawer-shadow-vertical-offset: 4px;
+    --drawer-shadow-blur-radius: 5px;
+
+    /* ---- Badges ---- */
+    --badge-corner-radius: 40px;
+  }
+
+  body {
+    background-color: rgb(var(--color-background));
+    color: rgba(var(--color-foreground), 0.75);
   }
 {% endstyle %}

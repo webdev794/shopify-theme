@@ -402,9 +402,29 @@
     },
     "image-with-text": {
       "name": "Image with text",
+      "presets": {
+        "name": "Image with text"
+      },
       "blocks": {
         "caption": {
-          "name": "Caption"
+          "name": "Caption",
+          "settings": {
+            "text": {
+              "label": "Text",
+              "default": "Add a tagline"
+            },
+            "text_style": {
+              "label": "Text style",
+              "options__1": { "label": "Subtitle" },
+              "options__2": { "label": "Uppercase" }
+            },
+            "caption_size": {
+              "label": "Text size",
+              "options__1": { "label": "Small" },
+              "options__2": { "label": "Medium" },
+              "options__3": { "label": "Large" }
+            }
+          }
         },
         "heading": {
           "name": "Heading",
@@ -491,9 +511,8 @@
         },
         "content_layout": {
           "label": "Content layout",
-          "options__1": { "label": "Top" },
-          "options__2": { "label": "Center" },
-          "options__3": { "label": "Bottom" }
+          "options__1": { "label": "No overlap" },
+          "options__2": { "label": "Overlap" }
         },
         "desktop_content_position": {
           "label": "Desktop content position",
@@ -633,6 +652,9 @@
     },
     "video": {
       "name": "Video",
+      "presets": {
+        "name": "Video"
+      },
       "blocks": {
         "video": {
           "name": "Video",
@@ -659,9 +681,6 @@
         "label": {
           "label": "Heading"
         },
-        "video_url": {
-          "label": "Video URL"
-        },
         "image": {
           "label": "Poster image"
         },
@@ -678,10 +697,11 @@
           "content": "Content"
         },
         "paragraph": {
-          "content": {
-            "label": "Content",
-            "default": "Share your brand story by adding a video to your store"
-          }
+          "content": "Share your brand story by adding a video to your store"
+        },
+        "video_url": {
+          "label": "Video URL",
+          "info": "Use a YouTube or Vimeo URL"
         },
         "cover_image": {
           "label": "Cover image"
@@ -766,7 +786,13 @@
           }
         },
         "paragraph": {
-          "name": "Paragraph"
+          "name": "Paragraph",
+          "settings": {
+            "paragraph": {
+              "label": "Paragraph",
+              "default": "Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals."
+            }
+          }
         },
         "email_form": {
           "name": "Email form"
@@ -780,10 +806,7 @@
           "label": "Text"
         },
         "paragraph": {
-          "content": {
-            "label": "Content",
-            "default": "Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals."
-          }
+          "content": "Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals."
         },
         "email_placeholder": {
           "label": "Email placeholder",

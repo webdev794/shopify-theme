@@ -4,6 +4,9 @@
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
+    {% # Global base styles (headings, grid, buttons, media, forms) — must load on every page %}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+
     {{ 'header.css' | asset_url | stylesheet_tag }}
 
     <script src="{{ 'header.js' | asset_url }}" defer></script>
