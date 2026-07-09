@@ -1,0 +1,49 @@
+{% comment %}
+  Renders a price element
+
+  Accepts:
+  - product: {Object} Product Liquid object (optional)
+  - variant: {Object} Variant Liquid object (optional)
+  - price: {String} Price value (optional)
+  - compare_at_price: {String} Compare at price value (optional)
+{% endcomment %}
+
+<span class="price">
+  {%- if price -%}
+    <span class="price-item price-item--regular">
+      {{ price | money }}
+    </span>
+  {%- elsif variant -%}
+    {%- if variant.compare_at_price > variant.price -%}
+      <span class="price-item price-item--sale">
+        {{ variant.price | money }}
+      </span>
+      <span class="price-item price-item--regular">
+        <s>{{ variant.compare_at_price | money }}</s>
+      </span>
+    {%- else -%}
+      <span class="price-item price-item--regular">
+        {{ variant.price | money }}
+      </span>
+    {%- endif -%}
+  {%- elsif product -%}
+    {%- if product.price -%}
+      {%- if product.compare_at_price > product.price -%}
+        <span class="price-item price-item--sale">
+          {{ product.price | money }}
+        </span>
+        <span class="price-item price-item--regular">
+          <s>{{ product.compare_at_price | money }}</s>
+        </span>
+      {%- else -%}
+        <span class="price-item price-item--regular">
+          {{ product.price | money }}
+        </span>
+      {%- endif -%}
+    {%- endif -%}
+  {%- else -%}
+    <span class="price-item price-item--regular">
+      {{ 1999 | money }}
+    </span>
+  {%- endif -%}
+</span>

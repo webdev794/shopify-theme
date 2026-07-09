@@ -142,5 +142,68 @@
         "default": "Luxury cosmetics for every skin type"
       }
     ]
+  },
+  {
+    "name": "t:sections.homepage",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Homepage Sections"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_collection_list",
+        "label": "Show Collection List",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_featured_collection",
+        "label": "Show Featured Collection",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_image_banner",
+        "label": "Show Image Banner",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_rich_text",
+        "label": "Show Rich Text",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_image_with_text",
+        "label": "Show Image with Text",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_multicolumn",
+        "label": "Show Multicolumn",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_video",
+        "label": "Show Video",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_featured_blog",
+        "label": "Show Featured Blog",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_newsletter",
+        "label": "Show Newsletter",
+        "default": true
+      }
+    ]
   }
 ]

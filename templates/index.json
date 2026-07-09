@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-    "main": {
+    "slideshow": {
       "type": "slideshow",
       "blocks": {
         "slide-1": {
@@ -39,7 +39,106 @@
         "auto_rotate": true,
         "change_slides_speed": 5
       }
+    },
+    "collection-list": {
+      "type": "collection-list",
+      "settings": {
+        "heading": "Shop by Category",
+        "collections": [],
+        "show_description": true,
+        "image_ratio": "portrait",
+        "items_per_row": 4
+      }
+    },
+    "image-banner": {
+      "type": "image-banner",
+      "settings": {
+        "heading": "Featured Banner",
+        "subheading": "Discover our latest collection",
+        "button_label": "Shop Now",
+        "link": "/collections/all",
+        "image": null,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Featured Products",
+        "collection": null,
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "show_view_all": true
+      }
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "Welcome to Suvara",
+        "text": "Luxury beauty products for every skin type",
+        "button_label": "Explore",
+        "link": "/collections/all",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image-with-text": {
+      "type": "image-with-text",
+      "settings": {
+        "heading": "Our Story",
+        "text": "Discover the beauty of Suvara",
+        "button_label": "Learn More",
+        "link": "/pages/about-us",
+        "image": null,
+        "image_position": "left"
+      }
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "settings": {
+        "heading": "Why Choose Us",
+        "columns": 3,
+        "column_content": "text",
+        "image_ratio": "portrait"
+      }
+    },
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "Watch Our Story",
+        "video_url": null,
+        "image": null,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "featured-blog": {
+      "type": "featured-blog",
+      "settings": {
+        "heading": "Latest from Our Blog",
+        "blog": null,
+        "posts_to_show": 3,
+        "show_date": true,
+        "show_author": false
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Subscribe to Our Newsletter",
+        "text": "Get the latest updates on new products and upcoming sales",
+        "color_scheme": "scheme-1"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "slideshow",
+    "collection-list",
+    "image-banner",
+    "featured-collection",
+    "rich-text",
+    "image-with-text",
+    "multicolumn",
+    "video",
+    "featured-blog",
+    "newsletter"
+  ]
 }

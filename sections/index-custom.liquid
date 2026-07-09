@@ -1,0 +1,43 @@
+{% comment %}
+  Homepage Sections Renderer
+  This file controls which sections appear on the homepage
+{% endcomment %}
+
+<!-- Slideshow is always visible -->
+{% section 'slideshow' %}
+
+{% if settings.show_collection_list %}
+  {% section 'collection-list' %}
+{% endif %}
+
+{% if settings.show_image_banner %}
+  {% section 'image-banner' %}
+{% endif %}
+
+{% if settings.show_featured_collection %}
+  {% section 'featured-collection' %}
+{% endif %}
+
+{% if settings.show_rich_text %}
+  {% section 'rich-text' %}
+{% endif %}
+
+{% if settings.show_image_with_text %}
+  {% section 'image-with-text' %}
+{% endif %}
+
+{% if settings.show_multicolumn %}
+  {% section 'multicolumn' %}
+{% endif %}
+
+{% if settings.show_video %}
+  {% section 'video' %}
+{% endif %}
+
+{% if settings.show_featured_blog %}
+  {% section 'featured-blog' %}
+{% endif %}
+
+{% if settings.show_newsletter %}
+  {% section 'newsletter' %}
+{% endif %}
