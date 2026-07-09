@@ -45,11 +45,18 @@
         class="page-width"
       {% endif %}
     >
+
       {%- unless section.settings.heading == blank -%}
         <div class="title-wrapper title-wrapper--no-top-margin{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           <h2 class="title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
         </div>
       {%- endunless -%}
+
+      {%- if section.settings.paragraph_content != blank -%}
+        <div class="video-section__content rte">
+          {{ section.settings.paragraph_content }}
+        </div>
+      {%- endif -%}
     </div>
     <deferred-media
       class="video-section__media deferred-media gradient global-media-settings{% if section.settings.full_width %} global-media-settings--full-width{% endif %}{% if fix_ratio %} media-fit-cover{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -183,8 +190,10 @@
       "content": "t:sections.video.settings.header__2.content"
     },
     {
-      "type": "paragraph",
-      "content": "t:sections.video.settings.paragraph.content"
+      "type": "richtext",
+      "id": "paragraph_content",
+      "label": "t:sections.video.settings.paragraph.content",
+      "default": "<p>Share your brand story by adding a video to your store</p>"
     },
     {
       "type": "video_url",
