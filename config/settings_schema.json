@@ -236,5 +236,28 @@
         "default": true
       }
     ]
+  },
+  {
+    "name": "Cards & layout",
+    "settings": [
+      { "type": "header", "content": "Layout" },
+      { "type": "range", "id": "page_width", "min": 1000, "max": 1600, "step": 10, "unit": "px", "label": "Content width for image sizing", "default": 1200 },
+      { "type": "range", "id": "spacing_grid_horizontal", "min": 4, "max": 40, "step": 4, "unit": "px", "label": "Horizontal grid spacing", "default": 8 },
+      { "type": "range", "id": "spacing_grid_vertical", "min": 4, "max": 40, "step": 4, "unit": "px", "label": "Vertical grid spacing", "default": 8 },
+      { "type": "checkbox", "id": "animations_reveal_on_scroll", "label": "Reveal sections on scroll", "default": true },
+      { "type": "header", "content": "Product cards" },
+      { "type": "select", "id": "card_style", "options": [ { "value": "standard", "label": "Standard" }, { "value": "card", "label": "Card" } ], "default": "standard", "label": "Product card style" },
+      { "type": "color_scheme", "id": "card_color_scheme", "label": "Product card color scheme", "default": "scheme-2" },
+      { "type": "header", "content": "Collection cards" },
+      { "type": "select", "id": "collection_card_style", "options": [ { "value": "standard", "label": "Standard" }, { "value": "card", "label": "Card" } ], "default": "standard", "label": "Collection card style" },
+      { "type": "color_scheme", "id": "collection_card_color_scheme", "label": "Collection card color scheme", "default": "scheme-2" },
+      { "type": "header", "content": "Blog cards" },
+      { "type": "select", "id": "blog_card_style", "options": [ { "value": "standard", "label": "Standard" }, { "value": "card", "label": "Card" } ], "default": "standard", "label": "Blog card style" },
+      { "type": "color_scheme", "id": "blog_card_color_scheme", "label": "Blog card color scheme", "default": "scheme-2" },
+      { "type": "header", "content": "Badges" },
+      { "type": "select", "id": "badge_position", "options": [ { "value": "bottom left", "label": "Bottom left" }, { "value": "bottom right", "label": "Bottom right" }, { "value": "top left", "label": "Top left" }, { "value": "top right", "label": "Top right" } ], "default": "bottom left", "label": "Badge position" },
+      { "type": "color_scheme", "id": "sale_badge_color_scheme", "label": "Sale badge color scheme", "default": "scheme-4" },
+      { "type": "color_scheme", "id": "sold_out_badge_color_scheme", "label": "Sold out badge color scheme", "default": "scheme-3" }
+    ]
   }
 ]

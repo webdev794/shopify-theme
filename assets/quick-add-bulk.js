@@ -1,3 +1,12 @@
+(function defineWhenReady() {
+  if (typeof BulkAdd === 'undefined') {
+    // global.js has not executed yet (or is missing) - retry after scripts settle
+    console.warn('[theme] quick-add-bulk.js: waiting for global.js (BulkAdd)');
+    document.addEventListener('DOMContentLoaded', defineWhenReady, { once: true });
+    window.addEventListener('load', defineWhenReady, { once: true });
+    return;
+  }
+
 if (!customElements.get('quick-add-bulk')) {
   customElements.define(
     'quick-add-bulk',
@@ -204,3 +213,5 @@ if (!customElements.get('quick-add-bulk')) {
     }
   );
 }
+
+})();

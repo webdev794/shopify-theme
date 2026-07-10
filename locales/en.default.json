@@ -70,7 +70,11 @@
       "next_slide": "Slide right",
       "previous_slide": "Slide left",
       "name": "Slider"
-    }
+    },
+    "share": {
+      "success_message": "Link copied to clipboard"
+    },
+    "continue_shopping": "Continue shopping"
   },
   "options": {
     "page_width": {
@@ -284,7 +288,22 @@
       "view_all_label": "View all products in the {{ collection_name }} collection"
     },
     "quick_order_list": {
-      "each": "{{ money }}/ea"
+      "each": "{{ money }}/ea",
+      "items_added": {
+        "one": "{{ quantity }} item added",
+        "other": "{{ quantity }} items added"
+      },
+      "items_removed": {
+        "one": "{{ quantity }} item removed",
+        "other": "{{ quantity }} items removed"
+      },
+      "min_error": "Minimum of {{ min }}",
+      "max_error": "Maximum of {{ max }}",
+      "step_error": "Increments of {{ step }}"
+    },
+    "cart": {
+      "cart_error": "There was an error while updating your cart. Please try again.",
+      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart."
     }
   },
   "onboarding": {
@@ -295,7 +314,10 @@
     "close": "Close",
     "vendor": "Vendor:",
     "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars",
-    "total_reviews": "total reviews"
+    "total_reviews": "total reviews",
+    "unit_price_separator": "per",
+    "loading": "Loading...",
+    "refresh_page": "Choosing a selection results in a full page refresh."
   },
   "blogs": {
     "article": {
@@ -318,10 +340,22 @@
       "quantity": {
         "multiples_of": "Increments of {{ quantity }}",
         "min_of": "Minimum of {{ quantity }}",
-        "max_of": "Maximum of {{ quantity }}"
+        "max_of": "Maximum of {{ quantity }}",
+        "label": "Quantity",
+        "input_label": "Quantity for {{ product }}",
+        "increase": "Increase quantity for {{ product }}",
+        "decrease": "Decrease quantity for {{ product }}"
       },
       "volume_pricing": {
         "note": "Volume pricing available"
+      },
+      "unavailable": "Unavailable",
+      "value_unavailable": "{{ option_value }} - Unavailable",
+      "price": {
+        "from_price_html": "From {{ price }}",
+        "regular_price": "Regular price",
+        "sale_price": "Sale price",
+        "unit_price": "Unit price"
       }
     }
   }

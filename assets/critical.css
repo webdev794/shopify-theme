@@ -35,13 +35,13 @@ select {
 }
 
 select {
-  background-color: var(--color-background);
+  background-color: rgb(var(--color-background));
   color: currentcolor;
 }
 
 dialog {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
 }
 
 p {
@@ -74,8 +74,8 @@ p:empty {
 /** Theme styles below */
 body {
   font-family: var(--font-primary--family);
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
 }
 
 /** Section layout utilities */

@@ -1,3 +1,12 @@
+(function defineWhenReady() {
+  if (typeof ModalDialog === 'undefined') {
+    // global.js has not executed yet (or is missing) - retry after scripts settle
+    console.warn('[theme] quick-add.js: waiting for global.js (ModalDialog)');
+    document.addEventListener('DOMContentLoaded', defineWhenReady, { once: true });
+    window.addEventListener('load', defineWhenReady, { once: true });
+    return;
+  }
+
 if (!customElements.get('quick-add-modal')) {
   customElements.define(
     'quick-add-modal',
@@ -122,3 +131,5 @@ if (!customElements.get('quick-add-modal')) {
     }
   );
 }
+
+})();

@@ -11,7 +11,6 @@
 
   {% # Generate a CSS class for every color scheme, so `color-scheme-N gradient` classes work %}
   {% for scheme in settings.color_schemes -%}
-    {%- assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id -%}
     .color-{{ scheme.id }} {
       --color-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
       {%- if scheme.settings.background_gradient != empty %}
@@ -71,10 +70,10 @@
     --page-width-margin: 0rem;
     --spacing-sections-desktop: 0px;
     --spacing-sections-mobile: 0px;
-    --grid-desktop-vertical-spacing: 8px;
-    --grid-desktop-horizontal-spacing: 8px;
-    --grid-mobile-vertical-spacing: 4px;
-    --grid-mobile-horizontal-spacing: 4px;
+    --grid-desktop-vertical-spacing: {{ settings.spacing_grid_vertical | default: 8 }}px;
+    --grid-desktop-horizontal-spacing: {{ settings.spacing_grid_horizontal | default: 8 }}px;
+    --grid-mobile-vertical-spacing: {{ settings.spacing_grid_vertical | default: 8 | divided_by: 2 }}px;
+    --grid-mobile-horizontal-spacing: {{ settings.spacing_grid_horizontal | default: 8 | divided_by: 2 }}px;
 
     /* ---- Buttons ---- */
     --buttons-radius: 0px;

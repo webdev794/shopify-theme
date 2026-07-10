@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "404": "Not found",
@@ -122,6 +131,9 @@
     },
     "collection-list": {
       "name": "Collection list",
+      "presets": {
+        "name": "Collection list"
+      },
       "blocks": {
         "featured_collection": {
           "name": "Featured collection",
@@ -181,6 +193,9 @@
     },
     "featured-collection": {
       "name": "Featured collection",
+      "presets": {
+        "name": "Featured collection"
+      },
       "settings": {
         "title": {
           "label": "Heading",
@@ -267,6 +282,9 @@
     },
     "image-banner": {
       "name": "Image banner",
+      "presets": {
+        "name": "Image banner"
+      },
       "blocks": {
         "text": {
           "name": "Text",
@@ -539,6 +557,9 @@
     },
     "multicolumn": {
       "name": "Multicolumn",
+      "presets": {
+        "name": "Multicolumn"
+      },
       "blocks": {
         "column": {
           "name": "Column",
@@ -720,6 +741,9 @@
     },
     "featured-blog": {
       "name": "Featured blog",
+      "presets": {
+        "name": "Featured blog"
+      },
       "blocks": {
         "article": {
           "name": "Article"
@@ -823,6 +847,9 @@
     },
     "rich-text": {
       "name": "Rich text",
+      "presets": {
+        "name": "Rich text"
+      },
       "blocks": {
         "caption": {
           "name": "Caption",
@@ -951,6 +978,9 @@
     },
     "slideshow": {
       "name": "Slideshow",
+      "presets": {
+        "name": "Slideshow"
+      },
       "carousel": "Slideshow",
       "load_slide": "Load slide",
       "previous_slideshow": "Previous slide",
@@ -1041,9 +1071,6 @@
             }
           }
         }
-      },
-      "presets": {
-        "name": "Slideshow"
       }
     }
   }
