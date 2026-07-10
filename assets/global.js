@@ -9,29 +9,20 @@ function getFocusableElements(container) {
 class SectionId {
   static #separator = '__';
 
-  // for a qualified section id (e.g. 'template--22224696705326__main'), return just the section id (e.g. 'template--22224696705326')
   static parseId(qualifiedSectionId) {
     return qualifiedSectionId.split(SectionId.#separator)[0];
   }
 
-  // for a qualified section id (e.g. 'template--22224696705326__main'), return just the section name (e.g. 'main')
   static parseSectionName(qualifiedSectionId) {
     return qualifiedSectionId.split(SectionId.#separator)[1];
   }
 
-  // for a section id (e.g. 'template--22224696705326') and a section name (e.g. 'recommended-products'), return a qualified section id (e.g. 'template--22224696705326__recommended-products')
   static getIdForSection(sectionId, sectionName) {
     return `${sectionId}${SectionId.#separator}${sectionName}`;
   }
 }
 
 class HTMLUpdateUtility {
-  /**
-   * Used to swap an HTML node with a new node.
-   * The new node is inserted as a previous sibling to the old node, the old node is hidden, and then the old node is removed.
-   *
-   * The function currently uses a double buffer approach, but this should be replaced by a view transition once it is more widely supported https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API
-   */
   static viewTransition(oldNode, newContent, preProcessCallbacks = [], postProcessCallbacks = []) {
     preProcessCallbacks?.forEach((callback) => callback(newContent));
 
@@ -39,7 +30,6 @@ class HTMLUpdateUtility {
     HTMLUpdateUtility.setInnerHTML(newNodeWrapper, newContent.outerHTML);
     const newNode = newNodeWrapper.firstChild;
 
-    // dedupe IDs
     const uniqueKey = Date.now();
     oldNode.querySelectorAll('[id], [form]').forEach((element) => {
       element.id && (element.id = `${element.id}-${uniqueKey}`);
@@ -54,7 +44,6 @@ class HTMLUpdateUtility {
     setTimeout(() => oldNode.remove(), 500);
   }
 
-  // Sets inner HTML and reinjects the script tags to allow execution. By default, scripts are disabled when using element.innerHTML.
   static setInnerHTML(element, html) {
     element.innerHTML = html;
     element.querySelectorAll('script').forEach((oldScriptTag) => {
@@ -104,14 +93,12 @@ function trapFocus(container, elementToFocus = container) {
   };
 
   trapFocusHandlers.keydown = function (event) {
-    if (event.code.toUpperCase() !== 'TAB') return; // If not TAB key
-    // On the last focusable element and tab forward, focus the first element.
+    if (event.code.toUpperCase() !== 'TAB') return;
     if (event.target === last && !event.shiftKey) {
       event.preventDefault();
       first.focus();
     }
 
-    //  On the first focusable element and tab backward, focus the last element.
     if ((event.target === container || event.target === first) && event.shiftKey) {
       event.preventDefault();
       last.focus();
@@ -132,7 +119,6 @@ function trapFocus(container, elementToFocus = container) {
   }
 }
 
-// Here run the querySelector to figure out if the browser supports :focus-visible or not and run code based on it.
 try {
   document.querySelector(':focus-visible');
 } catch (e) {
@@ -277,7 +263,7 @@ class QuantityInput extends HTMLElement {
   }
 }
 
-customElements.define('quantity-input', QuantityInput);
+if (!customElements.get('quantity-input')) customElements.define('quantity-input', QuantityInput);
 
 function debounce(fn, wait) {
   let t;
@@ -286,7 +272,6 @@ function debounce(fn, wait) {
     t = setTimeout(() => fn.apply(this, args), wait);
   };
 }
-
 
 function throttle(fn, delay) {
   let lastCall = 0;
@@ -307,10 +292,6 @@ function fetchConfig(type = 'json') {
   };
 }
 
-/*
- * Shopify Common JS
- *
- */
 if (typeof window.Shopify == 'undefined') {
   window.Shopify = {};
 }
@@ -553,7 +534,7 @@ class MenuDrawer extends HTMLElement {
   }
 }
 
-customElements.define('menu-drawer', MenuDrawer);
+if (!customElements.get('menu-drawer')) customElements.define('menu-drawer', MenuDrawer);
 
 class HeaderDrawer extends MenuDrawer {
   constructor() {
@@ -597,7 +578,7 @@ class HeaderDrawer extends MenuDrawer {
   };
 }
 
-customElements.define('header-drawer', HeaderDrawer);
+if (!customElements.get('header-drawer')) customElements.define('header-drawer', HeaderDrawer);
 
 class ModalDialog extends HTMLElement {
   constructor() {
@@ -642,7 +623,7 @@ class ModalDialog extends HTMLElement {
     window.pauseAllMedia();
   }
 }
-customElements.define('modal-dialog', ModalDialog);
+if (!customElements.get('modal-dialog')) customElements.define('modal-dialog', ModalDialog);
 
 class BulkModal extends HTMLElement {
   constructor() {
@@ -674,7 +655,7 @@ class BulkModal extends HTMLElement {
   }
 }
 
-customElements.define('bulk-modal', BulkModal);
+if (!customElements.get('bulk-modal')) customElements.define('bulk-modal', BulkModal);
 
 class ModalOpener extends HTMLElement {
   constructor() {
@@ -689,7 +670,7 @@ class ModalOpener extends HTMLElement {
     });
   }
 }
-customElements.define('modal-opener', ModalOpener);
+if (!customElements.get('modal-opener')) customElements.define('modal-opener', ModalOpener);
 
 class DeferredMedia extends HTMLElement {
   constructor() {
@@ -709,11 +690,9 @@ class DeferredMedia extends HTMLElement {
       const deferredElement = this.appendChild(content.querySelector('video, model-viewer, iframe'));
       if (focus) deferredElement.focus();
       if (deferredElement.nodeName == 'VIDEO' && deferredElement.getAttribute('autoplay')) {
-        // force autoplay for safari
         deferredElement.play();
       }
 
-      // Workaround for safari iframe bug
       const formerStyle = deferredElement.getAttribute('style');
       deferredElement.setAttribute('style', 'display: block;');
       window.setTimeout(() => {
@@ -723,7 +702,7 @@ class DeferredMedia extends HTMLElement {
   }
 }
 
-customElements.define('deferred-media', DeferredMedia);
+if (!customElements.get('deferred-media')) customElements.define('deferred-media', DeferredMedia);
 
 class SliderComponent extends HTMLElement {
   constructor() {
@@ -764,7 +743,6 @@ class SliderComponent extends HTMLElement {
   }
 
   update() {
-    // Temporarily prevents unneeded updates resulting from variant changes
     if (!this.slider || !this.nextButton) return;
 
     const previousPage = this.currentPage;
@@ -823,7 +801,7 @@ class SliderComponent extends HTMLElement {
   }
 }
 
-customElements.define('slider-component', SliderComponent);
+if (!customElements.get('slider-component')) customElements.define('slider-component', SliderComponent);
 
 class SlideshowComponent extends SliderComponent {
   constructor() {
@@ -837,7 +815,6 @@ class SlideshowComponent extends SliderComponent {
     if (this.sliderItemsToShow.length > 0) this.currentPage = 1;
 
     this.announcementBarSlider = this.querySelector('.announcement-bar-slider');
-    // Value below should match --duration-announcement-bar CSS value
     this.announcerBarAnimationDelay = this.announcementBarSlider ? 250 : 0;
 
     this.sliderControlLinksArray = Array.from(this.sliderControlWrapper.querySelectorAll('.slider-counter__link'));
@@ -1057,7 +1034,7 @@ class SlideshowComponent extends SliderComponent {
   }
 }
 
-customElements.define('slideshow-component', SlideshowComponent);
+if (!customElements.get('slideshow-component')) customElements.define('slideshow-component', SlideshowComponent);
 
 class VariantSelects extends HTMLElement {
   constructor() {
@@ -1187,7 +1164,7 @@ class VariantSelects extends HTMLElement {
   }
 }
 
-customElements.define('variant-selects', VariantSelects);
+if (!customElements.get('variant-selects')) customElements.define('variant-selects', VariantSelects);
 
 class ProductRecommendations extends HTMLElement {
   observer = undefined;
@@ -1239,7 +1216,7 @@ class ProductRecommendations extends HTMLElement {
   }
 }
 
-customElements.define('product-recommendations', ProductRecommendations);
+if (!customElements.get('product-recommendations')) customElements.define('product-recommendations', ProductRecommendations);
 
 class AccountIcon extends HTMLElement {
   constructor() {
@@ -1259,7 +1236,7 @@ class AccountIcon extends HTMLElement {
   }
 }
 
-customElements.define('account-icon', AccountIcon);
+if (!customElements.get('account-icon')) customElements.define('account-icon', AccountIcon);
 
 class BulkAdd extends HTMLElement {
   static ASYNC_REQUEST_DELAY = 250;
@@ -1326,8 +1303,6 @@ class BulkAdd extends HTMLElement {
         line = { merchandiseId: variantId, quantity: nextQuantity };
       } else {
         const lineKey = this.querySelector(`[data-quantity-variant-id="${variantId}"]`)?.dataset.quantityLineKey;
-        // No AJAX line key on the row — likely cached HTML rendered before this
-        // attribute landed. Skip rather than emit an event with id: ''.
         if (!lineKey) return groups;
         line = { id: lineKey, quantity: nextQuantity };
       }

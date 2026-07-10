@@ -10,7 +10,6 @@
     {{ 'header.css' | asset_url | stylesheet_tag }}
 
     <script src="{{ 'header.js' | asset_url }}" defer></script>
-    <script src="{{ 'global.js' | asset_url }}" defer></script>
 
     {% # Global JS constants required by product-form.js, quick-add.js, quick-add-bulk.js, cart-drawer.js %}
     <script>
@@ -86,6 +85,7 @@
 
     {{- 'pubsub.js' | asset_url | script_tag -}}
     {{- 'constants.js' | asset_url | script_tag -}}
+    <script src="{{ 'global.js' | asset_url }}" defer></script>
     <script src="{{ 'animations.js' | asset_url }}" defer></script>
     <script src="{{ 'details-disclosure.js' | asset_url }}" defer></script>
     <script src="{{ 'details-modal.js' | asset_url }}" defer></script>
