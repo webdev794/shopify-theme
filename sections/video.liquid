@@ -50,6 +50,12 @@
           <h2 class="title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
         </div>
       {%- endunless -%}
+
+      {%- unless section.settings.description == blank -%}
+        <div class="video-description{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.description }}
+        </div>
+      {%- endunless -%}
     </div>
     {%- if video_id != blank -%}
       <deferred-media

@@ -14,6 +14,7 @@
     "comment_form_title": "Add a comment"
   },
   "cart": {
+    "taxes_at_checkout_shipping_at_checkout_without_policy": "Taxes and shipping calculated at checkout",
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
@@ -83,6 +84,30 @@
     }
   },
   "sections": {
+    "quick_order_list": {
+      "each": "{{ money }}/ea",
+      "items_added": {
+        "one": "{{ quantity }} item added",
+        "other": "{{ quantity }} items added"
+      },
+      "items_removed": {
+        "one": "{{ quantity }} item removed",
+        "other": "{{ quantity }} items removed"
+      },
+      "min_error": "Minimum of {{ min }}",
+      "max_error": "Maximum of {{ max }}",
+      "step_error": "Increments of {{ step }}",
+      "product_total": "Product subtotal",
+      "view_cart": "View cart",
+      "product": "Product",
+      "variant": "Variant",
+      "variant_total": "Variant total",
+      "product_variants": "Product variants",
+      "total_items": "Total items",
+      "remove_all": "Remove all",
+      "remove_all_items_confirmation": "Remove all {{ quantity }} items from your cart?",
+      "cancel": "Cancel"
+    },
     "collection-list": {
       "settings": {
         "title": {
@@ -287,23 +312,18 @@
       "view_all": "View all",
       "view_all_label": "View all products in the {{ collection_name }} collection"
     },
-    "quick_order_list": {
-      "each": "{{ money }}/ea",
-      "items_added": {
-        "one": "{{ quantity }} item added",
-        "other": "{{ quantity }} items added"
-      },
-      "items_removed": {
-        "one": "{{ quantity }} item removed",
-        "other": "{{ quantity }} items removed"
-      },
-      "min_error": "Minimum of {{ min }}",
-      "max_error": "Maximum of {{ max }}",
-      "step_error": "Increments of {{ step }}"
-    },
     "cart": {
       "cart_error": "There was an error while updating your cart. Please try again.",
-      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart."
+      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
+      "taxes_at_checkout_shipping_at_checkout_without_policy": "Taxes and shipping calculated at checkout",
+      "estimated_total": "Estimated total",
+      "checkout": "Checkout",
+      "title": "Your Cart",
+      "headings": {
+        "product": "Products",
+        "total": "Total",
+        "quantity": "Quantity"
+      }
     }
   },
   "onboarding": {
