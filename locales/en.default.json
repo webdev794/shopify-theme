@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "404": {
     "title": "404",
@@ -319,10 +328,15 @@
       "estimated_total": "Estimated total",
       "checkout": "Checkout",
       "title": "Your Cart",
+      "empty": "Your cart is currently empty.",
       "headings": {
         "product": "Products",
         "total": "Total",
         "quantity": "Quantity"
+      },
+        "login": {
+        "title": "Login to your account",
+        "paragraph_html": "Please <a href=\"/account/login\">log in</a> to view your cart."
       }
     }
   },
