@@ -1,0 +1,418 @@
+{%- comment -%}
+  Hero / Image Banner
+  - Image, art-directed mobile image, or looping background video
+  - Block-based content: heading, text, buttons (reorderable in the editor)
+  - 9 content positions, 5 height modes, overlay + optional content box
+  - LCP-aware: first section on the page loads its image eagerly with
+    fetchpriority="high"; every other instance lazy-loads
+  - Autoplaying video is muted, respects prefers-reduced-motion, and
+    ships a visible pause/play control (WCAG 2.2.2)
+{%- endcomment -%}
+
+{%- liquid
+  assign image = section.settings.image
+  assign mobile_image = section.settings.image_mobile
+  assign video = section.settings.video
+
+  if section.index == 1
+    assign loading = 'eager'
+    assign fetchpriority = 'high'
+  else
+    assign loading = 'lazy'
+    assign fetchpriority = 'auto'
+  endif
+-%}
+
+{{ 'hero.css' | asset_url | stylesheet_tag }}
+{%- if video != blank -%}
+  <script src="{{ 'hero.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+<div
+  class="hero hero--{{ section.settings.height }} hero--content-{{ section.settings.content_position }}{% if section.settings.full_width %} hero--full-width{% endif %}{% if section.settings.stack_on_mobile %} hero--stack-mobile{% endif %}"
+  style="
+    --hero-foreground: {{ section.settings.color_foreground }};
+    --hero-overlay: {{ section.settings.color_overlay }};
+    --hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --hero-box-background: {{ section.settings.color_box_background }};
+    --hero-content-max-width: {{ section.settings.content_max_width }}px;
+    {%- if section.settings.height == 'adapt' and image != blank %} --hero-aspect-ratio: {{ image.aspect_ratio }};{% endif -%}
+    {%- if section.settings.height == 'adapt' and mobile_image != blank %} --hero-aspect-ratio-mobile: {{ mobile_image.aspect_ratio }};{% endif -%}
+  "
+  {% if video != blank %}data-hero-video-wrapper{% endif %}
+>
+  <div class="hero__media">
+    {%- if video != blank -%}
+      {{
+        video
+        | video_tag:
+          class: 'hero__video',
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          playsinline: true,
+          preload: 'metadata',
+          image_size: '1500x'
+      }}
+      <button
+        type="button"
+        class="hero__video-toggle"
+        data-hero-video-toggle
+        aria-label="{{ 'sections.hero.pause_video' | t }}"
+        data-play-label="{{ 'sections.hero.play_video' | t }}"
+      >
+        <svg class="hero__video-icon hero__video-icon--pause" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <svg class="hero__video-icon hero__video-icon--play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M7 4.5v15l13-7.5-13-7.5z"/>
+        </svg>
+      </button>
+    {%- elsif image != blank -%}
+      <picture>
+        {%- if mobile_image != blank -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="
+              {{ mobile_image | image_url: width: 375 }} 375w,
+              {{ mobile_image | image_url: width: 750 }} 750w,
+              {{ mobile_image | image_url: width: 1100 }} 1100w
+            "
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {{
+          image
+          | image_url: width: 3840
+          | image_tag:
+            class: 'hero__image',
+            widths: '750, 1100, 1500, 1780, 2000, 3000, 3840',
+            sizes: '100vw',
+            loading: loading,
+            fetchpriority: fetchpriority,
+            alt: image.alt,
+            style: image.presentation.focal_point | prepend: 'object-position: '
+        }}
+      </picture>
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'hero__placeholder' }}
+    {%- endif -%}
+
+    <div class="hero__overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__content-wrapper">
+    <div class="hero__content{% if section.settings.show_content_box %} hero__content--boxed{% endif %} hero__content--align-{{ section.settings.content_alignment }}">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            {%- if block.settings.heading != blank -%}
+              {%- if block.settings.heading_tag == 'h1' -%}
+                <h1 class="hero__heading hero__heading--{{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                  {{ block.settings.heading }}
+                </h1>
+              {%- else -%}
+                <h2 class="hero__heading hero__heading--{{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                  {{ block.settings.heading }}
+                </h2>
+              {%- endif -%}
+            {%- endif -%}
+
+          {%- when 'text' -%}
+            {%- if block.settings.text != blank -%}
+              <div class="hero__text hero__text--{{ block.settings.text_size }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </div>
+            {%- endif -%}
+
+          {%- when 'buttons' -%}
+            <div class="hero__buttons" {{ block.shopify_attributes }}>
+              {%- if block.settings.button_label_1 != blank -%}
+                <a
+                  {% if block.settings.button_link_1 != blank %}href="{{ block.settings.button_link_1 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                  class="hero__button button {% if block.settings.button_style_1 == 'secondary' %}button--secondary hero__button--secondary{% else %}button--primary hero__button--primary{% endif %}"
+                >
+                  {{ block.settings.button_label_1 | escape }}
+                </a>
+              {%- endif -%}
+              {%- if block.settings.button_label_2 != blank -%}
+                <a
+                  {% if block.settings.button_link_2 != blank %}href="{{ block.settings.button_link_2 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                  class="hero__button button {% if block.settings.button_style_2 == 'secondary' %}button--secondary hero__button--secondary{% else %}button--primary hero__button--primary{% endif %}"
+                >
+                  {{ block.settings.button_label_2 | escape }}
+                </a>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "3840 x 2160px .jpg recommended. Set a focal point on the image to control cropping."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Shown on screens narrower than 750px. 1100 x 1400px recommended."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background video",
+      "info": "Optional. Replaces the image. Plays muted on a loop and can be paused by visitors."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        { "value": "top-left", "label": "Top left" },
+        { "value": "top-center", "label": "Top center" },
+        { "value": "top-right", "label": "Top right" },
+        { "value": "middle-left", "label": "Middle left" },
+        { "value": "middle-center", "label": "Middle center" },
+        { "value": "middle-right", "label": "Middle right" },
+        { "value": "bottom-left", "label": "Bottom left" },
+        { "value": "bottom-center", "label": "Bottom center" },
+        { "value": "bottom-right", "label": "Bottom right" }
+      ],
+      "default": "middle-center"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content width",
+      "min": 400,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "default": 650
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_on_mobile",
+      "label": "Show content below media on mobile",
+      "default": false,
+      "info": "Improves readability on small screens"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 25,
+      "info": "Keep enough contrast between the text and the media behind it"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_foreground",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content_box",
+      "label": "Show content background box",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "color_box_background",
+      "label": "Content box background",
+      "default": "#00000080",
+      "info": "Supports transparency. Used when the content background box is on."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Tell your story"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Heading tag",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" }
+          ],
+          "default": "h2",
+          "info": "Use H1 only when this is the first section on the page and the page has no other H1."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Pair a bold image with a short message that introduces your brand or highlights a campaign.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "medium"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "label": "First button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "First button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style_1",
+          "label": "First button style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Second button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Second button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style_2",
+          "label": "Second button style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "secondary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

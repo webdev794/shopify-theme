@@ -1,0 +1,182 @@
+{% comment %}
+  Text with Icons Section
+  Version: 1.0
+  Design: Clean, accessible, responsive
+{% endcomment %}
+
+{{ 'text-with-icons.css' | asset_url | stylesheet_tag }}
+
+<div class="text-with-icons" data-section-id="{{ section.id }}" data-section-type="text-with-icons">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="text-with-icons__header">
+        <h2 class="text-with-icons__heading">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="text-with-icons__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="text-with-icons__grid">
+      {%- for block in section.blocks -%}
+        <div class="text-with-icons__item" {{ block.shopify_attributes }}>
+          <div class="text-with-icons__card">
+            {%- if block.settings.icon != 'none' -%}
+              <div class="text-with-icons__icon-wrapper">
+                {%- render 'icon', icon: block.settings.icon -%}
+              </div>
+            {%- endif -%}
+
+            <div class="text-with-icons__content">
+              {%- if block.settings.title != blank -%}
+                <h3 class="text-with-icons__title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="text-with-icons__text rte">{{ block.settings.text }}</div>
+              {%- endif -%}
+
+              {%- if block.settings.button_text != blank and block.settings.button_link != blank -%}
+                <a href="{{ block.settings.button_link }}" class="text-with-icons__button link">
+                  {{ block.settings.button_text | escape }}
+                  <span class="text-with-icons__button-arrow">→</span>
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Text with Icons",
+  "tag": "section",
+  "class": "text-with-icons-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Choose Us"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover what makes us different"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "No icon" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "check", "label": "Check" },
+            { "value": "cart", "label": "Cart" },
+            { "value": "tag", "label": "Tag" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "globe", "label": "Globe" },
+            { "value": "chat", "label": "Chat" },
+            { "value": "phone", "label": "Phone" }
+          ],
+          "default": "star"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Describe your feature or benefit here.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text with Icons",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free Shipping",
+            "text": "<p>Enjoy free shipping on all orders over $50</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "Secure Payments",
+            "text": "<p>Your payment information is always secure</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "star",
+            "title": "Premium Quality",
+            "text": "<p>Handpicked products from trusted brands</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

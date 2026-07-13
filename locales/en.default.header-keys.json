@@ -1,0 +1,26 @@
+{
+  "general": {
+    "search": {
+      "search": "Search",
+      "placeholder": "Search our store",
+      "submit": "Submit search",
+      "view_all": "View all results"
+    }
+  },
+  "sections": {
+    "header": {
+      "nav_label": "Main menu",
+      "open_menu": "Open menu",
+      "account": "Account",
+      "log_in": "Log in",
+      "cart": "Cart",
+      "cart_count": {
+        "one": "{{ count }} item in cart",
+        "other": "{{ count }} items in cart"
+      },
+      "country_label": "Country/region",
+      "language_label": "Language",
+      "update_localization": "Update"
+    }
+  }
+}

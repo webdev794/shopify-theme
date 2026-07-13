@@ -1,76 +1,613 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+{%- comment -%}
+  Header with Mega Menu
+  - Rendered inside the header section group (sections/header-group.json)
+  - Multi-level navigation with mega menu support for level 1 parent links
+  - Predictive search with progressive enhancement
+  - Cart, account, and country/language selectors
+{%- endcomment -%}
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{%- liquid
+  assign menu = section.settings.menu
+  assign logo = section.settings.logo
+  assign enable_mega_menu = section.settings.enable_mega_menu
+  assign mega_menu_parents = section.settings.mega_menu_parents | strip | split: ','
+-%}
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      <shopify-account menu="{{ section.settings.customer_account_menu }}">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </shopify-account>
-    {% endif %}
+{{ 'header.css' | asset_url | stylesheet_tag }}
+{{ 'header.js' | asset_url | script_tag }}
 
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
+<header
+  class="header{% if section.settings.enable_sticky_header %} header--sticky{% endif %}"
+  style="--header-background: {{ section.settings.color_background }}; 
+         --header-foreground: {{ section.settings.color_foreground }}; 
+         --header-hover: {{ section.settings.color_hover | default: section.settings.color_foreground }};
+         --header-logo-width: {{ section.settings.logo_width }}px;"
+  data-predictive-search-url="{{ routes.predictive_search_url }}"
+  data-search-url="{{ routes.search_url }}"
+  {% if section.settings.open_on_hover %}data-hover-menus{% endif %}
+  {% if section.settings.enable_sticky_header and section.settings.sticky_hide_on_scroll %}data-hide-on-scroll{% endif %}
+>
+  <div class="header__inner">
+    <!-- Mobile Menu Toggle -->
+    <details class="header__mobile-menu" data-header-mobile-menu>
+      <summary
+        class="header__icon-button header__mobile-toggle"
+        aria-label="{{ 'sections.header.open_menu' | t }}"
+        role="button"
+      >
+        {% render 'icon-hamburger' %}
+      </summary>
+      
+      <!-- Mobile Navigation -->
+      <nav class="header__mobile-nav" aria-label="{{ 'sections.header.nav_label' | t }}">
+        <ul class="header__mobile-list list-unstyled">
+          {%- for link in menu.links -%}
+            <li>
+              {%- if link.links != blank -%}
+                <details class="header__mobile-dropdown">
+                  <summary class="header__mobile-link" role="button">
+                    <span>{{ link.title | escape }}</span>
+                    <span class="header__caret" aria-hidden="true">{% render 'icon-caret' %}</span>
+                  </summary>
+                  <ul class="header__mobile-sublist list-unstyled">
+                    {%- for child_link in link.links -%}
+                      <li>
+                        <a
+                          href="{{ child_link.url }}"
+                          class="header__mobile-link"
+                          {% if child_link.current %}aria-current="page"{% endif %}
+                        >
+                          {{ child_link.title | escape }}
+                        </a>
+                        {%- if child_link.links != blank -%}
+                          <ul class="header__mobile-sublist header__mobile-sublist--nested list-unstyled">
+                            {%- for grandchild_link in child_link.links -%}
+                              <li>
+                                <a
+                                  href="{{ grandchild_link.url }}"
+                                  class="header__mobile-link header__mobile-link--nested"
+                                  {% if grandchild_link.current %}aria-current="page"{% endif %}
+                                >
+                                  {{ grandchild_link.title | escape }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </details>
+              {%- else -%}
+                <a
+                  href="{{ link.url }}"
+                  class="header__mobile-link"
+                  {% if link.current %}aria-current="page"{% endif %}
+                >
+                  {{ link.title | escape }}
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
 
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
+        <!-- Mobile Localization -->
+        {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
+          {%- form 'localization', class: 'header__localization-form header__localization-form--mobile' -%}
+            <label for="CountrySelectorMobile-{{ section.id }}" class="visually-hidden">
+              {{ 'sections.header.country_label' | t }}
+            </label>
+            <select
+              id="CountrySelectorMobile-{{ section.id }}"
+              class="header__localization-select"
+              name="country_code"
+              data-localization-select
+            >
+              {%- for country in localization.available_countries -%}
+                <option
+                  value="{{ country.iso_code }}"
+                  {% if country.iso_code == localization.country.iso_code %}selected{% endif %}
+                >
+                  {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                </option>
+              {%- endfor -%}
+            </select>
+            <noscript><button type="submit" class="header__localization-submit">{{ 'sections.header.update_localization' | t }}</button></noscript>
+          {%- endform -%}
+        {%- endif -%}
+
+        {%- if section.settings.show_language_selector and localization.available_languages.size > 1 -%}
+          {%- form 'localization', class: 'header__localization-form header__localization-form--mobile' -%}
+            <label for="LanguageSelectorMobile-{{ section.id }}" class="visually-hidden">
+              {{ 'sections.header.language_label' | t }}
+            </label>
+            <select
+              id="LanguageSelectorMobile-{{ section.id }}"
+              class="header__localization-select"
+              name="locale_code"
+              data-localization-select
+            >
+              {%- for language in localization.available_languages -%}
+                <option
+                  value="{{ language.iso_code }}"
+                  lang="{{ language.iso_code }}"
+                  {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+                >
+                  {{ language.endonym_name | capitalize }}
+                </option>
+              {%- endfor -%}
+            </select>
+            <noscript><button type="submit" class="header__localization-submit">{{ 'sections.header.update_localization' | t }}</button></noscript>
+          {%- endform -%}
+        {%- endif -%}
+      </nav>
+    </details>
+
+    <!-- Logo -->
+    {%- if request.page_type == 'index' -%}
+      <h1 class="header__logo-wrapper">
+    {%- else -%}
+      <div class="header__logo-wrapper">
+    {%- endif -%}
+      <a href="{{ routes.root_url }}" class="header__logo-link">
+        {%- if logo != blank -%}
+          {{
+            logo
+            | image_url: width: 500
+            | image_tag:
+              class: 'header__logo-image',
+              widths: '100, 200, 300, 400, 500',
+              sizes: '(max-width: 749px) 50vw, 250px',
+              alt: logo.alt | default: shop.name,
+              loading: 'lazy'
+          }}
+        {%- else -%}
+          <span class="header__shop-name">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+    {%- if request.page_type == 'index' -%}
+      </h1>
+    {%- else -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Desktop Navigation -->
+    {%- if menu != blank -%}
+      <nav class="header__nav" aria-label="{{ 'sections.header.nav_label' | t }}">
+        <ul class="header__menu list-unstyled">
+          {%- for link in menu.links -%}
+            {%- assign show_mega = false -%}
+            {%- if enable_mega_menu and mega_menu_parents contains link.handle -%}
+              {%- assign show_mega = true -%}
+            {%- endif -%}
+            
+            <li class="header__menu-item{% if link.links != blank and show_mega %} header__menu-item--mega{% endif %}">
+              {%- if link.links != blank -%}
+                <details class="header__dropdown{% if show_mega %} header__dropdown--mega{% endif %}" data-header-dropdown>
+                  <summary class="header__menu-link header__menu-trigger" role="button">
+                    <span>{{ link.title | escape }}</span>
+                    <span class="header__caret" aria-hidden="true">{% render 'icon-caret' %}</span>
+                  </summary>
+                  
+                  {%- if show_mega -%}
+                    <!-- Mega Menu Layout -->
+                    <div class="header__mega-menu">
+                      <div class="header__mega-inner">
+                        <div class="header__mega-grid">
+                        {%- for child_link in link.links -%}
+                          <div class="header__mega-column">
+                            <a
+                              href="{{ child_link.url }}"
+                              class="header__mega-heading"
+                              {% if child_link.current %}aria-current="page"{% endif %}
+                            >
+                              {%- if section.settings.mega_show_images and child_link.type == 'collection_link' and child_link.object.featured_image -%}
+                                {{
+                                  child_link.object.featured_image
+                                  | image_url: width: 440
+                                  | image_tag:
+                                    class: 'header__mega-image',
+                                    widths: '220, 440',
+                                    sizes: '220px',
+                                    loading: 'lazy',
+                                    alt: child_link.title
+                                }}
+                              {%- endif -%}
+                              {{ child_link.title | escape }}
+                            </a>
+                            {%- if child_link.links != blank -%}
+                              <ul class="header__mega-sublist list-unstyled">
+                                {%- for grandchild_link in child_link.links -%}
+                                  <li>
+                                    <a
+                                      href="{{ grandchild_link.url }}"
+                                      class="header__mega-link"
+                                      {% if grandchild_link.current %}aria-current="page"{% endif %}
+                                    >
+                                      {{ grandchild_link.title | escape }}
+                                    </a>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                        </div>
+
+                        <!-- Optional Featured Content (sits beside the link grid) -->
+                        {%- if section.settings.mega_show_featured -%}
+                          <aside class="header__mega-featured">
+                            {%- if section.settings.mega_featured_image != blank -%}
+                              {{
+                                section.settings.mega_featured_image
+                                | image_url: width: 600
+                                | image_tag:
+                                  class: 'header__mega-featured-image',
+                                  widths: '300, 600',
+                                  sizes: '280px',
+                                  loading: 'lazy',
+                                  alt: section.settings.mega_featured_title
+                              }}
+                            {%- endif -%}
+                            <div class="header__mega-featured-inner">
+                              <h3 class="header__mega-featured-title">{{ section.settings.mega_featured_title }}</h3>
+                              <p class="header__mega-featured-text">{{ section.settings.mega_featured_text }}</p>
+                              {%- if section.settings.mega_featured_link != blank -%}
+                                <a href="{{ section.settings.mega_featured_link }}" class="header__mega-featured-button button button--secondary">
+                                  {{ section.settings.mega_featured_button_label }}
+                                </a>
+                              {%- endif -%}
+                            </div>
+                          </aside>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- else -%}
+                    <!-- Standard Dropdown -->
+                    <ul class="header__submenu list-unstyled">
+                      {%- for child_link in link.links -%}
+                        <li class="header__submenu-item">
+                          <a
+                            href="{{ child_link.url }}"
+                            class="header__submenu-link{% if child_link.links != blank %} header__submenu-link--parent{% endif %}"
+                            {% if child_link.current %}aria-current="page"{% endif %}
+                          >
+                            {{ child_link.title | escape }}
+                          </a>
+                          {%- if child_link.links != blank -%}
+                            <ul class="header__submenu-nested list-unstyled">
+                              {%- for grandchild_link in child_link.links -%}
+                                <li>
+                                  <a
+                                    href="{{ grandchild_link.url }}"
+                                    class="header__submenu-link header__submenu-link--nested"
+                                    {% if grandchild_link.current %}aria-current="page"{% endif %}
+                                  >
+                                    {{ grandchild_link.title | escape }}
+                                  </a>
+                                </li>
+                              {%- endfor -%}
+                            </ul>
+                          {%- endif -%}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </details>
+              {%- else -%}
+                <a
+                  href="{{ link.url }}"
+                  class="header__menu-link"
+                  {% if link.current %}aria-current="page"{% endif %}
+                >
+                  {{ link.title | escape }}
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    <!-- Utilities -->
+    <div class="header__utilities">
+      <!-- Search -->
+      {%- if section.settings.show_search -%}
+        <details class="header__search" data-header-search>
+          <summary
+            class="header__icon-button"
+            aria-label="{{ 'search.title' | t }}"
+            role="button"
+          >
+            {% render 'icon-search' %}
+          </summary>
+          <div class="header__search-panel">
+            <form
+              action="{{ routes.search_url }}"
+              method="get"
+              role="search"
+              class="header__search-form"
+              data-view-all-label="{{ 'search.view_all' | t }}"
+              data-no-results-label="{{ 'search.no_results' | t }}"
+            >
+              <label for="Search-{{ section.id }}" class="visually-hidden">
+                {{ 'search.title' | t }}
+              </label>
+              <input
+                id="Search-{{ section.id }}"
+                class="header__search-input"
+                type="search"
+                name="q"
+                placeholder="{{ 'search.placeholder' | t }}"
+                autocomplete="off"
+                data-predictive-search-input
+              >
+              <input type="hidden" name="options[prefix]" value="last">
+              <button type="submit" class="header__icon-button" aria-label="{{ 'search.submit' | t }}">
+                {% render 'icon-search' %}
+              </button>
+            </form>
+            <div
+              class="header__search-results"
+              data-predictive-search-results
+              aria-live="polite"
+            ></div>
+          </div>
+        </details>
+      {%- endif -%}
+
+      <!-- Country Selector -->
+      {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
+        {%- form 'localization', class: 'header__localization-form' -%}
+          <label for="CountrySelector-{{ section.id }}" class="visually-hidden">
+            {{ 'sections.header.country_label' | t }}
+          </label>
+          <select
+            id="CountrySelector-{{ section.id }}"
+            class="header__localization-select"
+            name="country_code"
+            data-localization-select
+          >
+            {%- for country in localization.available_countries -%}
+              <option
+                value="{{ country.iso_code }}"
+                {% if country.iso_code == localization.country.iso_code %}selected{% endif %}
+              >
+                {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+              </option>
+            {%- endfor -%}
+          </select>
+          <noscript><button type="submit" class="header__localization-submit">{{ 'sections.header.update_localization' | t }}</button></noscript>
+        {%- endform -%}
+      {%- endif -%}
+
+      <!-- Language Selector -->
+      {%- if section.settings.show_language_selector and localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'header__localization-form' -%}
+          <label for="LanguageSelector-{{ section.id }}" class="visually-hidden">
+            {{ 'sections.header.language_label' | t }}
+          </label>
+          <select
+            id="LanguageSelector-{{ section.id }}"
+            class="header__localization-select"
+            name="locale_code"
+            data-localization-select
+          >
+            {%- for language in localization.available_languages -%}
+              <option
+                value="{{ language.iso_code }}"
+                lang="{{ language.iso_code }}"
+                {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+              >
+                {{ language.endonym_name | capitalize }}
+              </option>
+            {%- endfor -%}
+          </select>
+          <noscript><button type="submit" class="header__localization-submit">{{ 'sections.header.update_localization' | t }}</button></noscript>
+        {%- endform -%}
+      {%- endif -%}
+
+      <!-- Account -->
+      {%- if section.settings.show_account_link and shop.customer_accounts_enabled -%}
+        <a
+          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+          class="header__icon-button"
+          aria-label="{% if customer %}{{ 'sections.header.account' | t }}{% else %}{{ 'sections.header.log_in' | t }}{% endif %}"
+        >
+          {% render 'icon-account' %}
+        </a>
+      {%- endif -%}
+
+      <!-- Cart -->
+      <a href="{{ routes.cart_url }}" class="header__icon-button header__cart-link" data-cart-link>
+        {% render 'icon-cart' %}
+        <span class="visually-hidden">{{ 'sections.header.cart' | t }}</span>
+        <span
+          class="header__cart-count{% if cart.item_count == 0 %} hidden{% endif %}"
+          data-cart-count
+          aria-hidden="true"
+        >
+          {{ cart.item_count }}
+        </span>
+        <span class="visually-hidden" data-cart-count-text>
+          {{ 'sections.header.cart_count' | t: count: cart.item_count }}
+        </span>
+      </a>
+    </div>
   </div>
 </header>
 
-{% stylesheet %}
-  header {
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "Header",
+  "class": "section-header",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "180 x 60px .png recommended"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
     },
     {
       "type": "link_list",
-      "id": "customer_account_menu",
-      "label": "t:labels.customer_account_menu",
-      "default": "customer-account-main-menu"
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Select the menu to display in the header"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_on_hover",
+      "label": "Open menus on hover",
+      "default": true,
+      "info": "On desktop, dropdowns and mega menus open on mouse hover. Click and keyboard still work."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_hide_on_scroll",
+      "label": "Hide sticky header when scrolling down",
+      "default": false,
+      "info": "The header slides away while scrolling down and reappears when scrolling up. Requires sticky header."
+    },
+    {
+      "type": "header",
+      "content": "Mega Menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mega_menu",
+      "label": "Enable mega menu",
+      "default": false,
+      "info": "Enable mega menu layout for selected parent menu items"
+    },
+    {
+      "type": "text",
+      "id": "mega_menu_parents",
+      "label": "Mega menu parent handles",
+      "info": "Enter menu item handles separated by commas. Available handles: catalog, about-us, home (check your Navigation > Main Menu for all handles)",
+      "default": "catalog",
+      "placeholder": "e.g., catalog, about-us"
+    },
+    {
+      "type": "checkbox",
+      "id": "mega_show_images",
+      "label": "Show collection images",
+      "default": false,
+      "info": "Show the collection image above each mega menu column when the menu item links to a collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "mega_show_featured",
+      "label": "Show featured content",
+      "default": true,
+      "info": "Display featured content in the mega menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "mega_featured_image",
+      "label": "Featured image",
+      "info": "Shown at the top of the featured card. 600 x 340px recommended"
+    },
+    {
+      "type": "text",
+      "id": "mega_featured_title",
+      "label": "Featured title",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "mega_featured_text",
+      "label": "Featured text",
+      "default": "Discover our latest arrivals and best sellers."
+    },
+    {
+      "type": "url",
+      "id": "mega_featured_link",
+      "label": "Featured link"
+    },
+    {
+      "type": "text",
+      "id": "mega_featured_button_label",
+      "label": "Featured button label",
+      "default": "Shop now"
+    },
+    {
+      "type": "header",
+      "content": "Utilities"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account_link",
+      "label": "Show account link",
+      "info": "Shown when customer accounts are turned on in your Shopify admin.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show country/region selector",
+      "info": "Shown when more than one country/region is available. To add a country/region, go to your market settings.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_selector",
+      "label": "Show language selector",
+      "info": "Shown when more than one language is available. To add a language, go to your language settings.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_foreground",
+      "label": "Text color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "color_hover",
+      "label": "Hover color",
+      "default": "#000000",
+      "info": "Color used for hover states and active links"
     }
   ]
 }

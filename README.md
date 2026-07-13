@@ -158,3 +158,93 @@ Visit our [CONTRIBUTING.md](./CONTRIBUTING.md) for a detailed overview of our pr
 ## License
 
 Skeleton Theme is open-sourced under the [MIT](./LICENSE.md) License.
+
+## Section list: 
+ 
+Wavy marquee
+ 
+Vertical carousel
+ 
+Trending products
+ 
+Text with icon
+ 
+Testimonals
+ 
+Sticky media cards
+ 
+Social media gallery
+ 
+Slideshow with marquee
+ 
+Shop the kit
+ 
+Scrolling text
+ 
+Scrolling media cards
+ 
+Scrollable marquee
+ 
+Scrollable Collection
+ 
+Scroll Slides
+ 
+Products grid
+ 
+Pairing Products
+ 
+Multicolumn
+ 
+Mix & match pack
+ 
+Media with text overlay
+ 
+Media with text
+ 
+Media with cards
+ 
+Media grid
+ 
+Map
+ 
+Lookbook
+ 
+Images with text carousel
+ 
+Images comparison
+ 
+Highlight Text with Images
+ 
+Hero Carousel
+ 
+Featured products
+ 
+Featured collections tabs
+ 
+Detailed contact form
+ 
+Collection with products
+ 
+Collection tabs
+ 
+Collection carousel
+ 
+Burst effects
+ 
+Blog posts
+ 
+Best selling products
+ 
+Custom Liquid
+ 
+Newsletter
+ 
+Collapsible content
+ 
+Rich text
+ 
+Collection list
+ 
+Featured product
+
+Featured collection

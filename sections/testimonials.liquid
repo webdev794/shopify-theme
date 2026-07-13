@@ -1,0 +1,232 @@
+{% comment %}
+  Testimonials Section
+  Version: 1.0
+{% endcomment %}
+
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
+
+<div class="testimonials" data-section-id="{{ section.id }}" data-section-type="testimonials">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="testimonials__header">
+        <h2 class="testimonials__heading">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="testimonials__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="testimonials__grid testimonials__grid--{{ section.settings.columns }}">
+      {%- for block in section.blocks -%}
+        <div class="testimonials__item" {{ block.shopify_attributes }}>
+          <div class="testimonials__card">
+            {%- if section.settings.show_rating and block.settings.rating > 0 -%}
+              <div class="testimonials__stars">
+                {%- for i in (1..5) -%}
+                  {%- if i <= block.settings.rating -%}
+                    <span class="testimonials__star testimonials__star--filled">★</span>
+                  {%- else -%}
+                    <span class="testimonials__star">★</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.quote != blank -%}
+              <div class="testimonials__quote">
+                <svg class="testimonials__quote-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M10 11H6.5C5.67 11 5 10.33 5 9.5V6c0-1.1.9-2 2-2h3c1.1 0 2 .9 2 2v5c0 2.21-1.79 4-4 4h-2v-2h2c1.1 0 2-.9 2-2zm9 0h-3.5c-.83 0-1.5-.67-1.5-1.5V6c0-1.1.9-2 2-2h3c1.1 0 2 .9 2 2v5c0 2.21-1.79 4-4 4h-2v-2h2c1.1 0 2-.9 2-2z"/>
+                </svg>
+                <div class="testimonials__quote-text rte">{{ block.settings.quote }}</div>
+              </div>
+            {%- endif -%}
+
+            <div class="testimonials__author">
+              {%- if block.settings.avatar != blank -%}
+                <div class="testimonials__avatar">
+                  <img
+                    src="{{ block.settings.avatar | img_url: '80x80', crop: 'center' }}"
+                    srcset="{{ block.settings.avatar | img_url: '80x80', crop: 'center' }} 1x, {{ block.settings.avatar | img_url: '160x160', crop: 'center' }} 2x"
+                    alt="{{ block.settings.author | escape }}"
+                    loading="lazy"
+                    width="80"
+                    height="80"
+                    class="testimonials__avatar-image"
+                  >
+                </div>
+              {%- else -%}
+                <div class="testimonials__avatar testimonials__avatar--placeholder">
+                  <span class="testimonials__avatar-initials">
+                    {{ block.settings.author | slice: 0 | upcase }}
+                  </span>
+                </div>
+              {%- endif -%}
+
+              <div class="testimonials__author-info">
+                {%- if block.settings.author != blank -%}
+                  <p class="testimonials__author-name">{{ block.settings.author | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.position != blank -%}
+                  <p class="testimonials__author-position">{{ block.settings.position | escape }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="testimonials__empty">
+          <p>Add testimonials to display them here.</p>
+          {%- if shop.editor_mode -%}
+            <p><small>Click "Add block" to add testimonials</small></p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_view_all and section.blocks.size > 0 -%}
+      <div class="testimonials__footer">
+        <a href="{{ section.settings.view_all_link | default: '#' }}" class="btn btn--secondary">
+          {{ section.settings.view_all_text | default: 'View All Testimonials' | escape }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "testimonials-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Real reviews from real customers"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show star ratings",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show view all button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all button text",
+      "default": "View All Testimonials"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Testimonial quote",
+          "default": "This is an amazing product! I highly recommend it to everyone."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author name",
+          "default": "John Doe"
+        },
+        {
+          "type": "text",
+          "id": "position",
+          "label": "Author position/company",
+          "default": "Happy Customer"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Author avatar"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Absolutely love this store! The quality is outstanding and shipping was super fast.",
+            "rating": 5,
+            "author": "Sarah Johnson",
+            "position": "Regular Customer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Best customer service I've ever experienced. They went above and beyond to help me.",
+            "rating": 5,
+            "author": "Michael Chen",
+            "position": "Business Owner"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "The products are exactly as described and the quality is premium. Will definitely buy again.",
+            "rating": 4,
+            "author": "Emily Davis",
+            "position": "Designer"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

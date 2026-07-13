@@ -47,6 +47,43 @@
     "placeholder": "Search articles, pages, or products",
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
-    "results_for_html": "{{ count }} results found for {{ terms }}"
+    "results_for_html": "{{ count }} results found for {{ terms }}",
+    "view_all": "View all results"
+  },
+  "sections": {
+    "header": {
+      "nav_label": "Main menu",
+      "open_menu": "Open menu",
+      "account": "Account",
+      "log_in": "Log in",
+      "cart": "Cart",
+      "cart_count": {
+        "one": "{{ count }} item in cart",
+        "other": "{{ count }} items in cart"
+      },
+      "country_label": "Country/region",
+      "language_label": "Language",
+      "update_localization": "Update"
+    },
+    "hero": {
+      "pause_video": "Pause video",
+      "play_video": "Play video"
+    },
+    "trending_products": {
+      "empty": "No products found in this collection.",
+      "view_all": "View All"
+    },
+    "text_with_icons": {
+      "heading": "Why Choose Us",
+      "subheading": "Discover what makes us different"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "quick_view": "Quick View",
+      "on_sale": "Sale"
+    }
   }
 }

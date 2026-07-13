@@ -1,0 +1,245 @@
+{% comment %}
+  Wavy Marquee Section - Main Section File
+  Version: 2.0 (Modular)
+{% endcomment %}
+
+{{ 'wavy-marquee.css' | asset_url | stylesheet_tag }}
+
+<div class="wavy-marquee{% if section.settings.full_width %} wavy-marquee--full{% endif %}" 
+     data-section-id="{{ section.id }}" 
+     data-section-type="wavy-marquee"
+     style="
+       --marquee-speed: {{ section.settings.speed | times: 0.1 | round: 1 }}s;
+       --marquee-gap: {{ section.settings.gap }}px;
+       --marquee-font-size: {{ section.settings.font_size }}px;
+       --marquee-color: {{ section.settings.text_color }};
+       --marquee-bg: {{ section.settings.background_color }};
+       --marquee-padding: {{ section.settings.padding }}px 0;
+       --marquee-icon-size: {{ section.settings.icon_size }}px;
+       --marquee-wave-speed: {{ section.settings.wave_speed | times: 0.1 | round: 1 }}s;
+     ">
+  <div class="wavy-marquee__track{% if section.settings.reverse %} wavy-marquee__track--reverse{% endif %}" 
+       role="marquee" 
+       aria-label="{{ section.settings.aria_label | default: 'Scrolling announcement' }}">
+    {%- for i in (1..section.settings.repeats) -%}
+      <span class="wavy-marquee__item">
+        {%- if section.settings.show_icon -%}
+          {%- render 'wavy-marquee-icon', icon: section.settings.icon -%}
+        {%- endif -%}
+        <span class="wavy-marquee__item-text{% if section.settings.wavy_text %} wavy-marquee__item-text--wavy{% endif %}">
+          {{ section.settings.text | escape }}
+        </span>
+        {%- if section.settings.show_separator -%}
+          <span class="wavy-marquee__separator" aria-hidden="true">{{ section.settings.separator_symbol }}</span>
+        {%- endif -%}
+      </span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Wavy Marquee",
+  "tag": "section",
+  "class": "section-wavy-marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Marquee text",
+      "default": "Welcome to our store! Free shipping on orders over $50",
+      "info": "The text that will scroll across the marquee."
+    },
+    {
+      "type": "range",
+      "id": "repeats",
+      "label": "Number of repeats",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4,
+      "info": "How many times the text repeats to fill the screen."
+    },
+    {
+      "type": "header",
+      "content": "Animation Settings"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll speed",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 15,
+      "info": "Lower = faster, higher = slower."
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between items",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse",
+      "label": "Reverse direction",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "wavy_text",
+      "label": "Enable wavy text effect",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "wave_speed",
+      "label": "Wave animation speed",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 12,
+      "info": "Lower = faster wave, higher = slower."
+    },
+    {
+      "type": "header",
+      "content": "Style Settings"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size (desktop)",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "label": "Font size (mobile)",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Vertical padding",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "Icon",
+      "default": "star",
+      "options": [
+        { "value": "star", "label": "Star" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "sparkle", "label": "Sparkle" },
+        { "value": "arrow", "label": "Arrow" },
+        { "value": "cart", "label": "Cart" },
+        { "value": "tag", "label": "Tag" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "gift", "label": "Gift" }
+      ],
+      "info": "Select an icon to display between text items."
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Separator Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator",
+      "label": "Show separator",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "separator_symbol",
+      "label": "Separator symbol",
+      "default": "•",
+      "info": "Symbol between text items (e.g. •, —, ★)"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "ARIA label",
+      "default": "Scrolling announcement banner",
+      "info": "Screen reader description of the marquee."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wavy Marquee",
+      "category": "Promotional",
+      "settings": {
+        "text": "Welcome to our store! Free shipping on orders over $50",
+        "show_icon": true,
+        "icon": "star",
+        "wavy_text": true
+      }
+    }
+  ]
+}
+{% endschema %}
+
+{% comment %}
+  JavaScript is loaded asynchronously for performance
+{% endcomment %}
+<script src="{{ 'wavy-marquee.js' | asset_url }}" defer></script>
