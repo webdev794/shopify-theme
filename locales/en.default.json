@@ -76,6 +76,12 @@
     "text_with_icons": {
       "heading": "Why Choose Us",
       "subheading": "Discover what makes us different"
+    },
+    "scrollable_collection": {
+      "empty": "No products found in this collection."
+    },
+    "pairing_products": {
+      "empty": "Select a main product to display pairings."
     }
   },
   "products": {
@@ -83,7 +89,11 @@
       "add_to_cart": "Add to Cart",
       "sold_out": "Sold Out",
       "quick_view": "Quick View",
-      "on_sale": "Sale"
+      "on_sale": "Sale",
+      "quick_add": "Quick Add",
+      "save": "Save",
+      "products": "Products",
+      "items": "Items"
     }
   }
 }

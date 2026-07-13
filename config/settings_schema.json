@@ -131,5 +131,59 @@
         "default": "#1a1a1a"
       }
     ]
+  },
+  {
+  "name": "Scrolling Text",
+    "settings": [
+      {
+        "type": "color",
+        "id": "scrolling_text_default_bg",
+        "label": "Default background color",
+        "default": "#1a1a1a"
+      },
+      {
+        "type": "color",
+        "id": "scrolling_text_default_text_color",
+        "label": "Default text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "scrolling_text_default_speed",
+        "label": "Default scroll speed",
+        "min": 10,
+        "max": 60,
+        "step": 5,
+        "default": 30,
+        "unit": "s"
+      }
+    ]
+  },
+  {
+    "name": "Scrolling Media Cards",
+    "settings": [
+      {
+        "type": "color",
+        "id": "scrolling_media_cards_default_bg",
+        "label": "Default background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "scrolling_media_cards_default_text",
+        "label": "Default text color",
+        "default": "#1a1a1a"
+      },
+      {
+        "type": "range",
+        "id": "scrolling_media_cards_default_speed",
+        "label": "Default scroll speed",
+        "min": 2000,
+        "max": 8000,
+        "step": 500,
+        "default": 4000,
+        "unit": "ms"
+      }
+    ]
   }
 ]

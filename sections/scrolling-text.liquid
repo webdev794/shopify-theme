@@ -1,0 +1,212 @@
+{% comment %}
+  Scrolling Text Section
+  Version: 1.0
+  Description: A full-width scrolling text marquee for announcements, promotions, or brand messages
+{% endcomment %}
+
+{{ 'scrolling-text.css' | asset_url | stylesheet_tag }}
+
+<div class="scrolling-text" 
+     data-section-id="{{ section.id }}" 
+     data-section-type="scrolling-text"
+     style="
+       --st-bg: {{ section.settings.background_color }};
+       --st-text-color: {{ section.settings.text_color }};
+       --st-font-size: {{ section.settings.font_size }}px;
+       --st-speed: {{ section.settings.speed }}s;
+       --st-gap: {{ section.settings.gap }}px;
+     ">
+  <div class="scrolling-text__wrapper">
+    <div class="scrolling-text__track">
+      {%- assign repeat_count = section.settings.repeat_count | default: 3 -%}
+      {%- for i in (1..repeat_count) -%}
+        {%- for block in section.blocks -%}
+          <div class="scrolling-text__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != 'none' -%}
+              <span class="scrolling-text__icon">
+                {%- render 'icon', icon: block.settings.icon -%}
+              </span>
+            {%- endif -%}
+            <span class="scrolling-text__text">
+              {{ block.settings.text | escape }}
+            </span>
+            {%- if section.settings.show_divider -%}
+              <span class="scrolling-text__divider">{{ section.settings.divider_symbol }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Scrolling Text",
+  "tag": "section",
+  "class": "scrolling-text-section",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s",
+      "info": "Lower = faster"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Item spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "repeat_count",
+      "label": "Repeat count",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "info": "Number of times to repeat the text for seamless scrolling"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "divider_symbol",
+      "label": "Divider symbol",
+      "default": "•"
+    },
+    {
+      "type": "header",
+      "content": "Style Settings"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 14,
+      "max": 48,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true,
+      "info": "Pause animation when user hovers over the text"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "ARIA label",
+      "default": "Scrolling announcement bar"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_item",
+      "name": "Text Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping on orders over $50",
+          "info": "This text will scroll across the screen"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "No icon" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "check", "label": "Check" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "tag", "label": "Tag" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "chat", "label": "Chat" },
+            { "value": "globe", "label": "Globe" }
+          ],
+          "default": "none"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling Text",
+      "blocks": [
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "Free shipping on orders over $50",
+            "icon": "truck"
+          }
+        },
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "30-day money-back guarantee",
+            "icon": "shield"
+          }
+        },
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "Subscribe and save 10%",
+            "icon": "star"
+          }
+        },
+        {
+          "type": "text_item",
+          "settings": {
+            "text": "Customer support available 24/7",
+            "icon": "chat"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
