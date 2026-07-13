@@ -13,35 +13,10 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {
-        "logo": "shopify://shop_images/recently-generated-suvara-shopify-theme-logo.png",
-        "menu": "main-menu"
-      }
-    },
-    "header-categories": {
-      "type": "header-categories",
-      "settings": {
-        "category_menu": "categories",
-        "main_menu": "main-menu",
-        "quick_links": "quick-links"
-      }
-    },
-    "header-mobile": {
-      "type": "header-mobile",
-      "settings": {
-        "menu": "main-menu",
-        "category_menu": "categories"
-      }
-    },
-    "header-search": {
-      "type": "header-search",
       "settings": {}
     }
   },
   "order": [
-    "header",
-    "header-categories",
-    "header-mobile",
-    "header-search"
-  ]
+    "header"
+  ],
 }

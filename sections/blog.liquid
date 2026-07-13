@@ -25,11 +25,6 @@
   {%- if paginate.pages > 1 -%}
     {{- paginate | default_pagination -}}
   {%- endif -%}
-
-  {% if section.settings.show_view_all %}
-    <a href="{{ blog.url }}">View all posts</a>
-  {% endif %}
-
 {% endpaginate %}
 
 {% schema %}

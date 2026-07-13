@@ -1,46 +1,11 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Suvara",
+    "theme_name": "Skeleton",
     "theme_version": "0.1.0",
-    "theme_author": "Caresort Technologies",
+    "theme_author": "Shopify",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
-  },
-  {
-    "name": "t:general.colors",
-    "settings": [
-      {
-        "type": "color_scheme_group",
-        "id": "color_schemes",
-        "definition": [
-          { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
-          { "type": "color_background", "id": "background_gradient", "label": "Background gradient", "default": "#FFFFFF" },
-          { "type": "color", "id": "text", "label": "Text", "default": "#121212" },
-          { "type": "color", "id": "button", "label": "Button", "default": "#121212" },
-          { "type": "color", "id": "button_label", "label": "Button label", "default": "#FFFFFF" },
-          { "type": "color", "id": "secondary_button", "label": "Secondary button", "default": "#FFFFFF" },
-          { "type": "color", "id": "on_secondary_button", "label": "On secondary button", "default": "#121212" },
-          { "type": "color", "id": "primary_button_border", "label": "Primary button border", "default": "#121212" },
-          { "type": "color", "id": "secondary_button_border", "label": "Secondary button border", "default": "#121212" },
-          { "type": "color", "id": "links", "label": "Links", "default": "#121212" },
-          { "type": "color", "id": "icons", "label": "Icons", "default": "#121212" },
-          { "type": "color", "id": "shadow", "label": "Shadow", "default": "#121212" }
-        ],
-        "role": {
-          "background": "background",
-          "text": "text",
-          "primary_button": "button",
-          "on_primary_button": "button_label",
-          "secondary_button": "secondary_button",
-          "on_secondary_button": "on_secondary_button",
-          "primary_button_border": "primary_button_border",
-          "secondary_button_border": "secondary_button_border",
-          "links": "links",
-          "icons": "icons"
-        }
-      }
-    ]
   },
   {
     "name": "t:general.typography",
@@ -65,8 +30,14 @@
         "id": "max_page_width",
         "label": "t:labels.page_width",
         "options": [
-          { "value": "90rem", "label": "t:options.page_width.narrow" },
-          { "value": "110rem", "label": "t:options.page_width.wide" }
+          {
+            "value": "90rem",
+            "label": "t:options.page_width.narrow"
+          },
+          {
+            "value": "110rem",
+            "label": "t:options.page_width.wide"
+          }
         ],
         "default": "90rem"
       },
@@ -79,185 +50,34 @@
         "unit": "px",
         "label": "t:labels.page_margin",
         "default": 20
+      }
+    ]
+  },
+  {
+    "name": "t:general.colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "background_color",
+        "default": "#FFFFFF",
+        "label": "t:labels.background"
+      },
+      {
+        "type": "color",
+        "id": "foreground_color",
+        "default": "#333333",
+        "label": "t:labels.foreground"
       },
       {
         "type": "range",
         "id": "input_corner_radius",
         "min": 0,
-        "max": 24,
+        "max": 10,
         "step": 1,
         "unit": "px",
-        "label": "Input corner radius",
-        "default": 8
+        "label": "t:labels.input_corner_radius",
+        "default": 4
       }
-    ]
-  },
-  {
-    "name": "Global colors",
-    "settings": [
-      {
-        "type": "paragraph",
-        "content": "Base page background/text shown before any section's color scheme applies (e.g. behind the very top of the page). Individual sections use their own color scheme setting above and override this."
-      },
-      {
-        "type": "color",
-        "id": "background_color",
-        "label": "Page background",
-        "default": "#FAF6F1"
-      },
-      {
-        "type": "color",
-        "id": "foreground_color",
-        "label": "Page text",
-        "default": "#2B2420"
-      }
-    ]
-  },
-  {
-    "name": "t:beauty.branding",
-    "settings": [
-      {
-        "type": "text",
-        "id": "brand_name",
-        "label": "Brand Name",
-        "default": "Suvara"
-      },
-      {
-        "type": "text",
-        "id": "brand_tagline",
-        "label": "Brand Tagline",
-        "default": "Beauty & Cosmetics"
-      }
-    ]
-  },
-  {
-    "name": "t:beauty.product_display",
-    "settings": [
-      {
-        "type": "select",
-        "id": "product_grid_columns",
-        "label": "Products per row",
-        "options": [
-          { "value": "2", "label": "2" },
-          { "value": "3", "label": "3" },
-          { "value": "4", "label": "4" }
-        ],
-        "default": "3"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_product_swatches",
-        "label": "Show color swatches",
-        "default": true
-      }
-    ]
-  },
-  {
-    "name": "t:beauty.hero_section",
-    "settings": [
-      {
-        "type": "image_picker",
-        "id": "hero_image",
-        "label": "Hero Image"
-      },
-      {
-        "type": "text",
-        "id": "hero_title",
-        "label": "Hero Title",
-        "default": "Discover Your Beauty"
-      },
-      {
-        "type": "text",
-        "id": "hero_subtitle",
-        "label": "Hero Subtitle",
-        "default": "Luxury cosmetics for every skin type"
-      }
-    ]
-  },
-  {
-    "name": "t:sections.homepage",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Homepage Sections"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_collection_list",
-        "label": "Show Collection List",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_featured_collection",
-        "label": "Show Featured Collection",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_image_banner",
-        "label": "Show Image Banner",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_rich_text",
-        "label": "Show Rich Text",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_image_with_text",
-        "label": "Show Image with Text",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_multicolumn",
-        "label": "Show Multicolumn",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_video",
-        "label": "Show Video",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_featured_blog",
-        "label": "Show Featured Blog",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_newsletter",
-        "label": "Show Newsletter",
-        "default": true
-      }
-    ]
-  },
-  {
-    "name": "Cards & layout",
-    "settings": [
-      { "type": "header", "content": "Layout" },
-      { "type": "range", "id": "page_width", "min": 1000, "max": 1600, "step": 10, "unit": "px", "label": "Content width for image sizing", "default": 1200 },
-      { "type": "range", "id": "spacing_grid_horizontal", "min": 4, "max": 40, "step": 4, "unit": "px", "label": "Horizontal grid spacing", "default": 8 },
-      { "type": "range", "id": "spacing_grid_vertical", "min": 4, "max": 40, "step": 4, "unit": "px", "label": "Vertical grid spacing", "default": 8 },
-      { "type": "checkbox", "id": "animations_reveal_on_scroll", "label": "Reveal sections on scroll", "default": true },
-      { "type": "header", "content": "Product cards" },
-      { "type": "select", "id": "card_style", "options": [ { "value": "standard", "label": "Standard" }, { "value": "card", "label": "Card" } ], "default": "standard", "label": "Product card style" },
-      { "type": "color_scheme", "id": "card_color_scheme", "label": "Product card color scheme", "default": "scheme-2" },
-      { "type": "header", "content": "Collection cards" },
-      { "type": "select", "id": "collection_card_style", "options": [ { "value": "standard", "label": "Standard" }, { "value": "card", "label": "Card" } ], "default": "standard", "label": "Collection card style" },
-      { "type": "color_scheme", "id": "collection_card_color_scheme", "label": "Collection card color scheme", "default": "scheme-2" },
-      { "type": "header", "content": "Blog cards" },
-      { "type": "select", "id": "blog_card_style", "options": [ { "value": "standard", "label": "Standard" }, { "value": "card", "label": "Card" } ], "default": "standard", "label": "Blog card style" },
-      { "type": "color_scheme", "id": "blog_card_color_scheme", "label": "Blog card color scheme", "default": "scheme-2" },
-      { "type": "header", "content": "Badges" },
-      { "type": "select", "id": "badge_position", "options": [ { "value": "bottom left", "label": "Bottom left" }, { "value": "bottom right", "label": "Bottom right" }, { "value": "top left", "label": "Top left" }, { "value": "top right", "label": "Top right" } ], "default": "bottom left", "label": "Badge position" },
-      { "type": "color_scheme", "id": "sale_badge_color_scheme", "label": "Sale badge color scheme", "default": "scheme-4" },
-      { "type": "color_scheme", "id": "sold_out_badge_color_scheme", "label": "Sold out badge color scheme", "default": "scheme-3" }
     ]
   }
 ]
