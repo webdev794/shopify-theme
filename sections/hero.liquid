@@ -11,6 +11,10 @@
 
 {%- liquid
   assign image = section.settings.image
+  assign focal_style = nil
+  if image.presentation.focal_point
+    assign focal_style = 'object-position: ' | append: image.presentation.focal_point
+  endif
   assign mobile_image = section.settings.image_mobile
   assign video = section.settings.video
 
@@ -92,7 +96,7 @@
             loading: loading,
             fetchpriority: fetchpriority,
             alt: image.alt,
-            style: image.presentation.focal_point | prepend: 'object-position: '
+            style: focal_style
         }}
       </picture>
     {%- else -%}

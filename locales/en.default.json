@@ -82,6 +82,40 @@
     },
     "pairing_products": {
       "empty": "Select a main product to display pairings."
+    },
+    "media_grid": {
+      "pause_video": "Pause video",
+      "play_video": "Play video",
+      "view_more": "View more"
+    },
+    "map": {
+      "map_title": "Map showing our store location",
+      "opens_new_tab": "(opens in a new tab)"
+    },
+    "lookbook": {
+      "view_product": "View product: {{ title }}",
+      "view_product_fallback": "View product",
+      "example_product": "Example product",
+      "from_price": "From {{ price }}",
+      "on_sale": "(on sale)"
+    },
+    "iwt_carousel": {
+      "carousel_label": "Carousel",
+      "slide_label": "Slide {{ index }} of {{ count }}",
+      "previous_slide": "Previous slide",
+      "next_slide": "Next slide",
+      "go_to_slide": "Go to slide {{ index }}",
+      "pause_carousel": "Pause carousel",
+      "play_carousel": "Play carousel"
+    },
+    "hero_carousel": {
+      "carousel_label": "Hero carousel",
+      "slide_label": "Slide {{ index }} of {{ count }}",
+      "previous_slide": "Previous slide",
+      "next_slide": "Next slide",
+      "go_to_slide": "Go to slide {{ index }}",
+      "pause_carousel": "Pause carousel",
+      "play_carousel": "Play carousel"
     }
   },
   "products": {

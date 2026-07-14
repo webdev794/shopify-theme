@@ -1,0 +1,433 @@
+{%- comment -%}
+  Hero Carousel / Slideshow
+  - Full-bleed slides as blocks: image (with optional mobile image),
+    eyebrow caption, heading, text, and up to two buttons
+  - Per-slide content position (9 spots) and alignment, because every
+    photo has its negative space in a different place
+  - CSS scroll-snap slider: swipe works natively, JS adds arrows, dots,
+    wrap-around, and optional autoplay
+  - Accessible carousel pattern: region + slide roles, translated labels,
+    pausable autorotation (WCAG 2.2.2), aria-live announcements when manual,
+    autoplay disabled under prefers-reduced-motion
+  - LCP-aware: the first slide's image loads eagerly with
+    fetchpriority="high" when this is the first section on the page
+{%- endcomment -%}
+
+{%- liquid
+  assign carousel_label = section.settings.carousel_label
+  if carousel_label == blank
+    assign carousel_label = 'sections.hero_carousel.carousel_label' | t
+  endif
+-%}
+
+{{ 'hero-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hero-carousel.js' | asset_url }}" defer></script>
+
+<div
+  class="hero-carousel hero-carousel--{{ section.settings.height }}"
+  style="
+    --hc-foreground: {{ section.settings.color_foreground }};
+    --hc-overlay: {{ section.settings.color_overlay }};
+  "
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="{{ carousel_label | escape }}"
+  data-hero-carousel
+  {% if section.settings.autoplay %}
+    data-autoplay
+    data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+  {% endif %}
+>
+  <div class="hero-carousel__scroller" data-hc-scroller tabindex="0">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign image = block.settings.image
+        assign mobile_image = block.settings.image_mobile
+
+        assign focal_style = nil
+        if image.presentation.focal_point
+          assign focal_style = 'object-position: ' | append: image.presentation.focal_point
+        endif
+
+        if section.index == 1 and forloop.first
+          assign loading = 'eager'
+          assign fetchpriority = 'high'
+        else
+          assign loading = 'lazy'
+          assign fetchpriority = 'auto'
+        endif
+      -%}
+
+      <div
+        class="hero-carousel__slide"
+        role="group"
+        aria-roledescription="slide"
+        aria-label="{{ 'sections.hero_carousel.slide_label' | t: index: forloop.index, count: forloop.length }}"
+        style="--hc-overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+        {{ block.shopify_attributes }}
+        data-hc-slide
+      >
+        <div class="hero-carousel__media">
+          {%- if image != blank -%}
+            <picture>
+              {%- if mobile_image != blank -%}
+                <source
+                  media="(max-width: 749px)"
+                  srcset="
+                    {{ mobile_image | image_url: width: 375 }} 375w,
+                    {{ mobile_image | image_url: width: 750 }} 750w,
+                    {{ mobile_image | image_url: width: 1100 }} 1100w
+                  "
+                  sizes="100vw"
+                >
+              {%- endif -%}
+              {{
+                image
+                | image_url: width: 3840
+                | image_tag:
+                  class: 'hero-carousel__image',
+                  widths: '750, 1100, 1500, 1780, 2000, 3000, 3840',
+                  sizes: '100vw',
+                  loading: loading,
+                  fetchpriority: fetchpriority,
+                  alt: image.alt,
+                  style: focal_style
+              }}
+            </picture>
+          {%- else -%}
+            {%- assign placeholder_index = forloop.index0 | modulo: 2 | plus: 1 -%}
+            {{ 'lifestyle-' | append: placeholder_index | placeholder_svg_tag: 'hero-carousel__placeholder' }}
+          {%- endif -%}
+
+          <div class="hero-carousel__overlay" aria-hidden="true"></div>
+        </div>
+
+        <div class="hero-carousel__content-wrapper hero-carousel__content-wrapper--{{ block.settings.content_position }}">
+          <div class="hero-carousel__content hero-carousel__content--align-{{ block.settings.content_alignment }}">
+            {%- if block.settings.caption != blank -%}
+              <p class="hero-carousel__caption">{{ block.settings.caption | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="hero-carousel__heading hero-carousel__heading--{{ section.settings.heading_size }}">
+                {{ block.settings.heading }}
+              </h2>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="hero-carousel__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
+              <div class="hero-carousel__buttons">
+                {%- if block.settings.button_label_1 != blank -%}
+                  <a
+                    {% if block.settings.button_link_1 != blank %}href="{{ block.settings.button_link_1 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                    class="hero-carousel__button button {% if block.settings.button_style_1 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
+                  >
+                    {{ block.settings.button_label_1 | escape }}
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a
+                    {% if block.settings.button_link_2 != blank %}href="{{ block.settings.button_link_2 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                    class="hero-carousel__button button {% if block.settings.button_style_2 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
+                  >
+                    {{ block.settings.button_label_2 | escape }}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    {%- if section.settings.show_arrows -%}
+      <button
+        type="button"
+        class="hero-carousel__arrow hero-carousel__arrow--prev"
+        aria-label="{{ 'sections.hero_carousel.previous_slide' | t }}"
+        data-hc-prev
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="hero-carousel__arrow hero-carousel__arrow--next"
+        aria-label="{{ 'sections.hero_carousel.next_slide' | t }}"
+        data-hc-next
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    {%- endif -%}
+
+    <div class="hero-carousel__bar">
+      {%- if section.settings.show_dots -%}
+        <div class="hero-carousel__dots" data-hc-dots>
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="hero-carousel__dot"
+              aria-label="{{ 'sections.hero_carousel.go_to_slide' | t: index: forloop.index }}"
+              {% if forloop.first %}aria-current="true"{% endif %}
+              data-hc-dot="{{ forloop.index0 }}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.autoplay -%}
+        <button
+          type="button"
+          class="hero-carousel__playback"
+          aria-label="{{ 'sections.hero_carousel.pause_carousel' | t }}"
+          data-play-label="{{ 'sections.hero_carousel.play_carousel' | t }}"
+          data-hc-playback
+        >
+          <svg class="hero-carousel__playback-icon hero-carousel__playback-icon--pause" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <svg class="hero-carousel__playback-icon hero-carousel__playback-icon--play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7 4.5v15l13-7.5-13-7.5z"/>
+          </svg>
+        </button>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Hero carousel",
+  "tag": "section",
+  "class": "section-hero-carousel",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "carousel_label",
+      "label": "Carousel label",
+      "info": "Describes the carousel for screen reader users, e.g. \"Featured campaigns\"."
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": false,
+      "info": "Visitors can pause the rotation. Auto-rotation is turned off for visitors who prefer reduced motion."
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Change slides every",
+      "min": 3,
+      "max": 9,
+      "step": 1,
+      "unit": "s",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_foreground",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Overlay color",
+      "default": "#000000",
+      "info": "Overlay opacity is set per slide"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "3840 x 2160px .jpg recommended. Set a focal point to control cropping."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image",
+          "info": "Optional. Shown on screens narrower than 750px. 1100 x 1400px recommended."
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Overlay opacity",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "unit": "%",
+          "default": 25,
+          "info": "Keep enough contrast between the text and the image behind it"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Tell your story"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content position",
+          "options": [
+            { "value": "top-left", "label": "Top left" },
+            { "value": "top-center", "label": "Top center" },
+            { "value": "top-right", "label": "Top right" },
+            { "value": "middle-left", "label": "Middle left" },
+            { "value": "middle-center", "label": "Middle center" },
+            { "value": "middle-right", "label": "Middle right" },
+            { "value": "bottom-left", "label": "Bottom left" },
+            { "value": "bottom-center", "label": "Bottom center" },
+            { "value": "bottom-right", "label": "Bottom right" }
+          ],
+          "default": "middle-center"
+        },
+        {
+          "type": "select",
+          "id": "content_alignment",
+          "label": "Content alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "label": "First button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "First button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style_1",
+          "label": "First button style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Second button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Second button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style_2",
+          "label": "Second button style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "secondary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero carousel",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Tell your story",
+            "content_position": "middle-center"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Show your craft",
+            "content_position": "middle-left",
+            "content_alignment": "left"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,321 @@
+{%- comment -%}
+  Map / Store Location
+  - Interactive Google Maps embed (no API key required) or a static image
+  - Info card built from blocks: heading, text, button (reorderable)
+  - Card overlays the map on desktop or sits beside it; stacks on mobile
+  - "Get directions" button auto-links to Google Maps when left empty
+  - No JavaScript: the embed iframe lazy-loads natively
+{%- endcomment -%}
+
+{%- liquid
+  assign address = section.settings.map_address | strip
+  assign image = section.settings.image
+  assign focal_style = nil
+  if image.presentation.focal_point
+    assign focal_style = 'object-position: ' | append: image.presentation.focal_point
+  endif
+  assign show_embed = false
+  if section.settings.map_type == 'embed' and address != blank
+    assign show_embed = true
+  endif
+
+  assign address_encoded = address | url_encode
+  assign directions_url = 'https://www.google.com/maps/search/?api=1&query=' | append: address_encoded
+-%}
+
+{{ 'map.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="map map--{{ section.settings.layout }} map--card-{{ section.settings.card_position }} map--height-{{ section.settings.height }}{% if section.settings.full_width %} map--full-width{% endif %}{% if section.settings.desaturate %} map--desaturate{% endif %}"
+  style="
+    --map-card-background: {{ section.settings.color_card_background }};
+    --map-card-foreground: {{ section.settings.color_card_foreground }};
+  "
+>
+  <div class="map__media">
+    {%- if show_embed -%}
+      <iframe
+        class="map__iframe"
+        src="https://www.google.com/maps?q={{ address_encoded }}&z={{ section.settings.zoom }}&output=embed&hl={{ request.locale.iso_code }}"
+        title="{{ 'sections.map.map_title' | t }}"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    {%- elsif image != blank -%}
+      {{
+        image
+        | image_url: width: 3000
+        | image_tag:
+          class: 'map__image',
+          widths: '750, 1100, 1500, 2000, 3000',
+          sizes: '100vw',
+          loading: 'lazy',
+          alt: image.alt,
+          style: focal_style
+      }}
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'map__placeholder' }}
+    {%- endif -%}
+  </div>
+
+  <div class="map__card-wrapper">
+    <div class="map__card">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="map__heading map__heading--{{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                {{ block.settings.heading }}
+              </h2>
+            {%- endif -%}
+
+          {%- when 'text' -%}
+            {%- if block.settings.text != blank -%}
+              {%- if block.settings.is_address -%}
+                <address class="map__text" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </address>
+              {%- else -%}
+                <div class="map__text" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+
+          {%- when 'button' -%}
+            {%- if block.settings.button_label != blank -%}
+              {%- liquid
+                assign button_url = block.settings.button_link
+                if button_url == blank and address != blank
+                  assign button_url = directions_url
+                endif
+              -%}
+              <a
+                {% if button_url != blank %}href="{{ button_url }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                class="map__button button {% if block.settings.button_style == 'secondary' %}button--secondary map__button--secondary{% else %}button--primary map__button--primary{% endif %}"
+                {% if button_url == directions_url %}target="_blank" rel="noopener"{% endif %}
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.button_label | escape }}
+                {%- if button_url == directions_url -%}
+                  <span class="map__visually-hidden">{{ 'sections.map.opens_new_tab' | t }}</span>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Map",
+  "tag": "section",
+  "class": "section-map",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Map"
+    },
+    {
+      "type": "text",
+      "id": "map_address",
+      "label": "Address",
+      "default": "Times Square, New York, NY",
+      "info": "Used to position the map and build the directions link. Include city and country for accuracy."
+    },
+    {
+      "type": "select",
+      "id": "map_type",
+      "label": "Map style",
+      "options": [
+        { "value": "embed", "label": "Interactive map" },
+        { "value": "image", "label": "Image" }
+      ],
+      "default": "embed",
+      "info": "The interactive map is embedded from Google Maps and needs no API key. Use an image for full visual control or to avoid third-party embeds."
+    },
+    {
+      "type": "range",
+      "id": "zoom",
+      "label": "Map zoom",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "info": "Applies to the interactive map"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Shown when map style is set to image, or as a fallback when no address is entered. 3000 x 1500px recommended."
+    },
+    {
+      "type": "checkbox",
+      "id": "desaturate",
+      "label": "Desaturate map",
+      "default": false,
+      "info": "Shows the map or image in black and white to match minimal designs"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "overlay", "label": "Card over the map" },
+        { "value": "side", "label": "Card beside the map" }
+      ],
+      "default": "overlay"
+    },
+    {
+      "type": "select",
+      "id": "card_position",
+      "label": "Card position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_card_foreground",
+      "label": "Card text",
+      "default": "#121212"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Visit our store"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "medium"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>1 Times Square<br>New York, NY 10036</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_address",
+          "label": "This text is an address",
+          "default": false,
+          "info": "Marks the text as a physical address for screen readers and search engines"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Get directions"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link",
+          "info": "Leave empty to open directions to the address on Google Maps"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map",
+      "blocks": [
+        { "type": "heading" },
+        {
+          "type": "text",
+          "settings": {
+            "is_address": true
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>Mon–Fri: 10am–7pm<br>Sat–Sun: 11am–5pm</p>",
+            "is_address": false
+          }
+        },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}

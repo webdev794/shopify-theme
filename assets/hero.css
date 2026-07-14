@@ -70,11 +70,17 @@
   position: absolute;
   inset: 0;
   z-index: -1;
+  overflow: hidden;
 }
 
+/* Absolutely positioned so sizing comes from .hero__media directly.
+   Percentage heights through the inline <picture> wrapper are unreliable
+   and let tall portrait images overflow at their natural size. */
 .hero__image,
 .hero__video,
 .hero__placeholder {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
