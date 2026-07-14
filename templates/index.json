@@ -12,9 +12,49 @@
     "main": {
       "type": "hello-world",
       "settings": {}
+    },
+    "featured_collections_tabs_QHcrnL": {
+      "type": "featured-collections-tabs",
+      "blocks": {
+        "collection_VxXwUD": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "Shirts",
+            "collection": "automated-collection"
+          }
+        },
+        "collection_mxYnh8": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "Pants",
+            "collection": "hydrogen"
+          }
+        }
+      },
+      "block_order": [
+        "collection_VxXwUD",
+        "collection_mxYnh8"
+      ],
+      "name": "t:sections.featured_collections_tabs.presets.name",
+      "settings": {
+        "heading": "Featured Collections",
+        "subheading": "Shop our curated selections",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "products_to_show": 6,
+        "columns_desktop": 4,
+        "columns_mobile": 1,
+        "show_vendor": true,
+        "show_rating": true,
+        "image_ratio": "landscape",
+        "show_view_all": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "featured_collections_tabs_QHcrnL"
   ]
 }

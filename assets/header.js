@@ -243,14 +243,18 @@
     });
   });
 
-  /* --- Cart count updates (with a small bump animation) --- */
-  document.addEventListener('cart:updated', (event) => {
-    const count = event.detail && typeof event.detail.item_count === 'number'
-      ? event.detail.item_count
-      : null;
-    if (count === null) return;
+  /* --- Cart count sync ---
+     The badge is server-rendered, so without JS it only changes on page
+     load. This block keeps it live for every way the cart can change:
+     1. `cart:updated` events dispatched by theme code (e.g. quick add)
+     2. ANY AJAX call to the cart endpoints — including from third-party
+        apps — by observing fetch/XHR and re-reading /cart.js
+     3. Back/forward-cache restores, which otherwise show a stale count */
+  const badge = header.querySelector('[data-cart-count]');
+  const badgeText = header.querySelector('[data-cart-count-text]');
 
-    const badge = header.querySelector('[data-cart-count]');
+  const renderCartCount = (count) => {
+    if (typeof count !== 'number') return;
     if (badge) {
       badge.textContent = count;
       badge.classList.toggle('hidden', count === 0);
@@ -261,5 +265,74 @@
         badge.classList.add('header__cart-count--bump');
       }
     }
+    if (badgeText) {
+      // Optional data-template="[count] items in cart" wins; otherwise
+      // swap the number inside the server-rendered text
+      if (badgeText.dataset.template) {
+        badgeText.textContent = badgeText.dataset.template.replace('[count]', count);
+      } else {
+        badgeText.textContent = badgeText.textContent.replace(/\d+/, count);
+      }
+    }
+  };
+
+  document.addEventListener('cart:updated', (event) => {
+    const detail = event.detail || {};
+    const count = typeof detail.item_count === 'number'
+      ? detail.item_count
+      : detail.cart && typeof detail.cart.item_count === 'number'
+        ? detail.cart.item_count
+        : null;
+    if (count !== null) renderCartCount(count);
+  });
+
+  let cartSyncTimer = null;
+  const syncCartFromServer = () => {
+    clearTimeout(cartSyncTimer);
+    // Small debounce: batched cart operations trigger one refresh
+    cartSyncTimer = setTimeout(() => {
+      fetch('/cart.js', { headers: { Accept: 'application/json' } })
+        .then((response) => (response.ok ? response.json() : null))
+        .then((cart) => {
+          if (cart && typeof cart.item_count === 'number') renderCartCount(cart.item_count);
+        })
+        .catch(() => {});
+    }, 300);
+  };
+
+  const CART_MUTATION_ROUTES = ['/cart/add', '/cart/change', '/cart/update', '/cart/clear'];
+  const isCartMutation = (url) => {
+    if (!url) return false;
+    try {
+      const pathname = new URL(url, window.location.origin).pathname;
+      return CART_MUTATION_ROUTES.some((route) => pathname.startsWith(route));
+    } catch (error) {
+      return false;
+    }
+  };
+
+  // Observe fetch-based cart calls (theme code and most apps)
+  const originalFetch = window.fetch;
+  window.fetch = function (...args) {
+    const url = typeof args[0] === 'string' ? args[0] : args[0] && args[0].url;
+    const result = originalFetch.apply(this, args);
+    if (isCartMutation(url)) {
+      result.then(syncCartFromServer).catch(() => {});
+    }
+    return result;
+  };
+
+  // Observe XMLHttpRequest-based cart calls (older apps)
+  const originalXhrOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (method, url, ...rest) {
+    if (isCartMutation(url)) {
+      this.addEventListener('loadend', syncCartFromServer);
+    }
+    return originalXhrOpen.call(this, method, url, ...rest);
+  };
+
+  // Pages restored from the back/forward cache can carry a stale badge
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) syncCartFromServer();
   });
 })();

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "404": "Not found",
@@ -72,6 +81,38 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
+    }
+  },
+  "sections": {
+    "featured_collections_tabs": {
+      "name": "Featured collections tabs",
+      "settings": {
+        "heading": "Heading",
+        "subheading": "Subheading",
+        "heading_size": "Heading size",
+        "heading_alignment": "Heading alignment",
+        "products_to_show": "Products per tab",
+        "columns_desktop": "Columns on desktop",
+        "columns_mobile": "Columns on mobile",
+        "image_ratio": "Image aspect ratio",
+        "show_vendor": "Show vendor",
+        "show_rating": "Show product rating",
+        "show_view_all": "Show 'View all' button",
+        "padding_top": "Padding top",
+        "padding_bottom": "Padding bottom"
+      },
+      "blocks": {
+        "collection": {
+          "name": "Collection tab",
+          "settings": {
+            "tab_title": "Tab title",
+            "collection": "Collection"
+          }
+        }
+      },
+      "presets": {
+        "name": "Featured collections tabs"
+      }
     }
   }
 }

@@ -1,0 +1,31 @@
+{% comment %}
+  Renders product rating stars - ALWAYS shows 5 stars
+  Usage: {% render 'product-rating', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign rating = product.metafields.reviews.rating.value | default: 0
+  assign review_count = product.metafields.reviews.rating_count.value | default: 0
+-%}
+
+<!-- THIS WILL ALWAYS DISPLAY - No if condition hiding it -->
+<div class="product-rating" role="img" aria-label="{% if rating > 0 %}Rated {{ rating }} out of 5{% else %}No ratings yet{% endif %}">
+  <span class="product-rating__stars">
+    {%- assign full_stars = rating | floor -%}  <!-- If rating is 0, full_stars = 0 -->
+
+    {%- for i in (1..5) -%}
+      {%- if i <= full_stars -%}  <!-- When rating is 0, this is NEVER true -->
+        <span class="star star--filled" aria-hidden="true" style="color: #FFD700;">★</span>  <!-- Gold filled star -->
+      {%- else -%}
+        <span class="star star--empty" aria-hidden="true" style="color: #D3D3D3;">☆</span>  <!-- Gray empty star - ALL 5 will be this -->
+      {%- endif -%}
+    {%- endfor -%}
+  </span>
+  
+  <!-- Optional: Show review count or "No reviews" text -->
+  {%- if review_count > 0 -%}
+    <span class="product-rating__count">({{ review_count }})</span>
+  {%- else -%}
+    <span class="product-rating__count" style="color: #999; font-size: 12px;">No reviews</span>
+  {%- endif -%}
+</div>

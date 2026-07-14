@@ -1,0 +1,67 @@
+{% comment %}
+  Renders a product card
+{% endcomment %}
+
+{%- assign product = card_product -%}
+
+<div class="card-wrapper">
+  <a href="{{ product.url }}" class="card">
+        <div class="card__media">
+      {%- if product.featured_image -%}
+        {%- assign image = product.featured_image -%}
+
+        {%- case media_aspect_ratio -%}
+          {%- when 'portrait' -%}
+            {%- assign img_width = 500 -%}
+            {%- assign img_height = 667 -%}
+          {%- when 'square' -%}
+            {%- assign img_width = 500 -%}
+            {%- assign img_height = 500 -%}
+          {%- when 'landscape' -%}
+            {%- assign img_width = 500 -%}
+            {%- assign img_height = 375 -%}
+          {%- else -%}
+            {%- assign img_width = 500 -%}
+            {%- assign img_height = 500 -%}
+          {%- endcase -%}
+
+        <img 
+          src="{{ image | image_url: width: img_width }}"
+          width="{{ img_width }}"
+          height="{{ img_height }}"
+          loading="lazy"
+          alt="{{ image.alt | escape }}"
+          class="card__image"
+          style="aspect-ratio: {{ img_width }} / {{ img_height }}; object-fit: cover; width: 100%; height: auto;"
+        >
+      {%- else -%}
+        <div class="card__placeholder">
+          {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {%- endif -%}
+    </div>
+    
+    <div class="card__content">
+      {%- if show_vendor and product.vendor != blank -%}
+        <p class="card__vendor">{{ product.vendor }}</p>
+      {%- endif -%}
+      
+      <h3 class="card__title">{{ product.title }}</h3>
+      
+      {%- if show_rating -%}
+        {% render 'product-rating', product: product %}
+      {%- endif -%}
+      
+      <div class="card__price">
+        <span class="price-item price-item--regular">
+          {{ product.price | money }}
+        </span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="price-item price-item--sale">
+            <s>{{ product.compare_at_price | money }}</s>
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+  </a>
+</div>

@@ -1,7 +1,7 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Suvara",
+    "theme_name": "Skeleton",
     "theme_version": "0.1.0",
     "theme_author": "Shopify",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
@@ -77,112 +77,6 @@
         "unit": "px",
         "label": "t:labels.input_corner_radius",
         "default": 4
-      }
-    ]
-  },
-  {
-    "name": "Wavy Marquee",
-    "settings": [
-      {
-        "type": "group",
-        "name": "Global Marquee Settings",
-        "settings": [
-          {
-            "type": "text",
-            "id": "wavy_marquee_default_text",
-            "label": "Default Marquee Text",
-            "default": "Welcome to our store!"
-          },
-          {
-            "type": "color",
-            "id": "wavy_marquee_default_color",
-            "label": "Default Text Color",
-            "default": "#ffffff"
-          },
-          {
-            "type": "color",
-            "id": "wavy_marquee_default_bg",
-            "label": "Default Background Color",
-            "default": "#1a1a1a"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Slideshow with Marquee",
-    "settings": [
-      {
-        "type": "text",
-        "id": "marquee_default_text",
-        "label": "Default Scrolling Text",
-        "default": "Free Shipping • 30-Day Returns • Subscribe & Save"
-      },
-      {
-        "type": "color",
-        "id": "marquee_default_text_color",
-        "label": "Text Color",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "marquee_default_bg",
-        "label": "Background Color",
-        "default": "#1a1a1a"
-      }
-    ]
-  },
-  {
-  "name": "Scrolling Text",
-    "settings": [
-      {
-        "type": "color",
-        "id": "scrolling_text_default_bg",
-        "label": "Default background color",
-        "default": "#1a1a1a"
-      },
-      {
-        "type": "color",
-        "id": "scrolling_text_default_text_color",
-        "label": "Default text color",
-        "default": "#ffffff"
-      },
-      {
-        "type": "range",
-        "id": "scrolling_text_default_speed",
-        "label": "Default scroll speed",
-        "min": 10,
-        "max": 60,
-        "step": 5,
-        "default": 30,
-        "unit": "s"
-      }
-    ]
-  },
-  {
-    "name": "Scrolling Media Cards",
-    "settings": [
-      {
-        "type": "color",
-        "id": "scrolling_media_cards_default_bg",
-        "label": "Default background color",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "scrolling_media_cards_default_text",
-        "label": "Default text color",
-        "default": "#1a1a1a"
-      },
-      {
-        "type": "range",
-        "id": "scrolling_media_cards_default_speed",
-        "label": "Default scroll speed",
-        "min": 2000,
-        "max": 8000,
-        "step": 500,
-        "default": 4000,
-        "unit": "ms"
       }
     ]
   }

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "404": {
     "title": "404",
@@ -116,6 +125,35 @@
       "go_to_slide": "Go to slide {{ index }}",
       "pause_carousel": "Pause carousel",
       "play_carousel": "Play carousel"
+    },
+    "featured_products": {
+      "previous": "Previous products",
+      "next": "Next products",
+      "adding": "Adding…",
+      "added": "Added ✓",
+      "error": "Error",
+      "added_notice": "Product added to cart",
+      "rating_label": "Rated {{ rating }} out of 5 stars",
+      "regular_price": "Regular price"
+    },
+    "featured_collection": {
+      "view_all": "View all"
+    },
+    "featured_collections_tabs": {
+      "name": "Featured collections tabs",
+      "heading": "Heading",
+      "subheading": "Subheading",
+      "heading_size": "Heading size",
+      "heading_alignment": "Heading alignment",
+      "products_to_show": "Products per tab",
+      "columns_desktop": "Columns on desktop",
+      "columns_mobile": "Columns on mobile",
+      "image_ratio": "Image aspect ratio",
+      "show_vendor": "Show vendor",
+      "show_rating": "Show product rating",
+      "show_view_all": "Show 'View all' button",
+      "padding_top": "Padding top",
+      "padding_bottom": "Padding bottom",
     }
   },
   "products": {
@@ -127,7 +165,12 @@
       "quick_add": "Quick Add",
       "save": "Save",
       "products": "Products",
-      "items": "Items"
+      "items": "Items",
+      "rating": "Rating"
     }
+  },
+  "general": {
+    "star": "star",
+    "stars": "stars"
   }
 }
