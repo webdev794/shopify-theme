@@ -1,0 +1,157 @@
+{{ 'section-burst-effects.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'burst-effects.js' | asset_url }}" defer></script>
+
+<div 
+  class="burst-effects" 
+  data-section-id="{{ section.id }}" 
+  data-animation="{{ section.settings.animation_effect }}"
+  data-duration="{{ section.settings.animation_duration }}"
+  data-delay="{{ section.settings.animation_delay }}"
+>
+  <div class="burst-effects__container">
+    <div class="burst-effects__media">
+      {% if section.settings.image %}
+        <div class="burst-effects__image-wrapper">
+          {{
+            section.settings.image
+            | image_url: width: 1920
+            | image_tag:
+              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000',
+              sizes: '100vw',
+              class: 'burst-effects__image',
+              alt: section.settings.image.alt | default: section.settings.title
+          }}
+        </div>
+      {% endif %}
+    </div>
+    <div class="burst-effects__content">
+      <h2 class="burst-effects__title">{{ section.settings.title }}</h2>
+      <div class="burst-effects__text">{{ section.settings.text }}</div>
+      
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" class="burst-btn burst-btn--{{ section.settings.button_style }}">
+          <span class="burst-btn__text">{{ section.settings.button_label }}</span>
+          
+          {% if section.settings.show_icon %}
+            <svg class="burst-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          {% endif %}
+          
+          {% if section.settings.button_style == 'glow' %}
+            <span class="burst-btn__glow"></span>
+          {% endif %}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Burst Effects",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image",
+      "info": "We recommend using a high-quality image from Shopify's Burst photo library."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Elevate Your Brand"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "default": "<p>Combine stunning visuals with powerful animation to create a store that captivates and converts.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Button Style"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        { "value": "gradient", "label": "Gradient" },
+        { "value": "outline", "label": "Outline" },
+        { "value": "glow", "label": "Glow Effect" },
+        { "value": "slide", "label": "Slide Effect" },
+        { "value": "pulse", "label": "Pulse Animation" }
+      ],
+      "default": "gradient"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Arrow Icon",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animation_effect",
+      "label": "Effect",
+      "options": [
+        { "value": "fade-in", "label": "Fade In" },
+        { "value": "slide-up", "label": "Slide Up" },
+        { "value": "scale-up", "label": "Scale Up" },
+        { "value": "parallax", "label": "Parallax" }
+      ],
+      "default": "fade-in"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 0.5,
+      "max": 3,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Animation Duration",
+      "default": 1.0
+    },
+    {
+      "type": "range",
+      "id": "animation_delay",
+      "min": 0,
+      "max": 2,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Animation Delay",
+      "default": 0.2
+    }
+  ],
+  "presets": [
+    {
+      "name": "Burst Effects"
+    }
+  ]
+}
+{% endschema %}

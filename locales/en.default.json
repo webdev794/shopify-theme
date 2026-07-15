@@ -166,11 +166,68 @@
       "save": "Save",
       "products": "Products",
       "items": "Items",
-      "rating": "Rating"
+      "rating": "Rating",
+      "quantity": { "label": "Quantity", "increase": "Increase quantity", "decrease": "Decrease quantity" },
+      "price": { "sale_price": "Sale price", "regular_price": "Regular price" },
+      "media": { "load_image": "Load image {{ index }} in gallery view" }
+
     }
   },
   "general": {
     "star": "star",
-    "stars": "stars"
-  }
+    "stars": "stars",
+    "newsletter": {
+      "email_label": "Email",
+      "email_placeholder": "Your email address",
+      "submit": "Subscribe",
+      "success": "Thanks for subscribing!"
+    },
+    "payment_methods": "Payment methods"
+  },
+  "contact": {
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "order_number": "Order Number",
+      "subject": "Subject",
+      "subject_placeholder": "Select a subject...",
+      "general_inquiry": "General Inquiry",
+      "product_question": "Product Question",
+      "order_status": "Order Status",
+      "returns": "Returns",
+      "wholesale": "Wholesale Inquiry",
+      "other": "Other",
+      "priority": "Priority Level",
+      "priority_low": "Low",
+      "priority_medium": "Medium",
+      "priority_high": "High",
+      "priority_urgent": "Urgent",
+      "message": "Message",
+      "subscribe_to_newsletter": "Subscribe to our newsletter",
+      "submit": "Send Message",
+      "success": "Thank you for your message. We'll get back to you soon!",
+      "error_heading": "Oops! There was a problem with your submission:",
+      "error_general": "Please check your form and try again."
+    }
+  },
+  "blog_posts": {
+      "name": "Blog Posts",
+      "settings": {
+        "heading": "Heading",
+        "subheading": "Subheading",
+        "description": "Description",
+        "read_more_label": "Read More",
+        "view_all_label": "View All"
+      }
+    },
+    "newsletter": {
+      "name": "Newsletter",
+      "settings": {
+        "heading": "Heading",
+        "subheading": "Subheading",
+        "description": "Description",
+        "button_label": "Button Label"
+      }
+    }
 }

@@ -8,5 +8,11 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "social_facebook_link": "facebook.com",
+    "social_twitter_link": "x.com",
+    "social_instagram_link": "instagram.com",
+    "social_youtube_link": "youtube.com",
+    "content_for_index": []
+  }
 }
