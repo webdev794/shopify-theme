@@ -11,7 +11,8 @@
   "404": {
     "title": "404",
     "not_found": "Page not found.",
-    "back_to_shopping": "Back to shopping"
+    "back_to_shopping": "Back to shopping",
+    "back_to_home": "Back to home"
   },
   "blog": {
     "article_comments": "Comments",
@@ -20,24 +21,56 @@
     "comment_form_email": "Email",
     "comment_form_name": "Name",
     "comment_form_submit": "Post",
-    "comment_form_title": "Add a comment"
+    "comment_form_title": "Add a comment",
+    "comment_form_success": "Your comment was posted successfully.",
+    "comment_form_moderated": "Comments are moderated and will appear after approval.",
+    "back_to_blog": "Back to {{ blog }}",
+    "share": "Share:",
+    "share_on_twitter": "Share on X",
+    "share_on_facebook": "Share on Facebook",
+    "share_on_pinterest": "Share on Pinterest",
+    "copy_link": "Copy link",
+    "article_navigation": "Article navigation",
+    "previous_article": "Previous article",
+    "next_article": "Next article",
+    "no_articles": "No articles have been posted yet.",
+    "read_more": "Read more"
   },
   "cart": {
-    "checkout": "Checkout",
     "title": "Cart",
-    "update": "Update",
-    "remove": "Remove"
+    "checkout": "Checkout",
+    "update": "Update cart",
+    "remove": "Remove",
+    "product": "Product",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "note": "Order note",
+    "empty": "Your cart is empty.",
+    "continue_shopping": "Continue shopping",
+    "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout",
+    "recalculated_note": "Totals update instantly as an estimate. Discounts that depend on quantity (like tiered offers) are recalculated exactly when you click \"Update cart.\""
   },
   "customers": {
     "login": {
+      "title": "Sign in",
       "email": "Email",
       "password": "Password",
       "submit": "Sign in",
-      "title": "Login"
+      "forgot_password": "Forgot your password?",
+      "new_customer": "New here?",
+      "create_account": "Create account",
+      "guest_continue": "Continue as guest"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "subtext": "We'll email you a link to reset your password.",
+      "submit": "Send reset link",
+      "success": "We've sent you an email with a link to reset your password.",
+      "back_to_login": "Back to sign in"
     }
-  },
-  "collections": {
-    "title": "Collections"
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
@@ -57,7 +90,18 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}",
-    "view_all": "View all results"
+    "view_all": "View all results",
+    "no_results_hint": "Check the spelling or try a more general term.",
+    "browse_all": "Browse all products",
+    "filter_by_type": "Filter by type",
+    "all": "All",
+    "products": "Products",
+    "articles": "Articles",
+    "pages": "Pages",
+    "result_type": {
+      "article": "Article",
+      "page": "Page"
+    }
   },
   "sections": {
     "header": {
@@ -153,7 +197,7 @@
       "show_rating": "Show product rating",
       "show_view_all": "Show 'View all' button",
       "padding_top": "Padding top",
-      "padding_bottom": "Padding bottom",
+      "padding_bottom": "Padding bottom"
     }
   },
   "products": {
@@ -163,14 +207,15 @@
       "quick_view": "Quick View",
       "on_sale": "Sale",
       "quick_add": "Quick Add",
+      "choose_options": "Choose options",
+      "from_price_html": "From",
       "save": "Save",
       "products": "Products",
       "items": "Items",
       "rating": "Rating",
       "quantity": { "label": "Quantity", "increase": "Increase quantity", "decrease": "Decrease quantity" },
-      "price": { "sale_price": "Sale price", "regular_price": "Regular price" },
+      "price": { "sale_price": "Sale price", "regular_price": "Regular price", "total": "Total:" },
       "media": { "load_image": "Load image {{ index }} in gallery view" }
-
     }
   },
   "general": {
@@ -214,20 +259,35 @@
   "blog_posts": {
       "name": "Blog Posts",
       "settings": {
-        "heading": "Heading",
-        "subheading": "Subheading",
-        "description": "Description",
-        "read_more_label": "Read More",
-        "view_all_label": "View All"
-      }
-    },
-    "newsletter": {
-      "name": "Newsletter",
-      "settings": {
-        "heading": "Heading",
-        "subheading": "Subheading",
-        "description": "Description",
-        "button_label": "Button Label"
-      }
+      "heading": "Heading",
+      "subheading": "Subheading",
+      "description": "Description",
+      "read_more_label": "Read More",
+      "view_all_label": "View All"
     }
+  },
+  "newsletter": {
+    "name": "Newsletter",
+    "settings": {
+      "heading": "Heading",
+      "subheading": "Subheading",
+      "description": "Description",
+      "button_label": "Button Label"
+    }
+  },
+  "collections": {
+    "title": "Collections",
+    "general": {
+      "no_matches": "No products found in this collection.",
+      "view_all": "View all products",
+      "items_with_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "no_collections": "No collections found."
+    },
+    "sorting": {
+      "title": "Sort by"
+    }
+  }
 }

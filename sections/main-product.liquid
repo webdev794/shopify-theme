@@ -100,7 +100,13 @@
             <h1 class="product__title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
 
           {% when 'price' %}
-            <div class="product__price" id="product-price-{{ section.id }}" {{ block.shopify_attributes }}>
+            <div
+              class="product__price"
+              id="product-price-{{ section.id }}"
+              data-unit-price="{{ current_variant.price }}"
+              data-money-format="{{ shop.money_format | escape }}"
+              {{ block.shopify_attributes }}
+            >
               {% if current_variant.compare_at_price > current_variant.price %}
                 <span class="price price--sale">
                   <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
@@ -180,7 +186,7 @@
             {% endif %}
 
           {% when 'quantity_selector' %}
-            <div class="product__quantity" {{ block.shopify_attributes }}>
+            <div class="product__quantity" data-section-id="{{ section.id }}" {{ block.shopify_attributes }}>
               <label for="quantity-{{ section.id }}">{{ 'products.product.quantity.label' | t }}</label>
               <div class="quantity-input">
                 <button
@@ -208,6 +214,10 @@
                   aria-label="{{ 'products.product.quantity.increase' | t }}"
                 >+</button>
               </div>
+              <p class="product__price-total" data-price-total hidden>
+                {{ 'products.product.price.total' | t }}
+                <span data-price-total-amount></span>
+              </p>
             </div>
 
           {% when 'buy_buttons' %}
@@ -386,6 +396,11 @@
   }
 
   /* ---------- Variant picker ---------- */
+  .product__variants,
+  variant-selects {
+    display: block;
+  }
+
   .product__option + .product__option {
     margin-top: 1rem;
   }
@@ -464,12 +479,31 @@
     margin: 0;
   }
 
+  .product__price-total {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-foreground-secondary, #555);
+  }
+
+  .product__price-total[hidden] {
+    display: none;
+  }
+
   /* ---------- Buy buttons ---------- */
   .product__buy-buttons {
+    max-width: 28rem;
+  }
+
+  .product__form {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    max-width: 28rem;
+  }
+
+  /* Shopify injects its own wrapper around the dynamic checkout button;
+     this margin ensures spacing even if that wrapper collapses the gap. */
+  .product__form .shopify-payment-button {
+    margin-top: 0.75rem;
   }
 
   .product__add-to-cart {
@@ -567,6 +601,10 @@
       } else {
         wrapper.innerHTML = `<span class="price">${variant.price_formatted}</span>`;
       }
+
+      // Keep the raw cents value in sync so the quantity total can use it.
+      wrapper.dataset.unitPrice = variant.price;
+      updateTotalPriceForSection(this.sectionId);
     }
 
     updateMedia(variant) {
@@ -620,7 +658,82 @@
 
     value = increaseButton ? value + step : Math.max(min, value - step);
     input.value = value;
-    input.dispatchEvent(new Event('change', { bubbles: true }));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+
+  // ---------- Quantity x price total ----------
+  function formatMoney(cents, format) {
+    function withDelimiters(number, precision, thousands, decimalSep) {
+      if (isNaN(number) || number === null) return 0;
+      const fixed = (number / 100).toFixed(precision);
+      const parts = fixed.split('.');
+      const wholePart = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${thousands}`);
+      const decimalPart = parts[1] ? decimalSep + parts[1] : '';
+      return wholePart + decimalPart;
+    }
+
+    if (!format) return `$${(cents / 100).toFixed(2)}`;
+    const placeholder = /\{\{\s*(\w+)\s*\}\}/;
+    const match = format.match(placeholder);
+    if (!match) return format;
+
+    let value;
+    switch (match[1]) {
+      case 'amount_no_decimals':
+        value = withDelimiters(cents, 0, ',', '.');
+        break;
+      case 'amount_with_comma_separator':
+        value = withDelimiters(cents, 2, '.', ',');
+        break;
+      case 'amount_no_decimals_with_comma_separator':
+        value = withDelimiters(cents, 0, '.', ',');
+        break;
+      case 'amount_with_apostrophe_separator':
+        value = withDelimiters(cents, 2, "'", '.');
+        break;
+      default:
+        value = withDelimiters(cents, 2, ',', '.');
+    }
+
+    return format.replace(placeholder, value);
+  }
+
+  function updateTotalPriceForSection(sectionId) {
+    const quantityWrapper = document.querySelector(
+      `.product__quantity[data-section-id="${sectionId}"]`
+    );
+    if (!quantityWrapper) return;
+
+    const input = quantityWrapper.querySelector('input[type="number"]');
+    const priceWrapper = document.getElementById(`product-price-${sectionId}`);
+    const totalEl = quantityWrapper.querySelector('[data-price-total]');
+    const amountEl = quantityWrapper.querySelector('[data-price-total-amount]');
+    if (!input || !priceWrapper || !totalEl || !amountEl) return;
+
+    const unitPrice = parseInt(priceWrapper.dataset.unitPrice, 10);
+    const quantity = parseInt(input.value, 10) || 1;
+
+    if (!unitPrice || quantity <= 1) {
+      totalEl.hidden = true;
+      return;
+    }
+
+    totalEl.hidden = false;
+    amountEl.textContent = formatMoney(unitPrice * quantity, priceWrapper.dataset.moneyFormat);
+  }
+
+  document.addEventListener('input', (event) => {
+    const input = event.target.closest('.product__quantity input[type="number"]');
+    if (!input) return;
+
+    const sectionId = input.closest('.product__quantity').dataset.sectionId;
+    updateTotalPriceForSection(sectionId);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.product__quantity').forEach((wrapper) => {
+      updateTotalPriceForSection(wrapper.dataset.sectionId);
+    });
   });
 {% endjavascript %}
 

@@ -5,27 +5,221 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/blog
 {% endcomment %}
 
-<h1>{{ blog.title }}</h1>
+<div class="blog-listing">
+  <div class="blog-listing__header blog-listing__page-width">
+    <h1 class="blog-listing__title">{{ blog.title }}</h1>
+  </div>
 
-{% paginate blog.articles by 5 %}
-  {% for article in blog.articles %}
-    <div>
-      {% if article.image %}
-        {{ article.image | image_url: width: 1000 | image_tag }}
-      {% endif %}
-      <h2>
-        {{ article.title | link_to: article.url }}
-      </h2>
-      {% assign date = article.published_at | time_tag: format: 'date' %}
-      <p>{{ 'blog.article_metadata_html' | t: date: date, author: article.author }}</p>
-      <p>{{ article.excerpt }}</p>
-    </div>
-  {% endfor %}
+  {% paginate blog.articles by 9 %}
+    {% if blog.articles.size == 0 %}
+      <div class="blog-listing__empty blog-listing__page-width">
+        <p>{{ 'blog.no_articles' | t }}</p>
+      </div>
+    {% else %}
+      <div class="blog-listing__grid blog-listing__page-width">
+        {% for article in blog.articles %}
+          <article class="blog-card">
+            <a href="{{ article.url }}" class="blog-card__media-link">
+              {% if article.image %}
+                {{
+                  article.image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '400,600,800',
+                    sizes: '(min-width: 990px) 33vw, 100vw',
+                    alt: article.image.alt | default: article.title,
+                    class: 'blog-card__image'
+                }}
+              {% else %}
+                {{ 'blog-1' | placeholder_svg_tag: 'placeholder-svg blog-card__image' }}
+              {% endif %}
+            </a>
 
-  {%- if paginate.pages > 1 -%}
-    {{- paginate | default_pagination -}}
-  {%- endif -%}
-{% endpaginate %}
+            <div class="blog-card__content">
+              <div class="blog-card__meta">
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                  {{ article.published_at | date: format: 'date' }}
+                </time>
+                {% if article.author %}
+                  <span>&middot; {{ article.author }}</span>
+                {% endif %}
+              </div>
+
+              <h2 class="blog-card__title">
+                <a href="{{ article.url }}">{{ article.title }}</a>
+              </h2>
+
+              {% if article.excerpt != blank %}
+                <p class="blog-card__excerpt">{{ article.excerpt | strip_html | truncatewords: 20 }}</p>
+              {% else %}
+                <p class="blog-card__excerpt">
+                  {{ article.content | strip_html | truncatewords: 20 }}
+                </p>
+              {% endif %}
+
+              <a href="{{ article.url }}" class="blog-card__read-more">
+                {{ 'blog.read_more' | t }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      <div class="blog-listing__pagination blog-listing__page-width">
+        {{ paginate | default_pagination }}
+      </div>
+    {% endif %}
+  {% endpaginate %}
+</div>
+
+{% stylesheet %}
+  .blog-listing {
+    padding-block: 2rem;
+  }
+
+  .blog-listing__page-width {
+    max-width: var(--page-width, 1200px);
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .blog-listing__title {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+    margin-bottom: 2rem;
+  }
+
+  .blog-listing__empty {
+    text-align: center;
+    padding-block: 4rem;
+    color: var(--color-foreground-secondary, #666);
+  }
+
+  .blog-listing__grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .blog-listing__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+  }
+
+  .blog-card__media-link {
+    display: block;
+    aspect-ratio: 16 / 10;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: var(--color-background-secondary, #f4f4f4);
+  }
+
+  .blog-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card__media-link:hover .blog-card__image {
+    transform: scale(1.03);
+  }
+
+  .blog-card__content {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .blog-card__meta {
+    font-size: 0.8rem;
+    color: var(--color-foreground-secondary, #888);
+  }
+
+  .blog-card__title {
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  .blog-card__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .blog-card__title a:hover {
+    text-decoration: underline;
+  }
+
+  .blog-card__excerpt {
+    font-size: 0.9rem;
+    color: var(--color-foreground-secondary, #666);
+    line-height: 1.55;
+  }
+
+  .blog-card__read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+  }
+
+  .blog-card__read-more svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.15s ease;
+  }
+
+  .blog-card__read-more:hover svg {
+    transform: translateX(3px);
+  }
+
+  .blog-listing__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+
+  .blog-listing__pagination nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .blog-listing__pagination nav a,
+  .blog-listing__pagination nav span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding-inline: 0.5rem;
+    border-radius: 0.35rem;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--color-foreground, #1a1a1a);
+  }
+
+  .blog-listing__pagination nav a:hover {
+    background: var(--color-background-secondary, #f4f4f4);
+  }
+
+  .blog-listing__pagination nav [aria-current='page'] {
+    background: var(--color-foreground, #1a1a1a);
+    color: var(--color-background, #fff);
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

@@ -1,0 +1,290 @@
+{% comment %}
+  This section is used in the customers/login template to render the sign-in
+  form, password recovery form, and (when enabled) a guest checkout option.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/customers-login
+{% endcomment %}
+
+<div class="account-page">
+  <div class="account-page__page-width account-page__page-width--narrow">
+    {% comment %} Recovery panel must come first in the DOM for the CSS sibling fallback below. {% endcomment %}
+    <div class="login-panel" id="recover" data-recover-panel hidden>
+      <h1 class="account-page__title">{{ 'customers.recover_password.title' | t }}</h1>
+      <p class="account-page__subtitle">{{ 'customers.recover_password.subtext' | t }}</p>
+
+      {% form 'recover_customer_password' %}
+        {% if form.posted_successfully? %}
+          <p class="account-page__success">{{ 'customers.recover_password.success' | t }}</p>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="account-page__errors">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="account-page__field">
+          <label for="recover-email-{{ section.id }}">{{ 'customers.login.email' | t }}</label>
+          <input
+            type="email"
+            id="recover-email-{{ section.id }}"
+            name="email"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <button type="submit" class="button button--primary account-page__submit">
+          {{ 'customers.recover_password.submit' | t }}
+        </button>
+
+        <a href="#login" class="account-page__link" data-recover-toggle>
+          {{ 'customers.recover_password.back_to_login' | t }}
+        </a>
+      {% endform %}
+    </div>
+
+    <div class="login-panel" id="login" data-login-panel>
+      <h1 class="account-page__title">{{ 'customers.login.title' | t }}</h1>
+
+      {% form 'customer_login' %}
+        {% if form.errors %}
+          <div class="account-page__errors">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="account-page__field">
+          <label for="customer-email-{{ section.id }}">{{ 'customers.login.email' | t }}</label>
+          <input
+            type="email"
+            id="customer-email-{{ section.id }}"
+            name="customer[email]"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="account-page__field">
+          <label for="customer-password-{{ section.id }}">{{ 'customers.login.password' | t }}</label>
+          <input
+            type="password"
+            id="customer-password-{{ section.id }}"
+            name="customer[password]"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="button button--primary account-page__submit">
+          {{ 'customers.login.submit' | t }}
+        </button>
+
+        <a href="#recover" class="account-page__link" data-recover-toggle>
+          {{ 'customers.login.forgot_password' | t }}
+        </a>
+      {% endform %}
+
+      <div class="account-page__divider">
+        <span>{{ 'customers.login.new_customer' | t }}</span>
+      </div>
+
+      <a href="{{ routes.account_register_url }}" class="button button--secondary account-page__submit">
+        {{ 'customers.login.create_account' | t }}
+      </a>
+
+      {% if shop.checkout.guest_login %}
+        {% form 'guest_login' %}
+          <button type="submit" class="account-page__guest-link">
+            {{ 'customers.login.guest_continue' | t }}
+          </button>
+        {% endform %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .account-page {
+    padding-block: 3rem 5rem;
+  }
+
+  .account-page__page-width {
+    max-width: 48rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .account-page__page-width--narrow {
+    max-width: 26rem;
+  }
+
+  .account-page__title {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .account-page__subtitle {
+    text-align: center;
+    color: var(--color-foreground-secondary, #666);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .account-page__field {
+    margin-bottom: 1rem;
+  }
+
+  .account-page__field label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .account-page__field input {
+    width: 100%;
+    border: 1px solid var(--color-border, #ccc);
+    border-radius: 0.4rem;
+    padding: 0.65rem 0.85rem;
+    font: inherit;
+  }
+
+  .account-page__errors {
+    background: color-mix(in srgb, var(--color-sale, #c0392b) 8%, transparent);
+    border: 1px solid var(--color-sale, #c0392b);
+    color: var(--color-sale, #c0392b);
+    border-radius: 0.4rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .account-page__success {
+    background: var(--color-background-secondary, #f4f4f4);
+    border-radius: 0.4rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .account-page__submit {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.4rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+  }
+
+  .button--primary {
+    background: var(--color-foreground, #1a1a1a);
+    color: var(--color-background, #fff);
+    border: 1px solid var(--color-foreground, #1a1a1a);
+  }
+
+  .button--secondary {
+    background: var(--color-background, #fff);
+    color: var(--color-foreground, #1a1a1a);
+    border: 1px solid var(--color-border, #ccc);
+  }
+
+  .account-page__link {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-foreground-secondary, #666);
+    margin-top: 0.85rem;
+  }
+
+  .account-page__link:hover {
+    color: var(--color-foreground, #1a1a1a);
+  }
+
+  .account-page__divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.75rem 0 1rem;
+    font-size: 0.8rem;
+    color: var(--color-foreground-secondary, #999);
+  }
+
+  .account-page__divider::before,
+  .account-page__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-border, #e5e5e5);
+  }
+
+  .account-page__guest-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    color: var(--color-foreground-secondary, #666);
+    margin-top: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .account-page__guest-link:hover {
+    color: var(--color-foreground, #1a1a1a);
+  }
+
+  /* ---------- Panel toggle: JS enhances, CSS :target is the no-JS fallback ---------- */
+  [data-login-panel] {
+    display: block;
+  }
+
+  [data-recover-panel] {
+    display: none;
+  }
+
+  [data-recover-panel]:target {
+    display: block;
+  }
+
+  [data-recover-panel]:target ~ [data-login-panel] {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('click', (event) => {
+    const toggle = event.target.closest('[data-recover-toggle]');
+    if (!toggle) return;
+
+    event.preventDefault();
+
+    const loginPanel = document.querySelector('[data-login-panel]');
+    const recoverPanel = document.querySelector('[data-recover-panel]');
+    if (!loginPanel || !recoverPanel) return;
+
+    const showRecover = toggle.getAttribute('href') === '#recover';
+    loginPanel.hidden = showRecover;
+    recoverPanel.hidden = !showRecover;
+
+    if (showRecover) {
+      recoverPanel.querySelector('input')?.focus();
+    } else {
+      loginPanel.querySelector('input')?.focus();
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:general.customer_login",
+  "settings": []
+}
+{% endschema %}

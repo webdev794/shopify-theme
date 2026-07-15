@@ -5,51 +5,155 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
-<h1>{{ 'collections.title' | t }}</h1>
+<div class="collections-page">
+  <h1 class="collections-page__title">{{ 'collections.title' | t }}</h1>
 
-<div
-  class="collections {{ section.settings.grid_item_width }}"
-  style="--grid-gap: {{ section.settings.grid_gap }}px"
->
-  {% for collection in collections %}
-    <a class="collection-card" href="{{ collection.url }}">
-      {% if collection.featured_image %}
-        {% render 'image',
-          class: 'collection-card__image',
-          image: collection.featured_image,
-          width: 600,
-          height: 600,
-          crop: 'center'
-        %}
-      {% endif %}
+  {% if collections.size == 0 %}
+    <div class="collections-page__empty">
+      <p>{{ 'collections.general.no_collections' | t }}</p>
+    </div>
+  {% else %}
+    <div
+      class="collections {{ section.settings.grid_item_width }}"
+      style="--grid-gap: {{ section.settings.grid_gap }}px"
+    >
+      {% for collection in collections %}
+        <a class="collection-card" href="{{ collection.url }}">
+          <div class="collection-card__media">
+            {% if collection.featured_image %}
+              {{
+                collection.featured_image
+                | image_url: width: 600
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '300,400,500,600,800',
+                  sizes: '(min-width: 990px) 25vw, 50vw',
+                  alt: collection.featured_image.alt | default: collection.title,
+                  class: 'collection-card__image'
+              }}
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg collection-card__image' }}
+            {% endif %}
+          </div>
 
-      <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
+          <div class="collection-card__content">
+            <p class="collection-card__title">{{ collection.title }}</p>
 
-        {% if collection.description %}
-          <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
-        {% endif %}
-      </div>
-    </a>
-  {% endfor %}
+            <p class="collection-card__count">
+              {{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}
+            </p>
+
+            {% if collection.description != blank %}
+              <p class="collection-card__description">
+                {{ collection.description | strip_html | truncatewords: 15 }}
+              </p>
+            {% endif %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>
 
 {% stylesheet %}
+  .collections-page {
+    padding-block: 2rem;
+    max-width: var(--page-width, 1200px);
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .collections-page__title {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .collections-page__empty {
+    padding-block: 4rem;
+    text-align: center;
+    color: var(--color-foreground-secondary, #666);
+  }
+
   .collections {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--collection-card-size), 100%), 1fr));
     gap: var(--grid-gap);
   }
+
   .collections--compact {
     --collection-card-size: 160px;
   }
+
   .collections--full {
     --collection-card-size: 280px;
   }
+
   .collection-card {
     display: flex;
     flex-direction: column;
     width: 100%;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .collection-card:hover,
+  .collection-card:focus-visible {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .collection-card:focus-visible {
+    outline: 2px solid var(--color-focus, #4a90e2);
+    outline-offset: 2px;
+  }
+
+  .collection-card__media {
+    aspect-ratio: 1 / 1;
+    background: var(--color-background-secondary, #f4f4f4);
+    overflow: hidden;
+  }
+
+  .collection-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .collection-card:hover .collection-card__image {
+    transform: scale(1.04);
+  }
+
+  .collection-card__content {
+    padding-block: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .collection-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .collection-card__count {
+    font-size: 0.8rem;
+    color: var(--color-foreground-secondary, #888);
+  }
+
+  .collection-card__description {
+    font-size: 0.85rem;
+    color: var(--color-foreground-secondary, #666);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 {% endstylesheet %}
 
@@ -75,7 +179,7 @@
       "max": 50,
       "step": 5,
       "unit": "px",
-      "default": 10
+      "default": 20
     }
   ],
   "presets": [{ "name": "t:general.collections_grid" }]

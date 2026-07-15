@@ -1,0 +1,30 @@
+{% comment %}
+  Renders Shopify's hosted account avatar/menu component.
+
+  - For shops on (new) Customer Accounts: clicking the avatar opens an
+    in-page sign-in sheet (passwordless, Shop, Google, Facebook) without
+    leaving the storefront.
+  - For shops still on legacy customer accounts: the avatar links straight
+    to /account/login (the classic theme-rendered login page).
+
+  This is now the required pattern for Theme Store submission, replacing
+  hand-built customers/login.liquid style pages.
+
+  Usage: {% render 'account-menu' %}
+  https://shopify.dev/docs/storefronts/themes/customer-engagement/account-component
+  https://shopify.dev/docs/api/storefront-web-components/components/shopify-account
+{% endcomment %}
+
+{% if shop.customer_accounts_enabled %}
+  <shopify-account
+    menu="{{ section.settings.customer_account_menu | default: 'customer-account-main-menu' }}"
+    class="header__account"
+  >
+    <div slot="signed-out-avatar" class="header__account-icon-wrapper" aria-hidden="true">
+      <svg class="header__account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+      </svg>
+    </div>
+  </shopify-account>
+{% endif %}
