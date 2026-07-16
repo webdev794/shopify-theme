@@ -40,8 +40,7 @@
     "sidebar": "Sidebar",
     "text": "Text",
     "theme": "Theme",
-    "typography": "Typography",
-    "customer_login": "Customer login"
+    "typography": "Typography"
   },
   "labels": {
     "alignment": "Alignment",

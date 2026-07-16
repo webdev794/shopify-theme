@@ -410,6 +410,54 @@ body.header-mobile-menu-open {
   height: 22px;
 }
 
+/* ---- Account (shopify-account web component) ----
+   Shopify controls the signed-in avatar and account sheet internally;
+   only the documented CSS variables and ::part(signed-out-avatar) are
+   stylable. See:
+   https://shopify.dev/docs/api/storefront-web-components/components/shopify-account */
+.header__account {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  --shopify-account-signed-in-avatar-size: 28px;
+  --shopify-account-signed-in-avatar-color-background: var(--header-foreground);
+  --shopify-account-signed-in-avatar-color-text: var(--header-background);
+}
+
+.header__account::part(signed-out-avatar) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 4px;
+  color: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.header__account::part(signed-out-avatar):hover,
+.header__account::part(signed-out-avatar):focus-visible {
+  background-color: color-mix(in srgb, var(--header-foreground) 8%, transparent);
+  color: var(--header-hover);
+}
+
+.header__account-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.header__account-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
 /* ---- Search ---- */
 .header__search {
   position: relative;

@@ -131,12 +131,141 @@
         "style": "default",
         "background_image": "shopify://shop_images/logo-search-grid-2x.png",
         "background_color": "#c12828",
-        "section_text_color": "#18E931",
+        "section_text_color": "#18e931",
         "show_note": true,
         "note_text": "No spam. Unsubscribe anytime.",
         "success_message": "Thanks for subscribing!",
         "show_social": true,
         "social_label": "Follow us:"
+      }
+    },
+    "lookbook_PJk88J": {
+      "type": "lookbook",
+      "blocks": {
+        "hotspot_twcLt8": {
+          "type": "hotspot",
+          "settings": {
+            "product": "gift-card",
+            "position_x": 49,
+            "position_y": 32
+          }
+        },
+        "hotspot_NBcJPe": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-collection-snowboard-liquid",
+            "position_x": 39,
+            "position_y": 46
+          }
+        },
+        "hotspot_yWeeXL": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-multi-location-snowboard",
+            "position_x": 34,
+            "position_y": 62
+          }
+        },
+        "hotspot_3CKWg9": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-collection-snowboard-hydrogen",
+            "position_x": 24,
+            "position_y": 57
+          }
+        },
+        "hotspot_VffRxc": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-out-of-stock-snowboard",
+            "position_x": 78,
+            "position_y": 72
+          }
+        },
+        "hotspot_zh6F97": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-complete-snowboard",
+            "position_x": 86,
+            "position_y": 38
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_twcLt8",
+        "hotspot_NBcJPe",
+        "hotspot_yWeeXL",
+        "hotspot_3CKWg9",
+        "hotspot_VffRxc",
+        "hotspot_zh6F97"
+      ],
+      "name": "Lookbook",
+      "settings": {
+        "heading": "Shop the look",
+        "heading_size": "medium",
+        "text": "<p>Tap the dots to shop every piece in this look.</p>",
+        "content_position": "top",
+        "image": "shopify://shop_images/pexels-mart-production-7679862.jpg",
+        "full_width": false,
+        "color_dot": "#ffffff",
+        "color_card_background": "#ffffff",
+        "color_card_foreground": "#121212"
+      }
+    },
+    "pairing_products_LgPxwH": {
+      "type": "pairing-products",
+      "blocks": {
+        "pairing_GFzRP3": {
+          "type": "pairing",
+          "settings": {
+            "product": "selling-plans-ski-wax"
+          }
+        },
+        "pairing_hqDiVQ": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-complete-snowboard"
+          }
+        },
+        "pairing_EU3ewq": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-videographer-snowboard"
+          }
+        },
+        "pairing_XDKL6a": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-multi-managed-snowboard"
+          }
+        },
+        "pairing_3pyEaJ": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-multi-location-snowboard"
+          }
+        }
+      },
+      "block_order": [
+        "pairing_GFzRP3",
+        "pairing_hqDiVQ",
+        "pairing_EU3ewq",
+        "pairing_XDKL6a",
+        "pairing_3pyEaJ"
+      ],
+      "name": "Pairing Products",
+      "settings": {
+        "heading": "Complete Your Look",
+        "subheading": "Perfect pairings for your style",
+        "main_product": "the-collection-snowboard-liquid",
+        "pairings_label": "Pairs Perfectly With",
+        "bundle_label": "Complete the Set",
+        "bundle_price_label": "Bundle Price",
+        "add_bundle_text": "Add Bundle to Cart",
+        "view_product_text": "View Product",
+        "show_rating": true,
+        "show_plus_icon": true,
+        "aria_label": "Product pairings and bundle"
       }
     }
   },
@@ -147,6 +276,8 @@
     "media_text",
     "burst_effects_wnGTic",
     "blog_posts_TUtF9Y",
-    "newsletter_MjRpd3"
+    "newsletter_MjRpd3",
+    "lookbook_PJk88J",
+    "pairing_products_LgPxwH"
   ]
 }

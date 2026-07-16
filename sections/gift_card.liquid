@@ -1,0 +1,96 @@
+{% comment %}
+  Renders a customer's gift card: balance, code, expiry state, a QR code
+  linking back to the store, and an Apple Wallet button when available.
+
+  This template can't be a JSON template — Shopify requires gift_card to
+  stay Liquid. Rendered through layout/gift_card.liquid (no header/footer).
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/gift-card-liquid
+  https://shopify.dev/docs/api/liquid/objects/gift_card
+{% endcomment %}
+
+<div class="gift-card">
+  <div class="gift-card__card{% if gift_card.expired or gift_card.enabled == false %} gift-card__card--disabled{% endif %}">
+    <p class="gift-card__shop-name">{{ shop.name }}</p>
+    <p class="gift-card__label">{{ 'gift_card.card' | t }}</p>
+
+    <p class="gift-card__balance">{{ gift_card.balance | money }}</p>
+
+    {% if gift_card.enabled == false %}
+      <p class="gift-card__status">{{ 'gift_card.disabled' | t }}</p>
+    {% elsif gift_card.expired %}
+      <p class="gift-card__status">{{ 'gift_card.expired' | t }}</p>
+    {% elsif gift_card.expires_on %}
+      <p class="gift-card__status">
+        {{ 'gift_card.expires_on' | t: expires_on: gift_card.expires_on }}
+      </p>
+    {% endif %}
+
+    <div class="gift-card__code-wrapper">
+      <code class="gift-card__code" id="gift-card-code">{{ gift_card.code }}</code>
+      <button
+        type="button"
+        class="gift-card__copy-button"
+        data-copy-code
+        data-code="{{ gift_card.code }}"
+        aria-label="{{ 'gift_card.copy_code' | t }}"
+      >
+        {{ 'gift_card.copy_code' | t }}
+      </button>
+    </div>
+
+    {% unless gift_card.expired or gift_card.enabled == false %}
+      <a href="{{ shop.url }}" class="button button--primary gift-card__redeem-button">
+        {{ 'gift_card.use_at_checkout' | t }}
+      </a>
+    {% endunless %}
+  </div>
+
+  <div class="gift-card__details">
+    {% if gift_card.pass_url %}
+      <a href="{{ gift_card.pass_url }}" class="gift-card__apple-wallet">
+        <img
+          id="apple-wallet-badge"
+          src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+          width="120"
+          height="40"
+          alt="{{ 'gift_card.add_to_apple_wallet' | t }}"
+        >
+      </a>
+    {% endif %}
+
+    {% comment %} QR code links back to the store; swap shop.url for gift_card.url if you'd rather it open checkout.shopify.com directly. {% endcomment %}
+    <div id="qr-code" class="gift-card__qr"></div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        new QRCode(document.getElementById('qr-code'), {
+          text: '{{ shop.url }}',
+          width: 120,
+          height: 120
+        });
+      });
+    </script>
+
+    <button type="button" class="gift-card__print-button" onclick="window.print()">
+      {{ 'gift_card.print' | t }}
+    </button>
+  </div>
+</div>
+
+{% comment %}
+  Styling lives in assets/gift-card.css, linked from layout/gift_card.liquid.
+  Scoped {% stylesheet %}/{% javascript %} tags only work inside sections,
+  not plain templates like this one, so a real asset + inline script are
+  used here instead.
+{% endcomment %}
+<script>
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-copy-code]');
+    if (!button) return;
+
+    navigator.clipboard.writeText(button.dataset.code).then(() => {
+      button.classList.add('is-copied');
+      setTimeout(() => button.classList.remove('is-copied'), 1500);
+    });
+  });
+</script>
+

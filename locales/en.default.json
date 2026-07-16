@@ -53,36 +53,22 @@
     "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout",
     "recalculated_note": "Totals update instantly as an estimate. Discounts that depend on quantity (like tiered offers) are recalculated exactly when you click \"Update cart.\""
   },
-  "customers": {
-    "login": {
-      "title": "Sign in",
-      "email": "Email",
-      "password": "Password",
-      "submit": "Sign in",
-      "forgot_password": "Forgot your password?",
-      "new_customer": "New here?",
-      "create_account": "Create account",
-      "guest_continue": "Continue as guest"
-    },
-    "recover_password": {
-      "title": "Reset your password",
-      "subtext": "We'll email you a link to reset your password.",
-      "submit": "Send reset link",
-      "success": "We've sent you an email with a link to reset your password.",
-      "back_to_login": "Back to sign in"
-    }
-  },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
     "card": "Gift card",
     "expired": "This gift card has expired",
     "expires_on": "Expires on {{ expires_on }}",
-    "use_at_checkout": "Use this gift card at checkout"
+    "use_at_checkout": "Use this gift card at checkout",
+    "disabled": "This gift card has been disabled",
+    "copy_code": "Copy code",
+    "print": "Print"
   },
   "password": {
     "title": "This shop is private",
     "password": "Password",
-    "enter": "Enter"
+    "enter": "Enter",
+    "error": "Wrong password. Please try again.",
+    "admin_login": "Are you the store owner? Log in here"
   },
   "search": {
     "title": "Search",
@@ -101,7 +87,8 @@
     "result_type": {
       "article": "Article",
       "page": "Page"
-    }
+    },
+    "no_results": "No results found"
   },
   "sections": {
     "header": {

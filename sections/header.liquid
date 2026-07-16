@@ -14,7 +14,7 @@
 -%}
 
 {{ 'header.css' | asset_url | stylesheet_tag }}
-{{ 'header.js' | asset_url | script_tag }}
+<script src="{{ 'header.js' | asset_url }}" defer></script>
 
 <header
   class="header{% if section.settings.enable_sticky_header %} header--sticky{% endif %}"
@@ -409,13 +409,14 @@
 
       <!-- Account -->
       {%- if section.settings.show_account_link and shop.customer_accounts_enabled -%}
-        <a
-          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-          class="header__icon-button"
-          aria-label="{% if customer %}{{ 'sections.header.account' | t }}{% else %}{{ 'sections.header.log_in' | t }}{% endif %}"
+        <shopify-account
+          menu="{{ section.settings.customer_account_menu | default: 'customer-account-main-menu' }}"
+          class="header__account"
         >
-          {% render 'icon-account' %}
-        </a>
+          <div slot="signed-out-avatar" class="header__account-icon-wrapper" aria-hidden="true">
+            {% render 'icon-account' %}
+          </div>
+        </shopify-account>
       {%- endif -%}
 
       <!-- Cart -->
@@ -571,6 +572,13 @@
       "label": "Show account link",
       "info": "Shown when customer accounts are turned on in your Shopify admin.",
       "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "customer_account_menu",
+      "label": "t:labels.customer_account_menu",
+      "info": "Keep this set to \"customer-account-main-menu\" to stay in sync with the links shown on customer account pages.",
+      "default": "customer-account-main-menu"
     },
     {
       "type": "checkbox",
