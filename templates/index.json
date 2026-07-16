@@ -9,40 +9,25 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {
-        "height": "medium",
-        "full_width": true,
-        "content_position": "middle-center",
-        "content_alignment": "center",
-        "content_max_width": 650,
-        "stack_on_mobile": false,
-        "color_overlay": "#000000",
-        "overlay_opacity": 25,
-        "color_foreground": "#ffffff",
-        "show_content_box": false,
-        "color_box_background": "#00000080"
-      }
-    },
     "hero_carousel_Qwwm6M": {
       "type": "hero-carousel",
       "blocks": {
         "slide_q7YQn7": {
           "type": "slide",
           "settings": {
-            "is_vip_slide": true,
+            "is_vip_slide": false,
             "schedule_start": "",
             "schedule_end": "",
-            "image": "shopify://shop_images/pexels-mart-production-8217483.jpg",
+            "image": "shopify://shop_images/pexels-phamthe-28587831.jpg",
+            "image_mobile": "shopify://shop_images/pexels-phamthe-28587831.jpg",
             "overlay_opacity": 25,
             "caption": "",
-            "heading": "Tell your story",
-            "text": "",
+            "heading": "Craft Your Vision",
+            "text": "<p>Crafted for those who understand the art of beauty.</p>",
             "content_position": "middle-center",
             "content_alignment": "center",
-            "button_label_1": "Shop now",
-            "button_link_1": "",
+            "button_label_1": "View products",
+            "button_link_1": "shopify://collections/all",
             "button_style_1": "primary",
             "button_label_2": "",
             "button_link_2": "",
@@ -55,18 +40,18 @@
             "is_vip_slide": false,
             "schedule_start": "",
             "schedule_end": "",
-            "image": "shopify://shop_images/pexels-giulianogiudici-16678677_51879a56-3c34-429e-bc1d-203b99ae6597.jpg",
-            "image_mobile": "shopify://shop_images/pexels-abdullah-raafat-458116292-16646995.jpg",
+            "image": "shopify://shop_images/pexels-photo-36839425.jpg",
+            "image_mobile": "shopify://shop_images/pexels-photo-36839425.jpg",
             "overlay_opacity": 25,
-            "caption": "caption",
-            "heading": "Tell your story",
-            "text": "<p>text</p>",
+            "caption": "Where Trends Begin",
+            "heading": "Welcome to Suvara Beauty",
+            "text": "<p>Discover premium skincare and cosmetics crafted for your most radiant self. Explore our curated collection of luxurious formulations designed to elevate your daily ritual.</p>",
             "content_position": "middle-center",
             "content_alignment": "center",
             "button_label_1": "Shop now",
             "button_link_1": "shopify://collections/all",
             "button_style_1": "primary",
-            "button_label_2": "second",
+            "button_label_2": "",
             "button_link_2": "shopify://pages/about-us",
             "button_style_2": "secondary"
           }
@@ -77,6 +62,7 @@
             "is_vip_slide": false,
             "schedule_start": "",
             "schedule_end": "",
+            "image": "shopify://shop_images/pexels-photo-14870726_1.jpg",
             "overlay_opacity": 25,
             "caption": "",
             "heading": "Show your craft",
@@ -99,16 +85,16 @@
       ],
       "name": "Hero carousel",
       "settings": {
-        "carousel_label": "cc",
+        "carousel_label": "",
         "height": "small",
         "heading_size": "medium",
         "vip_tags": "vip,premium,wholesale",
         "show_arrows": true,
         "show_dots": false,
-        "autoplay": true,
-        "autoplay_speed": 3,
-        "color_foreground": "#18e931",
-        "color_overlay": "#18e931"
+        "autoplay": false,
+        "autoplay_speed": 5,
+        "color_foreground": "#FF5656",
+        "color_overlay": "#3036DE"
       }
     },
     "trending": {
@@ -355,8 +341,7 @@
       }
     }
   },
-  "order": [ 
-    "hero",
+  "order": [
     "hero_carousel_Qwwm6M",
     "trending",
     "collections_tabs",
