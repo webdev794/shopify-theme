@@ -27,21 +27,40 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli @shopify/theme
 
-      - name: Push theme and capture preview URL
-        id: push
-        run: |
-          OUTPUT=$(shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com --allow-live --force --json)
-          echo "$OUTPUT"
-          URL=$(echo "$OUTPUT" | node -pe "JSON.parse(require('fs').readFileSync(0)).theme.preview_url")
-          echo "url=$URL" >> "$GITHUB_OUTPUT"
+      - name: Push theme
+        run: shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com --allow-live --force
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_THEME_TOKEN }}
+
+      - name: Authenticate with storefront password
+        id: auth
+        run: |
+          curl -c cookies.txt -s -o /dev/null -X POST "https://suvara-beauty.myshopify.com/password" \
+            --data-urlencode "form_type=storefront_password" \
+            --data-urlencode "utf8=✓" \
+            --data-urlencode "password=${{ secrets.STORE_PASSWORD }}"
+          COOKIE=$(awk -F'\t' '/storefront_digest/{print $6"="$7}' cookies.txt)
+          echo "cookie=$COOKIE" >> "$GITHUB_OUTPUT"
+
+      - name: Write Lighthouse config with auth cookie
+        run: |
+          cat > lighthouserc.json << EOF
+          {
+            "ci": {
+              "collect": {
+                "url": ["https://suvara-beauty.myshopify.com/"],
+                "settings": {
+                  "extraHeaders": "{\"Cookie\": \"${{ steps.auth.outputs.cookie }}\"}"
+                }
+              }
+            }
+          }
+          EOF
 
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v11
         with:
-          urls: |
-            ${{ steps.push.outputs.url }}
+          configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
 
