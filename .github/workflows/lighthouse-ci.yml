@@ -1,5 +1,4 @@
 name: Shopify Lighthouse CI
-
 on: [push, pull_request]
 
 jobs:
@@ -9,9 +8,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Lighthouse CI
-        uses: shopify/lighthouse-ci-action@v1
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          client_id: ${{ secrets.SHOP_CLIENT_ID }}
-          client_secret: ${{ secrets.SHOP_CLIENT_SECRET }}
-          store: ${{ secrets.SHOP_STORE }}
+          node-version: 20
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
+
+      - name: Push theme to existing CI theme
+        run: shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOP_CLIENT_SECRET }}
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            https://suvara-beauty.myshopify.com/?preview_theme_id=156530344114
+          uploadArtifacts: true
+          temporaryPublicStorage: true
