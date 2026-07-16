@@ -1,12 +1,9 @@
 {%- comment -%}
   Lookbook / Shoppable Image
   - Lifestyle image with product hotspots placed via per-block X/Y sliders
-  - Each hotspot opens a product card popover (image, title, price, link)
-  - Popovers are <details> elements: fully keyboard operable, work without JS
-  - Popovers open away from the nearest image edge, computed in Liquid
-  - Onboarding-friendly: placeholder image, demo hotspots and demo product
-    cards render when nothing is configured yet
-  - LCP-aware: eager image with fetchpriority="high" when first on the page
+  - Each hotspot opens a product card with variant picker and add-to-cart
+  - "Shop the Whole Look" button adds all selected variants in one batch call
+  - Progressive enhancement: individual adds work without JavaScript
 {%- endcomment -%}
 
 {%- liquid
@@ -100,51 +97,153 @@
         </summary>
 
         <div class="lookbook__card">
-          {%- if product != blank -%}
-            <a href="{{ product.url }}" class="lookbook__card-link">
-              {%- if product.featured_image != blank -%}
-                {{
-                  product.featured_image
-                  | image_url: width: 240
-                  | image_tag:
-                    class: 'lookbook__card-image',
-                    widths: '120, 240',
-                    sizes: '80px',
-                    loading: 'lazy',
-                    alt: product.featured_image.alt
-                }}
-              {%- else -%}
-                {{ 'product-1' | placeholder_svg_tag: 'lookbook__card-image lookbook__card-image--placeholder' }}
+          <div class="lookbook__card-content" data-product-container>
+            {%- if product != blank -%}
+              {%- assign product_has_variants = false -%}
+              {%- if product.variants.size > 1 -%}
+                {%- assign product_has_variants = true -%}
               {%- endif -%}
-              <span class="lookbook__card-details">
-                <span class="lookbook__card-title">{{ product.title | escape }}</span>
-                <span class="lookbook__card-price">
-                  {%- if product.compare_at_price > product.price -%}
-                    <s class="lookbook__card-price-compare">{{ product.compare_at_price | money }}</s>
-                    <span class="lookbook__card-price-sale">{{ product.price | money }}</span>
-                    <span class="lookbook__visually-hidden">{{ 'sections.lookbook.on_sale' | t }}</span>
-                  {%- elsif product.price_varies -%}
-                    {%- assign min_price = product.price_min | money -%}
-                    {{ 'sections.lookbook.from_price' | t: price: min_price }}
+              
+              <!-- Product Image & Title -->
+              <div class="lookbook__card-header">
+                <div class="lookbook__card-image-wrapper">
+                  {%- if product.featured_image != blank -%}
+                    {{
+                      product.featured_image
+                      | image_url: width: 240
+                      | image_tag:
+                        class: 'lookbook__card-image',
+                        widths: '120, 240',
+                        sizes: '80px',
+                        loading: 'lazy',
+                        alt: product.featured_image.alt
+                    }}
                   {%- else -%}
-                    {{ product.price | money }}
+                    {{ 'product-1' | placeholder_svg_tag: 'lookbook__card-image lookbook__card-image--placeholder' }}
                   {%- endif -%}
-                </span>
-              </span>
-            </a>
-          {%- else -%}
-            <!-- Onboarding: shown until the merchant selects a product -->
-            <div class="lookbook__card-link">
-              {{ 'product-2' | placeholder_svg_tag: 'lookbook__card-image lookbook__card-image--placeholder' }}
-              <span class="lookbook__card-details">
-                <span class="lookbook__card-title">{{ 'sections.lookbook.example_product' | t }}</span>
-                <span class="lookbook__card-price">{{ 1999 | money }}</span>
-              </span>
-            </div>
-          {%- endif -%}
+                </div>
+                <div class="lookbook__card-details">
+                  <a href="{{ product.url }}" class="lookbook__card-title-link">
+                    <span class="lookbook__card-title">{{ product.title | escape }}</span>
+                  </a>
+                  <span class="lookbook__card-price" data-price-display>
+                    {%- if product.compare_at_price > product.price -%}
+                      <s class="lookbook__card-price-compare">{{ product.compare_at_price | money }}</s>
+                      <span class="lookbook__card-price-sale">{{ product.price | money }}</span>
+                      <span class="lookbook__visually-hidden">{{ 'sections.lookbook.on_sale' | t }}</span>
+                    {%- elsif product.price_varies -%}
+                      {%- assign min_price = product.price_min | money -%}
+                      {{ 'sections.lookbook.from_price' | t: price: min_price }}
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Variant Picker -->
+              {%- if product_has_variants -%}
+                <div class="lookbook__variant-selector">
+                  <label for="variant-{{ block.id }}" class="lookbook__variant-label">
+                    {{ 'sections.lookbook.select_size' | t }}
+                  </label>
+                  <select 
+                    id="variant-{{ block.id }}" 
+                    class="lookbook__variant-select" 
+                    data-variant-select
+                    aria-label="{{ 'sections.lookbook.select_size' | t }}"
+                  >
+                    <option value="">{{ 'sections.lookbook.choose_option' | t }}</option>
+                    {%- for variant in product.variants -%}
+                      <option 
+                        value="{{ variant.id }}" 
+                        data-price="{{ variant.price | money }}"
+                        {%- if variant.available == false %} disabled{% endif -%}
+                      >
+                        {{ variant.title }}
+                        {%- if variant.available == false -%}
+                          ({{ 'sections.lookbook.sold_out' | t }})
+                        {%- endif -%}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                  <div class="lookbook__requires-variant" data-requires-variant style="display: none;">
+                    {{ 'sections.lookbook.please_select_variant' | t }}
+                  </div>
+                </div>
+              {%- endif -%}
+
+              <!-- Add to Cart -->
+              <form 
+                class="lookbook__add-form" 
+                action="{{ routes.cart_add_url }}" 
+                method="post" 
+                enctype="multipart/form-data"
+                data-add-individual
+              >
+                <input 
+                  type="hidden" 
+                  name="id" 
+                  value="{%- if product_has_variants -%}{% else %}{{ product.variants.first.id }}{% endif -%}"
+                  data-variant-input
+                >
+                <input type="hidden" name="quantity" value="1">
+                
+                <button 
+                  type="submit" 
+                  class="lookbook__add-btn lookbook__add-btn--individual"
+                  data-add-to-cart
+                  data-variant-id="{%- if product_has_variants -%}{% else %}{{ product.variants.first.id }}{% endif -%}"
+                  data-quantity="1"
+                  {%- if product_has_variants %} disabled{% endif -%}
+                >
+                  {%- if product_has_variants -%}
+                    {{ 'sections.lookbook.select_size_first' | t }}
+                  {%- else -%}
+                    {{ 'sections.lookbook.add_to_cart' | t }}
+                  {%- endif -%}
+                </button>
+              </form>
+
+              <!-- Link to Product Page -->
+              <a href="{{ product.url }}" class="lookbook__product-link">
+                {{ 'sections.lookbook.view_product' | t }}
+                <span aria-hidden="true">→</span>
+              </a>
+
+            {%- else -%}
+              <!-- Onboarding: shown until the merchant selects a product -->
+              <div class="lookbook__card-header">
+                <div class="lookbook__card-image-wrapper">
+                  {{ 'product-2' | placeholder_svg_tag: 'lookbook__card-image lookbook__card-image--placeholder' }}
+                </div>
+                <div class="lookbook__card-details">
+                  <span class="lookbook__card-title">{{ 'sections.lookbook.example_product' | t }}</span>
+                  <span class="lookbook__card-price">{{ 1999 | money }}</span>
+                </div>
+              </div>
+              <div class="lookbook__variant-selector">
+                <p class="lookbook__onboarding-hint">
+                  {{ 'sections.lookbook.select_product_hint' | t }}
+                </p>
+              </div>
+            {%- endif -%}
+          </div>
         </div>
       </details>
     {%- endfor -%}
+
+    <!-- "Shop the Whole Look" Button -->
+    <div class="lookbook__actions">
+      <button 
+        class="lookbook__whole-look-btn" 
+        data-whole-look-btn
+        aria-label="{{ 'sections.lookbook.shop_whole_look_aria' | t }}"
+      >
+        <span class="lookbook__whole-look-icon">🛒</span>
+        {{ 'sections.lookbook.shop_whole_look' | t }}
+      </button>
+    </div>
   </div>
 </div>
 

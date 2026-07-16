@@ -2,8 +2,9 @@
   Hero Carousel / Slideshow
   - Full-bleed slides as blocks: image (with optional mobile image),
     eyebrow caption, heading, text, and up to two buttons
-  - Per-slide content position (9 spots) and alignment, because every
-    photo has its negative space in a different place
+  - Per-slide content position (9 spots) and alignment
+  - PER-SLIDE SCHEDULING: Set start/end datetime for each slide
+  - VIP ORDERING: Reorder slides based on customer.tags
   - CSS scroll-snap slider: swipe works natively, JS adds arrows, dots,
     wrap-around, and optional autoplay
   - Accessible carousel pattern: region + slide roles, translated labels,
@@ -18,6 +19,95 @@
   if carousel_label == blank
     assign carousel_label = 'sections.hero_carousel.carousel_label' | t
   endif
+
+  # ===== SCHEDULING & VIP ORDERING =====
+  # Get current time for scheduling
+  assign now = 'now' | date: '%s'
+
+  # ===== CHECK VIP STATUS =====
+  assign is_vip = false
+  if customer
+    # Get customer tags as array
+    assign customer_tags = customer.tags | split: ','
+    assign vip_tags = section.settings.vip_tags | split: ','
+    
+    # Convert to lowercase for comparison
+    assign customer_tags_lower = ''
+    for tag in customer_tags
+      assign customer_tags_lower = customer_tags_lower | append: tag | downcase | strip | append: ','
+    endfor
+    
+    for vip_tag in vip_tags
+      assign vip_tag_clean = vip_tag | strip | downcase
+      if vip_tag_clean != blank and customer_tags_lower contains vip_tag_clean
+        assign is_vip = true
+        break
+      endif
+    endfor
+  endif
+
+  # ===== BUILD SLIDE ORDER BASED ON VIP STATUS =====
+  # Instead of using block IDs, we'll use the block index position
+  assign vip_slides = ''
+  assign regular_slides = ''
+  assign visible_slides = ''
+  
+  # First pass: collect all visible slides and categorize them by position
+  for block in section.blocks
+    assign show_slide = true
+    assign block_index = forloop.index0
+    
+    # Check scheduling
+    if block.settings.schedule_start != blank
+      assign start_time = block.settings.schedule_start | date: '%s'
+      if start_time > now
+        assign show_slide = false
+      endif
+    endif
+    if block.settings.schedule_end != blank and show_slide
+      assign end_time = block.settings.schedule_end | date: '%s'
+      if end_time < now
+        assign show_slide = false
+      endif
+    endif
+    
+    # Categorize visible slides by their position index
+    if show_slide
+      if block.settings.is_vip_slide
+        assign vip_slides = vip_slides | append: block_index | append: '|'
+      else
+        assign regular_slides = regular_slides | append: block_index | append: '|'
+      endif
+    endif
+  endfor
+
+  # ===== DETERMINE FINAL ORDER =====
+  # If VIP customer: VIP slides first, then regular slides
+  # If non-VIP: regular slides only (or all slides if no VIP slides exist)
+  if is_vip
+    # VIP customer: show VIP slides first, then regular slides
+    assign visible_slides = vip_slides | append: regular_slides
+  else
+    # Non-VIP customer: show regular slides only (skip VIP slides)
+    assign visible_slides = regular_slides
+  endif
+  
+  # Clean up: remove empty strings and create array
+  assign ordered_indices = visible_slides | split: '|'
+  assign cleaned_indices = ''
+  for index in ordered_indices
+    if index != blank
+      assign cleaned_indices = cleaned_indices | append: index | append: '|'
+    endif
+  endfor
+  assign ordered_indices = cleaned_indices | split: '|'
+  assign visible_count = ordered_indices | size
+  
+  assign has_multiple_slides = false
+  if visible_count > 1
+    assign has_multiple_slides = true
+  endif
+
 -%}
 
 {{ 'hero-carousel.css' | asset_url | stylesheet_tag }}
@@ -38,111 +128,151 @@
     data-autoplay-speed="{{ section.settings.autoplay_speed }}"
   {% endif %}
 >
+
   <div class="hero-carousel__scroller" data-hc-scroller tabindex="0">
-    {%- for block in section.blocks -%}
-      {%- liquid
-        assign image = block.settings.image
-        assign mobile_image = block.settings.image_mobile
+    {%- if visible_count > 0 -%}
+      {%- for slide_index in ordered_indices -%}
+        {%- assign block_index = slide_index | plus: 0 -%}
+        {%- assign block = section.blocks[block_index] -%}
+        
+        {%- if block != blank -%}
+          {%- liquid
+            assign image = block.settings.image
+            assign mobile_image = block.settings.image_mobile
 
-        assign focal_style = nil
-        if image.presentation.focal_point
-          assign focal_style = 'object-position: ' | append: image.presentation.focal_point
-        endif
+            assign focal_style = nil
+            if image.presentation.focal_point
+              assign focal_style = 'object-position: ' | append: image.presentation.focal_point
+            endif
 
-        if section.index == 1 and forloop.first
-          assign loading = 'eager'
-          assign fetchpriority = 'high'
-        else
-          assign loading = 'lazy'
-          assign fetchpriority = 'auto'
-        endif
-      -%}
+            if section.index == 1 and forloop.first
+              assign loading = 'eager'
+              assign fetchpriority = 'high'
+            else
+              assign loading = 'lazy'
+              assign fetchpriority = 'auto'
+            endif
+          -%}
 
-      <div
-        class="hero-carousel__slide"
-        role="group"
-        aria-roledescription="slide"
-        aria-label="{{ 'sections.hero_carousel.slide_label' | t: index: forloop.index, count: forloop.length }}"
-        style="--hc-overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
-        {{ block.shopify_attributes }}
-        data-hc-slide
-      >
-        <div class="hero-carousel__media">
-          {%- if image != blank -%}
-            <picture>
-              {%- if mobile_image != blank -%}
-                <source
-                  media="(max-width: 749px)"
-                  srcset="
-                    {{ mobile_image | image_url: width: 375 }} 375w,
-                    {{ mobile_image | image_url: width: 750 }} 750w,
-                    {{ mobile_image | image_url: width: 1100 }} 1100w
-                  "
-                  sizes="100vw"
-                >
-              {%- endif -%}
-              {{
-                image
-                | image_url: width: 3840
-                | image_tag:
-                  class: 'hero-carousel__image',
-                  widths: '750, 1100, 1500, 1780, 2000, 3000, 3840',
-                  sizes: '100vw',
-                  loading: loading,
-                  fetchpriority: fetchpriority,
-                  alt: image.alt,
-                  style: focal_style
-              }}
-            </picture>
-          {%- else -%}
-            {%- assign placeholder_index = forloop.index0 | modulo: 2 | plus: 1 -%}
-            {{ 'lifestyle-' | append: placeholder_index | placeholder_svg_tag: 'hero-carousel__placeholder' }}
-          {%- endif -%}
-
-          <div class="hero-carousel__overlay" aria-hidden="true"></div>
-        </div>
-
-        <div class="hero-carousel__content-wrapper hero-carousel__content-wrapper--{{ block.settings.content_position }}">
-          <div class="hero-carousel__content hero-carousel__content--align-{{ block.settings.content_alignment }}">
-            {%- if block.settings.caption != blank -%}
-              <p class="hero-carousel__caption">{{ block.settings.caption | escape }}</p>
-            {%- endif -%}
-            {%- if block.settings.heading != blank -%}
-              <h2 class="hero-carousel__heading hero-carousel__heading--{{ section.settings.heading_size }}">
-                {{ block.settings.heading }}
-              </h2>
-            {%- endif -%}
-            {%- if block.settings.text != blank -%}
-              <div class="hero-carousel__text">{{ block.settings.text }}</div>
-            {%- endif -%}
-
-            {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
-              <div class="hero-carousel__buttons">
-                {%- if block.settings.button_label_1 != blank -%}
-                  <a
-                    {% if block.settings.button_link_1 != blank %}href="{{ block.settings.button_link_1 }}"{% else %}role="link" aria-disabled="true"{% endif %}
-                    class="hero-carousel__button button {% if block.settings.button_style_1 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
-                  >
-                    {{ block.settings.button_label_1 | escape }}
-                  </a>
+          <div
+            class="hero-carousel__slide{% if block.settings.is_vip_slide %} hero-carousel__slide--vip{% endif %}"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="{{ 'sections.hero_carousel.slide_label' | t: index: forloop.index, count: visible_count }}"
+            style="--hc-overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+            {{ block.shopify_attributes }}
+            data-hc-slide
+            data-slide-index="{{ block_index }}"
+            {% if block.settings.is_vip_slide %}data-vip-slide{% endif %}
+            {% if block.settings.schedule_start != blank %}data-schedule-start="{{ block.settings.schedule_start }}"{% endif %}
+            {% if block.settings.schedule_end != blank %}data-schedule-end="{{ block.settings.schedule_end }}"{% endif %}
+          >
+            <!-- Schedule indicator for merchants -->
+            {%- if block.settings.schedule_start != blank or block.settings.schedule_end != blank -%}
+              <div class="hero-carousel__schedule-badge" aria-hidden="true">
+                {%- if block.settings.schedule_start != blank -%}
+                  <span class="hero-carousel__schedule-start">Starts: {{ block.settings.schedule_start | date: '%b %d, %Y' }}</span>
                 {%- endif -%}
-                {%- if block.settings.button_label_2 != blank -%}
-                  <a
-                    {% if block.settings.button_link_2 != blank %}href="{{ block.settings.button_link_2 }}"{% else %}role="link" aria-disabled="true"{% endif %}
-                    class="hero-carousel__button button {% if block.settings.button_style_2 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
-                  >
-                    {{ block.settings.button_label_2 | escape }}
-                  </a>
+                {%- if block.settings.schedule_end != blank -%}
+                  <span class="hero-carousel__schedule-end">Ends: {{ block.settings.schedule_end | date: '%b %d, %Y' }}</span>
                 {%- endif -%}
               </div>
             {%- endif -%}
+
+            {%- if block.settings.is_vip_slide -%}
+              <div class="hero-carousel__vip-badge" aria-hidden="true">VIP</div>
+            {%- endif -%}
+
+            <div class="hero-carousel__media">
+              {%- if image != blank -%}
+                <picture>
+                  {%- if mobile_image != blank -%}
+                    <source
+                      media="(max-width: 749px)"
+                      srcset="
+                        {{ mobile_image | image_url: width: 375 }} 375w,
+                        {{ mobile_image | image_url: width: 750 }} 750w,
+                        {{ mobile_image | image_url: width: 1100 }} 1100w
+                      "
+                      sizes="100vw"
+                    >
+                  {%- endif -%}
+                  {{
+                    image
+                    | image_url: width: 3840
+                    | image_tag:
+                      class: 'hero-carousel__image',
+                      widths: '750, 1100, 1500, 1780, 2000, 3000, 3840',
+                      sizes: '100vw',
+                      loading: loading,
+                      fetchpriority: fetchpriority,
+                      alt: image.alt,
+                      style: focal_style
+                  }}
+                </picture>
+              {%- else -%}
+                {%- assign placeholder_index = forloop.index0 | modulo: 2 | plus: 1 -%}
+                {{ 'lifestyle-' | append: placeholder_index | placeholder_svg_tag: 'hero-carousel__placeholder' }}
+              {%- endif -%}
+
+              <div class="hero-carousel__overlay" aria-hidden="true"></div>
+            </div>
+
+            <div class="hero-carousel__content-wrapper hero-carousel__content-wrapper--{{ block.settings.content_position }}">
+              <div class="hero-carousel__content hero-carousel__content--align-{{ block.settings.content_alignment }}">
+                {%- if block.settings.caption != blank -%}
+                  <p class="hero-carousel__caption">{{ block.settings.caption | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.heading != blank -%}
+                  <h2 class="hero-carousel__heading hero-carousel__heading--{{ section.settings.heading_size }}">
+                    {{ block.settings.heading }}
+                  </h2>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="hero-carousel__text">{{ block.settings.text }}</div>
+                {%- endif -%}
+
+                {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
+                  <div class="hero-carousel__buttons">
+                    {%- if block.settings.button_label_1 != blank -%}
+                      <a
+                        {% if block.settings.button_link_1 != blank %}href="{{ block.settings.button_link_1 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                        class="hero-carousel__button button {% if block.settings.button_style_1 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
+                      >
+                        {{ block.settings.button_label_1 | escape }}
+                      </a>
+                    {%- endif -%}
+                    {%- if block.settings.button_label_2 != blank -%}
+                      <a
+                        {% if block.settings.button_link_2 != blank %}href="{{ block.settings.button_link_2 }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                        class="hero-carousel__button button {% if block.settings.button_style_2 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
+                      >
+                        {{ block.settings.button_label_2 | escape }}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      <!-- No visible slides due to scheduling -->
+      <div class="hero-carousel__slide hero-carousel__slide--empty">
+        <div class="hero-carousel__media">
+          <div class="hero-carousel__placeholder" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #666;">
+            <p style="text-align: center; padding: 2rem;">
+              <strong>No slides are currently active</strong><br>
+              Check your slide scheduling settings.
+            </p>
           </div>
         </div>
       </div>
-    {%- endfor -%}
+    {%- endif -%}
   </div>
 
-  {%- if section.blocks.size > 1 -%}
+  {%- if has_multiple_slides -%}
     {%- if section.settings.show_arrows -%}
       <button
         type="button"
@@ -169,7 +299,7 @@
     <div class="hero-carousel__bar">
       {%- if section.settings.show_dots -%}
         <div class="hero-carousel__dots" data-hc-dots>
-          {%- for block in section.blocks -%}
+          {%- for index in ordered_indices -%}
             <button
               type="button"
               class="hero-carousel__dot"
@@ -241,6 +371,17 @@
     },
     {
       "type": "header",
+      "content": "VIP Ordering"
+    },
+    {
+      "type": "text",
+      "id": "vip_tags",
+      "label": "VIP customer tags",
+      "default": "vip,premium,wholesale",
+      "info": "Comma-separated list of customer tags that identify VIP customers. Slides marked as VIP will show first for these customers."
+    },
+    {
+      "type": "header",
       "content": "Navigation"
     },
     {
@@ -294,8 +435,37 @@
     {
       "type": "slide",
       "name": "Slide",
-      "limit": 6,
+      "limit": 12,
       "settings": [
+        {
+          "type": "header",
+          "content": "Scheduling & VIP"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_vip_slide",
+          "label": "VIP slide",
+          "default": false,
+          "info": "When enabled, this slide will appear first for customers with VIP tags."
+        },
+        {
+          "type": "text",
+          "id": "schedule_start",
+          "label": "Start date",
+          "info": "Format: YYYY-MM-DD. Leave blank for no start date.",
+          "placeholder": "2026-07-16"
+        },
+        {
+          "type": "text",
+          "id": "schedule_end",
+          "label": "End date",
+          "info": "Format: YYYY-MM-DD. Leave blank for no end date.",
+          "placeholder": "2026-08-16"
+        },
+        {
+          "type": "header",
+          "content": "Image"
+        },
         {
           "type": "image_picker",
           "id": "image",
@@ -318,6 +488,10 @@
           "unit": "%",
           "default": 25,
           "info": "Keep enough contrast between the text and the image behind it"
+        },
+        {
+          "type": "header",
+          "content": "Content"
         },
         {
           "type": "text",
@@ -362,6 +536,10 @@
             { "value": "right", "label": "Right" }
           ],
           "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Buttons"
         },
         {
           "type": "text",

@@ -25,6 +25,92 @@
         "color_box_background": "#00000080"
       }
     },
+    "hero_carousel_Qwwm6M": {
+      "type": "hero-carousel",
+      "blocks": {
+        "slide_q7YQn7": {
+          "type": "slide",
+          "settings": {
+            "is_vip_slide": true,
+            "schedule_start": "",
+            "schedule_end": "",
+            "image": "shopify://shop_images/pexels-mart-production-8217483.jpg",
+            "overlay_opacity": 25,
+            "caption": "",
+            "heading": "Tell your story",
+            "text": "",
+            "content_position": "middle-center",
+            "content_alignment": "center",
+            "button_label_1": "Shop now",
+            "button_link_1": "",
+            "button_style_1": "primary",
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_2": "secondary"
+          }
+        },
+        "slide_NKn9X3": {
+          "type": "slide",
+          "settings": {
+            "is_vip_slide": false,
+            "schedule_start": "",
+            "schedule_end": "",
+            "image": "shopify://shop_images/pexels-giulianogiudici-16678677_51879a56-3c34-429e-bc1d-203b99ae6597.jpg",
+            "image_mobile": "shopify://shop_images/pexels-abdullah-raafat-458116292-16646995.jpg",
+            "overlay_opacity": 25,
+            "caption": "caption",
+            "heading": "Tell your story",
+            "text": "<p>text</p>",
+            "content_position": "middle-center",
+            "content_alignment": "center",
+            "button_label_1": "Shop now",
+            "button_link_1": "shopify://collections/all",
+            "button_style_1": "primary",
+            "button_label_2": "second",
+            "button_link_2": "shopify://pages/about-us",
+            "button_style_2": "secondary"
+          }
+        },
+        "slide_BwmKJA": {
+          "type": "slide",
+          "settings": {
+            "is_vip_slide": false,
+            "schedule_start": "",
+            "schedule_end": "",
+            "overlay_opacity": 25,
+            "caption": "",
+            "heading": "Show your craft",
+            "text": "",
+            "content_position": "middle-left",
+            "content_alignment": "left",
+            "button_label_1": "Shop now",
+            "button_link_1": "",
+            "button_style_1": "primary",
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_2": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "slide_q7YQn7",
+        "slide_NKn9X3",
+        "slide_BwmKJA"
+      ],
+      "name": "Hero carousel",
+      "settings": {
+        "carousel_label": "cc",
+        "height": "small",
+        "heading_size": "medium",
+        "vip_tags": "vip,premium,wholesale",
+        "show_arrows": true,
+        "show_dots": false,
+        "autoplay": true,
+        "autoplay_speed": 3,
+        "color_foreground": "#18e931",
+        "color_overlay": "#18e931"
+      }
+    },
     "trending": {
       "type": "trending-products",
       "settings": {
@@ -271,6 +357,7 @@
   },
   "order": [
     "hero",
+    "hero_carousel_Qwwm6M",
     "trending",
     "collections_tabs",
     "media_text",

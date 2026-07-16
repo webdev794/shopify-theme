@@ -133,11 +133,21 @@
       "opens_new_tab": "(opens in a new tab)"
     },
     "lookbook": {
-      "view_product": "View product: {{ title }}",
+      "shop_whole_look": "Shop the Whole Look",
+      "shop_whole_look_aria": "Add all products in this look to cart",
+      "select_size": "Select size",
+      "choose_option": "Choose option",
+      "sold_out": "Sold out",
+      "please_select_variant": "Please select a size",
+      "add_to_cart": "Add to Cart",
+      "select_size_first": "Select size first",
+      "view_product": "View product",
       "view_product_fallback": "View product",
-      "example_product": "Example product",
+      "example_product": "Example Product",
+      "select_product_hint": "Select a product in theme editor",
+      "on_sale": "On sale",
       "from_price": "From {{ price }}",
-      "on_sale": "(on sale)"
+      "adding_to_cart": "Adding..."
     },
     "iwt_carousel": {
       "carousel_label": "Carousel",
