@@ -27,8 +27,13 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli @shopify/theme
 
-      - name: Push theme to existing CI theme
-        run: shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com --allow-live --force
+      - name: Push theme and capture preview URL
+        id: push
+        run: |
+          OUTPUT=$(shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com --allow-live --force --json)
+          echo "$OUTPUT"
+          URL=$(echo "$OUTPUT" | node -pe "JSON.parse(require('fs').readFileSync(0)).theme.preview_url")
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_THEME_TOKEN }}
 
@@ -36,7 +41,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v11
         with:
           urls: |
-            ${{ secrets.PREVIEW_URL }}
+            ${{ steps.push.outputs.url }}
           uploadArtifacts: true
           temporaryPublicStorage: true
 
