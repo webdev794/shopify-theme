@@ -17,7 +17,7 @@ jobs:
         run: npm install -g @shopify/cli @shopify/theme
 
       - name: Push theme to existing CI theme
-        run: shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com
+        run: shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com --allow-live --force
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_THEME_TOKEN }}
 
