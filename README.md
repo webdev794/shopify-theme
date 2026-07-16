@@ -167,7 +167,7 @@ Vertical carousel
  
 Trending products
  
-Text with icon
+Text with icon 
  
 Testimonals
  
