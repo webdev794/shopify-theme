@@ -32,20 +32,16 @@ jobs:
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_THEME_TOKEN }}
 
-      - name: Authenticate with storefront password (debug)
+      - name: Authenticate with storefront password
         id: auth
         run: |
-          curl -c cookies.txt -s -D headers.txt -o response.html -X POST "https://suvara-beauty.myshopify.com/password" \
+          curl -c cookies.txt -b cookies.txt -L -s -o response.html -X POST "https://suvara-beauty.myshopify.com/password" \
             --data-urlencode "form_type=storefront_password" \
             --data-urlencode "utf8=✓" \
             --data-urlencode "password=${{ secrets.STORE_PASSWORD }}"
           echo "----- COOKIES FILE -----"
           cat cookies.txt
-          echo "----- RESPONSE HEADERS -----"
-          cat headers.txt
-          echo "----- RESPONSE HTML (first 500 chars) -----"
-          head -c 500 response.html
-          COOKIE=$(awk -F'\t' '/storefront_digest/{print $6"="$7}' cookies.txt)
+          COOKIE=$(awk -F'\t' '{printf "%s=%s; ", $6, $7}' cookies.txt)
           echo "cookie=$COOKIE" >> "$GITHUB_OUTPUT"
 
       - name: Write Lighthouse config with auth cookie
