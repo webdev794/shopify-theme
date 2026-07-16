@@ -19,7 +19,7 @@ jobs:
       - name: Push theme to existing CI theme
         run: shopify theme push --theme=156530344114 --path=. --store=suvara-beauty.myshopify.com
         env:
-          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOP_CLIENT_SECRET }}
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_THEME_TOKEN }}
 
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v11
