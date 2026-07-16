@@ -169,7 +169,7 @@ Trending products
  
 Text with icon
  
-Testimonals
+Testimonals 
  
 Sticky media cards
  
