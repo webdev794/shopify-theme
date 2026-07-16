@@ -8,6 +8,10 @@ on:
     branches:
       - backup-v2
 
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lhci:
     name: Lighthouse
