@@ -39,9 +39,7 @@ jobs:
             --data-urlencode "form_type=storefront_password" \
             --data-urlencode "utf8=✓" \
             --data-urlencode "password=${{ secrets.STORE_PASSWORD }}"
-          echo "----- COOKIES FILE -----"
-          cat cookies.txt
-          COOKIE=$(awk -F'\t' '{printf "%s=%s; ", $6, $7}' cookies.txt)
+          COOKIE=$(awk -F'\t' 'NF==7 {printf "%s=%s; ", $6, $7}' cookies.txt)
           echo "cookie=$COOKIE" >> "$GITHUB_OUTPUT"
 
       - name: Write Lighthouse config with auth cookie
