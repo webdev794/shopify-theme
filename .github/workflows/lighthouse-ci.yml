@@ -1,5 +1,12 @@
 name: Shopify Lighthouse CI
-on: [push, pull_request]
+
+on:
+  push:
+    branches:
+      - backup-v2
+  pull_request:
+    branches:
+      - backup-v2
 
 jobs:
   lhci:
