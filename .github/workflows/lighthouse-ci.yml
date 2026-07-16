@@ -25,6 +25,26 @@ jobs:
         uses: treosh/lighthouse-ci-action@v11
         with:
           urls: |
-            https://suvara-beauty.myshopify.com/?preview_theme_id=156530344114
+            ${{ secrets.PREVIEW_URL }}
           uploadArtifacts: true
           temporaryPublicStorage: true
+
+      - name: Show live report link
+        run: |
+          echo "Live Lighthouse report(s):"
+          cat .lighthouseci/links.json 2>/dev/null || echo "No links.json found"
+
+      - name: Print Lighthouse scores
+        run: |
+          for report in .lighthouseci/*.json; do
+            echo "=== $report ==="
+            node -e "
+              const r = require('./' + '$report');
+              if (r.categories) {
+                console.log('Performance:', Math.round(r.categories.performance.score * 100));
+                console.log('Accessibility:', Math.round(r.categories.accessibility.score * 100));
+                console.log('Best Practices:', Math.round(r.categories['best-practices'].score * 100));
+                console.log('SEO:', Math.round(r.categories.seo.score * 100));
+              }
+            "
+          done
