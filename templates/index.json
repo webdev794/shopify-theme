@@ -9,6 +9,186 @@
  */
 {
   "sections": {
+    "hero_carousel_Qwwm6M": {
+      "type": "hero-carousel",
+      "blocks": {
+        "slide_q7YQn7": {
+          "type": "slide",
+          "settings": {
+            "is_vip_slide": false,
+            "schedule_start": "",
+            "schedule_end": "",
+            "image": "shopify://shop_images/pexels-phamthe-28587831.jpg",
+            "image_mobile": "shopify://shop_images/pexels-phamthe-28587831.jpg",
+            "overlay_opacity": 25,
+            "caption": "",
+            "heading": "Craft Your Vision",
+            "text": "<p>Crafted for those who understand the art of beauty.</p>",
+            "content_position": "middle-center",
+            "content_alignment": "center",
+            "button_label_1": "View products",
+            "button_link_1": "shopify://collections/all",
+            "button_style_1": "primary",
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_2": "secondary"
+          }
+        },
+        "slide_NKn9X3": {
+          "type": "slide",
+          "settings": {
+            "is_vip_slide": false,
+            "schedule_start": "",
+            "schedule_end": "",
+            "image": "shopify://shop_images/pexels-photo-36839425.jpg",
+            "image_mobile": "shopify://shop_images/pexels-photo-36839425.jpg",
+            "overlay_opacity": 25,
+            "caption": "Where Trends Begin",
+            "heading": "Welcome to Suvara Beauty",
+            "text": "<p>Discover premium skincare and cosmetics crafted for your most radiant self. Explore our curated collection of luxurious formulations designed to elevate your daily ritual.</p>",
+            "content_position": "middle-center",
+            "content_alignment": "center",
+            "button_label_1": "Shop now",
+            "button_link_1": "shopify://collections/all",
+            "button_style_1": "primary",
+            "button_label_2": "",
+            "button_link_2": "shopify://pages/about-us",
+            "button_style_2": "secondary"
+          }
+        },
+        "slide_BwmKJA": {
+          "type": "slide",
+          "settings": {
+            "is_vip_slide": false,
+            "schedule_start": "",
+            "schedule_end": "",
+            "image": "shopify://shop_images/pexels-photo-14870726_1.jpg",
+            "overlay_opacity": 25,
+            "caption": "",
+            "heading": "Show your craft",
+            "text": "",
+            "content_position": "middle-left",
+            "content_alignment": "left",
+            "button_label_1": "Shop now",
+            "button_link_1": "",
+            "button_style_1": "primary",
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_2": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "slide_q7YQn7",
+        "slide_NKn9X3",
+        "slide_BwmKJA"
+      ],
+      "name": "Hero carousel",
+      "settings": {
+        "carousel_label": "",
+        "height": "small",
+        "heading_size": "medium",
+        "vip_tags": "vip,premium,wholesale",
+        "show_arrows": true,
+        "show_dots": false,
+        "autoplay": false,
+        "autoplay_speed": 5,
+        "color_foreground": "#FF5656",
+        "color_overlay": "#3036DE"
+      }
+    },
+    "trending": {
+      "type": "trending-products",
+      "settings": {
+        "heading": "Trending Now",
+        "subheading": "Our most popular products this week",
+        "collection": "",
+        "products_to_show": 4,
+        "show_vendor": true,
+        "show_rating": true,
+        "show_view_all": true
+      }
+    },
+    "collections_tabs": {
+      "type": "featured-collections-tabs",
+      "settings": {
+        "heading": "Featured Collections",
+        "subheading": "Shop our curated selections",
+        "heading_size": "heading--medium",
+        "heading_alignment": "center",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "show_vendor": true,
+        "show_rating": false,
+        "image_ratio": "portrait",
+        "show_view_all": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "media_text": {
+      "type": "media-with-text-overlay",
+      "settings": {
+        "media_type": "image",
+        "video_url": "",
+        "section_height": 600,
+        "preheading": "Featured",
+        "heading": "Elevate Your Style",
+        "text": "<p>Discover our latest collection of premium products designed for modern living.</p>",
+        "button_text": "Shop Now",
+        "button_link": "",
+        "content_position": "center",
+        "content_alignment": "center",
+        "content_width": 60,
+        "overlay_color": "#00000066",
+        "overlay_opacity": 40,
+        "text_color": "#ffffff",
+        "button_background": "#ffffff",
+        "button_text_color": "#1a1a1a",
+        "aria_label": "Media with text overlay"
+      }
+    },
+    "burst_effects_wnGTic": {
+      "type": "burst-effects",
+      "name": "Burst Effects",
+      "settings": {
+        "image": "shopify://shop_images/pexels-silverkblack-36730630.jpg",
+        "title": "Elevate Your Brand",
+        "text": "<p>Combine stunning visuals with powerful animation to create a store that captivates and converts.</p>",
+        "button_label": "Shop Now",
+        "button_link": "shopify://products/the-collection-snowboard-hydrogen",
+        "button_style": "outline",
+        "show_icon": true,
+        "animation_effect": "parallax",
+        "animation_duration": 1.1,
+        "animation_delay": 0.1
+      }
+    },
+    "blog_posts_TUtF9Y": {
+      "type": "blog-posts",
+      "name": "Blog Posts",
+      "settings": {
+        "blog": "news",
+        "posts_limit": 3,
+        "layout": "grid",
+        "columns": "3",
+        "card_style": "default",
+        "heading": "Latest Articles",
+        "subheading": "From our blog",
+        "description": "<p>Discover insights, tips, and stories from our community.</p>",
+        "show_image": true,
+        "show_category": true,
+        "show_author": true,
+        "show_date": true,
+        "date_position": "meta",
+        "show_excerpt": true,
+        "excerpt_words": 20,
+        "read_more_label": "Read More",
+        "show_view_all": true,
+        "view_all_label": "View All Articles"
+      }
+    },
     "newsletter_MjRpd3": {
       "type": "newsletter",
       "name": "Newsletter",
@@ -30,9 +210,146 @@
         "show_social": true,
         "social_label": "Follow us:"
       }
+    },
+    "lookbook_PJk88J": {
+      "type": "lookbook",
+      "blocks": {
+        "hotspot_twcLt8": {
+          "type": "hotspot",
+          "settings": {
+            "product": "gift-card",
+            "position_x": 49,
+            "position_y": 32
+          }
+        },
+        "hotspot_NBcJPe": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-collection-snowboard-liquid",
+            "position_x": 39,
+            "position_y": 46
+          }
+        },
+        "hotspot_yWeeXL": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-multi-location-snowboard",
+            "position_x": 34,
+            "position_y": 62
+          }
+        },
+        "hotspot_3CKWg9": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-collection-snowboard-hydrogen",
+            "position_x": 24,
+            "position_y": 57
+          }
+        },
+        "hotspot_VffRxc": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-out-of-stock-snowboard",
+            "position_x": 78,
+            "position_y": 72
+          }
+        },
+        "hotspot_zh6F97": {
+          "type": "hotspot",
+          "settings": {
+            "product": "the-complete-snowboard",
+            "position_x": 86,
+            "position_y": 38
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_twcLt8",
+        "hotspot_NBcJPe",
+        "hotspot_yWeeXL",
+        "hotspot_3CKWg9",
+        "hotspot_VffRxc",
+        "hotspot_zh6F97"
+      ],
+      "name": "Lookbook",
+      "settings": {
+        "heading": "Shop the look",
+        "heading_size": "medium",
+        "text": "<p>Tap the dots to shop every piece in this look.</p>",
+        "content_position": "top",
+        "image": "shopify://shop_images/pexels-mart-production-7679862.jpg",
+        "full_width": false,
+        "color_dot": "#ffffff",
+        "color_card_background": "#ffffff",
+        "color_card_foreground": "#121212"
+      }
+    },
+    "pairing_products_LgPxwH": {
+      "type": "pairing-products",
+      "blocks": {
+        "pairing_GFzRP3": {
+          "type": "pairing",
+          "settings": {
+            "product": "selling-plans-ski-wax"
+          }
+        },
+        "pairing_hqDiVQ": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-complete-snowboard"
+          }
+        },
+        "pairing_EU3ewq": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-videographer-snowboard"
+          }
+        },
+        "pairing_XDKL6a": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-multi-managed-snowboard"
+          }
+        },
+        "pairing_3pyEaJ": {
+          "type": "pairing",
+          "settings": {
+            "product": "the-multi-location-snowboard"
+          }
+        }
+      },
+      "block_order": [
+        "pairing_GFzRP3",
+        "pairing_hqDiVQ",
+        "pairing_EU3ewq",
+        "pairing_XDKL6a",
+        "pairing_3pyEaJ"
+      ],
+      "name": "Pairing Products",
+      "settings": {
+        "heading": "Complete Your Look",
+        "subheading": "Perfect pairings for your style",
+        "main_product": "the-collection-snowboard-liquid",
+        "pairings_label": "Pairs Perfectly With",
+        "bundle_label": "Complete the Set",
+        "bundle_price_label": "Bundle Price",
+        "add_bundle_text": "Add Bundle to Cart",
+        "view_product_text": "View Product",
+        "show_rating": true,
+        "show_plus_icon": true,
+        "aria_label": "Product pairings and bundle"
+      }
     }
   },
   "order": [
-    "newsletter_MjRpd3"
+    "hero_carousel_Qwwm6M",
+    "trending",
+    "collections_tabs",
+    "media_text",
+    "burst_effects_wnGTic",
+    "blog_posts_TUtF9Y",
+    "newsletter_MjRpd3",
+    "lookbook_PJk88J",
+    "pairing_products_LgPxwH"
   ]
 }
