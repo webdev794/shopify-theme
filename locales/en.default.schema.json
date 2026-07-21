@@ -1821,6 +1821,36 @@
       "presets": {
         "name": "Social Media Gallery"
       }
+    },
+    "main_product": {
+      "settings": {
+        "header__1": { "content": "Media" },
+        "media_position": {
+          "label": "Media position",
+          "options__1": { "label": "Left" },
+          "options__2": { "label": "Right" }
+        }
+      },
+      "blocks": {
+        "vendor": { "name": "Vendor" },
+        "title": { "name": "Title" },
+        "price": { "name": "Price" },
+        "variant_picker": { "name": "Variant picker" },
+        "quantity_selector": { "name": "Quantity selector" },
+        "buy_buttons": {
+          "name": "Buy buttons",
+          "settings": {
+            "show_dynamic_checkout": { "label": "Show dynamic checkout button" }
+          }
+        },
+        "description": { "name": "Description" },
+        "custom_liquid": {
+          "name": "Custom liquid",
+          "settings": {
+            "custom_liquid": { "label": "Custom liquid" }
+          }
+        }
+      }
     }
   }
 }

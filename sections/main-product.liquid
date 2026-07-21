@@ -259,6 +259,21 @@
   </div>
 </section>
 
+{% comment %}
+  Translated strings for the variant-switch JS below. Liquid can't run inside
+  {% javascript %} (it's a static, deduped asset), so these have to be handed
+  over via a real translated inline script instead of the hardcoded English
+  fallbacks the JS used to rely on.
+{% endcomment %}
+<script>
+  window.themeStrings = window.themeStrings || {};
+  Object.assign(window.themeStrings, {
+    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+    soldOut: {{ 'products.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }}
+  });
+</script>
+
 {% stylesheet %}
   .product {
     --product-gap: 2rem;
@@ -470,6 +485,7 @@
     border: none;
     border-left: 1px solid var(--color-border, #ccc);
     border-right: 1px solid var(--color-border, #ccc);
+    appearance: textfield;
     -moz-appearance: textfield;
   }
 
@@ -741,49 +757,46 @@
 {
   "name": "t:general.product",
   "settings": [
-    {
-      "type": "header",
-      "content": "Media"
-    },
+    { "type": "header", "content": "t:sections.main_product.settings.header__1.content" },
     {
       "type": "select",
       "id": "media_position",
-      "label": "Media position",
+      "label": "t:sections.main_product.settings.media_position.label",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:sections.main_product.settings.media_position.options__1.label" },
+        { "value": "right", "label": "t:sections.main_product.settings.media_position.options__2.label" }
       ],
       "default": "left"
     }
   ],
   "blocks": [
-    { "type": "vendor", "name": "Vendor", "limit": 1 },
-    { "type": "title", "name": "Title", "limit": 1 },
-    { "type": "price", "name": "Price", "limit": 1 },
-    { "type": "variant_picker", "name": "Variant picker", "limit": 1 },
-    { "type": "quantity_selector", "name": "Quantity selector", "limit": 1 },
+    { "type": "vendor", "name": "t:sections.main_product.blocks.vendor.name", "limit": 1 },
+    { "type": "title", "name": "t:sections.main_product.blocks.title.name", "limit": 1 },
+    { "type": "price", "name": "t:sections.main_product.blocks.price.name", "limit": 1 },
+    { "type": "variant_picker", "name": "t:sections.main_product.blocks.variant_picker.name", "limit": 1 },
+    { "type": "quantity_selector", "name": "t:sections.main_product.blocks.quantity_selector.name", "limit": 1 },
     {
       "type": "buy_buttons",
-      "name": "Buy buttons",
+      "name": "t:sections.main_product.blocks.buy_buttons.name",
       "limit": 1,
       "settings": [
         {
           "type": "checkbox",
           "id": "show_dynamic_checkout",
-          "label": "Show dynamic checkout button",
+          "label": "t:sections.main_product.blocks.buy_buttons.settings.show_dynamic_checkout.label",
           "default": true
         }
       ]
     },
-    { "type": "description", "name": "Description", "limit": 1 },
+    { "type": "description", "name": "t:sections.main_product.blocks.description.name", "limit": 1 },
     {
       "type": "custom_liquid",
-      "name": "Custom liquid",
+      "name": "t:sections.main_product.blocks.custom_liquid.name",
       "settings": [
         {
           "type": "liquid",
           "id": "custom_liquid",
-          "label": "Custom liquid"
+          "label": "t:sections.main_product.blocks.custom_liquid.settings.custom_liquid.label"
         }
       ]
     }

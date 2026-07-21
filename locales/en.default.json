@@ -237,7 +237,8 @@
       "rating": "Rating",
       "quantity": { "label": "Quantity", "increase": "Increase quantity", "decrease": "Decrease quantity" },
       "price": { "sale_price": "Sale price", "regular_price": "Regular price", "total": "Total:" },
-      "media": { "load_image": "Load image {{ index }} in gallery view" }
+      "media": { "load_image": "Load image {{ index }} in gallery view" },
+      "unavailable": "Unavailable"
     }
   },
   "general": {
