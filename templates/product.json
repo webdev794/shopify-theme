@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "1784638594b5aa5b28": {
+      "type": "apps",
+      "settings": {}
+    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -55,9 +59,15 @@
       "settings": {
         "media_position": "left"
       }
+    },
+    "1784638599a04bd965": {
+      "type": "apps",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "1784638594b5aa5b28",
+    "main",
+    "1784638599a04bd965"
   ]
 }

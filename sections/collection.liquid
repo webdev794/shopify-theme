@@ -45,141 +45,154 @@
   </div>
 
   {% paginate collection.products by 24 %}
-    <div class="collection__toolbar collection__page-width">
-      <p class="collection__count">
-        {{ 'collections.general.items_with_count' | t: count: paginate.items }}
-      </p>
+    <div class="collection__page-width">
+      <div class="collection__layout">
+        {% if section.settings.enable_filtering %}
+          <aside class="collection__filters">
+            {% render 'facets', filters: collection.filters, clear_url: collection.url, section: section %}
+          </aside>
+        {% endif %}
 
-      {% if section.settings.enable_sorting and collection.sort_options.size > 1 %}
-        <form class="collection__sort" method="get">
-          <label for="sort-by-{{ section.id }}">{{ 'collections.sorting.title' | t }}</label>
-          <select
-            name="sort_by"
-            id="sort-by-{{ section.id }}"
-            class="collection__sort-select"
-            onchange="this.form.submit()"
-          >
-            {% for option in collection.sort_options %}
-              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
-                {{ option.name }}
-              </option>
-            {% endfor %}
-          </select>
-        </form>
-      {% endif %}
-    </div>
+        <div class="collection__main">
+          <div class="collection__toolbar">
+            <p class="collection__count">
+              {{ 'collections.general.items_with_count' | t: count: paginate.items }}
+            </p>
 
-    {% if paginate.items == 0 %}
-      <div class="collection__empty collection__page-width">
-        <p>{{ 'collections.general.no_matches' | t }}</p>
-        <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
-          {{ 'collections.general.view_all' | t }}
-        </a>
-      </div>
-    {% else %}
-      <div
-        class="collection__grid collection__page-width"
-        style="
-          --columns-desktop: {{ section.settings.columns_desktop }};
-          --columns-mobile: {{ section.settings.columns_mobile }};
-        "
-        data-image-ratio="{{ section.settings.image_ratio }}"
-      >
-        {% for product in collection.products %}
-          <div class="product-card">
-            <div class="product-card__media">
-              <a
-                href="{{ product.url }}"
-                class="product-card__media-link"
-                aria-label="{{ product.title | escape }}"
-              >
-                {% if product.featured_image %}
-                  {{
-                    product.featured_image
-                    | image_url: width: 500
-                    | image_tag:
-                      loading: 'lazy',
-                      widths: '250,350,450,500',
-                      sizes: '(min-width: 1400px) 16vw, (min-width: 990px) 20vw, 50vw',
-                      alt: product.featured_image.alt | default: product.title,
-                      class: 'product-card__image product-card__image--primary'
-                  }}
-                  {% if product.images.size > 1 %}
-                    {{
-                      product.images[1]
-                      | image_url: width: 500
-                      | image_tag:
-                        loading: 'lazy',
-                        widths: '250,350,450,500',
-                        sizes: '(min-width: 1400px) 16vw, (min-width: 990px) 20vw, 50vw',
-                        alt: '',
-                        class: 'product-card__image product-card__image--secondary'
-                    }}
-                  {% endif %}
-                {% else %}
-                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card__image' }}
-                {% endif %}
-              </a>
-
-              <div class="product-card__badges">
-                {% unless product.available %}
-                  <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
-                {% else %}
-                  {% if section.settings.show_sale_badge and product.compare_at_price_min > product.price_min %}
-                    <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>
-                  {% endif %}
-                {% endunless %}
-              </div>
-
-              {% if section.settings.show_quick_add and product.available %}
-                <div class="product-card__quick-add">
-                  {% if product.has_only_default_variant %}
-                    {% form 'product', product %}
-                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                      <button type="submit" class="product-card__quick-add-button">
-                        {{ 'products.product.add_to_cart' | t }}
-                      </button>
-                    {% endform %}
-                  {% else %}
-                    <a href="{{ product.url }}" class="product-card__quick-add-button">
-                      {{ 'products.product.choose_options' | t }}
-                    </a>
-                  {% endif %}
-                </div>
-              {% endif %}
-            </div>
-
-            <div class="product-card__content">
-              {% if section.settings.show_vendor and product.vendor != blank %}
-                <p class="product-card__vendor">{{ product.vendor }}</p>
-              {% endif %}
-
-              <h3 class="product-card__title">
-                <a href="{{ product.url }}">{{ product.title }}</a>
-              </h3>
-
-              <div class="product-card__price">
-                {% if product.price_varies %}
-                  <span class="product-card__price-from">{{ 'products.product.from_price_html' | t }}</span>
-                {% endif %}
-
-                {% if product.compare_at_price_min > product.price_min %}
-                  <span class="price price--sale">{{ product.price_min | money }}</span>
-                  <span class="price price--compare">
-                    <s>{{ product.compare_at_price_min | money }}</s>
-                  </span>
-                {% else %}
-                  <span class="price">{{ product.price_min | money }}</span>
-                {% endif %}
-              </div>
-            </div>
+            {% if section.settings.enable_sorting and collection.sort_options.size > 1 %}
+              <form class="collection__sort" method="get">
+                <label for="sort-by-{{ section.id }}">{{ 'collections.sorting.title' | t }}</label>
+                <select
+                  name="sort_by"
+                  id="sort-by-{{ section.id }}"
+                  class="collection__sort-select"
+                  onchange="this.form.submit()"
+                >
+                  {% for option in collection.sort_options %}
+                    <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                      {{ option.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </form>
+            {% endif %}
           </div>
-        {% endfor %}
-      </div>
-    {% endif %}
 
-    <div class="collection__pagination collection__page-width">
-      {{ paginate | default_pagination }}
+          {% if paginate.items == 0 %}
+            <div class="collection__empty">
+              <p>{{ 'collections.general.no_matches' | t }}</p>
+              <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
+                {{ 'collections.general.view_all' | t }}
+              </a>
+            </div>
+          {% else %}
+            <div
+              class="collection__grid"
+              style="
+                --columns-desktop: {{ section.settings.columns_desktop }};
+                --columns-mobile: {{ section.settings.columns_mobile }};
+              "
+              data-image-ratio="{{ section.settings.image_ratio }}"
+            >
+              {% for product in collection.products %}
+                <div class="product-card">
+                  <div class="product-card__media">
+                    <a
+                      href="{{ product.url }}"
+                      class="product-card__media-link"
+                      aria-label="{{ product.title | escape }}"
+                    >
+                      {% if product.featured_image %}
+                        {{
+                          product.featured_image
+                          | image_url: width: 500
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '250,350,450,500',
+                            sizes: '(min-width: 1400px) 16vw, (min-width: 990px) 20vw, 50vw',
+                            alt: product.featured_image.alt | default: product.title,
+                            class: 'product-card__image product-card__image--primary'
+                        }}
+                        {% if product.images.size > 1 %}
+                          {{
+                            product.images[1]
+                            | image_url: width: 500
+                            | image_tag:
+                              loading: 'lazy',
+                              widths: '250,350,450,500',
+                              sizes: '(min-width: 1400px) 16vw, (min-width: 990px) 20vw, 50vw',
+                              alt: '',
+                              class: 'product-card__image product-card__image--secondary'
+                          }}
+                        {% endif %}
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card__image' }}
+                      {% endif %}
+                    </a>
+
+                    <div class="product-card__badges">
+                      {% unless product.available %}
+                        <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+                      {% else %}
+                        {% if section.settings.show_sale_badge and product.compare_at_price_min > product.price_min %}
+                          <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>
+                        {% endif %}
+                      {% endunless %}
+                    </div>
+
+                    {% if section.settings.show_quick_add and product.available %}
+                      <div class="product-card__quick-add">
+                        {% if product.has_only_default_variant %}
+                          {% form 'product', product %}
+                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                            <button type="submit" class="product-card__quick-add-button">
+                              {{ 'products.product.add_to_cart' | t }}
+                            </button>
+                          {% endform %}
+                        {% else %}
+                          <a href="{{ product.url }}" class="product-card__quick-add-button">
+                            {{ 'products.product.choose_options' | t }}
+                          </a>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="product-card__content">
+                    {% if section.settings.show_vendor and product.vendor != blank %}
+                      <p class="product-card__vendor">{{ product.vendor }}</p>
+                    {% endif %}
+
+                    <h3 class="product-card__title">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+
+                    <div class="product-card__price">
+                      {% if product.price_varies %}
+                        <span class="product-card__price-from">{{ 'products.product.from_price_html' | t }}</span>
+                      {% endif %}
+
+                      {% if product.compare_at_price_min > product.price_min %}
+                        <span class="price price--sale">{{ product.price_min | money }}</span>
+                        <span class="price price--compare">
+                          <s>{{ product.compare_at_price_min | money }}</s>
+                        </span>
+                      {% else %}
+                        <span class="price">{{ product.price_min | money }}</span>
+                      {% endif %}
+                    </div>
+                    {% render 'unit-price', object: product.selected_or_first_available_variant %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="collection__pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        </div>
+      </div>
     </div>
   {% endpaginate %}
 </div>
@@ -206,6 +219,35 @@
     max-width: var(--page-width, 1400px);
     margin-inline: auto;
     padding-inline: 1.25rem;
+  }
+
+  /* ---------- Filters layout ---------- */
+  .collection__layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .collection__main {
+    min-width: 0;
+  }
+
+  @media screen and (min-width: 990px) {
+    .collection__layout {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 2.5rem;
+    }
+
+    .collection__filters {
+      flex: 0 0 220px;
+      position: sticky;
+      top: 1.5rem;
+    }
+
+    .collection__main {
+      flex: 1;
+    }
   }
 
   /* ---------- Header ---------- */
@@ -610,6 +652,12 @@
       "default": true
     },
     { "type": "header", "content": "t:sections.collection.settings.header__4.content" },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "t:sections.collection.settings.enable_filtering.label",
+      "default": true
+    },
     {
       "type": "checkbox",
       "id": "enable_sorting",

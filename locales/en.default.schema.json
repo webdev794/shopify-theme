@@ -321,6 +321,7 @@
         "show_sale_badge": { "label": "Show sale badge" },
         "show_quick_add": { "label": "Show quick add button" },
         "header__4": { "content": "Sorting" },
+        "enable_filtering": { "label": "Enable filtering" },
         "enable_sorting": { "label": "Enable sort by" }
       }
     },
@@ -995,6 +996,7 @@
     "search": {
       "settings": {
         "enable_type_filter": { "label": "Enable filter by type" },
+        "enable_filtering": { "label": "Enable filtering" },
         "columns_desktop": { "label": "Columns on desktop" },
         "show_vendor": { "label": "Show vendor" },
         "show_sale_badge": { "label": "Show sale badge" }
@@ -1836,6 +1838,7 @@
         "title": { "name": "Title" },
         "price": { "name": "Price" },
         "variant_picker": { "name": "Variant picker" },
+        "selling_plan_selector": { "name": "Purchase options" },
         "quantity_selector": { "name": "Quantity selector" },
         "buy_buttons": {
           "name": "Buy buttons",

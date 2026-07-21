@@ -238,6 +238,9 @@
       "quantity": { "label": "Quantity", "increase": "Increase quantity", "decrease": "Decrease quantity" },
       "price": { "sale_price": "Sale price", "regular_price": "Regular price", "total": "Total:" },
       "media": { "load_image": "Load image {{ index }} in gallery view" },
+      "unit_price_label": "Unit price",
+      "purchase_option": "Purchase option",
+      "one_time_purchase": "One-time purchase",
       "unavailable": "Unavailable"
     }
   },
@@ -300,5 +303,12 @@
     "sorting": {
       "title": "Sort by"
     }
+  },
+  "filters": {
+    "title": "Filter",
+    "clear_all": "Clear all",
+    "price_from": "From",
+    "price_to": "To",
+    "apply": "Apply filters"
   }
 }

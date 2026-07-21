@@ -120,6 +120,50 @@
                 <span class="price">{{ current_variant.price | money }}</span>
               {% endif %}
             </div>
+            <div id="unit-price-{{ section.id }}">
+              {% render 'unit-price', object: current_variant %}
+            </div>
+
+            {% comment %}
+              Server-rendered variant + selling plan data (including
+              pre-formatted money strings) so the JS never has to reimplement
+              money formatting. Rendered here (not in variant_picker) so it's
+              available even for single-variant products that only have
+              selling plans, with no variant picker on the page at all.
+            {% endcomment %}
+            <script type="application/json" id="product-variants-{{ section.id }}" data-product-variants>
+              [
+                {% for variant in product.variants %}
+                  {%- assign has_unit_pricing = false -%}
+                  {%- if variant.unit_price_measurement -%}
+                    {%- assign has_unit_pricing = true -%}
+                  {%- endif -%}
+                  {
+                    "id": {{ variant.id | json }},
+                    "available": {{ variant.available | json }},
+                    "options": {{ variant.options | json }},
+                    "price": {{ variant.price | json }},
+                    "compare_at_price": {{ variant.compare_at_price | json }},
+                    "price_formatted": {{ variant.price | money | json }},
+                    "compare_at_price_formatted": {{ variant.compare_at_price | money | json }},
+                    "unit_price_formatted": {{ variant.unit_price | money | json }},
+                    "unit_price_reference_value": {{ variant.unit_price_measurement.reference_value | json }},
+                    "unit_price_reference_unit": {{ variant.unit_price_measurement.reference_unit | json }},
+                    "has_unit_pricing": {{ has_unit_pricing | json }},
+                    "featured_media_id": {{ variant.featured_media.id | json }},
+                    "selling_plan_allocations": [
+                      {% for allocation in variant.selling_plan_allocations %}
+                        {
+                          "selling_plan_id": {{ allocation.selling_plan.id | json }},
+                          "price_formatted": {{ allocation.price | money | json }},
+                          "compare_at_price_formatted": {{ allocation.compare_at_price | money | json }}
+                        }{% unless forloop.last %},{% endunless %}
+                      {% endfor %}
+                    ]
+                  }{% unless forloop.last %},{% endunless %}
+                {% endfor %}
+              ]
+            </script>
 
           {% when 'description' %}
             {% if product.description != blank %}
@@ -141,48 +185,113 @@
                       {{ option.name }}:
                       <span data-selected-value>{{ option.selected_value }}</span>
                     </legend>
-                    <div class="product__option-values">
+                    <div class="product__option-values{% if option.values.first.swatch %} product__option-values--swatches{% endif %}">
                       {% for value in option.values %}
+                        {% liquid
+                          assign input_id = 'option-' | append: section.id | append: '-' | append: option.position | append: '-' | append: forloop.index0
+                        %}
                         <input
                           type="radio"
-                          id="option-{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                          id="{{ input_id }}"
                           name="option-{{ section.id }}-{{ option.position }}"
-                          value="{{ value | escape }}"
-                          {% if option.selected_value == value %}checked{% endif %}
+                          value="{{ value.name | escape }}"
+                          {% if value.selected %}checked{% endif %}
                           class="visually-hidden product__option-input"
                         >
-                        <label
-                          for="option-{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
-                          class="product__option-label"
+                        {% if value.swatch.image %}
+                          <label
+                            for="{{ input_id }}"
+                            class="product__option-label product__option-label--swatch{% unless value.available %} product__option-label--unavailable{% endunless %}"
+                            title="{{ value.name | escape }}"
+                          >
+                            <span class="product__swatch">
+                              {{
+                                value.swatch.image
+                                | image_url: width: 60
+                                | image_tag: loading: 'lazy', alt: value.name, width: 30, height: 30, class: 'product__swatch-image'
+                              }}
+                            </span>
+                            <span class="visually-hidden">{{ value.name }}</span>
+                          </label>
+                        {% elsif value.swatch.color %}
+                          <label
+                            for="{{ input_id }}"
+                            class="product__option-label product__option-label--swatch{% unless value.available %} product__option-label--unavailable{% endunless %}"
+                            title="{{ value.name | escape }}"
+                          >
+                            <span class="product__swatch" style="background-color: {{ value.swatch.color }};"></span>
+                            <span class="visually-hidden">{{ value.name }}</span>
+                          </label>
+                        {% else %}
+                          <label
+                            for="{{ input_id }}"
+                            class="product__option-label{% unless value.available %} product__option-label--unavailable{% endunless %}"
+                          >
+                            {{ value.name }}
+                          </label>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </fieldset>
+                {% endfor %}
+              </variant-selects>
+            {% endif %}
+
+          {% when 'selling_plan_selector' %}
+            {% if product.selling_plan_groups.size > 0 %}
+              <div class="product__selling-plans" id="selling-plans-{{ section.id }}" data-selling-plans {{ block.shopify_attributes }}>
+                {% unless product.requires_selling_plan %}
+                  <fieldset class="product__selling-plan-group">
+                    <legend class="product__option-name">{{ 'products.product.purchase_option' | t }}</legend>
+                    <div class="product__selling-plan-values">
+                      <label class="product__selling-plan-option">
+                        <input
+                          type="radio"
+                          name="selling_plan-{{ section.id }}"
+                          value=""
+                          {% unless product.selected_selling_plan %}checked{% endunless %}
+                          data-selling-plan-radio
                         >
-                          {{ value }}
+                        {{ 'products.product.one_time_purchase' | t }}
+                      </label>
+                    </div>
+                  </fieldset>
+                {% endunless %}
+
+                {% assign selling_plan_selected = false %}
+                {% if product.selected_selling_plan %}
+                  {% assign selling_plan_selected = true %}
+                {% endif %}
+                {% for group in product.selling_plan_groups %}
+                  <fieldset class="product__selling-plan-group">
+                    <legend class="product__option-name">{{ group.name }}</legend>
+                    <div class="product__selling-plan-values">
+                      {% for selling_plan in group.selling_plans %}
+                        {% liquid
+                          assign force_check = false
+                          if product.requires_selling_plan and selling_plan_selected == false
+                            assign force_check = true
+                            assign selling_plan_selected = true
+                          endif
+                        %}
+                        <label class="product__selling-plan-option">
+                          <input
+                            type="radio"
+                            name="selling_plan-{{ section.id }}"
+                            value="{{ selling_plan.id }}"
+                            {% if product.selected_selling_plan.id == selling_plan.id or force_check %}checked{% endif %}
+                            data-selling-plan-radio
+                          >
+                          {{ selling_plan.name }}
+                          {% if selling_plan.description != blank %}
+                            <span class="product__selling-plan-description">{{ selling_plan.description }}</span>
+                          {% endif %}
                         </label>
                       {% endfor %}
                     </div>
                   </fieldset>
                 {% endfor %}
-
-                {% comment %}
-                  Server-rendered variant data (including pre-formatted money
-                  strings) so the JS never has to reimplement money formatting.
-                {% endcomment %}
-                <script type="application/json" data-product-variants>
-                  [
-                    {% for variant in product.variants %}
-                      {
-                        "id": {{ variant.id | json }},
-                        "available": {{ variant.available | json }},
-                        "options": {{ variant.options | json }},
-                        "price": {{ variant.price | json }},
-                        "compare_at_price": {{ variant.compare_at_price | json }},
-                        "price_formatted": {{ variant.price | money | json }},
-                        "compare_at_price_formatted": {{ variant.compare_at_price | money | json }},
-                        "featured_media_id": {{ variant.featured_media.id | json }}
-                      }{% unless forloop.last %},{% endunless %}
-                    {% endfor %}
-                  ]
-                </script>
-              </variant-selects>
+              </div>
             {% endif %}
 
           {% when 'quantity_selector' %}
@@ -222,9 +331,18 @@
 
           {% when 'buy_buttons' %}
             <div class="product__buy-buttons" {{ block.shopify_attributes }}>
+              <!-- SUBSCRIPTION WIDGET - MOVED HERE OUTSIDE THE FORM -->
+              <div class="subscriptions_app_embed_block"></div>
+              
               {% assign product_form_id = 'product-form-' | append: section.id %}
               {% form 'product', product, id: product_form_id, class: 'product__form' %}
                 <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id-input>
+                <input
+                  type="hidden"
+                  name="selling_plan"
+                  value="{{ product.selected_selling_plan.id | default: '' }}"
+                  data-selling-plan-input
+                >
 
                 <button
                   type="submit"
@@ -270,7 +388,8 @@
   Object.assign(window.themeStrings, {
     addToCart: {{ 'products.product.add_to_cart' | t | json }},
     soldOut: {{ 'products.product.sold_out' | t | json }},
-    unavailable: {{ 'products.product.unavailable' | t | json }}
+    unavailable: {{ 'products.product.unavailable' | t | json }},
+    unitPriceLabel: {{ 'products.product.unit_price_label' | t | json }}
   });
 </script>
 
@@ -454,6 +573,107 @@
     outline-offset: 2px;
   }
 
+  /* ---------- Swatches ---------- */
+  .product__option-values--swatches {
+    gap: 0.6rem;
+  }
+
+  .product__option-label--swatch {
+    display: inline-flex;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  .product__swatch {
+    display: block;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--color-border, #ddd);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .product__swatch-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .product__option-input:checked + .product__option-label--swatch {
+    border-color: var(--color-foreground, #1a1a1a);
+  }
+
+  .product__option-input:focus-visible + .product__option-label--swatch {
+    outline: 2px solid var(--color-focus, #4a90e2);
+    outline-offset: 2px;
+  }
+
+  .product__option-label--unavailable {
+    position: relative;
+    opacity: 0.4;
+  }
+
+  .product__option-label--unavailable::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top right, transparent calc(50% - 1px), currentColor, transparent calc(50% + 1px));
+    border-radius: inherit;
+  }
+
+  /* ---------- Selling plans ---------- */
+  .product__selling-plans {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .product__selling-plan-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .product__selling-plan-values {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .product__selling-plan-option {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--color-border, #ccc);
+    border-radius: var(--product-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .product__selling-plan-option:has(input:checked) {
+    border-color: var(--color-foreground, #1a1a1a);
+  }
+
+  .product__selling-plan-option input:focus-visible {
+    outline: 2px solid var(--color-focus, #4a90e2);
+    outline-offset: 2px;
+  }
+
+  .product__selling-plan-description {
+    color: var(--color-foreground-secondary, #666);
+    font-size: 0.8rem;
+  }
+
   /* ---------- Quantity ---------- */
   .quantity-input {
     display: inline-flex;
@@ -561,7 +781,7 @@
 
     connectedCallback() {
       this.sectionId = this.dataset.sectionId;
-      this.variants = JSON.parse(this.querySelector('[data-product-variants]').textContent);
+      this.variants = (window.themeProductVariants && window.themeProductVariants[this.sectionId]) || [];
     }
 
     onVariantChange() {
@@ -580,6 +800,7 @@
       this.updatePrice(variant);
       this.updateMedia(variant);
       this.updateAddToCart(variant);
+      updateSellingPlanUI(this.sectionId);
     }
 
     updateOptionLabels(selectedOptions) {
@@ -618,9 +839,24 @@
         wrapper.innerHTML = `<span class="price">${variant.price_formatted}</span>`;
       }
 
-      // Keep the raw cents value in sync so the quantity total can use it.
       wrapper.dataset.unitPrice = variant.price;
       updateTotalPriceForSection(this.sectionId);
+
+      const unitPriceWrapper = document.getElementById(`unit-price-${this.sectionId}`);
+      if (unitPriceWrapper) {
+        if (variant.has_unit_pricing) {
+          const refValue = variant.unit_price_reference_value !== 1 ? variant.unit_price_reference_value : '';
+          const label = window.themeStrings?.unitPriceLabel || 'Unit price';
+          unitPriceWrapper.innerHTML = `
+            <div class="unit-price">
+              <span class="visually-hidden">${label}</span>
+              <span class="unit-price__price">${variant.unit_price_formatted}</span>/<span class="unit-price__unit">${refValue}${variant.unit_price_reference_unit}</span>
+            </div>
+          `;
+        } else {
+          unitPriceWrapper.innerHTML = '';
+        }
+      }
     }
 
     updateMedia(variant) {
@@ -661,6 +897,79 @@
 
   customElements.define('variant-selects', VariantSelects);
 
+  window.themeProductVariants = window.themeProductVariants || {};
+  document.querySelectorAll('[data-product-variants]').forEach((script) => {
+    const sectionId = script.id.replace('product-variants-', '');
+    try {
+      window.themeProductVariants[sectionId] = JSON.parse(script.textContent);
+    } catch (error) {
+      window.themeProductVariants[sectionId] = [];
+    }
+  });
+
+  function updateSellingPlanUI(sectionId) {
+    const checkedPlan = document.querySelector(
+      `#selling-plans-${sectionId} [data-selling-plan-radio]:checked`
+    );
+    const planId = checkedPlan ? checkedPlan.value : '';
+
+    const hiddenInput = document.querySelector(`#product-form-${sectionId} [data-selling-plan-input]`);
+    if (hiddenInput) {
+      hiddenInput.value = planId;
+      hiddenInput.disabled = false;
+    }
+
+    const variantInput = document.querySelector(`#product-form-${sectionId} [data-variant-id-input]`);
+    const variantId = variantInput ? variantInput.value : null;
+    const variants = window.themeProductVariants[sectionId];
+    if (!variants || !variantId) return;
+
+    const variant = variants.find((item) => String(item.id) === String(variantId));
+    if (!variant) return;
+
+    const priceWrapper = document.getElementById(`product-price-${sectionId}`);
+    if (!priceWrapper) return;
+
+    let priceFormatted = variant.price_formatted;
+    let compareFormatted = variant.compare_at_price_formatted;
+
+    if (planId) {
+      const allocation = (variant.selling_plan_allocations || []).find(
+        (item) => String(item.selling_plan_id) === String(planId)
+      );
+      if (allocation) {
+        priceFormatted = allocation.price_formatted;
+        compareFormatted = allocation.compare_at_price_formatted;
+      }
+    }
+
+    if (compareFormatted && compareFormatted !== priceFormatted) {
+      priceWrapper.innerHTML = `
+        <span class="price price--sale">${priceFormatted}</span>
+        <span class="price price--compare"><s>${compareFormatted}</s></span>
+      `;
+    } else {
+      priceWrapper.innerHTML = `<span class="price">${priceFormatted}</span>`;
+    }
+  }
+
+  document.addEventListener('change', (event) => {
+    const radio = event.target.closest('[data-selling-plan-radio]');
+    if (radio) {
+      const wrapper = radio.closest('[data-selling-plans]');
+      if (wrapper) {
+        const sectionId = wrapper.id.replace('selling-plans-', '');
+        updateSellingPlanUI(sectionId);
+      }
+    }
+  });
+
+  document.querySelectorAll('[data-selling-plans]').forEach((wrapper) => {
+    const sectionId = wrapper.id.replace('selling-plans-', '');
+    updateSellingPlanUI(sectionId);
+  });
+
+  // Rest of JS remains the same
   document.addEventListener('click', (event) => {
     const decreaseButton = event.target.closest('[data-quantity-decrease]');
     const increaseButton = event.target.closest('[data-quantity-increase]');
@@ -677,7 +986,6 @@
     input.dispatchEvent(new Event('input', { bubbles: true }));
   });
 
-  // ---------- Quantity x price total ----------
   function formatMoney(cents, format) {
     function withDelimiters(number, precision, thousands, decimalSep) {
       if (isNaN(number) || number === null) return 0;
@@ -774,6 +1082,7 @@
     { "type": "title", "name": "t:sections.main_product.blocks.title.name", "limit": 1 },
     { "type": "price", "name": "t:sections.main_product.blocks.price.name", "limit": 1 },
     { "type": "variant_picker", "name": "t:sections.main_product.blocks.variant_picker.name", "limit": 1 },
+    { "type": "selling_plan_selector", "name": "t:sections.main_product.blocks.selling_plan_selector.name", "limit": 1 },
     { "type": "quantity_selector", "name": "t:sections.main_product.blocks.quantity_selector.name", "limit": 1 },
     {
       "type": "buy_buttons",
@@ -809,6 +1118,7 @@
         { "type": "title" },
         { "type": "price" },
         { "type": "variant_picker" },
+        { "type": "selling_plan_selector" },
         { "type": "quantity_selector" },
         { "type": "buy_buttons" },
         { "type": "description" }

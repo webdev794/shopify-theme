@@ -18,7 +18,8 @@
     <div class="cart__container page-width">
       <h1 class="cart__title">{{ 'cart.title' | t }}</h1>
 
-      <form action="{{ routes.cart_url }}" method="post" class="cart__form" id="cart-form-{{ section.id }}">
+      {% assign cart_form_id = 'cart-form-' | append: section.id %}
+      {% form 'cart', cart, class: 'cart__form', id: cart_form_id %}
         <div class="cart__layout">
           <div class="cart__items">
             <table class="cart-table">
@@ -56,6 +57,10 @@
                           <p class="cart-item__variant">{{ item.variant.title }}</p>
                         {% endif %}
 
+                        {% if item.selling_plan_allocation %}
+                          <p class="cart-item__selling-plan">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                        {% endif %}
+
                         {% if item.properties.size > 0 %}
                           <dl class="cart-item__properties">
                             {% for property in item.properties %}
@@ -86,6 +91,7 @@
                       {% else %}
                         <span class="price">{{ item.final_price | money }}</span>
                       {% endif %}
+                      {% render 'unit-price', object: item %}
                     </td>
 
                     <td class="cart-item__quantity-cell" data-label="{{ 'cart.quantity' | t }}">
@@ -161,9 +167,15 @@
                 {{ 'cart.checkout' | t }}
               </button>
             </div>
+
+            {% if additional_checkout_buttons %}
+              <div class="cart__accelerated-checkout">
+                {{ content_for_additional_checkout_buttons }}
+              </div>
+            {% endif %}
           </div>
         </div>
-      </form>
+      {% endform %}
     </div>
   {% endif %}
 </div>
@@ -277,6 +289,12 @@
   .cart-item__variant {
     font-size: 0.85rem;
     color: var(--color-foreground-secondary, #777);
+  }
+
+  .cart-item__selling-plan {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-foreground, #1a1a1a);
   }
 
   .cart-item__properties {
@@ -433,6 +451,10 @@
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+  }
+
+  .cart__accelerated-checkout {
+    margin-top: 0.75rem;
   }
 
   .cart__update-button,

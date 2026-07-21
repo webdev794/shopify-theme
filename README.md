@@ -248,3 +248,23 @@ Collection list
 Featured product
 
 Featured collection
+
+## Pending features 
+
+1 Faceted search filtering — required on collection and search pages (price, availability, vendor, variant). Not present at all; only basic sorting exists.
+2 Unit pricing — required on product, collection, cart, and customer pages. Not implemented anywhere.
+3 Product swatches — variant picker uses plain text/radio buttons; Theme Store requires visual swatches via swatch.color/swatch.image.
+4 Accelerated checkout buttons on Cart page — you have it on product page; cart page has none.
+5 Selling plans (subscriptions) — required on cart and customer pages. Not present.
+--done above--
+6 Shop Pay Installments — required on product page. Not present.
+7 Pickup availability — required on product page. Not present.
+8 Real product recommendations — required via Shopify's actual recommendations object/API on product pages. pairing-products.liquid is merchant-curated, not the automated recommendation feature — doesn't satisfy this.
+9 Follow on Shop button (login_button filter) — not present.
+10 App block support (@app) in main-product and featured-product sections — not present; you have concrete block types only.
+11 Customer account pages — never reviewed; likely missing entirely.
+12 Color system — only 2 color settings (background/foreground) in settings_schema.json; requirement is minimum 4, each background paired with a foreground.
+13 Favicon setting — not present in settings_schema.json.
+14 Placeholder social URLs (.../#) — explicitly against the "must be left empty" / no-fake-content rule; needs fixing before any submission regardless.
+15 SEO structured data (Google rich product snippets / JSON-LD) — meta-tags.liquid never reviewed, can't confirm this exists.
+16 page.contact.json — required template; currently doesn't exist properly (we established you have no Contact page set up).
