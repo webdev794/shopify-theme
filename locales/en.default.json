@@ -129,6 +129,17 @@
     "shop_the_kit": {
       "select_product": "Select a product"
     },
+    "media_with_text_overlay": {
+      "play_pause_video": "Play/Pause video"
+    },
+    "pairing_products": {
+      "empty": "Select a main product to display pairings.",
+      "previous_pairing": "Previous pairing",
+      "next_pairing": "Next pairing"
+    },
+    "social_gallery": {
+      "empty": "Add social posts to display them here."
+    },
     "slideshow_with_marquee": {
       "previous_slide": "Previous slide",
       "next_slide": "Next slide",
@@ -146,9 +157,6 @@
       "previous_slide": "Previous slide",
       "next_slide": "Next slide",
       "go_to_slide": "Slide {{ index }}"
-    },
-    "pairing_products": {
-      "empty": "Select a main product to display pairings."
     },
     "media_grid": {
       "pause_video": "Pause video",

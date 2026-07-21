@@ -157,90 +157,84 @@
 
 {% schema %}
 {
-  "name": "Hero",
+  "name": "t:sections.hero.name",
   "tag": "section",
   "class": "section-hero",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "settings": [
-    {
-      "type": "header",
-      "content": "Media"
-    },
+    { "type": "header", "content": "t:sections.hero.settings.header__1.content" },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image",
-      "info": "3840 x 2160px .jpg recommended. Set a focal point on the image to control cropping."
+      "label": "t:sections.hero.settings.image.label",
+      "info": "t:sections.hero.settings.image.info"
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
-      "label": "Mobile image",
-      "info": "Optional. Shown on screens narrower than 750px. 1100 x 1400px recommended."
+      "label": "t:sections.hero.settings.image_mobile.label",
+      "info": "t:sections.hero.settings.image_mobile.info"
     },
     {
       "type": "video",
       "id": "video",
-      "label": "Background video",
-      "info": "Optional. Replaces the image. Plays muted on a loop and can be paused by visitors."
+      "label": "t:sections.hero.settings.video.label",
+      "info": "t:sections.hero.settings.video.info"
     },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
+    { "type": "header", "content": "t:sections.hero.settings.header__2.content" },
     {
       "type": "select",
       "id": "height",
-      "label": "Section height",
+      "label": "t:sections.hero.settings.height.label",
       "options": [
-        { "value": "adapt", "label": "Adapt to image" },
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" },
-        { "value": "full", "label": "Full screen" }
+        { "value": "adapt", "label": "t:sections.hero.settings.height.options__1.label" },
+        { "value": "small", "label": "t:sections.hero.settings.height.options__2.label" },
+        { "value": "medium", "label": "t:sections.hero.settings.height.options__3.label" },
+        { "value": "large", "label": "t:sections.hero.settings.height.options__4.label" },
+        { "value": "full", "label": "t:sections.hero.settings.height.options__5.label" }
       ],
       "default": "medium"
     },
     {
       "type": "checkbox",
       "id": "full_width",
-      "label": "Full width",
+      "label": "t:sections.hero.settings.full_width.label",
       "default": true
     },
     {
       "type": "select",
       "id": "content_position",
-      "label": "Content position",
+      "label": "t:sections.hero.settings.content_position.label",
       "options": [
-        { "value": "top-left", "label": "Top left" },
-        { "value": "top-center", "label": "Top center" },
-        { "value": "top-right", "label": "Top right" },
-        { "value": "middle-left", "label": "Middle left" },
-        { "value": "middle-center", "label": "Middle center" },
-        { "value": "middle-right", "label": "Middle right" },
-        { "value": "bottom-left", "label": "Bottom left" },
-        { "value": "bottom-center", "label": "Bottom center" },
-        { "value": "bottom-right", "label": "Bottom right" }
+        { "value": "top-left", "label": "t:sections.hero.settings.content_position.options__1.label" },
+        { "value": "top-center", "label": "t:sections.hero.settings.content_position.options__2.label" },
+        { "value": "top-right", "label": "t:sections.hero.settings.content_position.options__3.label" },
+        { "value": "middle-left", "label": "t:sections.hero.settings.content_position.options__4.label" },
+        { "value": "middle-center", "label": "t:sections.hero.settings.content_position.options__5.label" },
+        { "value": "middle-right", "label": "t:sections.hero.settings.content_position.options__6.label" },
+        { "value": "bottom-left", "label": "t:sections.hero.settings.content_position.options__7.label" },
+        { "value": "bottom-center", "label": "t:sections.hero.settings.content_position.options__8.label" },
+        { "value": "bottom-right", "label": "t:sections.hero.settings.content_position.options__9.label" }
       ],
       "default": "middle-center"
     },
     {
       "type": "select",
       "id": "content_alignment",
-      "label": "Content alignment",
+      "label": "t:sections.hero.settings.content_alignment.label",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:sections.hero.settings.content_alignment.options__1.label" },
+        { "value": "center", "label": "t:sections.hero.settings.content_alignment.options__2.label" },
+        { "value": "right", "label": "t:sections.hero.settings.content_alignment.options__3.label" }
       ],
       "default": "center"
     },
     {
       "type": "range",
       "id": "content_max_width",
-      "label": "Content width",
+      "label": "t:sections.hero.settings.content_max_width.label",
       "min": 400,
       "max": 900,
       "step": 50,
@@ -250,110 +244,104 @@
     {
       "type": "checkbox",
       "id": "stack_on_mobile",
-      "label": "Show content below media on mobile",
+      "label": "t:sections.hero.settings.stack_on_mobile.label",
       "default": false,
-      "info": "Improves readability on small screens"
+      "info": "t:sections.hero.settings.stack_on_mobile.info"
     },
-    {
-      "type": "header",
-      "content": "Overlay"
-    },
+    { "type": "header", "content": "t:sections.hero.settings.header__3.content" },
     {
       "type": "color",
       "id": "color_overlay",
-      "label": "Overlay color",
+      "label": "t:sections.hero.settings.color_overlay.label",
       "default": "#000000"
     },
     {
       "type": "range",
       "id": "overlay_opacity",
-      "label": "Overlay opacity",
+      "label": "t:sections.hero.settings.overlay_opacity.label",
       "min": 0,
       "max": 90,
       "step": 5,
       "unit": "%",
       "default": 25,
-      "info": "Keep enough contrast between the text and the media behind it"
+      "info": "t:sections.hero.settings.overlay_opacity.info"
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.hero.settings.header__4.content" },
     {
       "type": "color",
       "id": "color_foreground",
-      "label": "Text color",
+      "label": "t:sections.hero.settings.color_foreground.label",
       "default": "#ffffff"
     },
     {
       "type": "checkbox",
       "id": "show_content_box",
-      "label": "Show content background box",
+      "label": "t:sections.hero.settings.show_content_box.label",
       "default": false
     },
     {
       "type": "color",
       "id": "color_box_background",
-      "label": "Content box background",
+      "label": "t:sections.hero.settings.color_box_background.label",
       "default": "#00000080",
-      "info": "Supports transparency. Used when the content background box is on."
+      "info": "t:sections.hero.settings.color_box_background.info"
     }
   ],
   "blocks": [
     {
       "type": "heading",
-      "name": "Heading",
+      "name": "t:sections.hero.blocks.heading.name",
       "limit": 1,
       "settings": [
         {
           "type": "inline_richtext",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:sections.hero.blocks.heading.settings.heading.label",
           "default": "Tell your story"
         },
         {
           "type": "select",
           "id": "heading_size",
-          "label": "Heading size",
+          "label": "t:sections.hero.blocks.heading.settings.heading_size.label",
           "options": [
-            { "value": "small", "label": "Small" },
-            { "value": "medium", "label": "Medium" },
-            { "value": "large", "label": "Large" }
+            { "value": "small", "label": "t:sections.hero.blocks.heading.settings.heading_size.options__1.label" },
+            { "value": "medium", "label": "t:sections.hero.blocks.heading.settings.heading_size.options__2.label" },
+            { "value": "large", "label": "t:sections.hero.blocks.heading.settings.heading_size.options__3.label" }
           ],
           "default": "medium"
         },
         {
           "type": "select",
           "id": "heading_tag",
-          "label": "Heading tag",
+          "label": "t:sections.hero.blocks.heading.settings.heading_tag.label",
           "options": [
             { "value": "h1", "label": "H1" },
             { "value": "h2", "label": "H2" }
           ],
           "default": "h2",
-          "info": "Use H1 only when this is the first section on the page and the page has no other H1."
+          "info": "t:sections.hero.blocks.heading.settings.heading_tag.info"
         }
       ]
     },
     {
       "type": "text",
-      "name": "Text",
+      "name": "t:sections.hero.blocks.text.name",
       "limit": 1,
       "settings": [
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:sections.hero.blocks.text.settings.text.label",
           "default": "<p>Pair a bold image with a short message that introduces your brand or highlights a campaign.</p>"
         },
         {
           "type": "select",
           "id": "text_size",
-          "label": "Text size",
+          "label": "t:sections.hero.blocks.text.settings.text_size.label",
           "options": [
-            { "value": "small", "label": "Small" },
-            { "value": "medium", "label": "Medium" },
-            { "value": "large", "label": "Large" }
+            { "value": "small", "label": "t:sections.hero.blocks.text.settings.text_size.options__1.label" },
+            { "value": "medium", "label": "t:sections.hero.blocks.text.settings.text_size.options__2.label" },
+            { "value": "large", "label": "t:sections.hero.blocks.text.settings.text_size.options__3.label" }
           ],
           "default": "medium"
         }
@@ -361,47 +349,47 @@
     },
     {
       "type": "buttons",
-      "name": "Buttons",
+      "name": "t:sections.hero.blocks.buttons.name",
       "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "button_label_1",
-          "label": "First button label",
+          "label": "t:sections.hero.blocks.buttons.settings.button_label_1.label",
           "default": "Shop now"
         },
         {
           "type": "url",
           "id": "button_link_1",
-          "label": "First button link"
+          "label": "t:sections.hero.blocks.buttons.settings.button_link_1.label"
         },
         {
           "type": "select",
           "id": "button_style_1",
-          "label": "First button style",
+          "label": "t:sections.hero.blocks.buttons.settings.button_style_1.label",
           "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
+            { "value": "primary", "label": "t:sections.hero.blocks.buttons.settings.button_style_1.options__1.label" },
+            { "value": "secondary", "label": "t:sections.hero.blocks.buttons.settings.button_style_1.options__2.label" }
           ],
           "default": "primary"
         },
         {
           "type": "text",
           "id": "button_label_2",
-          "label": "Second button label"
+          "label": "t:sections.hero.blocks.buttons.settings.button_label_2.label"
         },
         {
           "type": "url",
           "id": "button_link_2",
-          "label": "Second button link"
+          "label": "t:sections.hero.blocks.buttons.settings.button_link_2.label"
         },
         {
           "type": "select",
           "id": "button_style_2",
-          "label": "Second button style",
+          "label": "t:sections.hero.blocks.buttons.settings.button_style_2.label",
           "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
+            { "value": "primary", "label": "t:sections.hero.blocks.buttons.settings.button_style_2.options__1.label" },
+            { "value": "secondary", "label": "t:sections.hero.blocks.buttons.settings.button_style_2.options__2.label" }
           ],
           "default": "secondary"
         }
@@ -410,7 +398,7 @@
   ],
   "presets": [
     {
-      "name": "Hero",
+      "name": "t:sections.hero.presets.name",
       "blocks": [
         { "type": "heading" },
         { "type": "text" },

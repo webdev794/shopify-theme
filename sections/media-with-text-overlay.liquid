@@ -9,6 +9,8 @@
 <div class="media-with-text-overlay" 
      data-section-id="{{ section.id }}" 
      data-section-type="media-with-text-overlay"
+     role="region"
+     aria-label="{{ section.settings.aria_label | escape }}"
      style="
        --mwto-height: {{ section.settings.section_height }}px;
        --mwto-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
@@ -16,6 +18,8 @@
        --mwto-text-color: {{ section.settings.text_color }};
        --mwto-content-width: {{ section.settings.content_width }}%;
        --mwto-content-position: {{ section.settings.content_position }};
+       --mwto-button-bg: {{ section.settings.button_background }};
+       --mwto-button-text-color: {{ section.settings.button_text_color }};
      ">
   
   <div class="media-with-text-overlay__wrapper">
@@ -23,9 +27,9 @@
       {%- if section.settings.image != blank -%}
         <div class="media-with-text-overlay__media">
           <img
-            src="{{ section.settings.image | img_url: '2000x', crop: 'center' }}"
-            srcset="{{ section.settings.image | img_url: '2000x', crop: 'center' }} 1x, {{ section.settings.image | img_url: '4000x', crop: 'center' }} 2x"
-            alt="{{ section.settings.image.alt | escape }}"
+            src="{{ section.settings.image | image_url: width: 2000 }}"
+            srcset="{{ section.settings.image | image_url: width: 2000 }} 1x, {{ section.settings.image | image_url: width: 4000 }} 2x"
+            alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
             loading="lazy"
             width="2000"
             height="800"
@@ -43,13 +47,13 @@
           <video
             class="media-with-text-overlay__video"
             src="{{ section.settings.video_url }}"
-            poster="{{ section.settings.image | img_url: '2000x' }}"
+            poster="{{ section.settings.image | image_url: width: 2000 }}"
             muted
             loop
             playsinline
             autoplay
           ></video>
-          <button class="media-with-text-overlay__video-control" type="button" aria-label="Play/Pause video">
+          <button class="media-with-text-overlay__video-control" type="button" aria-label="{{ 'sections.media_with_text_overlay.play_pause_video' | t }}">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M8 5v14l11-7z"/>
             </svg>
@@ -90,125 +94,116 @@
 
 {% schema %}
 {
-  "name": "Media with Text Overlay",
+  "name": "t:sections.media_with_text_overlay.name",
   "tag": "section",
   "class": "media-with-text-overlay-section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Media Settings"
-    },
+    { "type": "header", "content": "t:sections.media_with_text_overlay.settings.header__1.content" },
     {
       "type": "select",
       "id": "media_type",
-      "label": "Media type",
+      "label": "t:sections.media_with_text_overlay.settings.media_type.label",
       "options": [
-        { "value": "image", "label": "Image" },
-        { "value": "video", "label": "Video" }
+        { "value": "image", "label": "t:sections.media_with_text_overlay.settings.media_type.options__1.label" },
+        { "value": "video", "label": "t:sections.media_with_text_overlay.settings.media_type.options__2.label" }
       ],
       "default": "image"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image",
-      "info": "Recommended: 2000x800px"
+      "label": "t:sections.media_with_text_overlay.settings.image.label",
+      "info": "t:sections.media_with_text_overlay.settings.image.info"
     },
     {
       "type": "text",
       "id": "video_url",
-      "label": "Video URL",
-      "info": "URL to an MP4 video file"
+      "label": "t:sections.media_with_text_overlay.settings.video_url.label",
+      "info": "t:sections.media_with_text_overlay.settings.video_url.info"
     },
     {
       "type": "range",
       "id": "section_height",
-      "label": "Section height",
+      "label": "t:sections.media_with_text_overlay.settings.section_height.label",
       "min": 400,
       "max": 900,
       "step": 50,
       "default": 600,
       "unit": "px"
     },
-    {
-      "type": "header",
-      "content": "Content Settings"
-    },
+    { "type": "header", "content": "t:sections.media_with_text_overlay.settings.header__2.content" },
     {
       "type": "text",
       "id": "preheading",
-      "label": "Pre-heading",
+      "label": "t:sections.media_with_text_overlay.settings.preheading.label",
       "default": "Featured"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.media_with_text_overlay.settings.heading.label",
       "default": "Elevate Your Style"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text",
+      "label": "t:sections.media_with_text_overlay.settings.text.label",
       "default": "<p>Discover our latest collection of premium products designed for modern living.</p>"
     },
     {
       "type": "text",
       "id": "button_text",
-      "label": "Button text",
+      "label": "t:sections.media_with_text_overlay.settings.button_text.label",
       "default": "Shop Now"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button link"
+      "label": "t:sections.media_with_text_overlay.settings.button_link.label"
     },
     {
       "type": "select",
       "id": "content_position",
-      "label": "Content position",
+      "label": "t:sections.media_with_text_overlay.settings.content_position.label",
       "options": [
-        { "value": "flex-start", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Bottom" }
+        { "value": "flex-start", "label": "t:sections.media_with_text_overlay.settings.content_position.options__1.label" },
+        { "value": "center", "label": "t:sections.media_with_text_overlay.settings.content_position.options__2.label" },
+        { "value": "flex-end", "label": "t:sections.media_with_text_overlay.settings.content_position.options__3.label" }
       ],
       "default": "center"
     },
     {
       "type": "select",
       "id": "content_alignment",
-      "label": "Content alignment",
+      "label": "t:sections.media_with_text_overlay.settings.content_alignment.label",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:sections.media_with_text_overlay.settings.content_alignment.options__1.label" },
+        { "value": "center", "label": "t:sections.media_with_text_overlay.settings.content_alignment.options__2.label" },
+        { "value": "right", "label": "t:sections.media_with_text_overlay.settings.content_alignment.options__3.label" }
       ],
       "default": "center"
     },
     {
       "type": "range",
       "id": "content_width",
-      "label": "Content width",
+      "label": "t:sections.media_with_text_overlay.settings.content_width.label",
       "min": 30,
       "max": 80,
       "step": 5,
       "default": 60,
       "unit": "%"
     },
-    {
-      "type": "header",
-      "content": "Style Settings"
-    },
+    { "type": "header", "content": "t:sections.media_with_text_overlay.settings.header__3.content" },
     {
       "type": "color",
       "id": "overlay_color",
-      "label": "Overlay color",
+      "label": "t:sections.media_with_text_overlay.settings.overlay_color.label",
       "default": "rgba(0, 0, 0, 0.4)"
     },
     {
       "type": "range",
       "id": "overlay_opacity",
-      "label": "Overlay opacity",
+      "label": "t:sections.media_with_text_overlay.settings.overlay_opacity.label",
       "min": 0,
       "max": 100,
       "step": 5,
@@ -218,35 +213,32 @@
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text color",
+      "label": "t:sections.media_with_text_overlay.settings.text_color.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "button_background",
-      "label": "Button background",
+      "label": "t:sections.media_with_text_overlay.settings.button_background.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "button_text_color",
-      "label": "Button text color",
+      "label": "t:sections.media_with_text_overlay.settings.button_text_color.label",
       "default": "#1a1a1a"
     },
-    {
-      "type": "header",
-      "content": "Accessibility"
-    },
+    { "type": "header", "content": "t:sections.media_with_text_overlay.settings.header__4.content" },
     {
       "type": "text",
       "id": "aria_label",
-      "label": "ARIA label",
+      "label": "t:sections.media_with_text_overlay.settings.aria_label.label",
       "default": "Media with text overlay"
     }
   ],
   "presets": [
     {
-      "name": "Media with Text Overlay",
+      "name": "t:sections.media_with_text_overlay.presets.name",
       "category": "Hero"
     }
   ]

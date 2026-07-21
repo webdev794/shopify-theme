@@ -333,7 +333,7 @@
 
 {% schema %}
 {
-  "name": "Hero carousel",
+  "name": "t:sections.hero_carousel.name",
   "tag": "section",
   "class": "section-hero-carousel",
   "disabled_on": {
@@ -343,242 +343,221 @@
     {
       "type": "text",
       "id": "carousel_label",
-      "label": "Carousel label",
-      "info": "Describes the carousel for screen reader users, e.g. \"Featured campaigns\"."
+      "label": "t:sections.hero_carousel.settings.carousel_label.label",
+      "info": "t:sections.hero_carousel.settings.carousel_label.info"
     },
     {
       "type": "select",
       "id": "height",
-      "label": "Section height",
+      "label": "t:sections.hero_carousel.settings.height.label",
       "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" },
-        { "value": "full", "label": "Full screen" }
+        { "value": "small", "label": "t:sections.hero_carousel.settings.height.options__1.label" },
+        { "value": "medium", "label": "t:sections.hero_carousel.settings.height.options__2.label" },
+        { "value": "large", "label": "t:sections.hero_carousel.settings.height.options__3.label" },
+        { "value": "full", "label": "t:sections.hero_carousel.settings.height.options__4.label" }
       ],
       "default": "medium"
     },
     {
       "type": "select",
       "id": "heading_size",
-      "label": "Heading size",
+      "label": "t:sections.hero_carousel.settings.heading_size.label",
       "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
+        { "value": "small", "label": "t:sections.hero_carousel.settings.heading_size.options__1.label" },
+        { "value": "medium", "label": "t:sections.hero_carousel.settings.heading_size.options__2.label" },
+        { "value": "large", "label": "t:sections.hero_carousel.settings.heading_size.options__3.label" }
       ],
       "default": "large"
     },
-    {
-      "type": "header",
-      "content": "VIP Ordering"
-    },
+    { "type": "header", "content": "t:sections.hero_carousel.settings.header__1.content" },
     {
       "type": "text",
       "id": "vip_tags",
-      "label": "VIP customer tags",
+      "label": "t:sections.hero_carousel.settings.vip_tags.label",
       "default": "vip,premium,wholesale",
-      "info": "Comma-separated list of customer tags that identify VIP customers. Slides marked as VIP will show first for these customers."
+      "info": "t:sections.hero_carousel.settings.vip_tags.info"
     },
-    {
-      "type": "header",
-      "content": "Navigation"
-    },
+    { "type": "header", "content": "t:sections.hero_carousel.settings.header__2.content" },
     {
       "type": "checkbox",
       "id": "show_arrows",
-      "label": "Show arrows",
+      "label": "t:sections.hero_carousel.settings.show_arrows.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_dots",
-      "label": "Show pagination dots",
+      "label": "t:sections.hero_carousel.settings.show_dots.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "autoplay",
-      "label": "Auto-rotate slides",
+      "label": "t:sections.hero_carousel.settings.autoplay.label",
       "default": false,
-      "info": "Visitors can pause the rotation. Auto-rotation is turned off for visitors who prefer reduced motion."
+      "info": "t:sections.hero_carousel.settings.autoplay.info"
     },
     {
       "type": "range",
       "id": "autoplay_speed",
-      "label": "Change slides every",
+      "label": "t:sections.hero_carousel.settings.autoplay_speed.label",
       "min": 3,
       "max": 9,
       "step": 1,
       "unit": "s",
       "default": 6
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.hero_carousel.settings.header__3.content" },
     {
       "type": "color",
       "id": "color_foreground",
-      "label": "Text color",
+      "label": "t:sections.hero_carousel.settings.color_foreground.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "color_overlay",
-      "label": "Overlay color",
+      "label": "t:sections.hero_carousel.settings.color_overlay.label",
       "default": "#000000",
-      "info": "Overlay opacity is set per slide"
+      "info": "t:sections.hero_carousel.settings.color_overlay.info"
     }
   ],
   "blocks": [
     {
       "type": "slide",
-      "name": "Slide",
+      "name": "t:sections.hero_carousel.blocks.slide.name",
       "limit": 12,
       "settings": [
-        {
-          "type": "header",
-          "content": "Scheduling & VIP"
-        },
+        { "type": "header", "content": "t:sections.hero_carousel.blocks.slide.settings.header__1.content" },
         {
           "type": "checkbox",
           "id": "is_vip_slide",
-          "label": "VIP slide",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.is_vip_slide.label",
           "default": false,
-          "info": "When enabled, this slide will appear first for customers with VIP tags."
+          "info": "t:sections.hero_carousel.blocks.slide.settings.is_vip_slide.info"
         },
         {
           "type": "text",
           "id": "schedule_start",
-          "label": "Start date",
-          "info": "Format: YYYY-MM-DD. Leave blank for no start date.",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.schedule_start.label",
+          "info": "t:sections.hero_carousel.blocks.slide.settings.schedule_start.info",
           "placeholder": "2026-07-16"
         },
         {
           "type": "text",
           "id": "schedule_end",
-          "label": "End date",
-          "info": "Format: YYYY-MM-DD. Leave blank for no end date.",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.schedule_end.label",
+          "info": "t:sections.hero_carousel.blocks.slide.settings.schedule_end.info",
           "placeholder": "2026-08-16"
         },
-        {
-          "type": "header",
-          "content": "Image"
-        },
+        { "type": "header", "content": "t:sections.hero_carousel.blocks.slide.settings.header__2.content" },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image",
-          "info": "3840 x 2160px .jpg recommended. Set a focal point to control cropping."
+          "label": "t:sections.hero_carousel.blocks.slide.settings.image.label",
+          "info": "t:sections.hero_carousel.blocks.slide.settings.image.info"
         },
         {
           "type": "image_picker",
           "id": "image_mobile",
-          "label": "Mobile image",
-          "info": "Optional. Shown on screens narrower than 750px. 1100 x 1400px recommended."
+          "label": "t:sections.hero_carousel.blocks.slide.settings.image_mobile.label",
+          "info": "t:sections.hero_carousel.blocks.slide.settings.image_mobile.info"
         },
         {
           "type": "range",
           "id": "overlay_opacity",
-          "label": "Overlay opacity",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.overlay_opacity.label",
           "min": 0,
           "max": 90,
           "step": 5,
           "unit": "%",
           "default": 25,
-          "info": "Keep enough contrast between the text and the image behind it"
+          "info": "t:sections.hero_carousel.blocks.slide.settings.overlay_opacity.info"
         },
-        {
-          "type": "header",
-          "content": "Content"
-        },
+        { "type": "header", "content": "t:sections.hero_carousel.blocks.slide.settings.header__3.content" },
         {
           "type": "text",
           "id": "caption",
-          "label": "Caption"
+          "label": "t:sections.hero_carousel.blocks.slide.settings.caption.label"
         },
         {
           "type": "inline_richtext",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.heading.label",
           "default": "Tell your story"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text"
+          "label": "t:sections.hero_carousel.blocks.slide.settings.text.label"
         },
         {
           "type": "select",
           "id": "content_position",
-          "label": "Content position",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.label",
           "options": [
-            { "value": "top-left", "label": "Top left" },
-            { "value": "top-center", "label": "Top center" },
-            { "value": "top-right", "label": "Top right" },
-            { "value": "middle-left", "label": "Middle left" },
-            { "value": "middle-center", "label": "Middle center" },
-            { "value": "middle-right", "label": "Middle right" },
-            { "value": "bottom-left", "label": "Bottom left" },
-            { "value": "bottom-center", "label": "Bottom center" },
-            { "value": "bottom-right", "label": "Bottom right" }
+            { "value": "top-left", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__1.label" },
+            { "value": "top-center", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__2.label" },
+            { "value": "top-right", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__3.label" },
+            { "value": "middle-left", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__4.label" },
+            { "value": "middle-center", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__5.label" },
+            { "value": "middle-right", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__6.label" },
+            { "value": "bottom-left", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__7.label" },
+            { "value": "bottom-center", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__8.label" },
+            { "value": "bottom-right", "label": "t:sections.hero_carousel.blocks.slide.settings.content_position.options__9.label" }
           ],
           "default": "middle-center"
         },
         {
           "type": "select",
           "id": "content_alignment",
-          "label": "Content alignment",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.content_alignment.label",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "right", "label": "Right" }
+            { "value": "left", "label": "t:sections.hero_carousel.blocks.slide.settings.content_alignment.options__1.label" },
+            { "value": "center", "label": "t:sections.hero_carousel.blocks.slide.settings.content_alignment.options__2.label" },
+            { "value": "right", "label": "t:sections.hero_carousel.blocks.slide.settings.content_alignment.options__3.label" }
           ],
           "default": "center"
         },
-        {
-          "type": "header",
-          "content": "Buttons"
-        },
+        { "type": "header", "content": "t:sections.hero_carousel.blocks.slide.settings.header__4.content" },
         {
           "type": "text",
           "id": "button_label_1",
-          "label": "First button label",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.button_label_1.label",
           "default": "Shop now"
         },
         {
           "type": "url",
           "id": "button_link_1",
-          "label": "First button link"
+          "label": "t:sections.hero_carousel.blocks.slide.settings.button_link_1.label"
         },
         {
           "type": "select",
           "id": "button_style_1",
-          "label": "First button style",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.button_style_1.label",
           "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
+            { "value": "primary", "label": "t:sections.hero_carousel.blocks.slide.settings.button_style_1.options__1.label" },
+            { "value": "secondary", "label": "t:sections.hero_carousel.blocks.slide.settings.button_style_1.options__2.label" }
           ],
           "default": "primary"
         },
         {
           "type": "text",
           "id": "button_label_2",
-          "label": "Second button label"
+          "label": "t:sections.hero_carousel.blocks.slide.settings.button_label_2.label"
         },
         {
           "type": "url",
           "id": "button_link_2",
-          "label": "Second button link"
+          "label": "t:sections.hero_carousel.blocks.slide.settings.button_link_2.label"
         },
         {
           "type": "select",
           "id": "button_style_2",
-          "label": "Second button style",
+          "label": "t:sections.hero_carousel.blocks.slide.settings.button_style_2.label",
           "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
+            { "value": "primary", "label": "t:sections.hero_carousel.blocks.slide.settings.button_style_2.options__1.label" },
+            { "value": "secondary", "label": "t:sections.hero_carousel.blocks.slide.settings.button_style_2.options__2.label" }
           ],
           "default": "secondary"
         }
@@ -587,7 +566,7 @@
   ],
   "presets": [
     {
-      "name": "Hero carousel",
+      "name": "t:sections.hero_carousel.presets.name",
       "blocks": [
         {
           "type": "slide",

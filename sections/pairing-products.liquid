@@ -8,7 +8,9 @@
 
 <div class="pairing-products" 
      data-section-id="{{ section.id }}" 
-     data-section-type="pairing-products">
+     data-section-type="pairing-products"
+     role="region"
+     aria-label="{{ section.settings.aria_label | escape }}">
   
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
@@ -28,9 +30,9 @@
           <div class="pairing-products__main-card">
             <div class="pairing-products__main-image-wrapper">
               <img
-                src="{{ main_product.featured_image | img_url: '600x600', crop: 'center' }}"
-                srcset="{{ main_product.featured_image | img_url: '600x600', crop: 'center' }} 1x, {{ main_product.featured_image | img_url: '1200x1200', crop: 'center' }} 2x"
-                alt="{{ main_product.featured_image.alt | escape }}"
+                src="{{ main_product.featured_image | image_url: width: 600, height: 600, crop: 'center' }}"
+                srcset="{{ main_product.featured_image | image_url: width: 600, height: 600, crop: 'center' }} 1x, {{ main_product.featured_image | image_url: width: 1200, height: 1200, crop: 'center' }} 2x"
+                alt="{{ main_product.featured_image.alt | default: main_product.title | escape }}"
                 loading="lazy"
                 width="600"
                 height="600"
@@ -58,12 +60,12 @@
           <div class="pairing-products__pairings-header">
             <span class="pairing-products__pairings-label">{{ section.settings.pairings_label | default: 'Pairs Perfectly With' | escape }}</span>
             <div class="pairing-products__pairings-controls">
-              <button class="pairing-products__control pairing-products__control--prev" type="button" aria-label="Previous pairing">
+              <button class="pairing-products__control pairing-products__control--prev" type="button" aria-label="{{ 'sections.pairing_products.previous_pairing' | t }}">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
                 </svg>
               </button>
-              <button class="pairing-products__control pairing-products__control--next" type="button" aria-label="Next pairing">
+              <button class="pairing-products__control pairing-products__control--next" type="button" aria-label="{{ 'sections.pairing_products.next_pairing' | t }}">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
                 </svg>
@@ -80,9 +82,9 @@
                     <a href="{{ product.url }}" class="pairing-products__pairing-link">
                       <div class="pairing-products__pairing-image-wrapper">
                         <img
-                          src="{{ product.featured_image | img_url: '300x300', crop: 'center' }}"
-                          srcset="{{ product.featured_image | img_url: '300x300', crop: 'center' }} 1x, {{ product.featured_image | img_url: '600x600', crop: 'center' }} 2x"
-                          alt="{{ product.featured_image.alt | escape }}"
+                          src="{{ product.featured_image | image_url: width: 300, height: 300, crop: 'center' }}"
+                          srcset="{{ product.featured_image | image_url: width: 300, height: 300, crop: 'center' }} 1x, {{ product.featured_image | image_url: width: 600, height: 600, crop: 'center' }} 2x"
+                          alt="{{ product.featured_image.alt | default: product.title | escape }}"
                           loading="lazy"
                           width="300"
                           height="300"
@@ -165,23 +167,13 @@
                   {{ bundle_price | money }}
                 </span>
               </div>
-              <div class="pairing-products__bundle-savings" id="bundle-savings">
-                {%- assign total_individual = 0 -%}
-                {%- assign total_individual = total_individual | plus: main_product.price -%}
-                {%- for block in section.blocks -%}
-                  {%- assign product = block.settings.product -%}
-                  {%- if product != blank -%}
-                    {%- assign total_individual = total_individual | plus: product.price -%}
-                  {%- endif -%}
-                {%- endfor -%}
-                {%- assign bundle_price = total_individual -%}
-                {%- assign savings = total_individual | minus: bundle_price -%}
-                {%- if savings > 0 -%}
-                  <span class="pairing-products__bundle-savings-amount">
-                    {{ 'products.product.save' | t }} {{ savings | money }}
-                  </span>
-                {%- endif -%}
-              </div>
+              {%- comment -%}
+                No bundle discount is currently configured for this section (there's
+                no discount-percentage setting), so the bundle price always equals
+                the sum of individual prices and there's nothing to display here.
+                If you want real bundle savings, add a discount setting and apply
+                it to bundle_price above, then this block can show the difference.
+              {%- endcomment -%}
             </div>
 
             <button class="pairing-products__add-bundle btn btn--primary" type="button">
@@ -206,7 +198,7 @@
 
 {% schema %}
 {
-  "name": "Pairing Products",
+  "name": "t:sections.pairing_products.name",
   "tag": "section",
   "class": "pairing-products-section",
   "max_blocks": 6,
@@ -214,97 +206,88 @@
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.pairing_products.settings.heading.label",
       "default": "Complete Your Look"
     },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading",
+      "label": "t:sections.pairing_products.settings.subheading.label",
       "default": "Perfect pairings for your style"
     },
     {
       "type": "product",
       "id": "main_product",
-      "label": "Main product"
+      "label": "t:sections.pairing_products.settings.main_product.label"
     },
-    {
-      "type": "header",
-      "content": "Labels"
-    },
+    { "type": "header", "content": "t:sections.pairing_products.settings.header__1.content" },
     {
       "type": "text",
       "id": "pairings_label",
-      "label": "Pairings label",
+      "label": "t:sections.pairing_products.settings.pairings_label.label",
       "default": "Pairs Perfectly With"
     },
     {
       "type": "text",
       "id": "bundle_label",
-      "label": "Bundle label",
+      "label": "t:sections.pairing_products.settings.bundle_label.label",
       "default": "Complete the Set"
     },
     {
       "type": "text",
       "id": "bundle_price_label",
-      "label": "Bundle price label",
+      "label": "t:sections.pairing_products.settings.bundle_price_label.label",
       "default": "Bundle Price"
     },
     {
       "type": "text",
       "id": "add_bundle_text",
-      "label": "Add bundle button text",
+      "label": "t:sections.pairing_products.settings.add_bundle_text.label",
       "default": "Add Bundle to Cart"
     },
     {
       "type": "text",
       "id": "view_product_text",
-      "label": "View product link text",
+      "label": "t:sections.pairing_products.settings.view_product_text.label",
       "default": "View Product"
     },
-    {
-      "type": "header",
-      "content": "Display Options"
-    },
+    { "type": "header", "content": "t:sections.pairing_products.settings.header__2.content" },
     {
       "type": "checkbox",
       "id": "show_rating",
-      "label": "Show product ratings",
+      "label": "t:sections.pairing_products.settings.show_rating.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_plus_icon",
-      "label": "Show plus icon on pairing images",
+      "label": "t:sections.pairing_products.settings.show_plus_icon.label",
       "default": true
     },
-    {
-      "type": "header",
-      "content": "Accessibility"
-    },
+    { "type": "header", "content": "t:sections.pairing_products.settings.header__3.content" },
     {
       "type": "text",
       "id": "aria_label",
-      "label": "ARIA label",
+      "label": "t:sections.pairing_products.settings.aria_label.label",
       "default": "Product pairings and bundle"
     }
   ],
   "blocks": [
     {
       "type": "pairing",
-      "name": "Pairing Product",
+      "name": "t:sections.pairing_products.blocks.pairing.name",
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "Product"
+          "label": "t:sections.pairing_products.blocks.pairing.settings.product.label"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Pairing Products",
+      "name": "t:sections.pairing_products.presets.name",
       "category": "Product"
     }
   ]

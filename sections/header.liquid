@@ -440,137 +440,125 @@
 
 {% schema %}
 {
-  "name": "Header",
+  "name": "t:sections.header.name",
   "class": "section-header",
   "settings": [
-    {
-      "type": "header",
-      "content": "Logo"
-    },
+    { "type": "header", "content": "t:sections.header.settings.header__1.content" },
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo",
-      "info": "180 x 60px .png recommended"
+      "label": "t:sections.header.settings.logo.label",
+      "info": "t:sections.header.settings.logo.info"
     },
     {
       "type": "range",
       "id": "logo_width",
-      "label": "Logo width",
+      "label": "t:sections.header.settings.logo_width.label",
       "min": 50,
       "max": 250,
       "step": 10,
       "unit": "px",
       "default": 120
     },
-    {
-      "type": "header",
-      "content": "Navigation"
-    },
+    { "type": "header", "content": "t:sections.header.settings.header__2.content" },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu",
+      "label": "t:sections.header.settings.menu.label",
       "default": "main-menu",
-      "info": "Select the menu to display in the header"
+      "info": "t:sections.header.settings.menu.info"
     },
     {
       "type": "checkbox",
       "id": "open_on_hover",
-      "label": "Open menus on hover",
+      "label": "t:sections.header.settings.open_on_hover.label",
       "default": true,
-      "info": "On desktop, dropdowns and mega menus open on mouse hover. Click and keyboard still work."
+      "info": "t:sections.header.settings.open_on_hover.info"
     },
     {
       "type": "checkbox",
       "id": "enable_sticky_header",
-      "label": "Enable sticky header",
+      "label": "t:sections.header.settings.enable_sticky_header.label",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "sticky_hide_on_scroll",
-      "label": "Hide sticky header when scrolling down",
+      "label": "t:sections.header.settings.sticky_hide_on_scroll.label",
       "default": false,
-      "info": "The header slides away while scrolling down and reappears when scrolling up. Requires sticky header."
+      "info": "t:sections.header.settings.sticky_hide_on_scroll.info"
     },
-    {
-      "type": "header",
-      "content": "Mega Menu"
-    },
+    { "type": "header", "content": "t:sections.header.settings.header__3.content" },
     {
       "type": "checkbox",
       "id": "enable_mega_menu",
-      "label": "Enable mega menu",
+      "label": "t:sections.header.settings.enable_mega_menu.label",
       "default": false,
-      "info": "Enable mega menu layout for selected parent menu items"
+      "info": "t:sections.header.settings.enable_mega_menu.info"
     },
     {
       "type": "text",
       "id": "mega_menu_parents",
-      "label": "Mega menu parent handles",
-      "info": "Enter menu item handles separated by commas. Available handles: catalog, about-us, home (check your Navigation > Main Menu for all handles)",
+      "label": "t:sections.header.settings.mega_menu_parents.label",
+      "info": "t:sections.header.settings.mega_menu_parents.info",
       "default": "catalog",
       "placeholder": "e.g., catalog, about-us"
     },
     {
       "type": "checkbox",
       "id": "mega_show_images",
-      "label": "Show collection images",
+      "label": "t:sections.header.settings.mega_show_images.label",
       "default": false,
-      "info": "Show the collection image above each mega menu column when the menu item links to a collection"
+      "info": "t:sections.header.settings.mega_show_images.info"
     },
     {
       "type": "checkbox",
       "id": "mega_show_featured",
-      "label": "Show featured content",
+      "label": "t:sections.header.settings.mega_show_featured.label",
       "default": true,
-      "info": "Display featured content in the mega menu"
+      "info": "t:sections.header.settings.mega_show_featured.info"
     },
     {
       "type": "image_picker",
       "id": "mega_featured_image",
-      "label": "Featured image",
-      "info": "Shown at the top of the featured card. 600 x 340px recommended"
+      "label": "t:sections.header.settings.mega_featured_image.label",
+      "info": "t:sections.header.settings.mega_featured_image.info"
     },
     {
       "type": "text",
       "id": "mega_featured_title",
-      "label": "Featured title",
+      "label": "t:sections.header.settings.mega_featured_title.label",
       "default": "Featured Collection"
     },
     {
       "type": "textarea",
       "id": "mega_featured_text",
-      "label": "Featured text",
+      "label": "t:sections.header.settings.mega_featured_text.label",
       "default": "Discover our latest arrivals and best sellers."
     },
     {
       "type": "url",
       "id": "mega_featured_link",
-      "label": "Featured link"
+      "label": "t:sections.header.settings.mega_featured_link.label"
     },
     {
       "type": "text",
       "id": "mega_featured_button_label",
-      "label": "Featured button label",
+      "label": "t:sections.header.settings.mega_featured_button_label.label",
       "default": "Shop now"
     },
-    {
-      "type": "header",
-      "content": "Utilities"
-    },
+    { "type": "header", "content": "t:sections.header.settings.header__4.content" },
     {
       "type": "checkbox",
       "id": "show_search",
-      "label": "Show search",
+      "label": "t:sections.header.settings.show_search.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_account_link",
-      "label": "Show account link",
-      "info": "Shown when customer accounts are turned on in your Shopify admin.",
+      "label": "t:sections.header.settings.show_account_link.label",
+      "info": "t:sections.header.settings.show_account_link.info",
       "default": true
     },
     {
@@ -583,39 +571,36 @@
     {
       "type": "checkbox",
       "id": "show_country_selector",
-      "label": "Show country/region selector",
-      "info": "Shown when more than one country/region is available. To add a country/region, go to your market settings.",
+      "label": "t:sections.header.settings.show_country_selector.label",
+      "info": "t:sections.header.settings.show_country_selector.info",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_language_selector",
-      "label": "Show language selector",
-      "info": "Shown when more than one language is available. To add a language, go to your language settings.",
+      "label": "t:sections.header.settings.show_language_selector.label",
+      "info": "t:sections.header.settings.show_language_selector.info",
       "default": true
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.header.settings.header__5.content" },
     {
       "type": "color",
       "id": "color_background",
-      "label": "Background color",
+      "label": "t:sections.header.settings.color_background.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "color_foreground",
-      "label": "Text color",
+      "label": "t:sections.header.settings.color_foreground.label",
       "default": "#121212"
     },
     {
       "type": "color",
       "id": "color_hover",
-      "label": "Hover color",
+      "label": "t:sections.header.settings.color_hover.label",
       "default": "#000000",
-      "info": "Color used for hover states and active links"
+      "info": "t:sections.header.settings.color_hover.info"
     }
   ]
 }
