@@ -452,6 +452,11 @@ body.header-mobile-menu-open {
   height: 100%;
 }
 
+.header__account-icon-wrapper svg {
+  width:22px;
+  height:22px;
+}
+
 .header__account-icon {
   width: 22px;
   height: 22px;

@@ -24,6 +24,31 @@
     {% render 'meta-tags' %}
 
     {{ content_for_header }}
+
+    <!-- ===== STRONG FOOTER FIX - Min Height + Padding ===== -->
+    <style>
+      /* Force full height on body */
+      html, body {
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+      }
+
+      /* Target the contact page section specifically */
+      #shopify-section-template--21591767777458__detailed_contact_form_ncpBfL {
+        min-height: 80vh !important;
+        padding-bottom: 80px !important;
+      }
+
+      /* Extra safety for footer */
+      .shopify-section-group-footer-group {
+        position: relative !important;
+      }
+
+      /* Hide any preview bar interference if present */
+      #PBarNextFrameWrapper {
+        display: none !important;
+      }
+    </style>
   </head>
 
   <body>

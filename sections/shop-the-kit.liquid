@@ -1,6 +1,6 @@
 {% comment %}
   Shop the Kit Section
-  Version: 1.0
+  Version: 1.1
   Description: A curated product bundle/kit display with add-to-cart functionality
 {% endcomment %}
 
@@ -70,13 +70,13 @@
 
                   <div class="shop-the-kit__product-info">
                     <p class="shop-the-kit__product-title">{{ product.title }}</p>
-                    
+
                     {%- if section.settings.show_variant_selector and product.has_only_default_variant == false -%}
                       <div class="shop-the-kit__product-options">
                         <select class="shop-the-kit__variant-selector" data-product-id="{{ product.id }}">
                           {%- for variant in product.variants -%}
-                            <option value="{{ variant.id }}" 
-                                    {%- if forloop.first %}selected{% endif -%}
+                            <option value="{{ variant.id }}"
+                                    {%- if forloop.first %} selected{% endif -%}
                                     data-price="{{ variant.price | money }}">
                               {{ variant.title }}
                             </option>
@@ -90,6 +90,16 @@
                           <span class="shop-the-kit__product-price-compare">{{ product.compare_at_price | money }}</span>
                         {%- endif -%}
                       </div>
+                      {%- comment -%}
+                        Single-variant products (or when the variant selector is
+                        disabled) don't render a <select>. The JS looks for
+                        [data-variant-id] on these to know which variant to add
+                        to cart, so we provide it here via a hidden element.
+                      {%- endcomment -%}
+                      <input
+                        type="hidden"
+                        data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                      >
                     {%- endif -%}
                   </div>
                 </div>
