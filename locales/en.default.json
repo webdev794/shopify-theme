@@ -118,7 +118,34 @@
       "subheading": "Discover what makes us different"
     },
     "scrollable_collection": {
-      "empty": "No products found in this collection."
+      "empty": "No products found in this collection.",
+      "scroll_left": "Scroll left",
+      "scroll_right": "Scroll right"
+    },
+    "scrolling_media_cards": {
+      "scroll_left": "Scroll left",
+      "scroll_right": "Scroll right"
+    },
+    "shop_the_kit": {
+      "select_product": "Select a product"
+    },
+    "slideshow_with_marquee": {
+      "previous_slide": "Previous slide",
+      "next_slide": "Next slide",
+      "go_to_slide": "Slide {{ index }}",
+      "empty": "Add slides to display them here."
+    },
+    "sticky_media_cards": {
+      "play_pause_video": "Play/Pause video",
+      "empty": "Add media cards to display them here."
+    },
+    "testimonials": {
+      "empty": "Add testimonials to display them here."
+    },
+    "vertical_carousel": {
+      "previous_slide": "Previous slide",
+      "next_slide": "Next slide",
+      "go_to_slide": "Slide {{ index }}"
     },
     "pairing_products": {
       "empty": "Select a main product to display pairings."
@@ -180,21 +207,11 @@
     "featured_collection": {
       "view_all": "View all"
     },
-    "featured_collections_tabs": {
-      "name": "Featured collections tabs",
-      "heading": "Heading",
-      "subheading": "Subheading",
-      "heading_size": "Heading size",
-      "heading_alignment": "Heading alignment",
-      "products_to_show": "Products per tab",
-      "columns_desktop": "Columns on desktop",
-      "columns_mobile": "Columns on mobile",
-      "image_ratio": "Image aspect ratio",
-      "show_vendor": "Show vendor",
-      "show_rating": "Show product rating",
-      "show_view_all": "Show 'View all' button",
-      "padding_top": "Padding top",
-      "padding_bottom": "Padding bottom"
+    "collections_story": {
+      "scroll_hint": "Scroll"
+    },
+    "mix_match_pack": {
+      "empty": "Add products to build your pack."
     }
   },
   "products": {
@@ -245,31 +262,19 @@
       "priority_medium": "Medium",
       "priority_high": "High",
       "priority_urgent": "Urgent",
+      "country": "Country",
+      "optional": "optional",
+      "country_placeholder": "Enter your country (e.g., United States)",
       "message": "Message",
+      "message_placeholder": "Your message...",
       "subscribe_to_newsletter": "Subscribe to our newsletter",
+      "newsletter_note": "Get updates on new products and special offers",
+      "newsletter_subscribed": "You've been subscribed to our newsletter",
       "submit": "Send Message",
+      "success_heading": "Thank you!",
       "success": "Thank you for your message. We'll get back to you soon!",
       "error_heading": "Oops! There was a problem with your submission:",
       "error_general": "Please check your form and try again."
-    }
-  },
-  "blog_posts": {
-      "name": "Blog Posts",
-      "settings": {
-      "heading": "Heading",
-      "subheading": "Subheading",
-      "description": "Description",
-      "read_more_label": "Read More",
-      "view_all_label": "View All"
-    }
-  },
-  "newsletter": {
-    "name": "Newsletter",
-    "settings": {
-      "heading": "Heading",
-      "subheading": "Subheading",
-      "description": "Description",
-      "button_label": "Button Label"
     }
   },
   "collections": {

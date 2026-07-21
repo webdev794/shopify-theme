@@ -425,6 +425,31 @@
         "alignment": "center"
       }
     },
+    "wavy_marquee_hQfcyj": {
+      "type": "wavy-marquee",
+      "name": "Wavy Marquee",
+      "settings": {
+        "text": "Welcome to our store! Free shipping on orders over $50",
+        "repeats": 2,
+        "speed": 30,
+        "gap": 40,
+        "reverse": false,
+        "wavy_text": true,
+        "wave_speed": 12,
+        "text_color": "#ffffff",
+        "background_color": "#1a1a1a",
+        "font_size": 24,
+        "mobile_font_size": 16,
+        "padding": 16,
+        "full_width": true,
+        "show_icon": true,
+        "icon": "star",
+        "icon_size": 24,
+        "show_separator": true,
+        "separator_symbol": "•",
+        "aria_label": "Scrolling announcement banner"
+      }
+    },
     "lookbook_PJk88J": {
       "type": "lookbook",
       "blocks": {
@@ -556,6 +581,31 @@
         "aria_label": "Social media gallery"
       }
     },
+    "wavy_marquee_a9hUnD": {
+      "type": "wavy-marquee",
+      "name": "Wavy Marquee",
+      "settings": {
+        "text": "Welcome to our store! Free shipping on orders over $50",
+        "repeats": 2,
+        "speed": 30,
+        "gap": 40,
+        "reverse": false,
+        "wavy_text": true,
+        "wave_speed": 9,
+        "text_color": "#ffffff",
+        "background_color": "#1a1a1a",
+        "font_size": 24,
+        "mobile_font_size": 16,
+        "padding": 16,
+        "full_width": true,
+        "show_icon": true,
+        "icon": "star",
+        "icon_size": 24,
+        "show_separator": true,
+        "separator_symbol": "•",
+        "aria_label": "Scrolling announcement banner"
+      }
+    },
     "testimonials_wwx7nK": {
       "type": "testimonials",
       "blocks": {
@@ -616,7 +666,7 @@
         "show_icon": true,
         "style": "default",
         "background_color": "#121212",
-        "section_text_color": "#FFFFFF",
+        "section_text_color": "#ffffff",
         "show_note": true,
         "note_text": "No spam. Unsubscribe anytime.",
         "success_message": "Thanks for subscribing!",
@@ -634,9 +684,11 @@
     "blog_posts_TUtF9Y",
     "scrolling_text_AwxRQn",
     "text_with_icons_DtVBgt",
+    "wavy_marquee_hQfcyj",
     "lookbook_PJk88J",
     "wavy_marquee_qEWb6V",
     "social_media_gallery_mTtQC4",
+    "wavy_marquee_a9hUnD",
     "testimonials_wwx7nK",
     "newsletter_phQKPk"
   ]

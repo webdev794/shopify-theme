@@ -12,7 +12,15 @@
      data-autoplay="{{ section.settings.autoplay }}"
      data-autoplay-speed="{{ section.settings.autoplay_speed }}"
      data-stop-on-hover="{{ section.settings.stop_on_hover }}"
-     data-slide-height="{{ section.settings.slide_height }}">
+     data-slide-height="{{ section.settings.slide_height }}"
+     role="region"
+     aria-label="{{ section.settings.aria_label | escape }}"
+     style="
+       --sm-marquee-bg: {{ section.settings.marquee_bg }};
+       --sm-marquee-text-color: {{ section.settings.marquee_text_color }};
+       --sm-overlay-color: {{ section.settings.overlay_color }};
+       --sm-text-color: {{ section.settings.text_color }};
+     ">
   <div class="slideshow-with-marquee__wrapper">
     <div class="slideshow-with-marquee__slideshow">
       {%- for block in section.blocks -%}
@@ -24,9 +32,9 @@
           {%- if block.settings.image != blank -%}
             <div class="slideshow-with-marquee__image-wrapper">
               <img
-                src="{{ block.settings.image | img_url: '2000x', crop: 'center' }}"
-                srcset="{{ block.settings.image | img_url: '2000x', crop: 'center' }} 1x, {{ block.settings.image | img_url: '4000x', crop: 'center' }} 2x"
-                alt="{{ block.settings.image.alt | escape }}"
+                src="{{ block.settings.image | image_url: width: 2000 }}"
+                srcset="{{ block.settings.image | image_url: width: 2000 }} 1x, {{ block.settings.image | image_url: width: 4000 }} 2x"
+                alt="{{ block.settings.image.alt | default: block.settings.heading | escape }}"
                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                 width="2000"
                 height="800"
@@ -63,7 +71,7 @@
         </div>
       {%- else -%}
         <div class="slideshow-with-marquee__empty">
-          <p>Add slides to display them here.</p>
+          <p>{{ 'sections.slideshow_with_marquee.empty' | t }}</p>
           {%- if shop.editor_mode -%}
             <p><small>Click "Add block" to add slides</small></p>
           {%- endif -%}
@@ -73,7 +81,7 @@
 
     {%- if section.blocks.size > 1 -%}
       <div class="slideshow-with-marquee__controls">
-        <button class="slideshow-with-marquee__control slideshow-with-marquee__control--prev" type="button" aria-label="Previous slide">
+        <button class="slideshow-with-marquee__control slideshow-with-marquee__control--prev" type="button" aria-label="{{ 'sections.slideshow_with_marquee.previous_slide' | t }}">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
           </svg>
@@ -83,12 +91,12 @@
             <button class="slideshow-with-marquee__dot{% if forloop.first %} slideshow-with-marquee__dot--active{% endif %}" 
                     data-index="{{ forloop.index0 }}" 
                     type="button"
-                    aria-label="Slide {{ forloop.index }}">
+                    aria-label="{{ 'sections.slideshow_with_marquee.go_to_slide' | t: index: forloop.index }}">
               <span class="slideshow-with-marquee__dot-indicator"></span>
             </button>
           {%- endfor -%}
         </div>
-        <button class="slideshow-with-marquee__control slideshow-with-marquee__control--next" type="button" aria-label="Next slide">
+        <button class="slideshow-with-marquee__control slideshow-with-marquee__control--next" type="button" aria-label="{{ 'sections.slideshow_with_marquee.next_slide' | t }}">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
           </svg>
@@ -114,25 +122,22 @@
 
 {% schema %}
 {
-  "name": "Slideshow with Marquee",
+  "name": "t:sections.slideshow_with_marquee.name",
   "tag": "section",
   "class": "slideshow-with-marquee-section",
   "max_blocks": 6,
   "settings": [
-    {
-      "type": "header",
-      "content": "Slideshow Settings"
-    },
+    { "type": "header", "content": "t:sections.slideshow_with_marquee.settings.header__1.content" },
     {
       "type": "checkbox",
       "id": "autoplay",
-      "label": "Auto-rotate slides",
+      "label": "t:sections.slideshow_with_marquee.settings.autoplay.label",
       "default": true
     },
     {
       "type": "range",
       "id": "autoplay_speed",
-      "label": "Slide duration",
+      "label": "t:sections.slideshow_with_marquee.settings.autoplay_speed.label",
       "min": 3000,
       "max": 9000,
       "step": 1000,
@@ -142,118 +147,109 @@
     {
       "type": "range",
       "id": "slide_height",
-      "label": "Slide height",
+      "label": "t:sections.slideshow_with_marquee.settings.slide_height.label",
       "min": 400,
       "max": 800,
       "step": 50,
       "default": 600,
       "unit": "px"
     },
-    {
-      "type": "header",
-      "content": "Marquee Settings"
-    },
+    { "type": "header", "content": "t:sections.slideshow_with_marquee.settings.header__2.content" },
     {
       "type": "checkbox",
       "id": "show_marquee",
-      "label": "Show marquee bar",
+      "label": "t:sections.slideshow_with_marquee.settings.show_marquee.label",
       "default": true
     },
     {
       "type": "text",
       "id": "marquee_text",
-      "label": "Marquee text",
+      "label": "t:sections.slideshow_with_marquee.settings.marquee_text.label",
       "default": "Free Shipping • 30-Day Returns • Subscribe & Save 10% • Shop Now"
     },
     {
       "type": "range",
       "id": "marquee_speed",
-      "label": "Marquee speed",
+      "label": "t:sections.slideshow_with_marquee.settings.marquee_speed.label",
       "min": 10,
       "max": 60,
       "step": 5,
       "default": 30,
       "unit": "s"
     },
-    {
-      "type": "header",
-      "content": "Style Settings"
-    },
+    { "type": "header", "content": "t:sections.slideshow_with_marquee.settings.header__3.content" },
     {
       "type": "color",
       "id": "marquee_bg",
-      "label": "Marquee background",
+      "label": "t:sections.slideshow_with_marquee.settings.marquee_bg.label",
       "default": "#1a1a1a"
     },
     {
       "type": "color",
       "id": "marquee_text_color",
-      "label": "Marquee text color",
+      "label": "t:sections.slideshow_with_marquee.settings.marquee_text_color.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "overlay_color",
-      "label": "Slide overlay color",
+      "label": "t:sections.slideshow_with_marquee.settings.overlay_color.label",
       "default": "rgba(0, 0, 0, 0.3)"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Slide text color",
+      "label": "t:sections.slideshow_with_marquee.settings.text_color.label",
       "default": "#ffffff"
     },
-    {
-      "type": "header",
-      "content": "Accessibility"
-    },
+    { "type": "header", "content": "t:sections.slideshow_with_marquee.settings.header__4.content" },
     {
       "type": "text",
       "id": "aria_label",
-      "label": "ARIA label",
+      "label": "t:sections.slideshow_with_marquee.settings.aria_label.label",
       "default": "Slideshow with marquee"
     }
   ],
   "blocks": [
     {
       "type": "slide",
-      "name": "Slide",
+      "name": "t:sections.slideshow_with_marquee.blocks.slide.name",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image",
-          "info": "Recommended: 2000x800px"
+          "label": "t:sections.slideshow_with_marquee.blocks.slide.settings.image.label",
+          "info": "t:sections.slideshow_with_marquee.blocks.slide.settings.image.info"
         },
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:sections.slideshow_with_marquee.blocks.slide.settings.heading.label",
           "default": "Slide Title"
         },
         {
           "type": "text",
           "id": "subheading",
-          "label": "Subheading",
+          "label": "t:sections.slideshow_with_marquee.blocks.slide.settings.subheading.label",
           "default": "A compelling message for your customers"
         },
         {
           "type": "text",
           "id": "button_text",
-          "label": "Button text",
+          "label": "t:sections.slideshow_with_marquee.blocks.slide.settings.button_text.label",
           "default": "Shop Now"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button link"
+          "label": "t:sections.slideshow_with_marquee.blocks.slide.settings.button_link.label"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Slideshow with Marquee",
+      "name": "t:sections.slideshow_with_marquee.presets.name",
       "blocks": [
         {
           "type": "slide",

@@ -111,136 +111,127 @@
 
 {% schema %}
 {
-  "name": "Map",
+  "name": "t:sections.map.name",
   "tag": "section",
   "class": "section-map",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "settings": [
-    {
-      "type": "header",
-      "content": "Map"
-    },
+    { "type": "header", "content": "t:sections.map.settings.header__1.content" },
     {
       "type": "text",
       "id": "map_address",
-      "label": "Address",
+      "label": "t:sections.map.settings.map_address.label",
       "default": "Times Square, New York, NY",
-      "info": "Used to position the map and build the directions link. Include city and country for accuracy."
+      "info": "t:sections.map.settings.map_address.info"
     },
     {
       "type": "select",
       "id": "map_type",
-      "label": "Map style",
+      "label": "t:sections.map.settings.map_type.label",
       "options": [
-        { "value": "embed", "label": "Interactive map" },
-        { "value": "image", "label": "Image" }
+        { "value": "embed", "label": "t:sections.map.settings.map_type.options__1.label" },
+        { "value": "image", "label": "t:sections.map.settings.map_type.options__2.label" }
       ],
       "default": "embed",
-      "info": "The interactive map is embedded from Google Maps and needs no API key. Use an image for full visual control or to avoid third-party embeds."
+      "info": "t:sections.map.settings.map_type.info"
     },
     {
       "type": "range",
       "id": "zoom",
-      "label": "Map zoom",
+      "label": "t:sections.map.settings.zoom.label",
       "min": 8,
       "max": 18,
       "step": 1,
       "default": 14,
-      "info": "Applies to the interactive map"
+      "info": "t:sections.map.settings.zoom.info"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image",
-      "info": "Shown when map style is set to image, or as a fallback when no address is entered. 3000 x 1500px recommended."
+      "label": "t:sections.map.settings.image.label",
+      "info": "t:sections.map.settings.image.info"
     },
     {
       "type": "checkbox",
       "id": "desaturate",
-      "label": "Desaturate map",
+      "label": "t:sections.map.settings.desaturate.label",
       "default": false,
-      "info": "Shows the map or image in black and white to match minimal designs"
+      "info": "t:sections.map.settings.desaturate.info"
     },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
+    { "type": "header", "content": "t:sections.map.settings.header__2.content" },
     {
       "type": "select",
       "id": "layout",
-      "label": "Desktop layout",
+      "label": "t:sections.map.settings.layout.label",
       "options": [
-        { "value": "overlay", "label": "Card over the map" },
-        { "value": "side", "label": "Card beside the map" }
+        { "value": "overlay", "label": "t:sections.map.settings.layout.options__1.label" },
+        { "value": "side", "label": "t:sections.map.settings.layout.options__2.label" }
       ],
       "default": "overlay"
     },
     {
       "type": "select",
       "id": "card_position",
-      "label": "Card position",
+      "label": "t:sections.map.settings.card_position.label",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:sections.map.settings.card_position.options__1.label" },
+        { "value": "right", "label": "t:sections.map.settings.card_position.options__2.label" }
       ],
       "default": "left"
     },
     {
       "type": "select",
       "id": "height",
-      "label": "Section height",
+      "label": "t:sections.map.settings.height.label",
       "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
+        { "value": "small", "label": "t:sections.map.settings.height.options__1.label" },
+        { "value": "medium", "label": "t:sections.map.settings.height.options__2.label" },
+        { "value": "large", "label": "t:sections.map.settings.height.options__3.label" }
       ],
       "default": "medium"
     },
     {
       "type": "checkbox",
       "id": "full_width",
-      "label": "Full width",
+      "label": "t:sections.map.settings.full_width.label",
       "default": true
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.map.settings.header__3.content" },
     {
       "type": "color",
       "id": "color_card_background",
-      "label": "Card background",
+      "label": "t:sections.map.settings.color_card_background.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "color_card_foreground",
-      "label": "Card text",
+      "label": "t:sections.map.settings.color_card_foreground.label",
       "default": "#121212"
     }
   ],
   "blocks": [
     {
       "type": "heading",
-      "name": "Heading",
+      "name": "t:sections.map.blocks.heading.name",
       "limit": 1,
       "settings": [
         {
           "type": "inline_richtext",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:sections.map.blocks.heading.settings.heading.label",
           "default": "Visit our store"
         },
         {
           "type": "select",
           "id": "heading_size",
-          "label": "Heading size",
+          "label": "t:sections.map.blocks.heading.settings.heading_size.label",
           "options": [
-            { "value": "small", "label": "Small" },
-            { "value": "medium", "label": "Medium" },
-            { "value": "large", "label": "Large" }
+            { "value": "small", "label": "t:sections.map.blocks.heading.settings.heading_size.options__1.label" },
+            { "value": "medium", "label": "t:sections.map.blocks.heading.settings.heading_size.options__2.label" },
+            { "value": "large", "label": "t:sections.map.blocks.heading.settings.heading_size.options__3.label" }
           ],
           "default": "medium"
         }
@@ -248,47 +239,47 @@
     },
     {
       "type": "text",
-      "name": "Text",
+      "name": "t:sections.map.blocks.text.name",
       "settings": [
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:sections.map.blocks.text.settings.text.label",
           "default": "<p>1 Times Square<br>New York, NY 10036</p>"
         },
         {
           "type": "checkbox",
           "id": "is_address",
-          "label": "This text is an address",
+          "label": "t:sections.map.blocks.text.settings.is_address.label",
           "default": false,
-          "info": "Marks the text as a physical address for screen readers and search engines"
+          "info": "t:sections.map.blocks.text.settings.is_address.info"
         }
       ]
     },
     {
       "type": "button",
-      "name": "Button",
+      "name": "t:sections.map.blocks.button.name",
       "limit": 2,
       "settings": [
         {
           "type": "text",
           "id": "button_label",
-          "label": "Button label",
+          "label": "t:sections.map.blocks.button.settings.button_label.label",
           "default": "Get directions"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button link",
-          "info": "Leave empty to open directions to the address on Google Maps"
+          "label": "t:sections.map.blocks.button.settings.button_link.label",
+          "info": "t:sections.map.blocks.button.settings.button_link.info"
         },
         {
           "type": "select",
           "id": "button_style",
-          "label": "Button style",
+          "label": "t:sections.map.blocks.button.settings.button_style.label",
           "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
+            { "value": "primary", "label": "t:sections.map.blocks.button.settings.button_style.options__1.label" },
+            { "value": "secondary", "label": "t:sections.map.blocks.button.settings.button_style.options__2.label" }
           ],
           "default": "primary"
         }
@@ -297,7 +288,7 @@
   ],
   "presets": [
     {
-      "name": "Map",
+      "name": "t:sections.map.presets.name",
       "blocks": [
         { "type": "heading" },
         {

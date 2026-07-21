@@ -9,6 +9,9 @@
 <div class="scrolling-text" 
      data-section-id="{{ section.id }}" 
      data-section-type="scrolling-text"
+     data-pause-on-hover="{{ section.settings.pause_on_hover }}"
+     role="region"
+     aria-label="{{ section.settings.aria_label | escape }}"
      style="
        --st-bg: {{ section.settings.background_color }};
        --st-text-color: {{ section.settings.text_color }};
@@ -42,30 +45,27 @@
 
 {% schema %}
 {
-  "name": "Scrolling Text",
+  "name": "t:sections.scrolling_text.name",
   "tag": "section",
   "class": "scrolling-text-section",
   "max_blocks": 10,
   "settings": [
-    {
-      "type": "header",
-      "content": "Content Settings"
-    },
+    { "type": "header", "content": "t:sections.scrolling_text.settings.header__1.content" },
     {
       "type": "range",
       "id": "speed",
-      "label": "Scroll speed",
+      "label": "t:sections.scrolling_text.settings.speed.label",
       "min": 10,
       "max": 60,
       "step": 5,
       "default": 30,
       "unit": "s",
-      "info": "Lower = faster"
+      "info": "t:sections.scrolling_text.settings.speed.info"
     },
     {
       "type": "range",
       "id": "gap",
-      "label": "Item spacing",
+      "label": "t:sections.scrolling_text.settings.gap.label",
       "min": 20,
       "max": 80,
       "step": 5,
@@ -75,33 +75,30 @@
     {
       "type": "range",
       "id": "repeat_count",
-      "label": "Repeat count",
+      "label": "t:sections.scrolling_text.settings.repeat_count.label",
       "min": 2,
       "max": 6,
       "step": 1,
       "default": 3,
-      "info": "Number of times to repeat the text for seamless scrolling"
+      "info": "t:sections.scrolling_text.settings.repeat_count.info"
     },
     {
       "type": "checkbox",
       "id": "show_divider",
-      "label": "Show divider",
+      "label": "t:sections.scrolling_text.settings.show_divider.label",
       "default": true
     },
     {
       "type": "text",
       "id": "divider_symbol",
-      "label": "Divider symbol",
+      "label": "t:sections.scrolling_text.settings.divider_symbol.label",
       "default": "•"
     },
-    {
-      "type": "header",
-      "content": "Style Settings"
-    },
+    { "type": "header", "content": "t:sections.scrolling_text.settings.header__2.content" },
     {
       "type": "range",
       "id": "font_size",
-      "label": "Font size",
+      "label": "t:sections.scrolling_text.settings.font_size.label",
       "min": 14,
       "max": 48,
       "step": 2,
@@ -111,62 +108,59 @@
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background color",
+      "label": "t:sections.scrolling_text.settings.background_color.label",
       "default": "#1a1a1a"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text color",
+      "label": "t:sections.scrolling_text.settings.text_color.label",
       "default": "#ffffff"
     },
-    {
-      "type": "header",
-      "content": "Accessibility"
-    },
+    { "type": "header", "content": "t:sections.scrolling_text.settings.header__3.content" },
     {
       "type": "checkbox",
       "id": "pause_on_hover",
-      "label": "Pause on hover",
+      "label": "t:sections.scrolling_text.settings.pause_on_hover.label",
       "default": true,
-      "info": "Pause animation when user hovers over the text"
+      "info": "t:sections.scrolling_text.settings.pause_on_hover.info"
     },
     {
       "type": "text",
       "id": "aria_label",
-      "label": "ARIA label",
+      "label": "t:sections.scrolling_text.settings.aria_label.label",
       "default": "Scrolling announcement bar"
     }
   ],
   "blocks": [
     {
       "type": "text_item",
-      "name": "Text Item",
+      "name": "t:sections.scrolling_text.blocks.text_item.name",
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
+          "label": "t:sections.scrolling_text.blocks.text_item.settings.text.label",
           "default": "Free shipping on orders over $50",
-          "info": "This text will scroll across the screen"
+          "info": "t:sections.scrolling_text.blocks.text_item.settings.text.info"
         },
         {
           "type": "select",
           "id": "icon",
-          "label": "Icon",
+          "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.label",
           "options": [
-            { "value": "none", "label": "No icon" },
-            { "value": "star", "label": "Star" },
-            { "value": "heart", "label": "Heart" },
-            { "value": "check", "label": "Check" },
-            { "value": "truck", "label": "Truck" },
-            { "value": "shield", "label": "Shield" },
-            { "value": "clock", "label": "Clock" },
-            { "value": "gift", "label": "Gift" },
-            { "value": "tag", "label": "Tag" },
-            { "value": "phone", "label": "Phone" },
-            { "value": "chat", "label": "Chat" },
-            { "value": "globe", "label": "Globe" }
+            { "value": "none", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__1.label" },
+            { "value": "star", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__2.label" },
+            { "value": "heart", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__3.label" },
+            { "value": "check", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__4.label" },
+            { "value": "truck", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__5.label" },
+            { "value": "shield", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__6.label" },
+            { "value": "clock", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__7.label" },
+            { "value": "gift", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__8.label" },
+            { "value": "tag", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__9.label" },
+            { "value": "phone", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__10.label" },
+            { "value": "chat", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__11.label" },
+            { "value": "globe", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__12.label" }
           ],
           "default": "none"
         }
@@ -175,7 +169,7 @@
   ],
   "presets": [
     {
-      "name": "Scrolling Text",
+      "name": "t:sections.scrolling_text.presets.name",
       "blocks": [
         {
           "type": "text_item",

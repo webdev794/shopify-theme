@@ -20,12 +20,14 @@
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
+    {{ 'buttons.css' | asset_url | stylesheet_tag }}
+
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 
     {{ content_for_header }}
 
-    <!-- ===== STRONG FOOTER FIX - Min Height + Padding ===== -->
+    <!-- ===== Global layout safety net ===== -->
     <style>
       /* Force full height on body */
       html, body {
@@ -33,18 +35,13 @@
         min-height: 100dvh !important;
       }
 
-      /* Target the contact page section specifically */
-      #shopify-section-template--21591767777458__detailed_contact_form_ncpBfL {
-        min-height: 80vh !important;
-        padding-bottom: 80px !important;
-      }
-
-      /* Extra safety for footer */
       .shopify-section-group-footer-group {
         position: relative !important;
       }
 
-      /* Hide any preview bar interference if present */
+      /* TODO: confirm this is still needed and what it targets before shipping.
+         Hiding an unknown element with !important sitewide is risky if it's
+         a legitimate app/preview element rather than dev-only noise. */
       #PBarNextFrameWrapper {
         display: none !important;
       }

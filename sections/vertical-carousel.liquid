@@ -61,13 +61,13 @@
     </div>
 
     <!-- Navigation Arrows -->
-    <button class="vertical-carousel__nav vertical-carousel__nav--prev" aria-label="Previous slide" type="button">
+    <button class="vertical-carousel__nav vertical-carousel__nav--prev" aria-label="{{ 'sections.vertical_carousel.previous_slide' | t }}" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M7.41 15.41L12 10.83L16.59 15.41L18 14L12 8L6 14L7.41 15.41Z"/>
       </svg>
     </button>
 
-    <button class="vertical-carousel__nav vertical-carousel__nav--next" aria-label="Next slide" type="button">
+    <button class="vertical-carousel__nav vertical-carousel__nav--next" aria-label="{{ 'sections.vertical_carousel.next_slide' | t }}" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M7.41 8.59L12 13.17L16.59 8.59L18 10L12 16L6 10L7.41 8.59Z"/>
       </svg>
@@ -78,7 +78,7 @@
         {%- for block in section.blocks -%}
           <button class="vertical-carousel__indicator{% if forloop.first %} vertical-carousel__indicator--active{% endif %}"
                   role="tab"
-                  aria-label="Slide {{ forloop.index }}"
+                  aria-label="{{ 'sections.vertical_carousel.go_to_slide' | t: index: forloop.index }}"
                   data-index="{{ forloop.index0 }}"
                   aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
                   type="button">
@@ -94,70 +94,70 @@
 
 {% schema %}
 {
-  "name": "Vertical Carousel",
+  "name": "t:sections.vertical_carousel.name",
   "tag": "section",
   "class": "vertical-carousel-section",
   "max_blocks": 10,
   "settings": [
-    { "type": "header", "content": "Carousel Settings" },
+    { "type": "header", "content": "t:sections.vertical_carousel.settings.header__1.content" },
     {
-      "type": "range", "id": "height", "label": "Carousel height", "min": 200, "max": 600, "step": 10, "default": 400, "unit": "px"
+      "type": "range", "id": "height", "label": "t:sections.vertical_carousel.settings.height.label", "min": 200, "max": 600, "step": 10, "default": 400, "unit": "px"
     },
-    { "type": "checkbox", "id": "autoplay", "label": "Enable autoplay", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "t:sections.vertical_carousel.settings.autoplay.label", "default": true },
     {
-      "type": "range", "id": "autoplay_speed", "label": "Autoplay speed", "min": 2000, "max": 9000, "step": 500, "default": 5000, "unit": "ms"
+      "type": "range", "id": "autoplay_speed", "label": "t:sections.vertical_carousel.settings.autoplay_speed.label", "min": 2000, "max": 9000, "step": 500, "default": 5000, "unit": "ms"
     },
     {
-      "type": "range", "id": "transition_speed", "label": "Transition speed", "min": 300, "max": 1500, "step": 100, "default": 600, "unit": "ms"
+      "type": "range", "id": "transition_speed", "label": "t:sections.vertical_carousel.settings.transition_speed.label", "min": 300, "max": 1500, "step": 100, "default": 600, "unit": "ms"
     },
-    { "type": "checkbox", "id": "stop_on_hover", "label": "Stop autoplay on hover", "default": true },
-    { "type": "checkbox", "id": "show_indicators", "label": "Show indicators", "default": true },
-    { "type": "header", "content": "Style Settings" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#f5f5f5" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#1a1a1a" },
-    { "type": "color", "id": "nav_color", "label": "Navigation arrow color", "default": "#ffffff" },
-    { "type": "color", "id": "nav_background", "label": "Navigation arrow background", "default": "rgba(0, 0, 0, 0.5)" },
-    { "type": "color", "id": "indicator_color", "label": "Indicator color", "default": "rgba(255, 255, 255, 0.5)" },
-    { "type": "color", "id": "indicator_active_color", "label": "Active indicator color", "default": "#ffffff" },
-    { "type": "header", "content": "Accessibility" },
-    { "type": "text", "id": "aria_label", "label": "ARIA label", "default": "Vertical carousel of content" }
+    { "type": "checkbox", "id": "stop_on_hover", "label": "t:sections.vertical_carousel.settings.stop_on_hover.label", "default": true },
+    { "type": "checkbox", "id": "show_indicators", "label": "t:sections.vertical_carousel.settings.show_indicators.label", "default": true },
+    { "type": "header", "content": "t:sections.vertical_carousel.settings.header__2.content" },
+    { "type": "color", "id": "background_color", "label": "t:sections.vertical_carousel.settings.background_color.label", "default": "#f5f5f5" },
+    { "type": "color", "id": "text_color", "label": "t:sections.vertical_carousel.settings.text_color.label", "default": "#1a1a1a" },
+    { "type": "color", "id": "nav_color", "label": "t:sections.vertical_carousel.settings.nav_color.label", "default": "#ffffff" },
+    { "type": "color", "id": "nav_background", "label": "t:sections.vertical_carousel.settings.nav_background.label", "default": "rgba(0, 0, 0, 0.5)" },
+    { "type": "color", "id": "indicator_color", "label": "t:sections.vertical_carousel.settings.indicator_color.label", "default": "rgba(255, 255, 255, 0.5)" },
+    { "type": "color", "id": "indicator_active_color", "label": "t:sections.vertical_carousel.settings.indicator_active_color.label", "default": "#ffffff" },
+    { "type": "header", "content": "t:sections.vertical_carousel.settings.header__3.content" },
+    { "type": "text", "id": "aria_label", "label": "t:sections.vertical_carousel.settings.aria_label.label", "default": "Vertical carousel of content" }
   ],
   "blocks": [
     {
       "type": "slide",
-      "name": "Slide",
+      "name": "t:sections.vertical_carousel.blocks.slide.name",
       "settings": [
-        { "type": "text", "id": "title", "label": "Slide title", "default": "Slide Title" },
-        { "type": "richtext", "id": "text", "label": "Slide text", "default": "<p>Add your content here.</p>" },
+        { "type": "text", "id": "title", "label": "t:sections.vertical_carousel.blocks.slide.settings.title.label", "default": "Slide Title" },
+        { "type": "richtext", "id": "text", "label": "t:sections.vertical_carousel.blocks.slide.settings.text.label", "default": "<p>Add your content here.</p>" },
         {
           "type": "select",
           "id": "icon",
-          "label": "Icon",
+          "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.label",
           "default": "star",
           "options": [
-            { "value": "none", "label": "No icon" },
-            { "value": "star", "label": "Star" },
-            { "value": "heart", "label": "Heart" },
-            { "value": "sparkle", "label": "Sparkle" },
-            { "value": "arrow", "label": "Arrow" },
-            { "value": "cart", "label": "Cart" },
-            { "value": "tag", "label": "Tag" },
-            { "value": "truck", "label": "Truck" },
-            { "value": "gift", "label": "Gift" },
-            { "value": "check", "label": "Check" },
-            { "value": "shield", "label": "Shield" },
-            { "value": "clock", "label": "Clock" }
+            { "value": "none", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__1.label" },
+            { "value": "star", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__2.label" },
+            { "value": "heart", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__3.label" },
+            { "value": "sparkle", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__4.label" },
+            { "value": "arrow", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__5.label" },
+            { "value": "cart", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__6.label" },
+            { "value": "tag", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__7.label" },
+            { "value": "truck", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__8.label" },
+            { "value": "gift", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__9.label" },
+            { "value": "check", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__10.label" },
+            { "value": "shield", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__11.label" },
+            { "value": "clock", "label": "t:sections.vertical_carousel.blocks.slide.settings.icon.options__12.label" }
           ]
         },
-        { "type": "color", "id": "slide_background", "label": "Slide background", "default": "transparent" },
-        { "type": "text", "id": "button_text", "label": "Button text", "default": "Learn More" },
-        { "type": "url", "id": "button_link", "label": "Button link" }
+        { "type": "color", "id": "slide_background", "label": "t:sections.vertical_carousel.blocks.slide.settings.slide_background.label", "default": "transparent" },
+        { "type": "text", "id": "button_text", "label": "t:sections.vertical_carousel.blocks.slide.settings.button_text.label", "default": "Learn More" },
+        { "type": "url", "id": "button_link", "label": "t:sections.vertical_carousel.blocks.slide.settings.button_link.label" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Vertical Carousel",
+      "name": "t:sections.vertical_carousel.presets.name",
       "category": "Promotional",
       "blocks": [
         { "type": "slide", "settings": { "title": "Welcome to Our Store", "text": "<p>Discover our amazing collection of products designed just for you.</p>", "icon": "star", "button_text": "Shop Now", "button_link": "/collections/all" } },

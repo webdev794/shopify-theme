@@ -3,7 +3,7 @@
   collections as a full-bleed, scroll-driven editorial "story" — each
   collection gets its own full-height panel instead of a grid card.
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/list-collections
 {% endcomment %}
 
 {% assign romans = 'I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII,XIII,XIV,XV,XVI,XVII,XVIII,XIX,XX' | split: ',' %}
@@ -103,7 +103,7 @@
 
           {% if forloop.first %}
             <div class="collections-story__scrollcue" aria-hidden="true">
-              <span>Scroll</span>
+              <span>{{ 'sections.collections_story.scroll_hint' | t }}</span>
               <i></i>
             </div>
           {% endif %}
@@ -500,26 +500,23 @@
 {
   "name": "t:general.collections_grid",
   "settings": [
-    {
-      "type": "header",
-      "content": "Story layout"
-    },
+    { "type": "header", "content": "t:sections.collections_story.settings.header__1.content" },
     {
       "type": "font_picker",
       "id": "story_display_font",
-      "label": "Display font (title & numerals)",
+      "label": "t:sections.collections_story.settings.story_display_font.label",
       "default": "playfair_display_i4"
     },
     {
       "type": "font_picker",
       "id": "story_body_font",
-      "label": "Body / label font",
+      "label": "t:sections.collections_story.settings.story_body_font.label",
       "default": "jost_n4"
     },
     {
       "type": "checkbox",
       "id": "show_description",
-      "label": "Show collection description",
+      "label": "t:sections.collections_story.settings.show_description.label",
       "default": true
     }
   ],

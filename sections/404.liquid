@@ -136,18 +136,6 @@
     text-decoration: none;
     cursor: pointer;
   }
-
-  .button--primary {
-    background: var(--color-foreground, #1a1a1a);
-    color: var(--color-background, #fff);
-    border: 1px solid var(--color-foreground, #1a1a1a);
-  }
-
-  .button--secondary {
-    background: var(--color-background, #fff);
-    color: var(--color-foreground, #1a1a1a);
-    border: 1px solid var(--color-border, #ccc);
-  }
 {% endstylesheet %}
 
 {% schema %}
@@ -157,12 +145,12 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image"
+      "label": "t:sections.error_404.settings.image.label"
     },
     {
       "type": "checkbox",
       "id": "show_search",
-      "label": "Show search bar",
+      "label": "t:sections.error_404.settings.show_search.label",
       "default": true
     }
   ]

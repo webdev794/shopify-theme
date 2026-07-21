@@ -103,7 +103,7 @@
 
 {% schema %}
 {
-  "name": "Highlight text + images",
+  "name": "t:sections.highlight_text_with_images.name",
   "tag": "section",
   "class": "section-hlt",
   "max_blocks": 16,
@@ -114,136 +114,124 @@
     {
       "type": "text",
       "id": "caption",
-      "label": "Caption",
+      "label": "t:sections.highlight_text_with_images.settings.caption.label",
       "default": "Our story"
     },
     {
       "type": "select",
       "id": "text_size",
-      "label": "Text size",
+      "label": "t:sections.highlight_text_with_images.settings.text_size.label",
       "options": [
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" },
-        { "value": "huge", "label": "Huge" }
+        { "value": "medium", "label": "t:sections.highlight_text_with_images.settings.text_size.options__1.label" },
+        { "value": "large", "label": "t:sections.highlight_text_with_images.settings.text_size.options__2.label" },
+        { "value": "huge", "label": "t:sections.highlight_text_with_images.settings.text_size.options__3.label" }
       ],
       "default": "large"
     },
     {
       "type": "select",
       "id": "alignment",
-      "label": "Alignment",
+      "label": "t:sections.highlight_text_with_images.settings.alignment.label",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" }
+        { "value": "left", "label": "t:sections.highlight_text_with_images.settings.alignment.options__1.label" },
+        { "value": "center", "label": "t:sections.highlight_text_with_images.settings.alignment.options__2.label" }
       ],
       "default": "center"
     },
-    {
-      "type": "header",
-      "content": "Images"
-    },
+    { "type": "header", "content": "t:sections.highlight_text_with_images.settings.header__1.content" },
     {
       "type": "range",
       "id": "image_size",
-      "label": "Image size",
+      "label": "t:sections.highlight_text_with_images.settings.image_size.label",
       "min": 80,
       "max": 160,
       "step": 10,
       "unit": "%",
       "default": 110,
-      "info": "Relative to the text height, so images scale with the text on every screen"
+      "info": "t:sections.highlight_text_with_images.settings.image_size.info"
     },
     {
       "type": "select",
       "id": "image_shape",
-      "label": "Image shape",
+      "label": "t:sections.highlight_text_with_images.settings.image_shape.label",
       "options": [
-        { "value": "rounded", "label": "Rounded" },
-        { "value": "pill", "label": "Pill" },
-        { "value": "circle", "label": "Circle" },
-        { "value": "square", "label": "Square" }
+        { "value": "rounded", "label": "t:sections.highlight_text_with_images.settings.image_shape.options__1.label" },
+        { "value": "pill", "label": "t:sections.highlight_text_with_images.settings.image_shape.options__2.label" },
+        { "value": "circle", "label": "t:sections.highlight_text_with_images.settings.image_shape.options__3.label" },
+        { "value": "square", "label": "t:sections.highlight_text_with_images.settings.image_shape.options__4.label" }
       ],
       "default": "pill"
     },
-    {
-      "type": "header",
-      "content": "Button"
-    },
+    { "type": "header", "content": "t:sections.highlight_text_with_images.settings.header__2.content" },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button label"
+      "label": "t:sections.highlight_text_with_images.settings.button_label.label"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button link"
+      "label": "t:sections.highlight_text_with_images.settings.button_link.label"
     },
     {
       "type": "select",
       "id": "button_style",
-      "label": "Button style",
+      "label": "t:sections.highlight_text_with_images.settings.button_style.label",
       "options": [
-        { "value": "primary", "label": "Primary" },
-        { "value": "secondary", "label": "Secondary" }
+        { "value": "primary", "label": "t:sections.highlight_text_with_images.settings.button_style.options__1.label" },
+        { "value": "secondary", "label": "t:sections.highlight_text_with_images.settings.button_style.options__2.label" }
       ],
       "default": "primary"
     },
-    {
-      "type": "header",
-      "content": "Effects"
-    },
+    { "type": "header", "content": "t:sections.highlight_text_with_images.settings.header__3.content" },
     {
       "type": "checkbox",
       "id": "enable_animation",
-      "label": "Reveal on scroll",
+      "label": "t:sections.highlight_text_with_images.settings.enable_animation.label",
       "default": true,
-      "info": "Words and images fade in one after another as the section scrolls into view. Turned off for visitors who prefer reduced motion."
+      "info": "t:sections.highlight_text_with_images.settings.enable_animation.info"
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.highlight_text_with_images.settings.header__4.content" },
     {
       "type": "color",
       "id": "color_background",
-      "label": "Background",
+      "label": "t:sections.highlight_text_with_images.settings.color_background.label",
       "default": "#f5f4f2"
     },
     {
       "type": "color",
       "id": "color_foreground",
-      "label": "Text",
+      "label": "t:sections.highlight_text_with_images.settings.color_foreground.label",
       "default": "#121212"
     },
     {
       "type": "color",
       "id": "color_accent",
-      "label": "Accent",
+      "label": "t:sections.highlight_text_with_images.settings.color_accent.label",
       "default": "#b4552d",
-      "info": "Used for accented and highlighted phrases"
+      "info": "t:sections.highlight_text_with_images.settings.color_accent.info"
     }
   ],
   "blocks": [
     {
       "type": "text",
-      "name": "Text",
+      "name": "t:sections.highlight_text_with_images.blocks.text.name",
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
+          "label": "t:sections.highlight_text_with_images.blocks.text.settings.text.label",
           "default": "your words"
         },
         {
           "type": "select",
           "id": "style",
-          "label": "Style",
+          "label": "t:sections.highlight_text_with_images.blocks.text.settings.style.label",
           "options": [
-            { "value": "regular", "label": "Regular" },
-            { "value": "accent", "label": "Accent color" },
-            { "value": "italic", "label": "Italic" },
-            { "value": "highlighted", "label": "Highlighted" }
+            { "value": "regular", "label": "t:sections.highlight_text_with_images.blocks.text.settings.style.options__1.label" },
+            { "value": "accent", "label": "t:sections.highlight_text_with_images.blocks.text.settings.style.options__2.label" },
+            { "value": "italic", "label": "t:sections.highlight_text_with_images.blocks.text.settings.style.options__3.label" },
+            { "value": "highlighted", "label": "t:sections.highlight_text_with_images.blocks.text.settings.style.options__4.label" }
           ],
           "default": "regular"
         }
@@ -251,31 +239,31 @@
     },
     {
       "type": "image",
-      "name": "Image",
+      "name": "t:sections.highlight_text_with_images.blocks.image.name",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image",
-          "info": "400 x 300px recommended. Set a focal point to control cropping."
+          "label": "t:sections.highlight_text_with_images.blocks.image.settings.image.label",
+          "info": "t:sections.highlight_text_with_images.blocks.image.settings.image.info"
         },
         {
           "type": "range",
           "id": "tilt",
-          "label": "Tilt",
+          "label": "t:sections.highlight_text_with_images.blocks.image.settings.tilt.label",
           "min": -8,
           "max": 8,
           "step": 1,
           "unit": "deg",
           "default": 0,
-          "info": "A slight tilt gives a hand-placed, editorial feel"
+          "info": "t:sections.highlight_text_with_images.blocks.image.settings.tilt.info"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Highlight text + images",
+      "name": "t:sections.highlight_text_with_images.presets.name",
       "blocks": [
         {
           "type": "text",

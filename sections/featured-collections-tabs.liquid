@@ -87,7 +87,7 @@
             {%- if section.settings.show_view_all -%}
               <div class="view-all-wrapper text-center">
                 <a href="{{ collection.url }}" class="button button--secondary">
-                  View all {{ collection.title | escape }}
+                  {{ 'sections.featured_collection.view_all' | t }} {{ collection.title | escape }}
                 </a>
               </div>
             {%- endif -%}

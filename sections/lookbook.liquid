@@ -249,7 +249,7 @@
 
 {% schema %}
 {
-  "name": "Lookbook",
+  "name": "t:sections.lookbook.name",
   "tag": "section",
   "class": "section-lookbook",
   "disabled_on": {
@@ -259,92 +259,86 @@
     {
       "type": "inline_richtext",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.lookbook.settings.heading.label",
       "default": "Shop the look"
     },
     {
       "type": "select",
       "id": "heading_size",
-      "label": "Heading size",
+      "label": "t:sections.lookbook.settings.heading_size.label",
       "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
+        { "value": "small", "label": "t:sections.lookbook.settings.heading_size.options__1.label" },
+        { "value": "medium", "label": "t:sections.lookbook.settings.heading_size.options__2.label" },
+        { "value": "large", "label": "t:sections.lookbook.settings.heading_size.options__3.label" }
       ],
       "default": "medium"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text",
+      "label": "t:sections.lookbook.settings.text.label",
       "default": "<p>Tap the dots to shop every piece in this look.</p>"
     },
     {
       "type": "select",
       "id": "content_position",
-      "label": "Content position",
+      "label": "t:sections.lookbook.settings.content_position.label",
       "options": [
-        { "value": "top", "label": "Above image" },
-        { "value": "left", "label": "Beside image, left" },
-        { "value": "right", "label": "Beside image, right" }
+        { "value": "top", "label": "t:sections.lookbook.settings.content_position.options__1.label" },
+        { "value": "left", "label": "t:sections.lookbook.settings.content_position.options__2.label" },
+        { "value": "right", "label": "t:sections.lookbook.settings.content_position.options__3.label" }
       ],
       "default": "top",
-      "info": "On mobile, content always shows above the image"
+      "info": "t:sections.lookbook.settings.content_position.info"
     },
-    {
-      "type": "header",
-      "content": "Image"
-    },
+    { "type": "header", "content": "t:sections.lookbook.settings.header__1.content" },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image",
-      "info": "2000 x 2500px .jpg recommended. Position hotspots with the sliders on each hotspot block."
+      "label": "t:sections.lookbook.settings.image.label",
+      "info": "t:sections.lookbook.settings.image.info"
     },
     {
       "type": "checkbox",
       "id": "full_width",
-      "label": "Full width",
+      "label": "t:sections.lookbook.settings.full_width.label",
       "default": false
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.lookbook.settings.header__2.content" },
     {
       "type": "color",
       "id": "color_dot",
-      "label": "Hotspot dot color",
+      "label": "t:sections.lookbook.settings.color_dot.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "color_card_background",
-      "label": "Product card background",
+      "label": "t:sections.lookbook.settings.color_card_background.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "color_card_foreground",
-      "label": "Product card text",
+      "label": "t:sections.lookbook.settings.color_card_foreground.label",
       "default": "#121212"
     }
   ],
   "blocks": [
     {
       "type": "hotspot",
-      "name": "Hotspot",
+      "name": "t:sections.lookbook.blocks.hotspot.name",
       "limit": 6,
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "Product"
+          "label": "t:sections.lookbook.blocks.hotspot.settings.product.label"
         },
         {
           "type": "range",
           "id": "position_x",
-          "label": "Horizontal position",
+          "label": "t:sections.lookbook.blocks.hotspot.settings.position_x.label",
           "min": 0,
           "max": 100,
           "step": 1,
@@ -354,7 +348,7 @@
         {
           "type": "range",
           "id": "position_y",
-          "label": "Vertical position",
+          "label": "t:sections.lookbook.blocks.hotspot.settings.position_y.label",
           "min": 0,
           "max": 100,
           "step": 1,
@@ -366,7 +360,7 @@
   ],
   "presets": [
     {
-      "name": "Lookbook",
+      "name": "t:sections.lookbook.presets.name",
       "blocks": [
         {
           "type": "hotspot",

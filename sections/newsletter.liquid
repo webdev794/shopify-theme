@@ -123,144 +123,127 @@
 
 {% schema %}
 {
-  "name": "Newsletter",
+  "name": "t:sections.newsletter.name",
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
+    { "type": "header", "content": "t:sections.newsletter.settings.header__1.content" },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading",
+      "label": "t:sections.newsletter.settings.subheading.label",
       "default": "Subscribe Now"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.newsletter.settings.heading.label",
       "default": "Join Our Newsletter"
     },
     {
       "type": "richtext",
       "id": "description",
-      "label": "Description",
+      "label": "t:sections.newsletter.settings.description.label",
       "default": "<p>Subscribe to get special offers, free giveaways, and exclusive deals.</p>"
     },
     {
       "type": "text",
       "id": "placeholder",
-      "label": "Email placeholder",
+      "label": "t:sections.newsletter.settings.placeholder.label",
       "default": "Enter your email"
     },
-    {
-      "type": "header",
-      "content": "Button"
-    },
+    { "type": "header", "content": "t:sections.newsletter.settings.header__2.content" },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button label",
+      "label": "t:sections.newsletter.settings.button_label.label",
       "default": "Subscribe"
     },
     {
       "type": "select",
       "id": "button_style",
-      "label": "Button Style",
+      "label": "t:sections.newsletter.settings.button_style.label",
       "options": [
-        { "value": "primary", "label": "Primary" },
-        { "value": "gradient", "label": "Gradient" },
-        { "value": "outline", "label": "Outline" },
-        { "value": "pill", "label": "Pill Shape" }
+        { "value": "primary", "label": "t:sections.newsletter.settings.button_style.options__1.label" },
+        { "value": "gradient", "label": "t:sections.newsletter.settings.button_style.options__2.label" },
+        { "value": "outline", "label": "t:sections.newsletter.settings.button_style.options__3.label" },
+        { "value": "pill", "label": "t:sections.newsletter.settings.button_style.options__4.label" }
       ],
       "default": "primary"
     },
     {
       "type": "checkbox",
       "id": "show_icon",
-      "label": "Show arrow icon",
+      "label": "t:sections.newsletter.settings.show_icon.label",
       "default": true
     },
-    {
-      "type": "header",
-      "content": "Style"
-    },
+    { "type": "header", "content": "t:sections.newsletter.settings.header__3.content" },
     {
       "type": "select",
       "id": "style",
-      "label": "Style",
+      "label": "t:sections.newsletter.settings.style.label",
       "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "minimal", "label": "Minimal" },
-        { "value": "bordered", "label": "Bordered" },
-        { "value": "shadow", "label": "Shadow" },
-        { "value": "background", "label": "Background Image" }
+        { "value": "default", "label": "t:sections.newsletter.settings.style.options__1.label" },
+        { "value": "minimal", "label": "t:sections.newsletter.settings.style.options__2.label" },
+        { "value": "bordered", "label": "t:sections.newsletter.settings.style.options__3.label" },
+        { "value": "shadow", "label": "t:sections.newsletter.settings.style.options__4.label" },
+        { "value": "background", "label": "t:sections.newsletter.settings.style.options__5.label" }
       ],
       "default": "default"
     },
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "Background Image (for Background style)",
-      "info": "Recommended: 1920x600px"
+      "label": "t:sections.newsletter.settings.background_image.label",
+      "info": "t:sections.newsletter.settings.background_image.info"
     },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background Color",
+      "label": "t:sections.newsletter.settings.background_color.label",
       "default": "#f8f9fa"
     },
     {
       "type": "color",
       "id": "section_text_color",
-      "label": "Text Color",
+      "label": "t:sections.newsletter.settings.section_text_color.label",
       "default": "#1a1a2e"
     },
-    {
-      "type": "header",
-      "content": "Form Settings"
-    },
+    { "type": "header", "content": "t:sections.newsletter.settings.header__4.content" },
     {
       "type": "checkbox",
       "id": "show_note",
-      "label": "Show note",
+      "label": "t:sections.newsletter.settings.show_note.label",
       "default": true
     },
     {
       "type": "text",
       "id": "note_text",
-      "label": "Note text",
+      "label": "t:sections.newsletter.settings.note_text.label",
       "default": "No spam. Unsubscribe anytime."
     },
     {
       "type": "text",
       "id": "success_message",
-      "label": "Success message",
+      "label": "t:sections.newsletter.settings.success_message.label",
       "default": "Thanks for subscribing!"
     },
-    {
-      "type": "header",
-      "content": "Social Links"
-    },
+    { "type": "header", "content": "t:sections.newsletter.settings.header__5.content" },
     {
       "type": "checkbox",
       "id": "show_social",
-      "label": "Show social links",
+      "label": "t:sections.newsletter.settings.show_social.label",
       "default": true
     },
     {
       "type": "text",
       "id": "social_label",
-      "label": "Social label",
+      "label": "t:sections.newsletter.settings.social_label.label",
       "default": "Follow us:"
     }
   ],
   "presets": [
-    {
-      "name": "Newsletter"
-    }
+    { "name": "t:sections.newsletter.presets.name" }
   ]
 }
 {% endschema %}

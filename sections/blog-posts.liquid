@@ -160,131 +160,115 @@
 
 {% schema %}
 {
-  "name": "Blog Posts",
+  "name": "t:sections.blog_posts.name",
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "blog",
-      "id": "blog",
-      "label": "Blog"
-    },
+    { "type": "header", "content": "t:sections.blog_posts.settings.header__1.content" },
+    { "type": "blog", "id": "blog", "label": "t:sections.blog_posts.settings.blog.label" },
     {
       "type": "range",
       "id": "posts_limit",
       "min": 1,
       "max": 12,
       "step": 1,
-      "label": "Posts to show",
+      "label": "t:sections.blog_posts.settings.posts_limit.label",
       "default": 3
     },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
+    { "type": "header", "content": "t:sections.blog_posts.settings.header__2.content" },
     {
       "type": "select",
       "id": "layout",
-      "label": "Layout",
+      "label": "t:sections.blog_posts.settings.layout.label",
       "options": [
-        { "value": "grid", "label": "Grid" },
-        { "value": "list", "label": "List" },
-        { "value": "featured", "label": "Featured (1 large + grid)" },
-        { "value": "carousel", "label": "Carousel" }
+        { "value": "grid", "label": "t:sections.blog_posts.settings.layout.options__1.label" },
+        { "value": "list", "label": "t:sections.blog_posts.settings.layout.options__2.label" },
+        { "value": "featured", "label": "t:sections.blog_posts.settings.layout.options__3.label" },
+        { "value": "carousel", "label": "t:sections.blog_posts.settings.layout.options__4.label" }
       ],
       "default": "grid"
     },
     {
       "type": "select",
       "id": "columns",
-      "label": "Columns (Grid only)",
+      "label": "t:sections.blog_posts.settings.columns.label",
       "options": [
-        { "value": "2", "label": "2 Columns" },
-        { "value": "3", "label": "3 Columns" },
-        { "value": "4", "label": "4 Columns" }
+        { "value": "2", "label": "t:sections.blog_posts.settings.columns.options__1.label" },
+        { "value": "3", "label": "t:sections.blog_posts.settings.columns.options__2.label" },
+        { "value": "4", "label": "t:sections.blog_posts.settings.columns.options__3.label" }
       ],
       "default": "3"
     },
     {
       "type": "select",
       "id": "card_style",
-      "label": "Card Style",
+      "label": "t:sections.blog_posts.settings.card_style.label",
       "options": [
-        { "value": "default", "label": "Default" },
-        { "value": "elevated", "label": "Elevated (Shadow)" },
-        { "value": "bordered", "label": "Bordered" },
-        { "value": "minimal", "label": "Minimal" }
+        { "value": "default", "label": "t:sections.blog_posts.settings.card_style.options__1.label" },
+        { "value": "elevated", "label": "t:sections.blog_posts.settings.card_style.options__2.label" },
+        { "value": "bordered", "label": "t:sections.blog_posts.settings.card_style.options__3.label" },
+        { "value": "minimal", "label": "t:sections.blog_posts.settings.card_style.options__4.label" }
       ],
       "default": "default"
     },
-    {
-      "type": "header",
-      "content": "Header"
-    },
+    { "type": "header", "content": "t:sections.blog_posts.settings.header__3.content" },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.blog_posts.settings.heading.label",
       "default": "Latest Articles"
     },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading",
+      "label": "t:sections.blog_posts.settings.subheading.label",
       "default": "From our blog"
     },
     {
       "type": "richtext",
       "id": "description",
-      "label": "Description",
+      "label": "t:sections.blog_posts.settings.description.label",
       "default": "<p>Discover insights, tips, and stories from our community.</p>"
     },
-    {
-      "type": "header",
-      "content": "Post Display"
-    },
+    { "type": "header", "content": "t:sections.blog_posts.settings.header__4.content" },
     {
       "type": "checkbox",
       "id": "show_image",
-      "label": "Show featured image",
+      "label": "t:sections.blog_posts.settings.show_image.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_category",
-      "label": "Show category tag",
+      "label": "t:sections.blog_posts.settings.show_category.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_author",
-      "label": "Show author",
+      "label": "t:sections.blog_posts.settings.show_author.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_date",
-      "label": "Show date",
+      "label": "t:sections.blog_posts.settings.show_date.label",
       "default": true
     },
     {
       "type": "select",
       "id": "date_position",
-      "label": "Date position",
+      "label": "t:sections.blog_posts.settings.date_position.label",
       "options": [
-        { "value": "meta", "label": "In meta section" },
-        { "value": "badge", "label": "As badge on image" }
+        { "value": "meta", "label": "t:sections.blog_posts.settings.date_position.options__1.label" },
+        { "value": "badge", "label": "t:sections.blog_posts.settings.date_position.options__2.label" }
       ],
       "default": "meta"
     },
     {
       "type": "checkbox",
       "id": "show_excerpt",
-      "label": "Show excerpt",
+      "label": "t:sections.blog_posts.settings.show_excerpt.label",
       "default": true
     },
     {
@@ -294,36 +278,31 @@
       "max": 60,
       "step": 5,
       "unit": "w",
-      "label": "Excerpt length",
+      "label": "t:sections.blog_posts.settings.excerpt_words.label",
       "default": 20
     },
-    {
-      "type": "header",
-      "content": "Buttons"
-    },
+    { "type": "header", "content": "t:sections.blog_posts.settings.header__5.content" },
     {
       "type": "text",
       "id": "read_more_label",
-      "label": "Read more label",
+      "label": "t:sections.blog_posts.settings.read_more_label.label",
       "default": "Read More"
     },
     {
       "type": "checkbox",
       "id": "show_view_all",
-      "label": "Show 'View All' button",
+      "label": "t:sections.blog_posts.settings.show_view_all.label",
       "default": true
     },
     {
       "type": "text",
       "id": "view_all_label",
-      "label": "View all label",
+      "label": "t:sections.blog_posts.settings.view_all_label.label",
       "default": "View All Articles"
     }
   ],
   "presets": [
-    {
-      "name": "Blog Posts"
-    }
+    { "name": "t:sections.blog_posts.presets.name" }
   ]
 }
 {% endschema %}

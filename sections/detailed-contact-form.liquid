@@ -10,6 +10,16 @@
 
 {{ 'detailed-contact-form.css' | asset_url | stylesheet_tag }}
 
+{% style %}
+  /* Prevents the footer from overlapping this section on short pages.
+     Scoped to this instance via Shopify's guaranteed section wrapper ID,
+     so it works for every copy of this section on every store. */
+  #shopify-section-{{ section.id }} {
+    min-height: 60vh;
+    padding-bottom: 4rem;
+  }
+{% endstyle %}
+
 {% liquid
   assign section_heading = section.settings.heading | default: "Get in Touch"
   assign section_subheading = section.settings.subheading | default: "We'd love to hear from you. Please fill out the form below."
@@ -46,11 +56,11 @@
           {% form "contact", id: form_id, class: "detailed-contact-form__form" %}
             {% if form.posted_successfully? %}
               <div class="form-status form-status--success" role="status">
-                <p style="font-weight: 600; font-size: 1.05rem;">✓ Thank you!</p>
-                <p style="margin: 0; opacity: 0.9;">Your message has been sent successfully. We'll get back to you soon.</p>
+                <p style="font-weight: 600; font-size: 1.05rem;">✓ {{ 'contact.form.success_heading' | t }}</p>
+                <p style="margin: 0; opacity: 0.9;">{{ 'contact.form.success' | t }}</p>
                 {% if form.contact.subscribe_to_newsletter == 'yes' %}
                   <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.9;">
-                    ✓ You've been subscribed to our newsletter
+                    ✓ {{ 'contact.form.newsletter_subscribed' | t }}
                   </p>
                 {% endif %}
               </div>
@@ -58,7 +68,7 @@
 
             {% if form.errors %}
               <div class="form-status form-status--error" role="alert">
-                <p style="font-weight: 600; font-size: 1.05rem;">⚠️ Oops! There was a problem:</p>
+                <p style="font-weight: 600; font-size: 1.05rem;">⚠️ {{ 'contact.form.error_heading' | t }}</p>
                 <ul>
                   {% for field in form.errors %}
                     <li>
@@ -80,7 +90,7 @@
               <!-- Name - Full Width -->
               <div class="field-group field-group--full">
                 <label class="field__label" for="{{ form_id }}-name">
-                  Full Name
+                  {{ 'contact.form.name' | t }}
                   <span class="field__required" aria-hidden="true">*</span>
                 </label>
                 <input
@@ -89,7 +99,7 @@
                   type="text"
                   name="contact[name]"
                   value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-                  placeholder="Full Name"
+                  placeholder="{{ 'contact.form.name' | t }}"
                   required
                   aria-required="true"
                   autocomplete="name"
@@ -99,7 +109,7 @@
               <!-- Email - Full Width -->
               <div class="field-group field-group--full">
                 <label class="field__label" for="{{ form_id }}-email">
-                  Email Address
+                  {{ 'contact.form.email' | t }}
                   <span class="field__required" aria-hidden="true">*</span>
                 </label>
                 <input
@@ -108,7 +118,7 @@
                   type="email"
                   name="contact[email]"
                   value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-                  placeholder="Email Address"
+                  placeholder="{{ 'contact.form.email' | t }}"
                   required
                   aria-required="true"
                   autocomplete="email"
@@ -119,7 +129,7 @@
               <!-- Phone + Order Number - Half Width -->
               <div class="field-group field-group--half">
                 <label class="field__label" for="{{ form_id }}-phone">
-                  Phone Number
+                  {{ 'contact.form.phone' | t }}
                 </label>
                 <input
                   id="{{ form_id }}-phone"
@@ -127,14 +137,14 @@
                   type="tel"
                   name="contact[phone]"
                   value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-                  placeholder="Phone Number"
+                  placeholder="{{ 'contact.form.phone' | t }}"
                   autocomplete="tel"
                 >
               </div>
 
               <div class="field-group field-group--half">
                 <label class="field__label" for="{{ form_id }}-order-number">
-                  Order Number
+                  {{ 'contact.form.order_number' | t }}
                 </label>
                 <input
                   id="{{ form_id }}-order-number"
@@ -142,14 +152,14 @@
                   type="text"
                   name="contact[order_number]"
                   value="{% if form.order_number %}{{ form.order_number }}{% endif %}"
-                  placeholder="Order Number"
+                  placeholder="{{ 'contact.form.order_number' | t }}"
                 >
               </div>
 
               <!-- Subject + Priority - Half Width -->
               <div class="field-group field-group--half">
                 <label class="field__label" for="{{ form_id }}-subject">
-                  Subject
+                  {{ 'contact.form.subject' | t }}
                   <span class="field__required" aria-hidden="true">*</span>
                 </label>
                 <select
@@ -160,50 +170,50 @@
                   aria-required="true"
                 >
                   <option value="" disabled selected>
-                    Select a subject...
+                    {{ 'contact.form.subject_placeholder' | t }}
                   </option>
                   <option value="general-inquiry">
-                    General Inquiry
+                    {{ 'contact.form.general_inquiry' | t }}
                   </option>
                   <option value="product-question">
-                    Product Question
+                    {{ 'contact.form.product_question' | t }}
                   </option>
                   <option value="order-status">
-                    Order Status
+                    {{ 'contact.form.order_status' | t }}
                   </option>
                   <option value="returns">
-                    Returns
+                    {{ 'contact.form.returns' | t }}
                   </option>
                   <option value="wholesale">
-                    Wholesale Inquiry
+                    {{ 'contact.form.wholesale' | t }}
                   </option>
                   <option value="other">
-                    Other
+                    {{ 'contact.form.other' | t }}
                   </option>
                 </select>
               </div>
 
               <div class="field-group field-group--half">
                 <label class="field__label" for="{{ form_id }}-priority">
-                  Priority Level
+                  {{ 'contact.form.priority' | t }}
                 </label>
                 <select
                   id="{{ form_id }}-priority"
                   class="field__input field__select"
                   name="contact[priority]"
                 >
-                  <option value="low">Low</option>
-                  <option value="medium" selected>Medium</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
+                  <option value="low">{{ 'contact.form.priority_low' | t }}</option>
+                  <option value="medium" selected>{{ 'contact.form.priority_medium' | t }}</option>
+                  <option value="high">{{ 'contact.form.priority_high' | t }}</option>
+                  <option value="urgent">{{ 'contact.form.priority_urgent' | t }}</option>
                 </select>
               </div>
 
               <!-- Country - Full Width (Manual Entry) -->
               <div class="field-group field-group--full">
                 <label class="field__label" for="{{ form_id }}-country">
-                  Country
-                  <span style="font-weight: 400; opacity: 0.6; font-size: 0.8rem;">(optional)</span>
+                  {{ 'contact.form.country' | t }}
+                  <span style="font-weight: 400; opacity: 0.6; font-size: 0.8rem;">({{ 'contact.form.optional' | t }})</span>
                 </label>
                 <input
                   id="{{ form_id }}-country"
@@ -211,7 +221,7 @@
                   type="text"
                   name="contact[country]"
                   value="{% if form.country %}{{ form.country }}{% endif %}"
-                  placeholder="Enter your country (e.g., United States)"
+                  placeholder="{{ 'contact.form.country_placeholder' | t }}"
                   autocomplete="country"
                 >
                 <!-- HIDDEN FIELD TO OVERRIDE AUTO-DETECTED COUNTRY CODE -->
@@ -222,7 +232,7 @@
               <!-- Message - Full Width -->
               <div class="field-group field-group--full">
                 <label class="field__label" for="{{ form_id }}-message">
-                  Message
+                  {{ 'contact.form.message' | t }}
                   <span class="field__required" aria-hidden="true">*</span>
                 </label>
                 <textarea
@@ -230,7 +240,7 @@
                   class="field__input field__textarea"
                   name="contact[body]"
                   rows="6"
-                  placeholder="Your message..."
+                  placeholder="{{ 'contact.form.message_placeholder' | t }}"
                   required
                   aria-required="true"
                 >{% if form.body %}{{ form.body }}{% endif %}</textarea>
@@ -251,9 +261,9 @@
                     {% if form.subscribe_to_newsletter %}checked{% endif %}
                   >
                   <label for="{{ form_id }}-subscribe" class="field__checkbox-label">
-                    Subscribe to our newsletter
+                    {{ 'contact.form.subscribe_to_newsletter' | t }}
                     <span style="font-weight: 400; opacity: 0.6; font-size: 0.8rem; display: block; margin-top: 0.25rem;">
-                      Get updates on new products and special offers
+                      {{ 'contact.form.newsletter_note' | t }}
                     </span>
                   </label>
                 </div>
@@ -264,7 +274,7 @@
                 <button
                   type="submit"
                   class="button button--primary detailed-contact-form__submit"
-                  aria-label="Send Message"
+                  aria-label="{{ button_text }}"
                 >
                   <span class="button__text">{{ button_text }}</span>
                   <span class="button__spinner hidden" aria-hidden="true"></span>
@@ -346,101 +356,92 @@
 
 {% schema %}
 {
-  "name": "Detailed Contact Form",
+  "name": "t:sections.detailed_contact_form.name",
   "tag": "section",
   "class": "section detailed-contact-form-section",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
+    { "type": "header", "content": "t:sections.detailed_contact_form.settings.header__1.content" },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.detailed_contact_form.settings.heading.label",
       "default": "Get in Touch"
     },
     {
       "type": "textarea",
       "id": "subheading",
-      "label": "Subheading",
+      "label": "t:sections.detailed_contact_form.settings.subheading.label",
       "default": "We'd love to hear from you. Please fill out the form below."
     },
     {
       "type": "text",
       "id": "button_text",
-      "label": "Button Text",
+      "label": "t:sections.detailed_contact_form.settings.button_text.label",
       "default": "Send Message"
     },
-    {
-      "type": "header",
-      "content": "Contact Information"
-    },
+    { "type": "header", "content": "t:sections.detailed_contact_form.settings.header__2.content" },
     {
       "type": "checkbox",
       "id": "show_contact_info",
-      "label": "Show Contact Information",
+      "label": "t:sections.detailed_contact_form.settings.show_contact_info.label",
       "default": true
     },
     {
       "type": "text",
       "id": "info_heading",
-      "label": "Info Heading",
+      "label": "t:sections.detailed_contact_form.settings.info_heading.label",
       "default": "Contact Information"
     },
     {
       "type": "richtext",
       "id": "info_text",
-      "label": "Info Text",
+      "label": "t:sections.detailed_contact_form.settings.info_text.label",
       "default": "<p>Reach out to us through any of these channels</p>"
     },
     {
       "type": "text",
       "id": "phone",
-      "label": "Phone Number",
+      "label": "t:sections.detailed_contact_form.settings.phone.label",
       "default": "+1 (555) 123-4567"
     },
     {
       "type": "text",
       "id": "email",
-      "label": "Email Address",
+      "label": "t:sections.detailed_contact_form.settings.email.label",
       "default": "contact@example.com"
     },
     {
       "type": "textarea",
       "id": "address",
-      "label": "Address",
+      "label": "t:sections.detailed_contact_form.settings.address.label",
       "default": "123 Main Street, City, State 12345"
     },
     {
       "type": "text",
       "id": "hours",
-      "label": "Business Hours",
+      "label": "t:sections.detailed_contact_form.settings.hours.label",
       "default": "Mon-Fri 9:00 AM - 6:00 PM"
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.detailed_contact_form.settings.header__3.content" },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background Color",
+      "label": "t:sections.detailed_contact_form.settings.background_color.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text Color",
+      "label": "t:sections.detailed_contact_form.settings.text_color.label",
       "default": "#333333"
     }
   ],
   "presets": [
     {
-      "name": "Detailed Contact Form",
+      "name": "t:sections.detailed_contact_form.presets.name",
       "category": "Contact"
     }
   ]

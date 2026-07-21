@@ -173,7 +173,7 @@
 
 {% schema %}
 {
-  "name": "Images with text carousel",
+  "name": "t:sections.iwt_carousel.name",
   "tag": "section",
   "class": "section-iwt-carousel",
   "disabled_on": {
@@ -183,156 +183,147 @@
     {
       "type": "text",
       "id": "carousel_label",
-      "label": "Carousel label",
-      "info": "Describes the carousel for screen reader users, e.g. \"Our collections\"."
+      "label": "t:sections.iwt_carousel.settings.carousel_label.label",
+      "info": "t:sections.iwt_carousel.settings.carousel_label.info"
     },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
+    { "type": "header", "content": "t:sections.iwt_carousel.settings.header__1.content" },
     {
       "type": "select",
       "id": "image_position",
-      "label": "Image position on desktop",
+      "label": "t:sections.iwt_carousel.settings.image_position.label",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:sections.iwt_carousel.settings.image_position.options__1.label" },
+        { "value": "right", "label": "t:sections.iwt_carousel.settings.image_position.options__2.label" }
       ],
       "default": "left"
     },
     {
       "type": "select",
       "id": "aspect_ratio",
-      "label": "Image aspect ratio",
+      "label": "t:sections.iwt_carousel.settings.aspect_ratio.label",
       "options": [
-        { "value": "1 / 1", "label": "Square (1:1)" },
-        { "value": "4 / 3", "label": "Landscape (4:3)" },
-        { "value": "3 / 4", "label": "Portrait (3:4)" },
-        { "value": "16 / 9", "label": "Wide (16:9)" }
+        { "value": "1 / 1", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__1.label" },
+        { "value": "4 / 3", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__2.label" },
+        { "value": "3 / 4", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__3.label" },
+        { "value": "16 / 9", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__4.label" }
       ],
       "default": "4 / 3"
     },
     {
       "type": "select",
       "id": "heading_size",
-      "label": "Heading size",
+      "label": "t:sections.iwt_carousel.settings.heading_size.label",
       "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
+        { "value": "small", "label": "t:sections.iwt_carousel.settings.heading_size.options__1.label" },
+        { "value": "medium", "label": "t:sections.iwt_carousel.settings.heading_size.options__2.label" },
+        { "value": "large", "label": "t:sections.iwt_carousel.settings.heading_size.options__3.label" }
       ],
       "default": "medium"
     },
     {
       "type": "checkbox",
       "id": "full_width",
-      "label": "Full width",
+      "label": "t:sections.iwt_carousel.settings.full_width.label",
       "default": false
     },
-    {
-      "type": "header",
-      "content": "Navigation"
-    },
+    { "type": "header", "content": "t:sections.iwt_carousel.settings.header__2.content" },
     {
       "type": "checkbox",
       "id": "show_arrows",
-      "label": "Show arrows",
+      "label": "t:sections.iwt_carousel.settings.show_arrows.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_dots",
-      "label": "Show pagination dots",
+      "label": "t:sections.iwt_carousel.settings.show_dots.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "autoplay",
-      "label": "Auto-rotate slides",
+      "label": "t:sections.iwt_carousel.settings.autoplay.label",
       "default": false,
-      "info": "Visitors can pause the rotation. Auto-rotation is turned off for visitors who prefer reduced motion."
+      "info": "t:sections.iwt_carousel.settings.autoplay.info"
     },
     {
       "type": "range",
       "id": "autoplay_speed",
-      "label": "Change slides every",
+      "label": "t:sections.iwt_carousel.settings.autoplay_speed.label",
       "min": 3,
       "max": 9,
       "step": 1,
       "unit": "s",
       "default": 5
     },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
+    { "type": "header", "content": "t:sections.iwt_carousel.settings.header__3.content" },
     {
       "type": "color",
       "id": "color_background",
-      "label": "Text panel background",
+      "label": "t:sections.iwt_carousel.settings.color_background.label",
       "default": "#f5f4f2"
     },
     {
       "type": "color",
       "id": "color_foreground",
-      "label": "Text color",
+      "label": "t:sections.iwt_carousel.settings.color_foreground.label",
       "default": "#121212"
     },
     {
       "type": "color",
       "id": "color_accent",
-      "label": "Buttons and controls",
+      "label": "t:sections.iwt_carousel.settings.color_accent.label",
       "default": "#121212"
     }
   ],
   "blocks": [
     {
       "type": "slide",
-      "name": "Slide",
+      "name": "t:sections.iwt_carousel.blocks.slide.name",
       "limit": 8,
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image",
-          "info": "1500 x 1100px recommended. Set a focal point to control cropping."
+          "label": "t:sections.iwt_carousel.blocks.slide.settings.image.label",
+          "info": "t:sections.iwt_carousel.blocks.slide.settings.image.info"
         },
         {
           "type": "text",
           "id": "caption",
-          "label": "Caption",
+          "label": "t:sections.iwt_carousel.blocks.slide.settings.caption.label",
           "default": "New in"
         },
         {
           "type": "inline_richtext",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:sections.iwt_carousel.blocks.slide.settings.heading.label",
           "default": "Image with text"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:sections.iwt_carousel.blocks.slide.settings.text.label",
           "default": "<p>Pair an image with a short story, collection highlight, or campaign message.</p>"
         },
         {
           "type": "text",
           "id": "button_label",
-          "label": "Button label",
+          "label": "t:sections.iwt_carousel.blocks.slide.settings.button_label.label",
           "default": "Shop now"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button link"
+          "label": "t:sections.iwt_carousel.blocks.slide.settings.button_link.label"
         },
         {
           "type": "select",
           "id": "button_style",
-          "label": "Button style",
+          "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.label",
           "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" }
+            { "value": "primary", "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.options__1.label" },
+            { "value": "secondary", "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.options__2.label" }
           ],
           "default": "primary"
         }
@@ -341,7 +332,7 @@
   ],
   "presets": [
     {
-      "name": "Images with text carousel",
+      "name": "t:sections.iwt_carousel.presets.name",
       "blocks": [
         { "type": "slide" },
         { "type": "slide" },

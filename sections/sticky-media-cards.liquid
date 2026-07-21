@@ -27,9 +27,9 @@
               {%- if block.settings.image != blank -%}
                 <div class="sticky-media-cards__image-wrapper">
                   <img
-                    src="{{ block.settings.image | img_url: '800x', crop: 'center' }}"
-                    srcset="{{ block.settings.image | img_url: '800x', crop: 'center' }} 1x, {{ block.settings.image | img_url: '1600x', crop: 'center' }} 2x"
-                    alt="{{ block.settings.image.alt | escape }}"
+                    src="{{ block.settings.image | image_url: width: 800 }}"
+                    srcset="{{ block.settings.image | image_url: width: 800 }} 1x, {{ block.settings.image | image_url: width: 1600 }} 2x"
+                    alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
                     loading="lazy"
                     width="800"
                     height="600"
@@ -47,13 +47,13 @@
                   <video
                     class="sticky-media-cards__video"
                     src="{{ block.settings.video_url }}"
-                    poster="{{ block.settings.image | img_url: '800x' }}"
+                    poster="{{ block.settings.image | image_url: width: 800 }}"
                     muted
                     loop
                     playsinline
                     autoplay
                   ></video>
-                  <button class="sticky-media-cards__video-control" aria-label="Play/Pause video" type="button">
+                  <button class="sticky-media-cards__video-control" aria-label="{{ 'sections.sticky_media_cards.play_pause_video' | t }}" type="button">
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                       <path d="M8 5v14l11-7z"/>
                     </svg>
@@ -96,7 +96,7 @@
       </div>
     {%- else -%}
       <div class="sticky-media-cards__empty page-width">
-        <p>Add media cards to display them here.</p>
+        <p>{{ 'sections.sticky_media_cards.empty' | t }}</p>
         {%- if shop.editor_mode -%}
           <p><small>Click "Add block" to add content</small></p>
         {%- endif -%}
@@ -109,112 +109,106 @@
 
 {% schema %}
 {
-  "name": "Sticky Media Cards",
+  "name": "t:sections.sticky_media_cards.name",
   "tag": "section",
   "class": "sticky-media-cards-section",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.sticky_media_cards.settings.heading.label",
       "default": "How It Works"
     },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading",
+      "label": "t:sections.sticky_media_cards.settings.subheading.label",
       "default": "A step-by-step guide to get started"
     }
   ],
   "blocks": [
     {
       "type": "media_card",
-      "name": "Media Card",
+      "name": "t:sections.sticky_media_cards.blocks.media_card.name",
       "settings": [
-        {
-          "type": "header",
-          "content": "Media"
-        },
+        { "type": "header", "content": "t:sections.sticky_media_cards.blocks.media_card.settings.header__1.content" },
         {
           "type": "select",
           "id": "media_type",
-          "label": "Media type",
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_type.label",
           "options": [
-            { "value": "image", "label": "Image" },
-            { "value": "video", "label": "Video" }
+            { "value": "image", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_type.options__1.label" },
+            { "value": "video", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_type.options__2.label" }
           ],
           "default": "image"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.image.label"
         },
         {
           "type": "text",
           "id": "video_url",
-          "label": "Video URL",
-          "info": "URL to an MP4 video file"
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.video_url.label",
+          "info": "t:sections.sticky_media_cards.blocks.media_card.settings.video_url.info"
         },
         {
           "type": "select",
           "id": "media_position",
-          "label": "Media position",
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_position.label",
           "options": [
-            { "value": "left", "label": "Left" },
-            { "value": "right", "label": "Right" }
+            { "value": "left", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_position.options__1.label" },
+            { "value": "right", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_position.options__2.label" }
           ],
           "default": "left"
         },
-        {
-          "type": "header",
-          "content": "Content"
-        },
+        { "type": "header", "content": "t:sections.sticky_media_cards.blocks.media_card.settings.header__2.content" },
         {
           "type": "select",
           "id": "icon",
-          "label": "Icon",
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.label",
           "options": [
-            { "value": "none", "label": "No icon" },
-            { "value": "star", "label": "Star" },
-            { "value": "heart", "label": "Heart" },
-            { "value": "check", "label": "Check" },
-            { "value": "truck", "label": "Truck" },
-            { "value": "shield", "label": "Shield" },
-            { "value": "clock", "label": "Clock" },
-            { "value": "gift", "label": "Gift" }
+            { "value": "none", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__1.label" },
+            { "value": "star", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__2.label" },
+            { "value": "heart", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__3.label" },
+            { "value": "check", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__4.label" },
+            { "value": "truck", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__5.label" },
+            { "value": "shield", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__6.label" },
+            { "value": "clock", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__7.label" },
+            { "value": "gift", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.icon.options__8.label" }
           ],
           "default": "star"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.title.label",
           "default": "Step Title"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.text.label",
           "default": "<p>Describe this step in the process.</p>"
         },
         {
           "type": "text",
           "id": "button_text",
-          "label": "Button text",
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.button_text.label",
           "default": "Learn More"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button link"
+          "label": "t:sections.sticky_media_cards.blocks.media_card.settings.button_link.label"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Sticky Media Cards",
+      "name": "t:sections.sticky_media_cards.presets.name",
       "blocks": [
         {
           "type": "media_card",

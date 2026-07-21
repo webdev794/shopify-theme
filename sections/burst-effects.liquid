@@ -51,79 +51,70 @@
 
 {% schema %}
 {
-  "name": "Burst Effects",
+  "name": "t:sections.burst_effects.name",
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
+    { "type": "header", "content": "t:sections.burst_effects.settings.header__1.content" },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Background Image",
-      "info": "We recommend using a high-quality image from Shopify's Burst photo library."
+      "label": "t:sections.burst_effects.settings.image.label",
+      "info": "t:sections.burst_effects.settings.image.info"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Heading",
+      "label": "t:sections.burst_effects.settings.title.label",
       "default": "Elevate Your Brand"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Description",
+      "label": "t:sections.burst_effects.settings.text.label",
       "default": "<p>Combine stunning visuals with powerful animation to create a store that captivates and converts.</p>"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button Label",
+      "label": "t:sections.burst_effects.settings.button_label.label",
       "default": "Shop Now"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button Link"
+      "label": "t:sections.burst_effects.settings.button_link.label"
     },
-    {
-      "type": "header",
-      "content": "Button Style"
-    },
+    { "type": "header", "content": "t:sections.burst_effects.settings.header__2.content" },
     {
       "type": "select",
       "id": "button_style",
-      "label": "Button Style",
+      "label": "t:sections.burst_effects.settings.button_style.label",
       "options": [
-        { "value": "gradient", "label": "Gradient" },
-        { "value": "outline", "label": "Outline" },
-        { "value": "glow", "label": "Glow Effect" },
-        { "value": "slide", "label": "Slide Effect" },
-        { "value": "pulse", "label": "Pulse Animation" }
+        { "value": "gradient", "label": "t:sections.burst_effects.settings.button_style.options__1.label" },
+        { "value": "outline", "label": "t:sections.burst_effects.settings.button_style.options__2.label" },
+        { "value": "glow", "label": "t:sections.burst_effects.settings.button_style.options__3.label" },
+        { "value": "slide", "label": "t:sections.burst_effects.settings.button_style.options__4.label" },
+        { "value": "pulse", "label": "t:sections.burst_effects.settings.button_style.options__5.label" }
       ],
       "default": "gradient"
     },
     {
       "type": "checkbox",
       "id": "show_icon",
-      "label": "Show Arrow Icon",
+      "label": "t:sections.burst_effects.settings.show_icon.label",
       "default": true
     },
-    {
-      "type": "header",
-      "content": "Animation"
-    },
+    { "type": "header", "content": "t:sections.burst_effects.settings.header__3.content" },
     {
       "type": "select",
       "id": "animation_effect",
-      "label": "Effect",
+      "label": "t:sections.burst_effects.settings.animation_effect.label",
       "options": [
-        { "value": "fade-in", "label": "Fade In" },
-        { "value": "slide-up", "label": "Slide Up" },
-        { "value": "scale-up", "label": "Scale Up" },
-        { "value": "parallax", "label": "Parallax" }
+        { "value": "fade-in", "label": "t:sections.burst_effects.settings.animation_effect.options__1.label" },
+        { "value": "slide-up", "label": "t:sections.burst_effects.settings.animation_effect.options__2.label" },
+        { "value": "scale-up", "label": "t:sections.burst_effects.settings.animation_effect.options__3.label" },
+        { "value": "parallax", "label": "t:sections.burst_effects.settings.animation_effect.options__4.label" }
       ],
       "default": "fade-in"
     },
@@ -134,7 +125,7 @@
       "max": 3,
       "step": 0.1,
       "unit": "s",
-      "label": "Animation Duration",
+      "label": "t:sections.burst_effects.settings.animation_duration.label",
       "default": 1.0
     },
     {
@@ -144,14 +135,12 @@
       "max": 2,
       "step": 0.1,
       "unit": "s",
-      "label": "Animation Delay",
+      "label": "t:sections.burst_effects.settings.animation_delay.label",
       "default": 0.2
     }
   ],
   "presets": [
-    {
-      "name": "Burst Effects"
-    }
+    { "name": "t:sections.burst_effects.presets.name" }
   ]
 }
 {% endschema %}

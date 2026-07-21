@@ -165,29 +165,26 @@
 
 {% schema %}
 {
-  "name": "Featured Products",
+  "name": "t:sections.featured_products.name",
   "tag": "section",
   "class": "featured-products-section",
   "max_blocks": 12,
   "settings": [
-    {
-      "type": "header",
-      "content": "Layout Settings"
-    },
+    { "type": "header", "content": "t:sections.featured_products.settings.header__1.content" },
     {
       "type": "select",
       "id": "layout",
-      "label": "Layout",
+      "label": "t:sections.featured_products.settings.layout.label",
       "default": "grid",
       "options": [
-        { "value": "grid", "label": "Grid" },
-        { "value": "carousel", "label": "Carousel" }
+        { "value": "grid", "label": "t:sections.featured_products.settings.layout.options__1.label" },
+        { "value": "carousel", "label": "t:sections.featured_products.settings.layout.options__2.label" }
       ]
     },
     {
       "type": "select",
       "id": "products_per_row",
-      "label": "Products per row",
+      "label": "t:sections.featured_products.settings.products_per_row.label",
       "default": "4",
       "options": [
         { "value": "2", "label": "2" },
@@ -195,12 +192,12 @@
         { "value": "4", "label": "4" },
         { "value": "5", "label": "5" }
       ],
-      "info": "Number of products to display per row on desktop"
+      "info": "t:sections.featured_products.settings.products_per_row.info"
     },
     {
       "type": "range",
       "id": "gap",
-      "label": "Gap between products",
+      "label": "t:sections.featured_products.settings.gap.label",
       "min": 4,
       "max": 40,
       "step": 2,
@@ -210,7 +207,7 @@
     {
       "type": "range",
       "id": "border_radius",
-      "label": "Card border radius",
+      "label": "t:sections.featured_products.settings.border_radius.label",
       "min": 0,
       "max": 30,
       "step": 2,
@@ -220,170 +217,155 @@
     {
       "type": "checkbox",
       "id": "full_width",
-      "label": "Full width",
+      "label": "t:sections.featured_products.settings.full_width.label",
       "default": false,
-      "info": "Stretches the section beyond the 1280px page width. Only visible on screens wider than that."
+      "info": "t:sections.featured_products.settings.full_width.info"
     },
-    {
-      "type": "header",
-      "content": "Content Settings"
-    },
+    { "type": "header", "content": "t:sections.featured_products.settings.header__2.content" },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.featured_products.settings.heading.label",
       "default": "Featured Products"
     },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading",
+      "label": "t:sections.featured_products.settings.subheading.label",
       "default": "Our Best Sellers"
     },
     {
       "type": "richtext",
       "id": "description",
-      "label": "Description",
+      "label": "t:sections.featured_products.settings.description.label",
       "default": "<p>Discover our most popular products loved by our customers</p>"
     },
-    {
-      "type": "header",
-      "content": "View All Button"
-    },
+    { "type": "header", "content": "t:sections.featured_products.settings.header__3.content" },
     {
       "type": "checkbox",
       "id": "show_view_all",
-      "label": "Show 'View All' button",
+      "label": "t:sections.featured_products.settings.show_view_all.label",
       "default": true
     },
     {
       "type": "text",
       "id": "view_all_text",
-      "label": "Button text",
+      "label": "t:sections.featured_products.settings.view_all_text.label",
       "default": "View All"
     },
     {
       "type": "url",
       "id": "view_all_link",
-      "label": "Button link",
-      "info": "Leave empty to link to /collections/all"
+      "label": "t:sections.featured_products.settings.view_all_link.label",
+      "info": "t:sections.featured_products.settings.view_all_link.info"
     },
-    {
-      "type": "header",
-      "content": "Product Display Settings"
-    },
+    { "type": "header", "content": "t:sections.featured_products.settings.header__4.content" },
     {
       "type": "checkbox",
       "id": "show_vendor",
-      "label": "Show vendor/brand",
+      "label": "t:sections.featured_products.settings.show_vendor.label",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_rating",
-      "label": "Show product rating",
+      "label": "t:sections.featured_products.settings.show_rating.label",
       "default": true,
-      "info": "Shown for products that have a reviews.rating metafield"
+      "info": "t:sections.featured_products.settings.show_rating.info"
     },
     {
       "type": "checkbox",
       "id": "show_quick_add",
-      "label": "Show quick add button",
+      "label": "t:sections.featured_products.settings.show_quick_add.label",
       "default": true,
-      "info": "Adds an 'Add to Cart' button on product cards. On desktop it appears when hovering a card."
+      "info": "t:sections.featured_products.settings.show_quick_add.info"
     },
     {
       "type": "checkbox",
       "id": "show_compare_at",
-      "label": "Show compare at price",
+      "label": "t:sections.featured_products.settings.show_compare_at.label",
       "default": true,
-      "info": "Shows the original price for products that have a compare-at price set in the admin"
+      "info": "t:sections.featured_products.settings.show_compare_at.info"
     },
     {
       "type": "select",
       "id": "image_size",
-      "label": "Image size",
+      "label": "t:sections.featured_products.settings.image_size.label",
       "default": "medium",
       "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
+        { "value": "small", "label": "t:sections.featured_products.settings.image_size.options__1.label" },
+        { "value": "medium", "label": "t:sections.featured_products.settings.image_size.options__2.label" },
+        { "value": "large", "label": "t:sections.featured_products.settings.image_size.options__3.label" }
       ],
-      "info": "Controls the height of the product image area"
+      "info": "t:sections.featured_products.settings.image_size.info"
     },
     {
       "type": "select",
       "id": "card_style",
-      "label": "Card style",
+      "label": "t:sections.featured_products.settings.card_style.label",
       "default": "standard",
       "options": [
-        { "value": "standard", "label": "Standard" },
-        { "value": "compact", "label": "Compact" },
-        { "value": "minimal", "label": "Minimal" }
+        { "value": "standard", "label": "t:sections.featured_products.settings.card_style.options__1.label" },
+        { "value": "compact", "label": "t:sections.featured_products.settings.card_style.options__2.label" },
+        { "value": "minimal", "label": "t:sections.featured_products.settings.card_style.options__3.label" }
       ]
     },
-    {
-      "type": "header",
-      "content": "Color Settings"
-    },
+    { "type": "header", "content": "t:sections.featured_products.settings.header__5.content" },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background color",
+      "label": "t:sections.featured_products.settings.background_color.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text color",
+      "label": "t:sections.featured_products.settings.text_color.label",
       "default": "#1a1a1a"
     },
     {
       "type": "color",
       "id": "heading_color",
-      "label": "Heading color",
+      "label": "t:sections.featured_products.settings.heading_color.label",
       "default": "#1a1a1a"
     },
     {
       "type": "color",
       "id": "card_background",
-      "label": "Card background",
+      "label": "t:sections.featured_products.settings.card_background.label",
       "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "card_shadow",
-      "label": "Card shadow color",
+      "label": "t:sections.featured_products.settings.card_shadow.label",
       "default": "rgba(0, 0, 0, 0.1)"
     },
-    {
-      "type": "header",
-      "content": "Accessibility"
-    },
+    { "type": "header", "content": "t:sections.featured_products.settings.header__6.content" },
     {
       "type": "text",
       "id": "aria_label",
-      "label": "Section ARIA label",
+      "label": "t:sections.featured_products.settings.aria_label.label",
       "default": "Featured products"
     }
   ],
   "blocks": [
     {
       "type": "product",
-      "name": "Product",
+      "name": "t:sections.featured_products.blocks.product.name",
       "limit": 12,
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "Select product"
+          "label": "t:sections.featured_products.blocks.product.settings.product.label"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Featured Products",
+      "name": "t:sections.featured_products.presets.name",
       "category": "Collection",
       "settings": {
         "heading": "Featured Products",

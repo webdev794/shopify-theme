@@ -17,7 +17,7 @@
       </div>
     {%- endif -%}
 
-    <div class="text-with-icons__grid">
+    <div class="text-with-icons__grid text-with-icons__grid--columns-{{ section.settings.columns }} text-with-icons__grid--align-{{ section.settings.alignment }}">
       {%- for block in section.blocks -%}
         <div class="text-with-icons__item" {{ block.shopify_attributes }}>
           <div class="text-with-icons__card">
@@ -52,30 +52,27 @@
 
 {% schema %}
 {
-  "name": "Text with Icons",
+  "name": "t:sections.text_with_icons.name",
   "tag": "section",
   "class": "text-with-icons-section",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:sections.text_with_icons.settings.heading.label",
       "default": "Why Choose Us"
     },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading",
+      "label": "t:sections.text_with_icons.settings.subheading.label",
       "default": "Discover what makes us different"
     },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
+    { "type": "header", "content": "t:sections.text_with_icons.settings.header__1.content" },
     {
       "type": "select",
       "id": "columns",
-      "label": "Columns",
+      "label": "t:sections.text_with_icons.settings.columns.label",
       "options": [
         { "value": "2", "label": "2" },
         { "value": "3", "label": "3" },
@@ -86,11 +83,11 @@
     {
       "type": "select",
       "id": "alignment",
-      "label": "Content alignment",
+      "label": "t:sections.text_with_icons.settings.alignment.label",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        { "value": "left", "label": "t:sections.text_with_icons.settings.alignment.options__1.label" },
+        { "value": "center", "label": "t:sections.text_with_icons.settings.alignment.options__2.label" },
+        { "value": "right", "label": "t:sections.text_with_icons.settings.alignment.options__3.label" }
       ],
       "default": "center"
     }
@@ -98,58 +95,58 @@
   "blocks": [
     {
       "type": "item",
-      "name": "Feature",
+      "name": "t:sections.text_with_icons.blocks.item.name",
       "settings": [
         {
           "type": "select",
           "id": "icon",
-          "label": "Icon",
+          "label": "t:sections.text_with_icons.blocks.item.settings.icon.label",
           "options": [
-            { "value": "none", "label": "No icon" },
-            { "value": "truck", "label": "Truck" },
-            { "value": "shield", "label": "Shield" },
-            { "value": "star", "label": "Star" },
-            { "value": "heart", "label": "Heart" },
-            { "value": "gift", "label": "Gift" },
-            { "value": "clock", "label": "Clock" },
-            { "value": "check", "label": "Check" },
-            { "value": "cart", "label": "Cart" },
-            { "value": "tag", "label": "Tag" },
-            { "value": "lock", "label": "Lock" },
-            { "value": "globe", "label": "Globe" },
-            { "value": "chat", "label": "Chat" },
-            { "value": "phone", "label": "Phone" }
+            { "value": "none", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__1.label" },
+            { "value": "truck", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__2.label" },
+            { "value": "shield", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__3.label" },
+            { "value": "star", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__4.label" },
+            { "value": "heart", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__5.label" },
+            { "value": "gift", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__6.label" },
+            { "value": "clock", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__7.label" },
+            { "value": "check", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__8.label" },
+            { "value": "cart", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__9.label" },
+            { "value": "tag", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__10.label" },
+            { "value": "lock", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__11.label" },
+            { "value": "globe", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__12.label" },
+            { "value": "chat", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__13.label" },
+            { "value": "phone", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__14.label" }
           ],
           "default": "star"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
+          "label": "t:sections.text_with_icons.blocks.item.settings.title.label",
           "default": "Feature Title"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:sections.text_with_icons.blocks.item.settings.text.label",
           "default": "<p>Describe your feature or benefit here.</p>"
         },
         {
           "type": "text",
           "id": "button_text",
-          "label": "Button text"
+          "label": "t:sections.text_with_icons.blocks.item.settings.button_text.label"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button link"
+          "label": "t:sections.text_with_icons.blocks.item.settings.button_link.label"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Text with Icons",
+      "name": "t:sections.text_with_icons.presets.name",
       "blocks": [
         {
           "type": "item",
