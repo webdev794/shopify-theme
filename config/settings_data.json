@@ -9,10 +9,25 @@
  */
 {
   "current": {
+    "type_primary_font": "work_sans_n4",
+    "max_page_width": "90rem",
+    "min_page_margin": 20,
+    "background_color": "#FFFFFF",
+    "foreground_color": "#333333",
+    "input_corner_radius": 4,
     "social_facebook_link": "facebook.com",
     "social_twitter_link": "x.com",
     "social_instagram_link": "instagram.com",
-    "social_youtube_link": "youtube.com",
-    "content_for_index": []
+    "social_youtube_link": "youtube.com"
+  },
+  "presets": {
+    "Default": {
+      "type_primary_font": "work_sans_n4",
+      "max_page_width": "90rem",
+      "min_page_margin": 20,
+      "background_color": "#FFFFFF",
+      "foreground_color": "#333333",
+      "input_corner_radius": 4
+    }
   }
 }
