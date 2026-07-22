@@ -22,6 +22,7 @@
     "column": "Column",
     "content": "Content",
     "custom_section": "Custom section",
+    "favicon": "Favicon",
     "fonts": "Fonts",
     "footer": "Footer",
     "group": "Group",
@@ -45,6 +46,7 @@
   "labels": {
     "alignment": "Alignment",
     "background": "Background",
+    "favicon": "Favicon image",
     "foreground": "Foreground",
     "grid_gap": "Grid spacing",
     "grid_item_width": "Grid item width",
@@ -58,6 +60,9 @@
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
     "text": "Text"
+  },
+  "info": {
+    "favicon": "Will be scaled down to 32 x 32px. PNG format recommended."
   },
   "options": {
     "alignment": {

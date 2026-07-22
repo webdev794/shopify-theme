@@ -54,6 +54,17 @@
     ]
   },
   {
+    "name": "t:general.favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "t:labels.favicon",
+        "info": "t:info.favicon"
+      }
+    ]
+  },
+  {
     "name": "t:general.colors",
     "settings": [
       {
