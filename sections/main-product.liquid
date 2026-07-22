@@ -329,11 +329,62 @@
               </p>
             </div>
 
+          {% when 'shop_pay_installments' %}
+            {% if block.settings.enable_shop_pay_installments %}
+              {% liquid
+                assign min_installment_price = block.settings.min_installment_price | times: 100
+                assign installments_count = block.settings.installments_count | default: 6
+                assign installment_price = current_variant.price | times: 1.0 | divided_by: installments_count | round
+                assign tooltip_text = block.settings.installments_tooltip | default: 'Interest-free payments with Shop Pay.'
+              %}
+
+              {% if current_variant.price >= min_installment_price %}
+                <div
+                  class="shop-pay-installments"
+                  id="shop-pay-installments-{{ section.id }}"
+                  data-installments="{{ installments_count }}"
+                  data-min-price="{{ min_installment_price }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="installments-wrapper">
+                    <span class="installments-price" data-installments-price>
+                      {{ current_variant.price | money_with_currency }}
+                    </span>
+                    <span class="installments-or">{{ block.settings.installments_or_text | default: "or" }}</span>
+                    <span class="installments-payment">
+                      <span class="installments-amount" data-installments-amount>
+                        {{ installment_price | money_with_currency }}
+                      </span>
+                      <span class="installments-label">
+                        {{ block.settings.installments_label | default: "/mo for" }}
+                        <span class="installments-months" data-installments-months>{{ installments_count }}</span>
+                        {{ block.settings.installments_months_label | default: "months" }}
+                      </span>
+                    </span>
+                    <span class="installments-divider">·</span>
+                    <span class="installments-provider">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#5A31F4"/>
+                        <path d="M16.59 7.58L10 14.17l-2.59-2.58L6 13l4 4 8-8z" fill="#5A31F4"/>
+                      </svg>
+                      {{ block.settings.installments_provider | default: "Shop Pay" }}
+                    </span>
+                    <span class="installments-info" tabindex="0" aria-label="{{ tooltip_text | escape }}">
+                      i
+                      <span class="installments-info__tooltip" role="tooltip">
+                        {{ tooltip_text }}
+                        {% if block.settings.installments_terms_url != blank %}
+                          <a href="{{ block.settings.installments_terms_url }}" class="installments-info__link">See terms</a>
+                        {% endif %}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+
           {% when 'buy_buttons' %}
             <div class="product__buy-buttons" {{ block.shopify_attributes }}>
-              <!-- SUBSCRIPTION WIDGET - MOVED HERE OUTSIDE THE FORM -->
-              <div class="subscriptions_app_embed_block"></div>
-              
               {% assign product_form_id = 'product-form-' | append: section.id %}
               {% form 'product', product, id: product_form_id, class: 'product__form' %}
                 <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id-input>
@@ -393,679 +444,17 @@
   });
 </script>
 
-{% stylesheet %}
-  .product {
-    --product-gap: 2rem;
-    --product-radius: 0.5rem;
-    padding-block: 2rem;
-  }
-
-  .product__container {
-    display: grid;
-    gap: var(--product-gap);
-    max-width: var(--page-width, 1200px);
-    margin-inline: auto;
-    padding-inline: 1rem;
-  }
-
-  @media screen and (min-width: 750px) {
-    .product__container {
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-    }
-
-    .product--media-right .product__media {
-      order: 2;
-    }
-
-    .product__info {
-      position: sticky;
-      top: 2rem;
-    }
-  }
-
-  /* ---------- Media gallery ---------- */
-  .product__media-main {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    border-radius: var(--product-radius);
-    scrollbar-width: none;
-  }
-
-  .product__media-main::-webkit-scrollbar {
-    display: none;
-  }
-
-  .product__media-item {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-    aspect-ratio: 1 / 1;
-    background: var(--color-background-secondary, #f4f4f4);
-  }
-
-  .product__media-image,
-  .product__media-item img,
-  .product__media-item video,
-  .product__media-item model-viewer {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .product__media-thumbs {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-    overflow-x: auto;
-  }
-
-  .product__media-thumb {
-    flex: 0 0 64px;
-    width: 64px;
-    height: 64px;
-    border-radius: calc(var(--product-radius) / 2);
-    overflow: hidden;
-    border: 2px solid transparent;
-    opacity: 0.7;
-    transition: opacity 0.15s ease, border-color 0.15s ease;
-  }
-
-  .product__media-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .product__media-thumb.is-active,
-  .product__media-thumb:hover {
-    opacity: 1;
-    border-color: var(--color-foreground, #1a1a1a);
-  }
-
-  .product__media-placeholder svg {
-    width: 100%;
-    height: auto;
-  }
-
-  /* ---------- Info column ---------- */
-  .product__info > * + * {
-    margin-top: 1rem;
-  }
-
-  .product__vendor {
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    color: var(--color-foreground-secondary, #666);
-  }
-
-  .product__title {
-    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
-    line-height: 1.15;
-  }
-
-  .product__price {
-    font-size: 1.25rem;
-    display: flex;
-    gap: 0.5rem;
-    align-items: baseline;
-  }
-
-  .price--sale {
-    color: var(--color-sale, #c0392b);
-    font-weight: 600;
-  }
-
-  .price--compare {
-    color: var(--color-foreground-secondary, #999);
-    font-weight: 400;
-  }
-
-  .product__description {
-    color: var(--color-foreground-secondary, #444);
-    line-height: 1.6;
-  }
-
-  /* ---------- Variant picker ---------- */
-  .product__variants,
-  variant-selects {
-    display: block;
-  }
-
-  .product__option + .product__option {
-    margin-top: 1rem;
-  }
-
-  .product__option-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .product__option-values {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .product__option-label {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--color-border, #ccc);
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: border-color 0.15s ease, background-color 0.15s ease;
-  }
-
-  .product__option-input:checked + .product__option-label {
-    border-color: var(--color-foreground, #1a1a1a);
-    background: var(--color-foreground, #1a1a1a);
-    color: var(--color-background, #fff);
-  }
-
-  .product__option-input:focus-visible + .product__option-label {
-    outline: 2px solid var(--color-focus, #4a90e2);
-    outline-offset: 2px;
-  }
-
-  /* ---------- Swatches ---------- */
-  .product__option-values--swatches {
-    gap: 0.6rem;
-  }
-
-  .product__option-label--swatch {
-    display: inline-flex;
-    padding: 0;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    background: none;
-    cursor: pointer;
-    transition: border-color 0.15s ease;
-  }
-
-  .product__swatch {
-    display: block;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid var(--color-border, #ddd);
-    background-size: cover;
-    background-position: center;
-  }
-
-  .product__swatch-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .product__option-input:checked + .product__option-label--swatch {
-    border-color: var(--color-foreground, #1a1a1a);
-  }
-
-  .product__option-input:focus-visible + .product__option-label--swatch {
-    outline: 2px solid var(--color-focus, #4a90e2);
-    outline-offset: 2px;
-  }
-
-  .product__option-label--unavailable {
-    position: relative;
-    opacity: 0.4;
-  }
-
-  .product__option-label--unavailable::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top right, transparent calc(50% - 1px), currentColor, transparent calc(50% + 1px));
-    border-radius: inherit;
-  }
-
-  /* ---------- Selling plans ---------- */
-  .product__selling-plans {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .product__selling-plan-group {
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .product__selling-plan-values {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-
-  .product__selling-plan-option {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--color-border, #ccc);
-    border-radius: var(--product-radius);
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: border-color 0.15s ease;
-  }
-
-  .product__selling-plan-option:has(input:checked) {
-    border-color: var(--color-foreground, #1a1a1a);
-  }
-
-  .product__selling-plan-option input:focus-visible {
-    outline: 2px solid var(--color-focus, #4a90e2);
-    outline-offset: 2px;
-  }
-
-  .product__selling-plan-description {
-    color: var(--color-foreground-secondary, #666);
-    font-size: 0.8rem;
-  }
-
-  /* ---------- Quantity ---------- */
-  .quantity-input {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid var(--color-border, #ccc);
-    border-radius: var(--product-radius);
-    overflow: hidden;
-  }
-
-  .quantity-input__button {
-    width: 2.5rem;
-    height: 2.5rem;
-    display: grid;
-    place-items: center;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-  }
-
-  .quantity-input__button:hover {
-    background: var(--color-background-secondary, #f4f4f4);
-  }
-
-  .quantity-input input[type='number'] {
-    width: 3rem;
-    height: 2.5rem;
-    text-align: center;
-    border: none;
-    border-left: 1px solid var(--color-border, #ccc);
-    border-right: 1px solid var(--color-border, #ccc);
-    appearance: textfield;
-    -moz-appearance: textfield;
-  }
-
-  .quantity-input input[type='number']::-webkit-outer-spin-button,
-  .quantity-input input[type='number']::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .product__price-total {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--color-foreground-secondary, #555);
-  }
-
-  .product__price-total[hidden] {
-    display: none;
-  }
-
-  /* ---------- Buy buttons ---------- */
-  .product__buy-buttons {
-    max-width: 28rem;
-  }
-
-  .product__form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  /* Shopify injects its own wrapper around the dynamic checkout button;
-     this margin ensures spacing even if that wrapper collapses the gap. */
-  .product__form .shopify-payment-button {
-    margin-top: 0.75rem;
-  }
-
-  .product__add-to-cart {
-    width: 100%;
-    padding: 0.9rem 1.5rem;
-    border-radius: var(--product-radius);
-    border: none;
-    background: var(--color-foreground, #1a1a1a);
-    color: var(--color-background, #fff);
-    font-size: 1rem;
-    cursor: pointer;
-    transition: opacity 0.15s ease;
-  }
-
-  .product__add-to-cart:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-{% endstylesheet %}
-
-{% javascript %}
-  class VariantSelects extends HTMLElement {
-    constructor() {
-      super();
-      this.addEventListener('change', this.onVariantChange.bind(this));
-    }
-
-    connectedCallback() {
-      this.sectionId = this.dataset.sectionId;
-      this.variants = (window.themeProductVariants && window.themeProductVariants[this.sectionId]) || [];
-    }
-
-    onVariantChange() {
-      const selectedOptions = Array.from(this.querySelectorAll('.product__option')).map((fieldset) => {
-        const checked = fieldset.querySelector('input:checked');
-        return checked ? checked.value : null;
-      });
-
-      const variant = this.variants.find((variant) =>
-        variant.options.every((option, index) => option === selectedOptions[index])
-      );
-
-      this.updateOptionLabels(selectedOptions);
-      this.updateURL(variant);
-      this.updateVariantInput(variant);
-      this.updatePrice(variant);
-      this.updateMedia(variant);
-      this.updateAddToCart(variant);
-      updateSellingPlanUI(this.sectionId);
-    }
-
-    updateOptionLabels(selectedOptions) {
-      this.querySelectorAll('.product__option').forEach((fieldset, index) => {
-        const label = fieldset.querySelector('[data-selected-value]');
-        if (label) label.textContent = selectedOptions[index];
-      });
-    }
-
-    updateURL(variant) {
-      if (!variant || !window.history) return;
-      window.history.replaceState({}, '', `${window.location.pathname}?variant=${variant.id}`);
-    }
-
-    updateVariantInput(variant) {
-      if (!variant) return;
-      document
-        .querySelectorAll(`#product-form-${this.sectionId} [data-variant-id-input]`)
-        .forEach((input) => {
-          input.value = variant.id;
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-        });
-    }
-
-    updatePrice(variant) {
-      if (!variant) return;
-      const wrapper = document.getElementById(`product-price-${this.sectionId}`);
-      if (!wrapper) return;
-
-      if (variant.compare_at_price > variant.price) {
-        wrapper.innerHTML = `
-          <span class="price price--sale">${variant.price_formatted}</span>
-          <span class="price price--compare"><s>${variant.compare_at_price_formatted}</s></span>
-        `;
-      } else {
-        wrapper.innerHTML = `<span class="price">${variant.price_formatted}</span>`;
-      }
-
-      wrapper.dataset.unitPrice = variant.price;
-      updateTotalPriceForSection(this.sectionId);
-
-      const unitPriceWrapper = document.getElementById(`unit-price-${this.sectionId}`);
-      if (unitPriceWrapper) {
-        if (variant.has_unit_pricing) {
-          const refValue = variant.unit_price_reference_value !== 1 ? variant.unit_price_reference_value : '';
-          const label = window.themeStrings?.unitPriceLabel || 'Unit price';
-          unitPriceWrapper.innerHTML = `
-            <div class="unit-price">
-              <span class="visually-hidden">${label}</span>
-              <span class="unit-price__price">${variant.unit_price_formatted}</span>/<span class="unit-price__unit">${refValue}${variant.unit_price_reference_unit}</span>
-            </div>
-          `;
-        } else {
-          unitPriceWrapper.innerHTML = '';
-        }
-      }
-    }
-
-    updateMedia(variant) {
-      if (!variant || !variant.featured_media_id) return;
-      const target = document.getElementById(`media-${this.sectionId}-${variant.featured_media_id}`);
-      if (!target) return;
-
-      target.scrollIntoView({ block: 'nearest', inline: 'start', behavior: 'smooth' });
-
-      document
-        .querySelectorAll(`#product-media-main-${this.sectionId} .product__media-item`)
-        .forEach((item) => item.classList.toggle('is-active', item === target));
-
-      document
-        .querySelectorAll('.product__media-thumb')
-        .forEach((thumb) =>
-          thumb.classList.toggle('is-active', thumb.dataset.mediaId === String(variant.featured_media_id))
-        );
-    }
-
-    updateAddToCart(variant) {
-      const button = document.querySelector(`#product-form-${this.sectionId} [data-add-to-cart]`);
-      const text = document.querySelector(`#product-form-${this.sectionId} [data-add-to-cart-text]`);
-      if (!button || !text) return;
-
-      if (!variant) {
-        button.disabled = true;
-        text.textContent = window.themeStrings?.unavailable || 'Unavailable';
-      } else if (!variant.available) {
-        button.disabled = true;
-        text.textContent = window.themeStrings?.soldOut || 'Sold out';
-      } else {
-        button.disabled = false;
-        text.textContent = window.themeStrings?.addToCart || 'Add to cart';
-      }
-    }
-  }
-
-  customElements.define('variant-selects', VariantSelects);
-
-  window.themeProductVariants = window.themeProductVariants || {};
-  document.querySelectorAll('[data-product-variants]').forEach((script) => {
-    const sectionId = script.id.replace('product-variants-', '');
-    try {
-      window.themeProductVariants[sectionId] = JSON.parse(script.textContent);
-    } catch (error) {
-      window.themeProductVariants[sectionId] = [];
-    }
-  });
-
-  function updateSellingPlanUI(sectionId) {
-    const checkedPlan = document.querySelector(
-      `#selling-plans-${sectionId} [data-selling-plan-radio]:checked`
-    );
-    const planId = checkedPlan ? checkedPlan.value : '';
-
-    const hiddenInput = document.querySelector(`#product-form-${sectionId} [data-selling-plan-input]`);
-    if (hiddenInput) {
-      hiddenInput.value = planId;
-      hiddenInput.disabled = false;
-    }
-
-    const variantInput = document.querySelector(`#product-form-${sectionId} [data-variant-id-input]`);
-    const variantId = variantInput ? variantInput.value : null;
-    const variants = window.themeProductVariants[sectionId];
-    if (!variants || !variantId) return;
-
-    const variant = variants.find((item) => String(item.id) === String(variantId));
-    if (!variant) return;
-
-    const priceWrapper = document.getElementById(`product-price-${sectionId}`);
-    if (!priceWrapper) return;
-
-    let priceFormatted = variant.price_formatted;
-    let compareFormatted = variant.compare_at_price_formatted;
-
-    if (planId) {
-      const allocation = (variant.selling_plan_allocations || []).find(
-        (item) => String(item.selling_plan_id) === String(planId)
-      );
-      if (allocation) {
-        priceFormatted = allocation.price_formatted;
-        compareFormatted = allocation.compare_at_price_formatted;
-      }
-    }
-
-    if (compareFormatted && compareFormatted !== priceFormatted) {
-      priceWrapper.innerHTML = `
-        <span class="price price--sale">${priceFormatted}</span>
-        <span class="price price--compare"><s>${compareFormatted}</s></span>
-      `;
-    } else {
-      priceWrapper.innerHTML = `<span class="price">${priceFormatted}</span>`;
-    }
-  }
-
-  document.addEventListener('change', (event) => {
-    const radio = event.target.closest('[data-selling-plan-radio]');
-    if (radio) {
-      const wrapper = radio.closest('[data-selling-plans]');
-      if (wrapper) {
-        const sectionId = wrapper.id.replace('selling-plans-', '');
-        updateSellingPlanUI(sectionId);
-      }
-    }
-  });
-
-  document.querySelectorAll('[data-selling-plans]').forEach((wrapper) => {
-    const sectionId = wrapper.id.replace('selling-plans-', '');
-    updateSellingPlanUI(sectionId);
-  });
-
-  // Rest of JS remains the same
-  document.addEventListener('click', (event) => {
-    const decreaseButton = event.target.closest('[data-quantity-decrease]');
-    const increaseButton = event.target.closest('[data-quantity-increase]');
-    if (!decreaseButton && !increaseButton) return;
-
-    const wrapper = event.target.closest('.quantity-input');
-    const input = wrapper.querySelector('input[type="number"]');
-    const step = parseInt(input.step, 10) || 1;
-    const min = parseInt(input.min, 10) || 1;
-    let value = parseInt(input.value, 10) || min;
-
-    value = increaseButton ? value + step : Math.max(min, value - step);
-    input.value = value;
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-
-  function formatMoney(cents, format) {
-    function withDelimiters(number, precision, thousands, decimalSep) {
-      if (isNaN(number) || number === null) return 0;
-      const fixed = (number / 100).toFixed(precision);
-      const parts = fixed.split('.');
-      const wholePart = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${thousands}`);
-      const decimalPart = parts[1] ? decimalSep + parts[1] : '';
-      return wholePart + decimalPart;
-    }
-
-    if (!format) return `$${(cents / 100).toFixed(2)}`;
-    const placeholder = /\{\{\s*(\w+)\s*\}\}/;
-    const match = format.match(placeholder);
-    if (!match) return format;
-
-    let value;
-    switch (match[1]) {
-      case 'amount_no_decimals':
-        value = withDelimiters(cents, 0, ',', '.');
-        break;
-      case 'amount_with_comma_separator':
-        value = withDelimiters(cents, 2, '.', ',');
-        break;
-      case 'amount_no_decimals_with_comma_separator':
-        value = withDelimiters(cents, 0, '.', ',');
-        break;
-      case 'amount_with_apostrophe_separator':
-        value = withDelimiters(cents, 2, "'", '.');
-        break;
-      default:
-        value = withDelimiters(cents, 2, ',', '.');
-    }
-
-    return format.replace(placeholder, value);
-  }
-
-  function updateTotalPriceForSection(sectionId) {
-    const quantityWrapper = document.querySelector(
-      `.product__quantity[data-section-id="${sectionId}"]`
-    );
-    if (!quantityWrapper) return;
-
-    const input = quantityWrapper.querySelector('input[type="number"]');
-    const priceWrapper = document.getElementById(`product-price-${sectionId}`);
-    const totalEl = quantityWrapper.querySelector('[data-price-total]');
-    const amountEl = quantityWrapper.querySelector('[data-price-total-amount]');
-    if (!input || !priceWrapper || !totalEl || !amountEl) return;
-
-    const unitPrice = parseInt(priceWrapper.dataset.unitPrice, 10);
-    const quantity = parseInt(input.value, 10) || 1;
-
-    if (!unitPrice || quantity <= 1) {
-      totalEl.hidden = true;
-      return;
-    }
-
-    totalEl.hidden = false;
-    amountEl.textContent = formatMoney(unitPrice * quantity, priceWrapper.dataset.moneyFormat);
-  }
-
-  document.addEventListener('input', (event) => {
-    const input = event.target.closest('.product__quantity input[type="number"]');
-    if (!input) return;
-
-    const sectionId = input.closest('.product__quantity').dataset.sectionId;
-    updateTotalPriceForSection(sectionId);
-  });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.product__quantity').forEach((wrapper) => {
-      updateTotalPriceForSection(wrapper.dataset.sectionId);
-    });
-  });
-{% endjavascript %}
+{{ 'product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
   "name": "t:general.product",
   "settings": [
-    { "type": "header", "content": "t:sections.main_product.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.main_product.settings.header__1.content"
+    },
     {
       "type": "select",
       "id": "media_position",
@@ -1084,6 +473,79 @@
     { "type": "variant_picker", "name": "t:sections.main_product.blocks.variant_picker.name", "limit": 1 },
     { "type": "selling_plan_selector", "name": "t:sections.main_product.blocks.selling_plan_selector.name", "limit": 1 },
     { "type": "quantity_selector", "name": "t:sections.main_product.blocks.quantity_selector.name", "limit": 1 },
+    {
+      "type": "shop_pay_installments",
+      "name": "Shop Pay Installments",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_shop_pay_installments",
+          "label": "Enable Shop Pay Installments",
+          "default": true,
+          "info": "Show installment payment options on the product page"
+        },
+        {
+          "type": "range",
+          "id": "installments_count",
+          "label": "Number of installments",
+          "min": 2,
+          "max": 24,
+          "step": 1,
+          "default": 6,
+          "unit": "x",
+          "info": "Number of monthly payments (e.g., 6 = 6 months)"
+        },
+        {
+          "type": "number",
+          "id": "min_installment_price",
+          "label": "Minimum price for installments",
+          "default": 50,
+          "info": "Products below this price (in your store's currency, e.g. 50 for $50.00) won't show the installment badge"
+        },
+        {
+          "type": "text",
+          "id": "installments_or_text",
+          "label": "\"Or\" text",
+          "default": "or",
+          "info": "Text between the price and installment amount"
+        },
+        {
+          "type": "text",
+          "id": "installments_label",
+          "label": "Installment label",
+          "default": "/mo for",
+          "info": "Label after the installment amount (e.g., '/mo for')"
+        },
+        {
+          "type": "text",
+          "id": "installments_months_label",
+          "label": "Months label",
+          "default": "months",
+          "info": "Label after the number of months"
+        },
+        {
+          "type": "text",
+          "id": "installments_provider",
+          "label": "Provider name",
+          "default": "Shop Pay",
+          "info": "Name of the payment provider"
+        },
+        {
+          "type": "text",
+          "id": "installments_tooltip",
+          "label": "Tooltip text",
+          "default": "Interest-free payments with Shop Pay.",
+          "info": "Text shown when hovering or focusing the info icon. If a terms URL is set below, a \"See terms\" link is appended automatically."
+        },
+        {
+          "type": "url",
+          "id": "installments_terms_url",
+          "label": "Terms link URL",
+          "info": "Optional — if set, a clickable \"See terms\" link is added to the tooltip"
+        }
+      ]
+    },
     {
       "type": "buy_buttons",
       "name": "t:sections.main_product.blocks.buy_buttons.name",
@@ -1120,6 +582,7 @@
         { "type": "variant_picker" },
         { "type": "selling_plan_selector" },
         { "type": "quantity_selector" },
+        { "type": "shop_pay_installments" },
         { "type": "buy_buttons" },
         { "type": "description" }
       ]

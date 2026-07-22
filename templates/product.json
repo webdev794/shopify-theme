@@ -36,6 +36,24 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "shop_pay_installments_Btzgcz": {
+          "type": "shop_pay_installments",
+          "settings": {
+            "enable_shop_pay_installments": true,
+            "installments_count": 6,
+            "min_installment_price": 50,
+            "installments_or_text": "or",
+            "installments_label": "/mo for",
+            "installments_months_label": "months",
+            "installments_provider": "Shop Pay",
+            "installments_tooltip": "Interest-free payments with Shop Pay.",
+            "installments_terms_url": ""
+          }
+        },
+        "selling_plan_selector_6VKdba": {
+          "type": "selling_plan_selector",
+          "settings": {}
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -53,6 +71,8 @@
         "price",
         "variant_picker",
         "quantity_selector",
+        "shop_pay_installments_Btzgcz",
+        "selling_plan_selector_6VKdba",
         "buy_buttons",
         "description"
       ],

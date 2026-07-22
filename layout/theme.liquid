@@ -5,20 +5,16 @@
     {% render 'css-variables' %}
 
     {% comment %}
-      Font preloading:
+      Font loading:
       1. Preconnect to font CDN for faster connection
-      2. Preload only the critical font variant (base weight)
-      3. Additional variants load on-demand via @font-face
+      2. Fonts load on-demand via @font-face
     {% endcomment %}
     {% unless settings.type_primary_font.system? %}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-
-      {% comment %} Preload the base font variant for initial page render {% endcomment %}
-      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
 
-    {% # Load and preload the critical CSS %}
-    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {% # Load critical CSS %}
+    {{ 'critical.css' | asset_url | stylesheet_tag }}
 
     {{ 'buttons.css' | asset_url | stylesheet_tag }}
     {{ 'unit-price.css' | asset_url | stylesheet_tag }}
@@ -27,6 +23,9 @@
     {% render 'meta-tags' %}
 
     {{ content_for_header }}
+
+    <!-- Shop Pay Installments -->
+    <script src="https://cdn.shopify.com/shopifycloud/shop-js/shop-installments.js" defer></script>
 
     <!-- ===== Global layout safety net ===== -->
     <style>
@@ -40,9 +39,7 @@
         position: relative !important;
       }
 
-      /* TODO: confirm this is still needed and what it targets before shipping.
-         Hiding an unknown element with !important sitewide is risky if it's
-         a legitimate app/preview element rather than dev-only noise. */
+      /* Hide dev-only elements */
       #PBarNextFrameWrapper {
         display: none !important;
       }
