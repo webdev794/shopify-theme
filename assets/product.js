@@ -32,6 +32,7 @@ class VariantSelects extends HTMLElement {
     this.updateAddToCart(variant);
     updateSellingPlanUI(this.sectionId);
     updateShopPayInstallments(this.sectionId, variant);
+    updatePickupAvailability(this.sectionId, variant);
   }
 
   updateOptionLabels(selectedOptions) {
@@ -257,7 +258,6 @@ function updateTotalPriceForSection(sectionId) {
    SHOP PAY INSTALLMENTS
    ======================================== */
 
-// Update Shop Pay Installments when variant changes
 function updateShopPayInstallments(sectionId, variant) {
   const installmentsWrapper = document.getElementById(`shop-pay-installments-${sectionId}`);
   if (!installmentsWrapper || !variant) return;
@@ -291,6 +291,99 @@ function updateShopPayInstallments(sectionId, variant) {
     monthsEl.textContent = installmentsCount;
   }
 }
+
+/* ========================================
+   PICKUP AVAILABILITY
+   ======================================== */
+
+window.themePickupVariants = window.themePickupVariants || {};
+document.querySelectorAll('[data-pickup-variants]').forEach((script) => {
+  const wrapper = script.closest('.pickup-availability');
+  if (!wrapper) return;
+  try {
+    window.themePickupVariants[wrapper.dataset.sectionId] = JSON.parse(script.textContent);
+  } catch (error) {
+    window.themePickupVariants[wrapper.dataset.sectionId] = [];
+  }
+});
+
+function pickupIcon(available) {
+  return available
+    ? '<svg viewBox="0 0 20 20" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" fill="currentColor"/></svg>'
+    : '<svg viewBox="0 0 20 20" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM7 7l6 6M13 7l-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+}
+
+function updatePickupAvailability(sectionId, variant) {
+  const wrapper = document.getElementById(`pickup-availability-${sectionId}`);
+  if (!wrapper || !variant) return;
+
+  const data = (window.themePickupVariants[sectionId] || []).find((item) => String(item.id) === String(variant.id));
+  const locations = data ? data.locations : [];
+  const body = wrapper.querySelector('[data-pickup-body]');
+  const modalList = wrapper.querySelector('[data-pickup-modal-list]');
+  if (!body) return;
+
+  if (!locations || locations.length === 0) {
+    body.innerHTML = `<span class="pickup-availability__none">${wrapper.dataset.noPickupText || 'Pickup currently unavailable for this item'}</span>`;
+    if (modalList) modalList.innerHTML = '';
+    return;
+  }
+
+  const first = locations[0];
+  const statusClass = first.available ? 'pickup-availability__icon--available' : 'pickup-availability__icon--unavailable';
+  const statusText = first.available
+    ? `${wrapper.dataset.availableText || 'Pickup available at'} ${first.name}`
+    : `${wrapper.dataset.unavailableText || 'Pickup currently unavailable at'} ${first.name}`;
+
+  body.innerHTML = `
+    <span class="pickup-availability__icon ${statusClass}">${pickupIcon(first.available)}</span>
+    <span class="pickup-availability__text">
+      <span class="pickup-availability__status">${statusText}</span>
+      <span class="pickup-availability__time">${first.pickup_time || ''}</span>
+      ${locations.length > 1 ? `<button type="button" class="pickup-availability__link" data-pickup-modal-open>${wrapper.dataset.viewAllText || 'View store info'}</button>` : ''}
+    </span>
+  `;
+
+  if (modalList) {
+    modalList.innerHTML = locations
+      .map(
+        (loc) => `
+        <li class="pickup-availability-modal__item">
+          <span class="pickup-availability__icon ${loc.available ? 'pickup-availability__icon--available' : 'pickup-availability__icon--unavailable'}">${pickupIcon(loc.available)}</span>
+          <div>
+            <p class="pickup-availability-modal__location-name">${loc.name}</p>
+            <p class="pickup-availability-modal__location-address">${loc.address || ''}</p>
+            <p class="pickup-availability-modal__location-status">${loc.pickup_time || (loc.available ? 'Usually ready' : 'Currently unavailable')}</p>
+          </div>
+        </li>`
+      )
+      .join('');
+  }
+}
+
+// Modal open/close (event delegation, works after innerHTML rebuilds)
+document.addEventListener('click', (event) => {
+  const openTrigger = event.target.closest('[data-pickup-modal-open]');
+  if (openTrigger) {
+    const wrapper = openTrigger.closest('.pickup-availability');
+    const modal = wrapper?.querySelector('[data-pickup-modal]');
+    if (modal) modal.hidden = false;
+    return;
+  }
+
+  const closeTrigger = event.target.closest('[data-pickup-modal-close]');
+  if (closeTrigger) {
+    const modal = closeTrigger.closest('[data-pickup-modal]');
+    if (modal) modal.hidden = true;
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  document.querySelectorAll('[data-pickup-modal]:not([hidden])').forEach((modal) => {
+    modal.hidden = true;
+  });
+});
 
 /* ========================================
    EVENT LISTENERS
@@ -350,17 +443,24 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTotalPriceForSection(wrapper.dataset.sectionId);
   });
 
-  // Initialize Shop Pay Installments
-  document.querySelectorAll('.shop-pay-installments').forEach((wrapper) => {
-    const sectionId = wrapper.id.replace('shop-pay-installments-', '');
+  // Initialize Shop Pay Installments and Pickup Availability
+  document.querySelectorAll('.product__buy-buttons, .product__info').forEach(() => {});
+
+  document.querySelectorAll('.shop-pay-installments, .pickup-availability').forEach((wrapper) => {
+    const sectionId = wrapper.dataset.sectionId || wrapper.id.replace('shop-pay-installments-', '');
     const variants = window.themeProductVariants[sectionId];
-    if (variants && variants.length > 0) {
-      const variantInput = document.querySelector(`#product-form-${sectionId} [data-variant-id-input]`);
-      const variantId = variantInput ? variantInput.value : null;
-      const variant = variants.find((item) => String(item.id) === String(variantId));
-      if (variant) {
-        updateShopPayInstallments(sectionId, variant);
-      }
+    if (!variants || variants.length === 0) return;
+
+    const variantInput = document.querySelector(`#product-form-${sectionId} [data-variant-id-input]`);
+    const variantId = variantInput ? variantInput.value : null;
+    const variant = variants.find((item) => String(item.id) === String(variantId));
+    if (!variant) return;
+
+    if (wrapper.classList.contains('shop-pay-installments')) {
+      updateShopPayInstallments(sectionId, variant);
+    }
+    if (wrapper.classList.contains('pickup-availability')) {
+      updatePickupAvailability(sectionId, variant);
     }
   });
 });

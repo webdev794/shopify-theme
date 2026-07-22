@@ -329,6 +329,88 @@
               </p>
             </div>
 
+          {% when 'pickup_availability' %}
+            {% if block.settings.enable_pickup_availability %}
+              {% liquid
+                assign pickup_locations = current_variant.store_availabilities | where: 'pick_up_enabled', true
+                assign available_text = block.settings.available_text | default: 'Pickup available at'
+                assign unavailable_text = block.settings.unavailable_text | default: 'Pickup currently unavailable at'
+                assign no_pickup_text = block.settings.no_pickup_text | default: 'Pickup currently unavailable for this item'
+                assign view_all_text = block.settings.view_all_text | default: 'View store info'
+                assign modal_title = block.settings.modal_title | default: 'Store availability'
+              %}
+              <div
+                class="pickup-availability"
+                id="pickup-availability-{{ section.id }}"
+                data-section-id="{{ section.id }}"
+                data-available-text="{{ available_text | escape }}"
+                data-unavailable-text="{{ unavailable_text | escape }}"
+                data-no-pickup-text="{{ no_pickup_text | escape }}"
+                data-view-all-text="{{ view_all_text | escape }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="pickup-availability__body" data-pickup-body>
+                  {% if pickup_locations.size > 0 %}
+                    {% assign first_pickup = pickup_locations.first %}
+                    <span class="pickup-availability__icon{% if first_pickup.available %} pickup-availability__icon--available{% else %} pickup-availability__icon--unavailable{% endif %}">
+                      {% if first_pickup.available %}
+                        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" fill="currentColor"/></svg>
+                      {% else %}
+                        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM7 7l6 6M13 7l-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                      {% endif %}
+                    </span>
+                    <span class="pickup-availability__text">
+                      <span class="pickup-availability__status">
+                        {% if first_pickup.available %}
+                          {{ available_text }} {{ first_pickup.location.name }}
+                        {% else %}
+                          {{ unavailable_text }} {{ first_pickup.location.name }}
+                        {% endif %}
+                      </span>
+                      <span class="pickup-availability__time">{{ first_pickup.pick_up_time }}</span>
+                      {% if pickup_locations.size > 1 %}
+                        <button type="button" class="pickup-availability__link" data-pickup-modal-open>
+                          {{ view_all_text }}
+                        </button>
+                      {% endif %}
+                    </span>
+                  {% else %}
+                    <span class="pickup-availability__none">{{ no_pickup_text }}</span>
+                  {% endif %}
+                </div>
+
+                <script type="application/json" data-pickup-variants>
+                  [
+                    {% for variant in product.variants %}
+                      {% assign variant_pickups = variant.store_availabilities | where: 'pick_up_enabled', true %}
+                      {
+                        "id": {{ variant.id | json }},
+                        "locations": [
+                          {% for pickup in variant_pickups %}
+                            {
+                              "name": {{ pickup.location.name | json }},
+                              "address": {{ pickup.location.address.summary | json }},
+                              "available": {{ pickup.available | json }},
+                              "pickup_time": {{ pickup.pick_up_time | json }}
+                            }{% unless forloop.last %},{% endunless %}
+                          {% endfor %}
+                        ]
+                      }{% unless forloop.last %},{% endunless %}
+                    {% endfor %}
+                  ]
+                </script>
+
+                <pickup-availability-modal class="pickup-availability-modal" hidden data-pickup-modal>
+                  <div class="pickup-availability-modal__overlay" data-pickup-modal-close></div>
+                  <div class="pickup-availability-modal__dialog" role="dialog" aria-modal="true" aria-label="{{ modal_title | escape }}">
+                    <button type="button" class="pickup-availability-modal__close" data-pickup-modal-close aria-label="Close">&times;</button>
+                    <h2 class="pickup-availability-modal__title">{{ modal_title }}</h2>
+                    <ul class="pickup-availability-modal__list" data-pickup-modal-list></ul>
+                  </div>
+                </pickup-availability-modal>
+              </div>
+            {% endif %}
+
           {% when 'shop_pay_installments' %}
             {% if block.settings.enable_shop_pay_installments %}
               {% liquid
@@ -474,6 +556,25 @@
     { "type": "selling_plan_selector", "name": "t:sections.main_product.blocks.selling_plan_selector.name", "limit": 1 },
     { "type": "quantity_selector", "name": "t:sections.main_product.blocks.quantity_selector.name", "limit": 1 },
     {
+      "type": "pickup_availability",
+      "name": "Pickup Availability",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_pickup_availability",
+          "label": "Enable pickup availability",
+          "default": true,
+          "info": "Requires local pickup enabled in Settings → Locations"
+        },
+        { "type": "text", "id": "available_text", "label": "Available text", "default": "Pickup available at" },
+        { "type": "text", "id": "unavailable_text", "label": "Unavailable text", "default": "Pickup currently unavailable at" },
+        { "type": "text", "id": "no_pickup_text", "label": "No pickup text", "default": "Pickup currently unavailable for this item" },
+        { "type": "text", "id": "view_all_text", "label": "\"View store info\" text", "default": "View store info" },
+        { "type": "text", "id": "modal_title", "label": "Modal title", "default": "Store availability" }
+      ]
+    },
+    {
       "type": "shop_pay_installments",
       "name": "Shop Pay Installments",
       "limit": 1,
@@ -582,6 +683,7 @@
         { "type": "variant_picker" },
         { "type": "selling_plan_selector" },
         { "type": "quantity_selector" },
+        { "type": "pickup_availability" },
         { "type": "shop_pay_installments" },
         { "type": "buy_buttons" },
         { "type": "description" }

@@ -333,6 +333,141 @@ variant-selects {
   display: none;
 }
 
+/* ---------- Pickup availability ---------- */
+.pickup-availability {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border, #e5e5e5);
+  border-radius: var(--product-radius);
+  font-size: 0.9rem;
+}
+
+.pickup-availability__body {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+.pickup-availability__icon {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+}
+
+.pickup-availability__icon--available {
+  color: #1a7f37;
+}
+
+.pickup-availability__icon--unavailable {
+  color: #999;
+}
+
+.pickup-availability__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.pickup-availability__status {
+  font-weight: 500;
+}
+
+.pickup-availability__time {
+  font-size: 0.8rem;
+  color: var(--color-foreground-secondary, #777);
+}
+
+.pickup-availability__link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 0.15rem;
+  text-decoration: underline;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--color-foreground, #1a1a1a);
+  width: fit-content;
+}
+
+.pickup-availability__none {
+  color: var(--color-foreground-secondary, #888);
+}
+
+/* ---------- Pickup modal ---------- */
+.pickup-availability-modal[hidden] {
+  display: none;
+}
+
+.pickup-availability-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pickup-availability-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.pickup-availability-modal__dialog {
+  position: relative;
+  background: var(--color-background, #fff);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  max-width: 420px;
+  width: calc(100% - 2rem);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.pickup-availability-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.pickup-availability-modal__title {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.pickup-availability-modal__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pickup-availability-modal__item {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+.pickup-availability-modal__location-name {
+  font-weight: 600;
+  margin: 0;
+}
+
+.pickup-availability-modal__location-address,
+.pickup-availability-modal__location-status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-foreground-secondary, #777);
+}
+
 /* ---------- Buy buttons ---------- */
 .product__buy-buttons {
   max-width: 28rem;
@@ -427,7 +562,6 @@ variant-selects {
   height: 18px;
 }
 
-/* Info icon + tooltip (real element, not ::after, so it can contain a link) */
 .installments-info {
   position: relative;
   display: inline-block;

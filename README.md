@@ -257,8 +257,9 @@ Featured collection
 4 Accelerated checkout buttons on Cart page — you have it on product page; cart page has none.
 5 Selling plans (subscriptions) — required on cart and customer pages. Not present.
 6 Shop Pay Installments — required on product page. Not present.
---done above--
 7 Pickup availability — required on product page. Not present.
+--done above--
+
 8 Real product recommendations — required via Shopify's actual recommendations object/API on product pages. pairing-products.liquid is merchant-curated, not the automated recommendation feature — doesn't satisfy this.
 9 Follow on Shop button (login_button filter) — not present.
 10 App block support (@app) in main-product and featured-product sections — not present; you have concrete block types only.

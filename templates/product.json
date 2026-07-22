@@ -60,6 +60,17 @@
             "show_dynamic_checkout": true
           }
         },
+        "pickup_availability_aEWcUE": {
+          "type": "pickup_availability",
+          "settings": {
+            "enable_pickup_availability": true,
+            "available_text": "Pickup available at",
+            "unavailable_text": "Pickup currently unavailable at",
+            "no_pickup_text": "Pickup currently unavailable for this item",
+            "view_all_text": "View store info",
+            "modal_title": "Store availability"
+          }
+        },
         "description": {
           "type": "description",
           "settings": {}
@@ -74,6 +85,7 @@
         "shop_pay_installments_Btzgcz",
         "selling_plan_selector_6VKdba",
         "buy_buttons",
+        "pickup_availability_aEWcUE",
         "description"
       ],
       "settings": {
