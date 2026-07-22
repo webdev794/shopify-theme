@@ -92,6 +92,14 @@
         "media_position": "left"
       }
     },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "You may also like",
+        "products_to_show": 4,
+        "intent": "related"
+      }
+    },
     "1784638599a04bd965": {
       "type": "apps",
       "settings": {}
@@ -100,6 +108,7 @@
   "order": [
     "1784638594b5aa5b28",
     "main",
+    "product-recommendations",
     "1784638599a04bd965"
   ]
 }
