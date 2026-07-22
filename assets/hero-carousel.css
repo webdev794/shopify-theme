@@ -263,7 +263,9 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
 
 /* ---- Buttons ----
    Inherits the theme's .button classes when present; self-contained
-   fallback below so the section works standalone. */
+   fallback below so the section works standalone. Colors pull from the
+   theme's Accent palette (--color-accent-background / --color-accent-foreground)
+   instead of being hardcoded, matching hero.css. */
 .hero-carousel__buttons {
   display: flex;
   flex-wrap: wrap;
@@ -294,9 +296,9 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
 }
 
 .hero-carousel__button--primary {
-  color: #111111;
-  background-color: #ffffff;
-  border: 1px solid #ffffff;
+  color: var(--color-accent-foreground, #ffffff);
+  background-color: var(--color-accent-background, #121212);
+  border: 1px solid var(--color-accent-background, #121212);
 }
 
 .hero-carousel__button--primary:hover,

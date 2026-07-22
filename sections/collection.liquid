@@ -199,12 +199,21 @@
 
 {% stylesheet %}
   .collection {
-    --collection-ink: #171310;
-    --collection-ivory: #faf7f2;
-    --collection-bronze: #c9a063;
+    /* Previously hardcoded to a fixed ivory/bronze/wine editorial palette,
+       fully disconnected from the theme's real color settings — the
+       collection page would always render this way regardless of what a
+       merchant configured in Theme Settings → Colors. Now mapped to the
+       actual theme palette (--color-background, --color-foreground, etc.
+       from css-variables.liquid), with sensible fallbacks matching the
+       original design intent. --collection-wine is kept as a fixed
+       conventional "sale" color, matching the pattern used for sale
+       badges/prices elsewhere in the theme. */
+    --collection-ink: var(--color-foreground, #171310);
+    --collection-ivory: var(--color-background, #faf7f2);
+    --collection-bronze: var(--color-accent-background, #c9a063);
     --collection-wine: #6e1f31;
-    --collection-taupe: #8c7b6b;
-    --collection-border: #e7e0d5;
+    --collection-taupe: var(--color-foreground-secondary, #8c7b6b);
+    --collection-border: color-mix(in srgb, var(--color-foreground, #171310) 12%, transparent);
 
     padding-block: 2.5rem 4rem;
     display: flex;
@@ -270,7 +279,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    background-color: #f1ece3;
+    background-color: var(--collection-ivory);
   }
 
   @media screen and (min-width: 750px) {
@@ -325,7 +334,7 @@
     padding: 0.4rem 0.7rem;
     border-radius: 0.3rem;
     border: 1px solid var(--collection-border);
-    background: #fff;
+    background: var(--collection-ivory);
     color: var(--collection-ink);
     font-family: var(--collection-font-label);
     font-size: 0.8rem;
@@ -374,7 +383,7 @@
     aspect-ratio: 1 / 1;
     border-radius: 0.4rem;
     overflow: hidden;
-    background: #f1ece3;
+    background: var(--collection-ivory);
   }
 
   .collection__grid[data-image-ratio='portrait'] .product-card__media {
@@ -441,7 +450,7 @@
   }
 
   .badge--sold-out {
-    background: rgba(23, 19, 16, 0.75);
+    background: color-mix(in srgb, var(--collection-ink) 75%, transparent);
     color: var(--collection-ivory);
   }
 
@@ -568,7 +577,7 @@
   }
 
   .collection__pagination nav a:hover {
-    background: #f1ece3;
+    background: var(--collection-ivory);
   }
 
   .collection__pagination nav [aria-current='page'] {

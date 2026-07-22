@@ -60,6 +60,9 @@
   box-shadow: 0 8px 30px rgba(0,0,0,0.08);
 }
 
+/* Icon wrapper: was a fixed light-blue (#e8f0fe) with zero tie to the
+   theme palette. Now falls back to the theme's secondary background
+   and foreground, so it follows the merchant's chosen colors. */
 .text-with-icons__icon-wrapper {
   display: flex;
   align-items: center;
@@ -68,8 +71,8 @@
   height: 64px;
   margin-bottom: 16px;
   border-radius: 50%;
-  background: var(--twi-icon-bg, #e8f0fe);
-  color: var(--twi-icon-color, #1a1a1a);
+  background: var(--twi-icon-bg, var(--color-background-secondary, #f0f0f0));
+  color: var(--twi-icon-color, var(--color-foreground, #1a1a1a));
   flex-shrink: 0;
 }
 
@@ -104,13 +107,15 @@
   margin: 0;
 }
 
+/* Link color: was a fixed blue (#0066cc) unrelated to the theme's
+   palette. Now uses the theme's accent color instead. */
 .text-with-icons__button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--twi-link-color, #0066cc);
+  color: var(--twi-link-color, var(--color-accent-background, #1a1a1a));
   text-decoration: none;
   transition: gap 0.3s ease;
   margin-top: auto;

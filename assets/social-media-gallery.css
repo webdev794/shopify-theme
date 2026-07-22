@@ -127,7 +127,7 @@
 .social-media-gallery__placeholder-icon {
   width: 48px;
   height: 48px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666666);
 }
 
 .social-media-gallery__placeholder-icon svg {
@@ -138,7 +138,7 @@
 
 .social-media-gallery__placeholder-text {
   font-size: 14px;
-  color: #666;
+  color: var(--color-foreground-secondary, #666666);
   font-weight: 500;
 }
 
@@ -217,7 +217,7 @@
 .social-media-gallery__empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666666);
   grid-column: 1 / -1;
 }
 

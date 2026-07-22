@@ -49,15 +49,22 @@
 .product-recommendations__title {
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
+  color: var(--color-foreground, #1a1a1a);
 }
 
+/* Sale-red kept as a fixed conventional color, matching the pattern used
+   for sale badges/prices everywhere else in the theme (was previously
+   referencing an undefined --color-sale variable — harmless since it
+   always fell through to this same fallback, but cleaned up for clarity) */
 .product-recommendations__price .price--sale {
-  color: var(--color-sale, #c0392b);
+  color: #c0392b;
   font-weight: 600;
 }
 
+/* Was #999 on white (~2.85:1), failed 4.5:1 for text. Now uses the
+   theme's real secondary foreground color. */
 .product-recommendations__price .price--compare {
-  color: var(--color-foreground-secondary, #999);
+  color: var(--color-foreground-secondary, #666666);
   text-decoration: line-through;
   margin-left: 0.4rem;
 }

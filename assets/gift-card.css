@@ -15,7 +15,11 @@
 .gift-card__card {
   width: 100%;
   max-width: 26rem;
-  background: linear-gradient(135deg, var(--color-foreground, #1a1a1a), #333);
+  background: linear-gradient(
+    135deg,
+    var(--color-foreground, #1a1a1a),
+    color-mix(in srgb, var(--color-foreground, #1a1a1a) 75%, black 25%)
+  );
   color: #fff;
   border-radius: 1rem;
   padding: 2.25rem 2rem;

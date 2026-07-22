@@ -57,6 +57,10 @@
     "name": "t:general.colors",
     "settings": [
       {
+        "type": "header",
+        "content": "Primary colors"
+      },
+      {
         "type": "color",
         "id": "background_color",
         "default": "#FFFFFF",
@@ -68,6 +72,41 @@
         "default": "#333333",
         "label": "t:labels.foreground"
       },
+
+      {
+        "type": "header",
+        "content": "Secondary colors"
+      },
+      {
+        "type": "color",
+        "id": "background_color_secondary",
+        "default": "#F5F5F5",
+        "label": "Secondary background"
+      },
+      {
+        "type": "color",
+        "id": "foreground_color_secondary",
+        "default": "#1A1A1A",
+        "label": "Secondary foreground"
+      },
+
+      {
+        "type": "header",
+        "content": "Accent / Buttons"
+      },
+      {
+        "type": "color",
+        "id": "accent_background",
+        "default": "#121212",
+        "label": "Accent background"
+      },
+      {
+        "type": "color",
+        "id": "accent_foreground",
+        "default": "#FFFFFF",
+        "label": "Accent foreground"
+      },
+
       {
         "type": "range",
         "id": "input_corner_radius",

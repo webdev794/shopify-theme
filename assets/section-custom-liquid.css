@@ -1,5 +1,8 @@
 /* ============================================
    CUSTOM LIQUID SECTION
+   Fixed: --color-heading / --color-text don't exist in css-variables.liquid,
+   so these always fell through to hardcoded hex. Now reference the real
+   palette variables. Link color also switched from hardcoded purple to accent.
    ============================================ */
 
 .custom-liquid {
@@ -44,14 +47,14 @@
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0 0 1.5rem;
-  color: var(--color-heading, #1a1a2e);
+  color: var(--color-foreground, #1a1a2e);
 }
 
 /* Content */
 .custom-liquid__content {
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--color-text, #4a4a6a);
+  color: var(--color-foreground-secondary, #4a4a6a);
 }
 
 /* Content Styles */
@@ -61,7 +64,7 @@
 }
 
 .custom-liquid__content a {
-  color: #667eea;
+  color: var(--color-accent-background, #1a1a2e);
   text-decoration: none;
 }
 
@@ -82,7 +85,7 @@
 
 .custom-liquid__content table td,
 .custom-liquid__content table th {
-  border: 1px solid #e5e7eb;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
   padding: 0.5rem 1rem;
 }
 
@@ -94,7 +97,7 @@
   .custom-liquid__title {
     font-size: 1.5rem;
   }
-  
+
   .custom-liquid__container {
     padding-left: 1rem;
     padding-right: 1rem;

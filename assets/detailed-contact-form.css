@@ -1,7 +1,12 @@
-/* Detailed Contact Form Styles */
+/* Detailed Contact Form Styles
+   Recolored to use the theme palette (--color-background, --color-foreground,
+   --color-background-secondary, --color-accent-background/foreground) instead
+   of a hardcoded indigo/purple/pink scheme with no tie to merchant settings.
+   The separate hardcoded dark-mode media query has been removed — it fought
+   the merchant's own light/dark theme settings rather than following them. */
 .detailed-contact-form {
-  background-color: var(--section-bg, #ffffff);
-  color: var(--text-color, #1a1a2e);
+  background-color: var(--section-bg, var(--color-background, #ffffff));
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
   padding: 5rem 0;
   position: relative;
 }
@@ -23,7 +28,7 @@
   font-weight: 800;
   margin: 0 0 0.75rem 0;
   line-height: 1.2;
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
   position: relative;
   display: inline-block;
 }
@@ -36,7 +41,7 @@
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background: linear-gradient(90deg, #6366f1, #ec4899);
+  background: var(--color-accent-background, #1a1a2e);
   border-radius: 2px;
 }
 
@@ -45,7 +50,7 @@
   line-height: 1.7;
   margin: 1rem auto 0;
   opacity: 0.75;
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
   max-width: 550px;
 }
 
@@ -66,11 +71,11 @@
 
 /* Form Wrapper */
 .detailed-contact-form__form-wrapper {
-  background: #ffffff;
+  background: var(--color-background, #ffffff);
   border-radius: 1.5rem;
   padding: 2.5rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 6%, transparent);
 }
 
 .detailed-contact-form__form {
@@ -109,11 +114,12 @@
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
 }
 
+/* Required-field asterisk kept as a conventional fixed red */
 .field__required {
-  color: #ef4444;
+  color: #c62828;
   margin-left: 0.2rem;
 }
 
@@ -123,9 +129,9 @@
   padding: 0.875rem 1.125rem;
   font-size: 1rem;
   font-family: inherit;
-  color: var(--text-color, #1a1a2e);
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
+  background: var(--color-background-secondary, #f8fafc);
+  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
   border-radius: 0.75rem;
   transition: all 0.3s ease;
   appearance: none;
@@ -134,28 +140,30 @@
 
 .field__input:focus {
   outline: none;
-  border-color: #6366f1;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  border-color: var(--color-accent-background, #1a1a2e);
+  background: var(--color-background, #ffffff);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent-background, #1a1a2e) 10%, transparent);
 }
 
 .field__input:hover {
-  border-color: #94a3b8;
-  background: #ffffff;
+  border-color: color-mix(in srgb, var(--color-foreground, #1a1a2e) 35%, transparent);
+  background: var(--color-background, #ffffff);
 }
 
 .field__input::placeholder {
-  color: #94a3b8;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a2e) 40%, transparent);
   opacity: 1;
 }
 
+/* Validation states use conventional fixed red/green — status colors,
+   not brand colors */
 .field__input.error {
-  border-color: #ef4444;
+  border-color: #c62828;
   background: #fef2f2;
 }
 
 .field__input.valid {
-  border-color: #10b981;
+  border-color: #2e7d32;
   background: #f0fdf4;
 }
 
@@ -167,7 +175,7 @@
 
 .field__select {
   cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236366f1' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a1a2e' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.125rem center;
   padding-right: 2.75rem;
@@ -181,7 +189,7 @@
   font-size: 0.8rem;
   margin-top: 0.5rem;
   opacity: 0.6;
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
   font-weight: 500;
 }
 
@@ -197,7 +205,7 @@
   width: 1.25rem;
   height: 1.25rem;
   cursor: pointer;
-  accent-color: #6366f1;
+  accent-color: var(--color-accent-background, #1a1a2e);
   flex-shrink: 0;
   margin-top: 0.125rem;
 }
@@ -205,13 +213,13 @@
 .field__checkbox-label {
   font-size: 0.95rem;
   cursor: pointer;
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
   font-weight: 500;
   line-height: 1.4;
 }
 
 .field__checkbox-label:hover {
-  color: #6366f1;
+  color: var(--color-accent-background, #1a1a2e);
 }
 
 /* Submit Button */
@@ -220,8 +228,8 @@
   padding: 1rem 2rem;
   font-size: 1.125rem;
   font-weight: 700;
-  color: #ffffff;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: var(--color-accent-foreground, #ffffff);
+  background: var(--color-accent-background, #1a1a2e);
   border: none;
   border-radius: 0.75rem;
   cursor: pointer;
@@ -235,8 +243,9 @@
 }
 
 .detailed-contact-form__submit:hover {
+  opacity: 0.85;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8px 25px color-mix(in srgb, var(--color-accent-background, #1a1a2e) 35%, transparent);
 }
 
 .detailed-contact-form__submit:active {
@@ -255,7 +264,7 @@
   height: 20px;
   border: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  border-top-color: #ffffff;
+  border-top-color: var(--color-accent-foreground, #ffffff);
   animation: spin 0.8s linear infinite;
 }
 
@@ -269,11 +278,11 @@
 
 /* Contact Information Sidebar */
 .detailed-contact-form__info {
-  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  background: var(--color-background-secondary, #f8fafc);
   border-radius: 1.5rem;
   padding: 2.5rem;
   height: 100%;
-  border: 1px solid rgba(99, 102, 241, 0.1);
+  border: 1px solid color-mix(in srgb, var(--color-accent-background, #1a1a2e) 10%, transparent);
 }
 
 .detailed-contact-form__info-content {
@@ -286,7 +295,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -297,7 +306,7 @@
   display: inline-block;
   width: 4px;
   height: 28px;
-  background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+  background: var(--color-accent-background, #1a1a2e);
   border-radius: 2px;
 }
 
@@ -305,7 +314,7 @@
   font-size: 0.95rem;
   line-height: 1.7;
   opacity: 0.8;
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
 }
 
 .detailed-contact-form__info-list {
@@ -324,7 +333,7 @@
   font-size: 0.95rem;
   line-height: 1.5;
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(99, 102, 241, 0.08);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-accent-background, #1a1a2e) 8%, transparent);
 }
 
 .detailed-contact-form__info-item:last-child {
@@ -335,22 +344,22 @@
   width: 24px;
   height: 24px;
   flex-shrink: 0;
-  color: #6366f1;
+  color: var(--color-accent-background, #1a1a2e);
   margin-top: 0.125rem;
 }
 
 .detailed-contact-form__info-link {
-  color: var(--text-color, #1a1a2e);
+  color: var(--text-color, var(--color-foreground, #1a1a2e));
   text-decoration: none;
   transition: color 0.3s ease;
   font-weight: 500;
 }
 
 .detailed-contact-form__info-link:hover {
-  color: #6366f1;
+  color: var(--color-accent-background, #1a1a2e);
 }
 
-/* Form Status Messages */
+/* Form Status Messages — conventional fixed status colors */
 .form-status {
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
@@ -396,15 +405,15 @@
   .detailed-contact-form {
     padding: 4rem 0;
   }
-  
+
   .detailed-contact-form__heading {
     font-size: 2.25rem;
   }
-  
+
   .detailed-contact-form__form-wrapper {
     padding: 2rem;
   }
-  
+
   .detailed-contact-form__info {
     padding: 2rem;
   }
@@ -414,16 +423,16 @@
   .detailed-contact-form {
     padding: 3rem 0;
   }
-  
+
   .detailed-contact-form__heading {
     font-size: 2rem;
   }
-  
+
   .detailed-contact-form__form-wrapper {
     padding: 1.5rem;
     border-radius: 1rem;
   }
-  
+
   .detailed-contact-form__info {
     padding: 1.5rem;
     border-radius: 1rem;
@@ -434,60 +443,27 @@
   .detailed-contact-form {
     padding: 2.5rem 0;
   }
-  
+
   .detailed-contact-form__heading {
     font-size: 1.75rem;
   }
-  
+
   .detailed-contact-form__form-wrapper {
     padding: 1.25rem;
   }
-  
+
   .detailed-contact-form__fields {
     gap: 1rem;
   }
-  
+
   .field__input {
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
   }
-  
+
   .detailed-contact-form__submit {
     font-size: 1rem;
     padding: 0.875rem 1.5rem;
     min-height: 50px;
-  }
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .detailed-contact-form__form-wrapper {
-    background: #1a1a2e;
-    border-color: rgba(255, 255, 255, 0.05);
-  }
-  
-  .field__input {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.08);
-    color: #e2e8f0;
-  }
-  
-  .field__input::placeholder {
-    color: rgba(255, 255, 255, 0.2);
-  }
-  
-  .field__input:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.08);
-  }
-  
-  .field__input:focus {
-    border-color: #8b5cf6;
-    background: rgba(139, 92, 246, 0.05);
-  }
-  
-  .detailed-contact-form__info {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.15));
-    border-color: rgba(99, 102, 241, 0.15);
   }
 }

@@ -90,13 +90,17 @@
    ============================================ */
 
 .burst-btn--gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-background, #667eea) 0%,
+    color-mix(in srgb, var(--color-accent-background, #667eea) 60%, black 40%) 100%
+  );
+  box-shadow: 0 4px 15px color-mix(in srgb, var(--color-accent-background, #667eea) 40%, transparent);
 }
 
 .burst-btn--gradient:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--color-accent-background, #667eea) 60%, transparent);
 }
 
 /* ============================================
@@ -121,8 +125,12 @@
    ============================================ */
 
 .burst-btn--glow {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  box-shadow: 0 0 20px rgba(245, 87, 108, 0.4);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-background, #f5576c) 0%,
+    color-mix(in srgb, var(--color-accent-background, #f5576c) 70%, black 30%) 100%
+  );
+  box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent-background, #f5576c) 40%, transparent);
 }
 
 .burst-btn__glow {
@@ -144,7 +152,7 @@
 
 .burst-btn--glow:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 0 40px rgba(245, 87, 108, 0.6);
+  box-shadow: 0 0 40px color-mix(in srgb, var(--color-accent-background, #f5576c) 60%, transparent);
 }
 
 /* ============================================
@@ -165,7 +173,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-accent-background, #667eea);
   transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;
 }
@@ -184,21 +192,21 @@
    ============================================ */
 
 .burst-btn--pulse {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  box-shadow: 0 4px 20px rgba(79, 172, 254, 0.4);
+  background: var(--color-accent-background, #4facfe);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-accent-background, #4facfe) 40%, transparent);
   animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0% {
-    box-shadow: 0 4px 20px rgba(79, 172, 254, 0.4);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--color-accent-background, #4facfe) 40%, transparent);
   }
   50% {
-    box-shadow: 0 4px 40px rgba(79, 172, 254, 0.8);
+    box-shadow: 0 4px 40px color-mix(in srgb, var(--color-accent-background, #4facfe) 80%, transparent);
     transform: scale(1.03);
   }
   100% {
-    box-shadow: 0 4px 20px rgba(79, 172, 254, 0.4);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--color-accent-background, #4facfe) 40%, transparent);
   }
 }
 

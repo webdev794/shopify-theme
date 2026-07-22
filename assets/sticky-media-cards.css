@@ -238,7 +238,7 @@
 .sticky-media-cards__empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--smc-subheading-color, #666666);
   min-height: 40vh;
 }
 

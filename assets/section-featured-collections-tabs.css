@@ -18,7 +18,7 @@
 .featured-collections-tabs .section-heading {
   margin: 0;
   line-height: 1.2;
-  color: rgb(var(--color-foreground));
+  color: var(--color-foreground, #1a1a1a);
 }
 
 .featured-collections-tabs .heading--small {
@@ -34,7 +34,7 @@
 .featured-collections-tabs .subheading {
   margin: 0.5rem 0 0;
   font-size: 1rem;
-  color: rgba(var(--color-foreground), 0.65);
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 65%, transparent);
 }
 
 /* ── Tabs nav ── */
@@ -44,7 +44,7 @@
   gap: 1rem;
   justify-content: var(--tabs-justify, center);
   margin-bottom: 2.5rem;
-  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 8%, transparent);
 }
 
 .featured-collections-tabs .tab-button {
@@ -55,18 +55,18 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  color: rgb(var(--color-foreground));
+  color: var(--color-foreground, #1a1a1a);
   font-size: 1.05rem;
 }
 
 .featured-collections-tabs .tab-button:hover,
 .featured-collections-tabs .tab-button.active {
-  border-bottom-color: rgb(var(--color-button));
-  color: rgb(var(--color-button));
+  border-bottom-color: var(--color-accent-background, #121212);
+  color: var(--color-accent-background, #121212);
 }
 
 .featured-collections-tabs .tab-button:focus-visible {
-  outline: 2px solid rgb(var(--color-foreground));
+  outline: 2px solid var(--color-foreground, #1a1a1a);
   outline-offset: 2px;
 }
 
@@ -123,7 +123,14 @@
   }
 }
 
-/* ── Product card ── */
+/* ── Product card ──
+   NOTE: previously used rgb(var(--color-foreground)) / rgba(var(--color-foreground), X),
+   which only works if --color-foreground holds bare RGB numbers ("26, 26, 26").
+   css-variables.liquid sets it as a full hex string ("#1a1a1a"), so rgb(#1a1a1a)
+   was invalid CSS and every rule below was silently ignored by the browser.
+   Switched to var(--color-foreground) directly + color-mix() for opacity variants.
+   Also replaced the undefined --color-button with --color-accent-background/foreground,
+   which are the actual button/accent palette variables defined in this theme. */
 .card-wrapper {
   height: 100%;
   min-width: 0;
@@ -142,6 +149,7 @@
   font-weight: 500;
   line-height: 1.4;
   overflow-wrap: break-word;
+  color: var(--color-foreground, #1a1a1a);
 }
 
 .card__price {
@@ -150,12 +158,13 @@
   gap: 0.75rem;
   flex-wrap: wrap;
   font-weight: 600;
+  color: var(--color-foreground, #1a1a1a);
 }
 
 .card__media {
   position: relative;
   overflow: hidden;
-  background-color: rgba(var(--color-foreground), 0.04);
+  background-color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 4%, transparent);
 }
 
 .card__image {
@@ -182,24 +191,26 @@
 
 .card__vendor {
   font-size: 0.85rem;
-  color: rgba(var(--color-foreground), 0.6);
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 60%, transparent);
   margin: 0 0 0.25rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
+/* Sale price uses the accent color (a real button-role color) rather
+   than the undefined --color-button */
 .price-item--sale {
-  color: rgb(var(--color-button));
+  color: var(--color-accent-background, #121212);
 }
 
 .price-item--sale s {
   font-weight: 400;
-  color: rgba(var(--color-foreground), 0.5);
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 50%, transparent);
 }
 
 .price-item--compare s {
   font-weight: 400;
-  color: rgba(var(--color-foreground), 0.5);
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 50%, transparent);
 }
 
 /* ── Rating ── */
@@ -221,19 +232,21 @@
 .product-rating__count {
   white-space: nowrap;
   font-size: 0.85rem;
-  color: rgba(var(--color-foreground), 0.6);
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 60%, transparent);
 }
 
 .star {
   font-size: 1rem;
 }
 
+/* Star gold kept as conventional review color, darkened slightly from
+   #f5a623 for 3:1 non-text contrast, matching testimonials.css */
 .star--filled {
-  color: #f5a623;
+  color: #b8860b;
 }
 
 .star--empty {
-  color: #d1d5db;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
 }
 
 /* ── Utilities / buttons ── */
@@ -256,11 +269,11 @@
 
 .button--secondary {
   background: transparent;
-  color: rgb(var(--color-button));
-  border: 2px solid rgb(var(--color-button));
+  color: var(--color-accent-background, #121212);
+  border: 2px solid var(--color-accent-background, #121212);
 }
 
 .button--secondary:hover {
-  background: rgb(var(--color-button));
-  color: rgb(var(--color-background));
+  background: var(--color-accent-background, #121212);
+  color: var(--color-accent-foreground, #ffffff);
 }

@@ -1,5 +1,10 @@
 /* ============================================
    BASE STYLES
+   Recolored: --color-heading / --color-text don't exist anywhere in
+   css-variables.liquid, so they always fell through to hardcoded hex.
+   Fixed to reference the real palette variables. Also replaced the
+   hardcoded purple/indigo (#667eea) brand scheme with the theme's
+   actual accent color.
    ============================================ */
 
 .blog-posts {
@@ -28,8 +33,8 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
+  color: var(--color-accent-background, #1a1a2e);
+  background: color-mix(in srgb, var(--color-accent-background, #1a1a2e) 10%, transparent);
   padding: 0.4rem 1rem;
   border-radius: 50px;
   margin-bottom: 0.75rem;
@@ -39,12 +44,12 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem;
-  color: var(--color-heading, #1a1a2e);
+  color: var(--color-foreground, #1a1a2e);
 }
 
 .blog-posts__description {
   font-size: 1.1rem;
-  color: var(--color-text, #4a4a6a);
+  color: var(--color-foreground-secondary, #4a4a6a);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -104,7 +109,7 @@
    ============================================ */
 
 .blog-posts__post {
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-background, #ffffff);
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -135,11 +140,11 @@
 }
 
 .blog-posts__post--bordered {
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 8%, transparent);
 }
 
 .blog-posts__post--bordered:hover {
-  border-color: #667eea;
+  border-color: var(--color-accent-background, #1a1a2e);
 }
 
 .blog-posts__post--minimal {
@@ -155,7 +160,7 @@
   position: relative;
   overflow: hidden;
   aspect-ratio: 16 / 10;
-  background: #f3f4f6;
+  background: var(--color-background-secondary, #f3f4f6);
 }
 
 .blog-posts__image-link {
@@ -175,7 +180,7 @@
 }
 
 .blog-posts__image-placeholder {
-  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+  background: var(--color-background-secondary, #e5e7eb);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,7 +240,7 @@
   font-size: 0.6rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: #667eea;
+  color: var(--color-accent-background, #1a1a2e);
   letter-spacing: 0.05em;
 }
 
@@ -257,7 +262,7 @@
   align-items: center;
   gap: 1rem;
   font-size: 0.85rem;
-  color: #6b7280;
+  color: var(--color-foreground-secondary, #6b7280);
   margin-bottom: 0.75rem;
 }
 
@@ -281,19 +286,19 @@
 }
 
 .blog-posts__title a {
-  color: var(--color-heading, #1a1a2e);
+  color: var(--color-foreground, #1a1a2e);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .blog-posts__title a:hover {
-  color: #667eea;
+  color: var(--color-accent-background, #1a1a2e);
 }
 
 .blog-posts__excerpt {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--color-text, #4a4a6a);
+  color: var(--color-foreground-secondary, #4a4a6a);
   margin-bottom: 1rem;
 }
 
@@ -304,7 +309,7 @@
   gap: 0.5rem;
   font-weight: 600;
   font-size: 0.9rem;
-  color: #667eea;
+  color: var(--color-accent-background, #1a1a2e);
   text-decoration: none;
   transition: all 0.3s ease;
 }
@@ -320,7 +325,7 @@
 }
 
 .blog-posts__read-more:hover {
-  color: #4f46e5;
+  opacity: 0.8;
 }
 
 /* ============================================
@@ -337,19 +342,19 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.8rem 2rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
   border-radius: 50px;
   font-weight: 600;
-  color: var(--color-heading, #1a1a2e);
+  color: var(--color-foreground, #1a1a2e);
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .blog-posts__view-all:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: var(--color-accent-background, #1a1a2e);
+  color: var(--color-accent-background, #1a1a2e);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 15px color-mix(in srgb, var(--color-accent-background, #1a1a2e) 20%, transparent);
 }
 
 /* ============================================
@@ -376,12 +381,12 @@
 }
 
 .blog-posts[data-layout="carousel"] .blog-posts__grid::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: var(--color-background-secondary, #f3f4f6);
   border-radius: 10px;
 }
 
 .blog-posts[data-layout="carousel"] .blog-posts__grid::-webkit-scrollbar-thumb {
-  background: #667eea;
+  background: var(--color-accent-background, #667eea);
   border-radius: 10px;
 }
 
@@ -393,11 +398,11 @@
   .blog-posts[data-layout="grid"][data-columns="4"] .blog-posts__grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .blog-posts[data-layout="featured"] .blog-posts__grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .blog-posts[data-layout="carousel"] .blog-posts__post {
     flex: 0 0 calc(50% - 1rem);
   }
@@ -407,32 +412,32 @@
   .blog-posts {
     padding: 3rem 0;
   }
-  
+
   .blog-posts__heading {
     font-size: 2rem;
   }
-  
+
   .blog-posts[data-layout="grid"] .blog-posts__grid {
     grid-template-columns: 1fr !important;
   }
-  
+
   .blog-posts[data-layout="list"] .blog-posts__post {
     grid-template-columns: 1fr;
   }
-  
+
   .blog-posts[data-layout="featured"] .blog-posts__post:first-child {
     grid-template-columns: 1fr;
   }
-  
+
   .blog-posts[data-layout="featured"] .blog-posts__grid {
     grid-template-columns: 1fr;
   }
-  
+
   .blog-posts[data-layout="carousel"] .blog-posts__post {
     flex: 0 0 calc(100% - 1rem);
     min-width: 250px;
   }
-  
+
   .blog-posts__meta {
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -444,7 +449,7 @@
   .blog-posts__heading {
     font-size: 1.5rem;
   }
-  
+
   .blog-posts__content {
     padding: 1rem;
   }

@@ -1,7 +1,9 @@
-/* trending-products.css */
+/* trending-products.css
+   Recolored to use the theme palette instead of a fully hardcoded
+   #1a1a1a / #999 / #e5e5e5 scheme with no tie to merchant settings. */
 .trending-products {
   padding: 60px 0;
-  background-color: var(--tp-bg, #ffffff);
+  background-color: var(--tp-bg, var(--color-background, #ffffff));
 }
 
 .trending-products__header {
@@ -13,12 +15,12 @@
   font-size: 32px;
   font-weight: 700;
   margin: 0 0 8px;
-  color: var(--tp-heading-color, #1a1a1a);
+  color: var(--tp-heading-color, var(--color-foreground, #1a1a1a));
 }
 
 .trending-products__subheading {
   font-size: 16px;
-  color: var(--tp-subheading-color, #666);
+  color: var(--tp-subheading-color, var(--color-foreground-secondary, #666));
   margin: 0;
 }
 
@@ -39,7 +41,7 @@
 }
 
 .trending-products__card {
-  background: #fff;
+  background: var(--color-background, #fff);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0,0,0,0.06);
@@ -72,11 +74,13 @@
   transform: scale(1.05);
 }
 
+/* "Trending"-style badge kept as a fixed attention-red, matching the
+   sale-badge convention used elsewhere (featured-products.css) */
 .trending-products__badge {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: #e74c3c;
+  background: #c62828;
   color: #fff;
   padding: 4px 12px;
   border-radius: 20px;
@@ -93,7 +97,7 @@
 
 .trending-products__vendor {
   font-size: 12px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0 0 4px;
@@ -107,12 +111,12 @@
 }
 
 .trending-products__title a {
-  color: #1a1a1a;
+  color: var(--color-foreground, #1a1a1a);
   text-decoration: none;
 }
 
 .trending-products__title a:hover {
-  color: #000;
+  color: var(--color-accent-background, #000);
 }
 
 .trending-products__rating {
@@ -122,15 +126,16 @@
   margin-bottom: 10px;
 }
 
+/* Star gold kept conventional, darkened for contrast */
 .trending-products__stars {
-  color: #f5a623;
+  color: #b8860b;
   font-size: 14px;
   letter-spacing: 1px;
 }
 
 .trending-products__review-count {
   font-size: 12px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666);
 }
 
 .trending-products__price {
@@ -143,12 +148,12 @@
 .trending-products__price--current {
   font-size: 18px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-foreground, #1a1a1a);
 }
 
 .trending-products__price--compare {
   font-size: 14px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666);
   text-decoration: line-through;
 }
 
@@ -170,12 +175,12 @@
 }
 
 .trending-products__add-to-cart.btn--primary {
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--color-accent-background, #1a1a1a);
+  color: var(--color-accent-foreground, #fff);
 }
 
 .trending-products__add-to-cart.btn--primary:hover {
-  background: #000;
+  opacity: 0.85;
   transform: translateY(-1px);
 }
 
@@ -184,8 +189,8 @@
   padding: 10px 16px;
   border: none;
   border-radius: 6px;
-  background: #e5e5e5;
-  color: #999;
+  background: var(--color-background-secondary, #e5e5e5);
+  color: var(--color-foreground-secondary, #666);
   font-weight: 600;
   font-size: 14px;
   cursor: not-allowed;
@@ -194,7 +199,7 @@
 .trending-products__quick-view {
   width: 42px;
   height: 42px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 15%, transparent);
   border-radius: 6px;
   background: transparent;
   cursor: pointer;
@@ -205,12 +210,12 @@
 }
 
 .trending-products__quick-view:hover {
-  background: #f5f5f5;
-  border-color: #ccc;
+  background: var(--color-background-secondary, #f5f5f5);
+  border-color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 30%, transparent);
 }
 
 .trending-products__quick-view svg {
-  fill: #1a1a1a;
+  fill: var(--color-foreground, #1a1a1a);
 }
 
 .trending-products__footer {
@@ -221,23 +226,23 @@
 .trending-products__footer .btn {
   display: inline-block;
   padding: 12px 40px;
-  border: 2px solid #1a1a1a;
+  border: 2px solid var(--color-accent-background, #1a1a1a);
   border-radius: 6px;
-  color: #1a1a1a;
+  color: var(--color-accent-background, #1a1a1a);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .trending-products__footer .btn:hover {
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--color-accent-background, #1a1a1a);
+  color: var(--color-accent-foreground, #fff);
 }
 
 .trending-products__empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666);
 }
 
 @media (max-width: 749px) {

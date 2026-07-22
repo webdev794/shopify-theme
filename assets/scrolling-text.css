@@ -115,7 +115,9 @@
   color: #1a1a1a;
 }
 
+/* Was falling back to an unrelated hardcoded blue (#0066cc), disconnected
+   from the theme's real accent color. Now ties to --color-accent-background. */
 .scrolling-text--accent {
-  background: var(--st-accent-color, #0066cc);
-  color: #ffffff;
+  background: var(--st-accent-color, var(--color-accent-background, #1a1a1a));
+  color: var(--color-accent-foreground, #ffffff);
 }

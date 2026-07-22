@@ -269,7 +269,10 @@
 /* ---- Buttons ----
    Inherits the theme's .button / .button--primary / .button--secondary
    styles when present; the rules below are a self-contained fallback so
-   the section still looks finished in themes without global button CSS. */
+   the section still looks finished in themes without global button CSS.
+   Colors are pulled from the theme's Accent palette (settings.accent_background /
+   settings.accent_foreground via --color-accent-background / --color-accent-foreground
+   in css-variables.liquid) rather than hardcoded, so merchants' brand colors apply here too. */
 .hero__buttons {
   display: flex;
   flex-wrap: wrap;
@@ -300,9 +303,9 @@
 }
 
 .hero__button--primary {
-  color: #111111;
-  background-color: #ffffff;
-  border: 1px solid #ffffff;
+  color: var(--color-accent-foreground, #ffffff);
+  background-color: var(--color-accent-background, #121212);
+  border: 1px solid var(--color-accent-background, #121212);
 }
 
 .hero__button--primary:hover,
@@ -363,9 +366,9 @@
   }
 
   .hero--stack-mobile .hero__button--primary {
-    color: #ffffff;
-    background-color: #111111;
-    border-color: #111111;
+    color: var(--color-accent-foreground, #ffffff);
+    background-color: var(--color-accent-background, #121212);
+    border-color: var(--color-accent-background, #121212);
   }
 }
 

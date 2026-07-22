@@ -14,9 +14,9 @@
 }
 
 .button--primary {
-  background: var(--color-foreground, #1a1a1a);
-  color: var(--color-background, #ffffff);
-  border-color: var(--color-foreground, #1a1a1a);
+  background: var(--color-accent-background, #121212);
+  color: var(--color-accent-foreground, #ffffff);
+  border-color: var(--color-accent-background, #121212);
 }
 
 .button--primary:hover {

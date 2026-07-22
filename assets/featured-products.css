@@ -1,6 +1,11 @@
 /* Featured Products Styles
-   v1.6 — image size aspect modifiers, carousel nav cleanup,
-   quick-add state classes, duplicate rules removed
+   v1.7 — color system audit: neutral grays now pull from the theme
+   palette (--color-background-secondary, --color-foreground, mixes);
+   badge accent now uses --color-accent-background/foreground.
+   Semantic status colors (sale red, sold-out gray, success/error,
+   star rating gold) are intentionally left as fixed conventional colors —
+   these carry meaning independent of brand color and shouldn't shift
+   with a merchant's palette.
    ============================================ */
 
 .featured-products-section {
@@ -9,8 +14,8 @@
 }
 
 .featured-products {
-  background-color: var(--fp-bg, #ffffff);
-  color: var(--fp-text-color, #1a1a1a);
+  background-color: var(--fp-bg, var(--color-background, #ffffff));
+  color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
   padding: 40px 0;
   width: 100%;
 }
@@ -38,7 +43,7 @@
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--fp-text-color, #1a1a1a);
+  color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
   opacity: 0.7;
   margin-bottom: 8px;
   font-weight: 600;
@@ -48,7 +53,7 @@
   font-size: 36px;
   font-weight: 700;
   margin: 0 0 12px 0;
-  color: var(--fp-heading-color, #1a1a1a);
+  color: var(--fp-heading-color, var(--color-foreground, #1a1a1a));
   line-height: 1.2;
 }
 
@@ -171,7 +176,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--fp-text-color, #1a1a1a);
+  color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
   font-weight: 600;
   text-decoration: none;
   padding: 12px 24px;
@@ -189,8 +194,8 @@
 }
 
 .featured-products__view-all:hover {
-  background-color: var(--fp-text-color, #1a1a1a);
-  color: var(--fp-bg, #ffffff);
+  background-color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
+  color: var(--fp-bg, var(--color-background, #ffffff));
   text-decoration: none;
 }
 
@@ -211,7 +216,7 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  background: var(--fp-card-bg, #ffffff);
+  background: var(--fp-card-bg, var(--color-background, #ffffff));
   border-radius: var(--fp-border-radius, 8px);
   overflow: hidden;
   box-shadow: 0 2px 8px var(--fp-card-shadow, rgba(0, 0, 0, 0.1));
@@ -232,7 +237,7 @@
   position: relative;
   overflow: hidden;
   padding-bottom: 100%;
-  background: #f5f5f5;
+  background: var(--color-background-secondary, #f5f5f5);
 }
 
 .product-card__image-wrapper--small {
@@ -277,7 +282,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #f5f5f5;
+  background: var(--color-background-secondary, #f5f5f5);
 }
 
 .product-card__image-placeholder .placeholder-svg {
@@ -303,16 +308,21 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-radius: 4px;
-  background: #1a1a1a;
+  background: var(--color-accent-background, #121212);
+  color: var(--color-accent-foreground, #ffffff);
+}
+
+/* Sale/sold-out badges use fixed conventional colors (red = sale,
+   gray = unavailable) rather than the brand accent, so they stay
+   instantly recognizable regardless of a merchant's chosen palette. */
+.product-card__badge--sale {
+  background: #e32b2b;
   color: #ffffff;
 }
 
-.product-card__badge--sale {
-  background: #e32b2b;
-}
-
 .product-card__badge--sold-out {
-  background: #999;
+  background: #767676;
+  color: #ffffff;
 }
 
 /* Quick Add Button */
@@ -323,7 +333,7 @@
   transform: translateX(-50%) translateY(100%);
   width: 90%;
   padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.95);
+  background: color-mix(in srgb, var(--color-background, #ffffff) 95%, transparent);
   border: none;
   border-radius: 4px;
   font-weight: 600;
@@ -334,7 +344,7 @@
   z-index: 2;
   backdrop-filter: blur(4px);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-  color: var(--fp-text-color, #1a1a1a);
+  color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
 }
 
 .product-card:hover .product-card__quick-add,
@@ -344,8 +354,8 @@
 }
 
 .product-card__quick-add:hover:not(:disabled) {
-  background: var(--fp-text-color, #1a1a1a);
-  color: var(--fp-card-bg, #ffffff);
+  background: var(--color-accent-background, #121212);
+  color: var(--color-accent-foreground, #ffffff);
   transform: translateX(-50%) translateY(-2px);
 }
 
@@ -358,15 +368,16 @@
   transform: translateX(-50%) scale(0.95);
 }
 
-/* Feedback states (set by JS instead of inline styles) */
+/* Feedback states (set by JS instead of inline styles). Success/error
+   use fixed conventional green/red — status colors, not brand colors. */
 .product-card__quick-add--success {
-  background: #4caf50 !important;
+  background: #2e7d32 !important;
   color: #ffffff !important;
   opacity: 1;
 }
 
 .product-card__quick-add--error {
-  background: #f44336 !important;
+  background: #c62828 !important;
   color: #ffffff !important;
   opacity: 1;
 }
@@ -404,7 +415,7 @@
   font-weight: 600;
   margin: 0 0 8px 0;
   line-height: 1.3;
-  color: var(--fp-text-color, #1a1a1a);
+  color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
 }
 
 .product-card__title a {
@@ -428,6 +439,7 @@
   gap: 2px;
 }
 
+/* Star rating gold is a conventional review-UI color, kept fixed */
 .product-card__stars svg {
   width: 16px;
   height: 16px;
@@ -435,7 +447,7 @@
 }
 
 .product-card__stars svg.empty {
-  fill: #ddd;
+  fill: color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
 }
 
 .product-card__rating-count {
@@ -481,7 +493,7 @@
 
 .product-card--minimal {
   box-shadow: none !important;
-  border: 1px solid #eee;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 12%, transparent);
   border-radius: var(--fp-border-radius, 8px);
 }
 
@@ -511,9 +523,9 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2px solid var(--fp-text-color, #1a1a1a);
+  border: 2px solid var(--fp-text-color, var(--color-foreground, #1a1a1a));
   background: transparent;
-  color: var(--fp-text-color, #1a1a1a);
+  color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -528,8 +540,8 @@
 }
 
 .featured-products__carousel-btn:hover:not(:disabled) {
-  background: var(--fp-text-color, #1a1a1a);
-  color: var(--fp-bg, #ffffff);
+  background: var(--fp-text-color, var(--color-foreground, #1a1a1a));
+  color: var(--fp-bg, var(--color-background, #ffffff));
   transform: scale(1.05);
 }
 
@@ -542,7 +554,7 @@
   cursor: not-allowed;
 }
 
-/* Notification styles */
+/* Notification styles — status colors, kept fixed/conventional */
 .featured-products__notification {
   position: fixed;
   bottom: 20px;
@@ -558,12 +570,12 @@
 }
 
 .featured-products__notification--success {
-  background: #4caf50;
+  background: #2e7d32;
   color: #ffffff;
 }
 
 .featured-products__notification--error {
-  background: #f44336;
+  background: #c62828;
   color: #ffffff;
 }
 
@@ -622,14 +634,14 @@
 
 /* Accessibility */
 .product-card:focus-within {
-  outline: 2px solid var(--fp-text-color, #1a1a1a);
+  outline: 2px solid var(--fp-text-color, var(--color-foreground, #1a1a1a));
   outline-offset: 2px;
 }
 
 .product-card__quick-add:focus-visible,
 .featured-products__view-all:focus-visible,
 .featured-products__carousel-btn:focus-visible {
-  outline: 2px solid var(--fp-text-color, #1a1a1a);
+  outline: 2px solid var(--fp-text-color, var(--color-foreground, #1a1a1a));
   outline-offset: 2px;
 }
 

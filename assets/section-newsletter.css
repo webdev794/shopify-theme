@@ -1,5 +1,10 @@
 /* ============================================
-   NEWSLETTER SECTION - FIXED
+   NEWSLETTER SECTION
+   v2 — recolored to use the theme's palette
+   (--color-background, --color-foreground,
+   --color-background-secondary, --color-accent-background/foreground)
+   instead of a hardcoded purple/indigo scheme, so merchant brand
+   colors actually apply here. Success/error stay conventional.
    ============================================ */
 
 .newsletter {
@@ -7,6 +12,7 @@
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
+  color: var(--color-foreground, #1a1a2e);
 }
 
 .newsletter__container {
@@ -28,7 +34,7 @@
 
 /* Default */
 .newsletter[data-style="default"] {
-  background: #f8f9fa;
+  background: var(--color-background-secondary, #f8f9fa);
 }
 
 /* Minimal */
@@ -43,16 +49,16 @@
 /* Bordered */
 .newsletter[data-style="bordered"] .newsletter__content {
   padding: 3rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
   border-radius: 16px;
-  background: white;
+  background: var(--color-background, #ffffff);
 }
 
 /* Shadow */
 .newsletter[data-style="shadow"] .newsletter__content {
   padding: 3rem;
   border-radius: 16px;
-  background: white;
+  background: var(--color-background, #ffffff);
   box-shadow: 0 10px 50px rgba(0, 0, 0, 0.08);
 }
 
@@ -83,16 +89,16 @@
 }
 
 .newsletter[data-style="background"] .newsletter__content {
-  color: white;
+  color: #ffffff;
 }
 
 .newsletter[data-style="background"] .newsletter__subheading {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.15);
 }
 
 .newsletter[data-style="background"] .newsletter__heading {
-  color: white;
+  color: #ffffff;
 }
 
 .newsletter[data-style="background"] .newsletter__description {
@@ -104,13 +110,13 @@
 }
 
 .newsletter[data-style="background"] .newsletter__button--outline {
-  color: white;
-  border-color: white;
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .newsletter[data-style="background"] .newsletter__button--outline:hover {
-  background: white;
-  color: #1a1a2e;
+  background: #ffffff;
+  color: var(--color-foreground, #1a1a2e);
 }
 
 /* ============================================
@@ -123,8 +129,8 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
+  color: var(--color-accent-background, #667eea);
+  background: color-mix(in srgb, var(--color-accent-background, #667eea) 10%, transparent);
   padding: 0.4rem 1.2rem;
   border-radius: 50px;
   margin-bottom: 0.75rem;
@@ -134,14 +140,18 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 0.75rem;
-  color: #1a1a2e;
+  color: var(--color-foreground, #1a1a2e);
 }
 
 .newsletter__description {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #4a4a6a;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a2e) 75%, transparent);
   margin-bottom: 1.5rem;
+}
+
+.newsletter__description p {
+  margin: 0;
 }
 
 /* ============================================
@@ -161,23 +171,23 @@
 .newsletter__input {
   flex: 1;
   padding: 0.9rem 1.2rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 15%, transparent);
   border-radius: 8px;
   font-size: 1rem;
   outline: none;
   transition: all 0.3s ease;
-  background: white;
-  color: #1a1a2e;
+  background: var(--color-background, #ffffff);
+  color: var(--color-foreground, #1a1a2e);
   min-width: 0;
 }
 
 .newsletter__input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+  border-color: var(--color-accent-background, #667eea);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-background, #667eea) 15%, transparent);
 }
 
 .newsletter__input::placeholder {
-  color: #9ca3af;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a2e) 45%, transparent);
 }
 
 /* ============================================
@@ -196,7 +206,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
-  color: white;
+  color: var(--color-accent-foreground, #ffffff);
 }
 
 .newsletter__button-icon {
@@ -211,48 +221,61 @@
 
 /* Primary */
 .newsletter__button--primary {
-  background: #1a1a2e;
+  background: var(--color-accent-background, #1a1a2e);
+  color: var(--color-accent-foreground, #ffffff);
 }
 
 .newsletter__button--primary:hover {
-  background: #2d2d4e;
+  opacity: 0.85;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(26, 26, 46, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
-/* Gradient */
+/* Gradient — a softened variant of the accent color, not a separate
+   hardcoded brand color, so it still follows the merchant's palette. */
 .newsletter__button--gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-background, #667eea) 0%,
+    color-mix(in srgb, var(--color-accent-background, #667eea) 60%, white 40%) 100%
+  );
+  color: var(--color-accent-foreground, #ffffff);
 }
 
 .newsletter__button--gradient:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-accent-background, #667eea) 40%, transparent);
 }
 
 /* Outline */
 .newsletter__button--outline {
   background: transparent;
-  color: #1a1a2e;
-  border: 2px solid #1a1a2e;
+  color: var(--color-foreground, #1a1a2e);
+  border: 2px solid var(--color-foreground, #1a1a2e);
 }
 
 .newsletter__button--outline:hover {
-  background: #1a1a2e;
-  color: white;
+  background: var(--color-foreground, #1a1a2e);
+  color: var(--color-background, #ffffff);
   transform: translateY(-2px);
 }
 
-/* Pill */
+/* Pill — same accent-derived approach as gradient, kept visually
+   distinct via a darker mix instead of an unrelated hardcoded hue. */
 .newsletter__button--pill {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-background, #f5576c) 0%,
+    color-mix(in srgb, var(--color-accent-background, #f5576c) 70%, black 30%) 100%
+  );
+  color: var(--color-accent-foreground, #ffffff);
   border-radius: 50px;
   padding: 0.9rem 2.5rem;
 }
 
 .newsletter__button--pill:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 4px 25px rgba(245, 87, 108, 0.4);
+  box-shadow: 0 4px 25px color-mix(in srgb, var(--color-accent-background, #f5576c) 40%, transparent);
 }
 
 /* ============================================
@@ -261,25 +284,26 @@
 
 .newsletter__note {
   font-size: 0.85rem;
-  color: #6b7280;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a2e) 55%, transparent);
   margin: 0.5rem 0 0;
 }
 
+/* Success message keeps a conventional green — status color, not brand */
 .newsletter__success {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: #ecfdf5;
+  background: #e6f4ea;
   border-radius: 8px;
-  color: #065f46;
+  color: #1e4620;
 }
 
 .newsletter__success-icon {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
-  color: #10b981;
+  color: #2e7d32;
 }
 
 .newsletter__success p {
@@ -294,13 +318,13 @@
 .newsletter__social {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
 }
 
 .newsletter__social-label {
   display: block;
   font-size: 0.85rem;
-  color: #6b7280;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a2e) 55%, transparent);
   margin-bottom: 0.75rem;
 }
 
@@ -317,17 +341,17 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #f3f4f6;
-  color: #4a4a6a;
+  background: var(--color-background-secondary, #f3f4f6);
+  color: var(--color-foreground, #4a4a6a);
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
 .newsletter__social-link:hover {
-  background: #667eea;
-  color: white;
+  background: var(--color-accent-background, #667eea);
+  color: var(--color-accent-foreground, #ffffff);
   transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px color-mix(in srgb, var(--color-accent-background, #667eea) 30%, transparent);
 }
 
 .newsletter__social-link svg {

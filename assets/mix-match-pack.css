@@ -1,6 +1,6 @@
 .mix-match-pack {
   padding: 60px 0;
-  background-color: var(--mmp-bg, #ffffff);
+  background-color: var(--mmp-bg, var(--color-background, #ffffff));
 }
 
 .mix-match-pack__header {
@@ -12,12 +12,12 @@
   font-size: 32px;
   font-weight: 700;
   margin: 0 0 12px;
-  color: var(--mmp-heading-color, #1a1a1a);
+  color: var(--mmp-heading-color, var(--color-foreground, #1a1a1a));
 }
 
 .mix-match-pack__subheading {
   font-size: 16px;
-  color: var(--mmp-subheading-color, #666666);
+  color: var(--mmp-subheading-color, var(--color-foreground-secondary, #666666));
   margin: 0;
 }
 
@@ -31,7 +31,7 @@
 .mix-match-pack__info {
   position: sticky;
   top: 100px;
-  background: var(--mmp-info-bg, #f8f8f8);
+  background: var(--mmp-info-bg, var(--color-background-secondary, #f8f8f8));
   border-radius: 16px;
   padding: 24px;
   display: flex;
@@ -44,24 +44,24 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--mmp-border, #e5e5e5);
+  border-bottom: 1px solid var(--mmp-border, color-mix(in srgb, var(--color-foreground, #1a1a1a) 12%, transparent));
 }
 
 .mix-match-pack__selection-label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--mmp-text-color, #1a1a1a);
+  color: var(--mmp-text-color, var(--color-foreground, #1a1a1a));
 }
 
 .mix-match-pack__selection-count {
   font-size: 14px;
   font-weight: 500;
-  color: var(--mmp-text-color, #666666);
+  color: var(--mmp-text-color, var(--color-foreground-secondary, #666666));
 }
 
 .mix-match-pack__selection-count span {
   font-weight: 700;
-  color: var(--mmp-accent, #0066cc);
+  color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
 }
 
 .mix-match-pack__total {
@@ -74,20 +74,20 @@
 .mix-match-pack__total-label {
   font-size: 16px;
   font-weight: 600;
-  color: var(--mmp-text-color, #1a1a1a);
+  color: var(--mmp-text-color, var(--color-foreground, #1a1a1a));
 }
 
 .mix-match-pack__total-price {
   font-size: 20px;
   font-weight: 700;
-  color: var(--mmp-accent, #0066cc);
+  color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
 }
 
 .mix-match-pack__add-pack {
   width: 100%;
   padding: 14px;
-  background: var(--mmp-accent, #0066cc);
-  color: #ffffff;
+  background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  color: var(--color-accent-foreground, #ffffff);
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -97,7 +97,7 @@
 }
 
 .mix-match-pack__add-pack:hover:not(:disabled) {
-  background: var(--mmp-accent-hover, #0052a3);
+  opacity: 0.85;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
@@ -113,12 +113,13 @@
   cursor: wait;
 }
 
+/* Free-shipping green is a conventional status color, kept fixed */
 .mix-match-pack__free-shipping {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: var(--mmp-free-shipping-color, #2ecc71);
+  color: var(--mmp-free-shipping-color, #2e7d32);
   margin: 0;
   justify-content: center;
 }
@@ -158,7 +159,7 @@
 }
 
 .mix-match-pack__product-card {
-  background: var(--mmp-card-bg, #ffffff);
+  background: var(--mmp-card-bg, var(--color-background, #ffffff));
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
@@ -170,8 +171,8 @@
 }
 
 .mix-match-pack__product-card--selected {
-  border-color: var(--mmp-accent, #0066cc);
-  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.15);
+  border-color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-accent-background, #1a1a1a) 15%, transparent);
 }
 
 .mix-match-pack__product-card:hover {
@@ -183,7 +184,7 @@
   position: relative;
   aspect-ratio: 1/1;
   overflow: hidden;
-  background: #f5f5f5;
+  background: var(--color-background-secondary, #f5f5f5);
 }
 
 .mix-match-pack__product-image {
@@ -204,8 +205,8 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 2px solid #e5e5e5;
+  background: var(--color-background, #ffffff);
+  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 15%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,8 +216,8 @@
 }
 
 .mix-match-pack__product-card--selected .mix-match-pack__product-check {
-  background: var(--mmp-accent, #0066cc);
-  border-color: var(--mmp-accent, #0066cc);
+  background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  border-color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
   opacity: 1;
   transform: scale(1);
 }
@@ -224,7 +225,7 @@
 .mix-match-pack__product-check svg {
   width: 16px;
   height: 16px;
-  fill: #ffffff;
+  fill: var(--color-accent-foreground, #ffffff);
 }
 
 .mix-match-pack__product-info {
@@ -239,7 +240,7 @@
   font-size: 15px;
   font-weight: 500;
   margin: 0;
-  color: var(--mmp-text-color, #1a1a1a);
+  color: var(--mmp-text-color, var(--color-foreground, #1a1a1a));
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -249,7 +250,7 @@
 
 .mix-match-pack__product-vendor {
   font-size: 12px;
-  color: #999999;
+  color: var(--color-foreground-secondary, #666666);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0;
@@ -264,12 +265,12 @@
 .mix-match-pack__product-price-current {
   font-size: 16px;
   font-weight: 600;
-  color: var(--mmp-text-color, #1a1a1a);
+  color: var(--mmp-text-color, var(--color-foreground, #1a1a1a));
 }
 
 .mix-match-pack__product-price-compare {
   font-size: 13px;
-  color: #999999;
+  color: var(--color-foreground-secondary, #666666);
   text-decoration: line-through;
 }
 
@@ -280,31 +281,31 @@
 .mix-match-pack__variant-selector {
   width: 100%;
   padding: 6px 10px;
-  border: 1px solid #d3d3d3;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
   border-radius: 6px;
   font-size: 13px;
-  background: #ffffff;
-  color: #1a1a1a;
+  background: var(--color-background, #ffffff);
+  color: var(--color-foreground, #1a1a1a);
   cursor: pointer;
   transition: border-color 0.3s ease;
 }
 
 .mix-match-pack__variant-selector:hover {
-  border-color: #1a1a1a;
+  border-color: var(--color-foreground, #1a1a1a);
 }
 
 .mix-match-pack__variant-selector:focus {
   outline: none;
-  border-color: var(--mmp-accent, #0066cc);
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+  border-color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent-background, #1a1a1a) 10%, transparent);
 }
 
 .mix-match-pack__select-product {
   width: 100%;
   padding: 8px;
   background: transparent;
-  color: var(--mmp-accent, #0066cc);
-  border: 2px solid var(--mmp-accent, #0066cc);
+  color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  border: 2px solid var(--mmp-accent, var(--color-accent-background, #1a1a1a));
   border-radius: 6px;
   font-weight: 600;
   font-size: 13px;
@@ -314,13 +315,13 @@
 }
 
 .mix-match-pack__select-product:hover {
-  background: var(--mmp-accent, #0066cc);
-  color: #ffffff;
+  background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  color: var(--color-accent-foreground, #ffffff);
 }
 
 .mix-match-pack__select-product.selected {
-  background: var(--mmp-accent, #0066cc);
-  color: #ffffff;
+  background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  color: var(--color-accent-foreground, #ffffff);
 }
 
 .mix-match-pack__select-product:disabled {
@@ -331,7 +332,7 @@
 .mix-match-pack__empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666666);
   grid-column: 1 / -1;
 }
 

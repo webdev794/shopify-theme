@@ -187,7 +187,7 @@
 .slideshow-with-marquee__empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666666);
   height: 100%;
   display: flex;
   flex-direction: column;

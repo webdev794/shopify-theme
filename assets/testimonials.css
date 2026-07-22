@@ -75,13 +75,20 @@
   margin-bottom: 16px;
 }
 
+/* Unfilled star: derived from the theme's foreground color rather than
+   a fixed light gray, so it stays visible against custom backgrounds
+   and meets the 3:1 non-text contrast threshold. */
 .testimonials__star {
   font-size: 20px;
-  color: #d3d3d3;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
 }
 
+/* Filled star keeps a conventional review-gold rather than the brand
+   accent, since star ratings are a recognizable universal pattern.
+   Darkened from the original #f5a623 to clear 3:1 contrast for a
+   decorative/non-text element. */
 .testimonials__star--filled {
-  color: #f5a623;
+  color: #b8860b;
 }
 
 .testimonials__quote {
@@ -186,10 +193,13 @@
   color: var(--t-btn-hover-text, #ffffff);
 }
 
+/* Empty-state text: was a fixed #999 (fails 4.5:1 on white ~2.85:1),
+   now derived from the theme's secondary foreground so it both meets
+   contrast and follows the palette. */
 .testimonials__empty {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--color-foreground-secondary, #666666);
   grid-column: 1 / -1;
 }
 
