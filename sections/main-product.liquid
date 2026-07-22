@@ -465,6 +465,13 @@
               {% endif %}
             {% endif %}
 
+          {% when 'follow_on_shop' %}
+            {% if block.settings.enable_follow_on_shop %}
+              <div class="product__follow-on-shop" {{ block.shopify_attributes }}>
+                {{ shop | login_button: action: 'follow' }}
+              </div>
+            {% endif %}
+
           {% when 'buy_buttons' %}
             <div class="product__buy-buttons" {{ block.shopify_attributes }}>
               {% assign product_form_id = 'product-form-' | append: section.id %}
@@ -648,6 +655,20 @@
       ]
     },
     {
+      "type": "follow_on_shop",
+      "name": "Follow on Shop",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_follow_on_shop",
+          "label": "Enable Follow on Shop button",
+          "default": true,
+          "info": "Lets customers follow your store in the Shop app. Only appears for eligible shops/regions; nothing renders if the shop isn't eligible."
+        }
+      ]
+    },
+    {
       "type": "buy_buttons",
       "name": "t:sections.main_product.blocks.buy_buttons.name",
       "limit": 1,
@@ -685,6 +706,7 @@
         { "type": "quantity_selector" },
         { "type": "pickup_availability" },
         { "type": "shop_pay_installments" },
+        { "type": "follow_on_shop" },
         { "type": "buy_buttons" },
         { "type": "description" }
       ]

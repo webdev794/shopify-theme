@@ -54,6 +54,12 @@
           "type": "selling_plan_selector",
           "settings": {}
         },
+        "follow_on_shop_M9BJJB": {
+          "type": "follow_on_shop",
+          "settings": {
+            "enable_follow_on_shop": true
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -84,6 +90,7 @@
         "quantity_selector",
         "shop_pay_installments_Btzgcz",
         "selling_plan_selector_6VKdba",
+        "follow_on_shop_M9BJJB",
         "buy_buttons",
         "pickup_availability_aEWcUE",
         "description"
