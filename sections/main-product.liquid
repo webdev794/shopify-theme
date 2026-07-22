@@ -511,6 +511,17 @@
               {{ block.settings.custom_liquid }}
             </div>
 
+          {% when '@app' %}
+            {% comment %}
+              Render app blocks. This allows apps to inject content
+              (like reviews or size charts) into the product page.
+              The block is rendered using the {% render block %} tag which
+              calls the app's block template.
+            {% endcomment %}
+            <div class="product__app-block" {{ block.shopify_attributes }}>
+              {% render block %}
+            </div>
+
         {% endcase %}
       {% endfor %}
     </div>
@@ -692,6 +703,9 @@
           "label": "t:sections.main_product.blocks.custom_liquid.settings.custom_liquid.label"
         }
       ]
+    },
+    {
+      "type": "@app"
     }
   ],
   "presets": [
