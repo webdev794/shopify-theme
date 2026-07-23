@@ -302,6 +302,67 @@
         "aria_label": "Scrolling announcement bar"
       }
     },
+    "featured_products_teK6M3": {
+      "type": "featured-products",
+      "blocks": {
+        "product_fC6EgV": {
+          "type": "product",
+          "settings": {
+            "product": "black-jeans"
+          }
+        },
+        "product_YAyiAe": {
+          "type": "product",
+          "settings": {
+            "product": "tshirt-navy"
+          }
+        },
+        "product_bXmh4V": {
+          "type": "product",
+          "settings": {
+            "product": "formal-leader-shoes"
+          }
+        },
+        "product_Jh4LYF": {
+          "type": "product",
+          "settings": {
+            "product": "gift-card-product"
+          }
+        }
+      },
+      "block_order": [
+        "product_fC6EgV",
+        "product_YAyiAe",
+        "product_bXmh4V",
+        "product_Jh4LYF"
+      ],
+      "name": "t:sections.featured_products.presets.name",
+      "settings": {
+        "layout": "grid",
+        "products_per_row": "4",
+        "gap": 20,
+        "border_radius": 8,
+        "full_width": true,
+        "heading": "Featured Products",
+        "subheading": "Our Best Sellers",
+        "description": "<p>Discover our most popular products loved by our customers</p>",
+        "show_view_all": true,
+        "view_all_text": "View All",
+        "view_all_link": "",
+        "show_vendor": true,
+        "show_rating": true,
+        "show_quick_add": true,
+        "show_compare_at": true,
+        "image_size": "large",
+        "card_style": "standard",
+        "background_color": "#ffffff",
+        "text_color": "#1a1a1a",
+        "heading_color": "#1a1a1a",
+        "card_background": "#ffffff",
+        "card_shadow": "#0000001a",
+        "aria_label": "Featured products"
+      }
+    },
     "blog_posts_TUtF9Y": {
       "type": "blog-posts",
       "name": "Blog Posts",
@@ -681,6 +742,7 @@
     "highlight_text_with_images_APQhQN",
     "mix_match_pack_NmakBm",
     "scrolling_text_rmFJfM",
+    "featured_products_teK6M3",
     "blog_posts_TUtF9Y",
     "scrolling_text_AwxRQn",
     "text_with_icons_DtVBgt",

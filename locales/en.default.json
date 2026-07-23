@@ -260,7 +260,8 @@
       "submit": "Subscribe",
       "success": "Thanks for subscribing!"
     },
-    "payment_methods": "Payment methods"
+    "payment_methods": "Payment methods",
+    "close": "Close"
   },
   "contact": {
     "form": {

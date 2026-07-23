@@ -664,3 +664,49 @@
     display: none !important;
   }
 }
+
+
+/* ---------- Rich media (video/model) in featured product card ---------- */
+.product-card__image-wrapper {
+  position: relative;
+}
+
+.product-card__media-tag {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card__media-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.product-card__quick-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--color-foreground, #1a1a1a);
+  position: relative;
+  z-index: 2;
+}
+
+.quick-view-modal__loading[hidden] {
+  display: none;
+}
