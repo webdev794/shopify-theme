@@ -138,6 +138,13 @@
                 {% render block %}
               </div>
 
+            {%- when 'custom_liquid' -%}
+              <div class="featured-products__item featured-products__item--custom-liquid"
+                   role="listitem"
+                   {{ block.shopify_attributes }}>
+                {{ block.settings.custom_liquid }}
+              </div>
+
           {%- endcase -%}
         {%- endfor -%}
       </div>
@@ -376,6 +383,17 @@
           "type": "product",
           "id": "product",
           "label": "t:sections.featured_products.blocks.product.settings.product.label"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "t:sections.custom_liquid.name",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "t:sections.custom_liquid.settings.custom_liquid.label"
         }
       ]
     },

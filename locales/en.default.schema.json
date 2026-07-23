@@ -345,6 +345,9 @@
           "label": "Custom HTML / Liquid",
           "info": "Add HTML, Liquid, or JavaScript. CSS goes in the theme assets."
         },
+        "custom_liquid": {
+          "label": "Custom Liquid"
+        },
         "header__2": { "content": "Layout" },
         "layout": {
           "label": "Content Width",
