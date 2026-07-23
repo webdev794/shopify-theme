@@ -484,6 +484,10 @@
                   data-selling-plan-input
                 >
 
+                {%- if product.gift_card? -%}
+                  {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
+                {%- endif -%}
+
                 <button
                   type="submit"
                   name="add"
@@ -500,7 +504,7 @@
                   </span>
                 </button>
 
-                {% if block.settings.show_dynamic_checkout %}
+                {% if block.settings.show_dynamic_checkout and product.gift_card? == false %}
                   {{ form | payment_button }}
                 {% endif %}
               {% endform %}

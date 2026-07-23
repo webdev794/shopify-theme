@@ -648,3 +648,62 @@ variant-selects {
 .product__follow-on-shop {
   margin-block: 0.5rem;
 }
+
+/* ---------- Gift card recipient form ---------- */
+.gift-card-recipient-form {
+  margin-block: 1rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 12%, transparent);
+  border-radius: var(--product-radius, 0.5rem);
+}
+
+.gift-card-recipient-form__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.gift-card-recipient-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.gift-card-recipient-form__fields[hidden] {
+  display: none;
+}
+
+.gift-card-recipient-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.gift-card-recipient-form__field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.gift-card-recipient-form__field input,
+.gift-card-recipient-form__field textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
+  border-radius: 0.35rem;
+  font: inherit;
+  background: var(--color-background, #fff);
+  color: var(--color-foreground, #1a1a1a);
+}
+
+.gift-card-recipient-form__field textarea {
+  resize: vertical;
+}
+
+.gift-card-recipient-form__errors {
+  margin: 0.75rem 0 0;
+  padding-left: 1.1rem;
+  color: #c0392b;
+  font-size: 0.85rem;
+}

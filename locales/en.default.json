@@ -241,7 +241,14 @@
       "unit_price_label": "Unit price",
       "purchase_option": "Purchase option",
       "one_time_purchase": "One-time purchase",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "gift_card_recipient": {
+        "checkbox_label": "Send as a gift to someone else",
+        "email_label": "Recipient email",
+        "name_label": "Recipient name (optional)",
+        "message_label": "Message (optional)",
+        "send_on_label": "Send on (optional)"
+      }
     }
   },
   "general": {
