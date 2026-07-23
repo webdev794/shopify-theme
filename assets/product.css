@@ -486,7 +486,7 @@ variant-selects {
 .product__add-to-cart {
   width: 100%;
   padding: 0.9rem 1.5rem;
-  border-radius: var(--product-radius);
+  border-radius: var(--style-border-radius-inputs, var(--product-radius));
   border: none;
   background: var(--color-foreground, #1a1a1a);
   color: var(--color-background, #fff);
@@ -691,7 +691,7 @@ variant-selects {
 .gift-card-recipient-form__field textarea {
   padding: 0.6rem 0.75rem;
   border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
-  border-radius: 0.35rem;
+  border-radius: var(--style-border-radius-inputs, 0.35rem);
   font: inherit;
   background: var(--color-background, #fff);
   color: var(--color-foreground, #1a1a1a);

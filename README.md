@@ -267,5 +267,5 @@ Featured collection
 15 SEO structured data (Google rich product snippets / JSON-LD) — meta-tags.liquid never reviewed, can't confirm this exists. (already fixed)
 16 page.contact.json — required template; currently doesn't exist properly (we established you have no Contact page set up).
 --done above--
-17 test all page settings
+17 test all theme settings
 18 image on collection page and products in collections. 

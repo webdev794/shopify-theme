@@ -172,7 +172,7 @@
   flex: 1;
   padding: 0.9rem 1.2rem;
   border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 15%, transparent);
-  border-radius: 8px;
+  border-radius: var(--style-border-radius-inputs, 8px);
   font-size: 1rem;
   outline: none;
   transition: all 0.3s ease;
@@ -202,7 +202,7 @@
   font-weight: 600;
   font-size: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--style-border-radius-inputs, 8px);
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
