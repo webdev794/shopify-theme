@@ -329,6 +329,27 @@
               </p>
             </div>
 
+          {% when 'complementary_products' %}
+            {% if block.settings.enable_complementary_products %}
+              <div
+                class="product__complementary"
+                data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ block.settings.complementary_products_count }}&intent=complementary"
+                {{ block.shopify_attributes }}
+              >
+                <p class="product__complementary-heading">
+                  {{ block.settings.complementary_heading | default: 'Pairs well with' }}
+                </p>
+                <div class="product__complementary-grid" data-complementary-placeholder>
+                  {% for i in (1..block.settings.complementary_products_count) %}
+                    <div class="product-recommendations__skeleton"></div>
+                  {% endfor %}
+                </div>
+              </div>
+              <script src="{{ 'complementary-products.js' | asset_url }}" defer></script>
+              {{ 'product-recommendations.css' | asset_url | stylesheet_tag }}
+              {{ 'complementary-products.css' | asset_url | stylesheet_tag }}
+            {% endif %}
+
           {% when 'pickup_availability' %}
             {% if block.settings.enable_pickup_availability %}
               {% liquid
@@ -578,6 +599,35 @@
     { "type": "selling_plan_selector", "name": "t:sections.main_product.blocks.selling_plan_selector.name", "limit": 1 },
     { "type": "quantity_selector", "name": "t:sections.main_product.blocks.quantity_selector.name", "limit": 1 },
     {
+      "type": "complementary_products",
+      "name": "Complementary Products",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_complementary_products",
+          "label": "Enable complementary products",
+          "default": true,
+          "info": "Shows products that pair well with this one, powered by Shopify's recommendation engine. Set up complementary products for each product in Shopify admin under Search & Discovery, or the product's own Related products section."
+        },
+        {
+          "type": "text",
+          "id": "complementary_heading",
+          "label": "Heading",
+          "default": "Pairs well with"
+        },
+        {
+          "type": "range",
+          "id": "complementary_products_count",
+          "label": "Number of products to show",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "default": 3
+        }
+      ]
+    },
+    {
       "type": "pickup_availability",
       "name": "Pickup Availability",
       "limit": 1,
@@ -722,6 +772,7 @@
         { "type": "variant_picker" },
         { "type": "selling_plan_selector" },
         { "type": "quantity_selector" },
+        { "type": "complementary_products" },
         { "type": "pickup_availability" },
         { "type": "shop_pay_installments" },
         { "type": "follow_on_shop" },

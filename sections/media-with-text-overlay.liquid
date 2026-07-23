@@ -26,6 +26,12 @@
     {%- if section.settings.media_type == 'image' -%}
       {%- if section.settings.image != blank -%}
         <div class="media-with-text-overlay__media">
+          {%- liquid
+            assign focal_style = ''
+            if section.settings.image.presentation.focal_point
+              assign focal_style = 'object-position: ' | append: section.settings.image.presentation.focal_point | append: ';'
+            endif
+          -%}
           <img
             src="{{ section.settings.image | image_url: width: 2000 }}"
             srcset="{{ section.settings.image | image_url: width: 2000 }} 1x, {{ section.settings.image | image_url: width: 4000 }} 2x"
@@ -34,6 +40,7 @@
             width="2000"
             height="800"
             class="media-with-text-overlay__image"
+            style="{{ focal_style }}"
           >
         </div>
       {%- else -%}

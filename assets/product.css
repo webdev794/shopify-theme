@@ -50,6 +50,8 @@
   scroll-snap-align: start;
   aspect-ratio: 1 / 1;
   background: var(--color-background-secondary, #f4f4f4);
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .product__media-image,
@@ -58,7 +60,7 @@
 .product__media-item model-viewer {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

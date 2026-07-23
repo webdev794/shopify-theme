@@ -266,6 +266,6 @@ Featured collection
 14 Placeholder social URLs (.../#) — explicitly against the "must be left empty" / no-fake-content rule; needs fixing before any submission regardless.
 15 SEO structured data (Google rich product snippets / JSON-LD) — meta-tags.liquid never reviewed, can't confirm this exists. (already fixed)
 16 page.contact.json — required template; currently doesn't exist properly (we established you have no Contact page set up).
---done above--
 17 test all theme settings
+--done above--
 18 image on collection page and products in collections. 

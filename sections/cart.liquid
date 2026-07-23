@@ -78,6 +78,18 @@
                           <p class="cart-item__message">{{ item.message }}</p>
                         {% endif %}
 
+                        {% if item.line_level_discount_allocations.size > 0 %}
+                          <ul class="cart-item__discounts" role="list">
+                            {% for discount_allocation in item.line_level_discount_allocations %}
+                              <li class="cart-item__discount">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12L12 20 4 12l8-8 8 8z"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+                                {{ discount_allocation.discount_application.title }}
+                                (&minus;{{ discount_allocation.amount | money }})
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
+
                         <a href="{{ item.url_to_remove }}" class="cart-item__remove">
                           {{ 'cart.remove' | t }}
                         </a>
@@ -148,11 +160,16 @@
                 <span data-subtotal-amount>{{ cart.total_price | money }}</span>
               </div>
 
-              {% if cart.total_discount > 0 %}
-                <div class="cart__row cart__row--discount">
-                  <span>{{ 'cart.discount' | t }}</span>
-                  <span>&minus;{{ cart.total_discount | money }}</span>
-                </div>
+              {% if cart.cart_level_discount_applications.size > 0 %}
+                {% for discount_application in cart.cart_level_discount_applications %}
+                  <div class="cart__row cart__row--discount">
+                    <span>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12L12 20 4 12l8-8 8 8z"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+                      {{ discount_application.title }}
+                    </span>
+                    <span>&minus;{{ discount_application.total_allocated_amount | money }}</span>
+                  </div>
+                {% endfor %}
               {% endif %}
 
               <p class="cart__taxes-note">{{ 'cart.taxes_and_shipping_at_checkout' | t }}</p>
@@ -315,6 +332,27 @@
   .cart-item__message {
     font-size: 0.8rem;
     color: var(--color-sale, #c0392b);
+  }
+
+  .cart-item__discounts {
+    margin: 0.3rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .cart-item__discount {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    color: var(--color-sale, #c0392b);
+  }
+
+  .cart-item__discount svg {
+    flex-shrink: 0;
   }
 
   .cart-item__remove {

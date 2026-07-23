@@ -25,6 +25,11 @@
             {%- assign img_height = 500 -%}
           {%- endcase -%}
 
+        {%- assign focal_style = '' -%}
+        {%- if image.presentation.focal_point -%}
+          {%- assign focal_style = 'object-position: ' | append: image.presentation.focal_point | append: ';' -%}
+        {%- endif -%}
+
         <img 
           src="{{ image | image_url: width: img_width }}"
           width="{{ img_width }}"
@@ -32,7 +37,7 @@
           loading="lazy"
           alt="{{ image.alt | escape }}"
           class="card__image"
-          style="aspect-ratio: {{ img_width }} / {{ img_height }}; object-fit: cover; width: 100%; height: auto;"
+          style="aspect-ratio: {{ img_width }} / {{ img_height }}; object-fit: cover; width: 100%; height: auto; {{ focal_style }}"
         >
       {%- else -%}
         <div class="card__placeholder">

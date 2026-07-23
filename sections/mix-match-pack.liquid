@@ -55,14 +55,21 @@
                 <div class="mix-match-pack__product-card">
                   <div class="mix-match-pack__product-image-wrapper">
                     {%- if product.featured_image != blank -%}
+                      {%- liquid
+                        assign focal_style = ''
+                        if product.featured_image.presentation.focal_point
+                          assign focal_style = 'object-position: ' | append: product.featured_image.presentation.focal_point | append: ';'
+                        endif
+                      -%}
                       <img
-                        src="{{ product.featured_image | image_url: width: 300, height: 300, crop: 'center' }}"
-                        srcset="{{ product.featured_image | image_url: width: 300, height: 300, crop: 'center' }} 1x, {{ product.featured_image | image_url: width: 600, height: 600, crop: 'center' }} 2x"
+                        src="{{ product.featured_image | image_url: width: 300 }}"
+                        srcset="{{ product.featured_image | image_url: width: 300 }} 1x, {{ product.featured_image | image_url: width: 600 }} 2x"
                         alt="{{ product.featured_image.alt | default: product.title | escape }}"
                         loading="lazy"
                         width="300"
                         height="300"
                         class="mix-match-pack__product-image"
+                        style="object-fit: cover; {{ focal_style }}"
                       >
                     {%- else -%}
                       {{ 'product-1' | placeholder_svg_tag: 'mix-match-pack__product-image mix-match-pack__product-image--placeholder' }}

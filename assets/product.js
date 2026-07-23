@@ -361,6 +361,22 @@ function updatePickupAvailability(sectionId, variant) {
   }
 }
 
+// Sync active state when a thumbnail is clicked directly (not via variant change)
+document.addEventListener('click', (event) => {
+  const thumb = event.target.closest('.product__media-thumb');
+  if (!thumb) return;
+
+  const mediaId = thumb.dataset.mediaId;
+
+  document.querySelectorAll('.product__media-thumb').forEach((t) =>
+    t.classList.toggle('is-active', t === thumb)
+  );
+
+  document.querySelectorAll('.product__media-item').forEach((item) =>
+    item.classList.toggle('is-active', item.dataset.mediaId === mediaId)
+  );
+});
+
 // Modal open/close (event delegation, works after innerHTML rebuilds)
 document.addEventListener('click', (event) => {
   const openTrigger = event.target.closest('[data-pickup-modal-open]');
