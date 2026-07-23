@@ -40,11 +40,11 @@
         "newsletter_heading": "Stay in the loop",
         "newsletter_text": "New arrivals, exclusive offers, and more — straight to your inbox.",
         "show_social": true,
-        "social_instagram": "https://www.instagram.com/#",
-        "social_facebook": "https://facebook.com/#",
-        "social_tiktok": "https://tiktok.com/#",
-        "social_youtube": "https://youtube.com/#",
-        "social_x": "https://twitter.com/#",
+        "social_instagram": "",
+        "social_facebook": "",
+        "social_tiktok": "",
+        "social_youtube": "",
+        "social_x": "",
         "show_payment_icons": false
       }
     }

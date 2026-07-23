@@ -20,7 +20,11 @@
     <div class="social-media-gallery__grid">
       {%- for block in section.blocks -%}
         <div class="social-media-gallery__item" {{ block.shopify_attributes }}>
-          <a href="{{ block.settings.link | default: '#' }}" class="social-media-gallery__link" target="_blank" rel="noopener noreferrer">
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="social-media-gallery__link" target="_blank" rel="noopener noreferrer">
+          {%- else -%}
+            <div class="social-media-gallery__link social-media-gallery__link--static">
+          {%- endif -%}
             <div class="social-media-gallery__card">
               {%- if block.settings.image != blank -%}
                 <div class="social-media-gallery__image-wrapper">
@@ -72,7 +76,11 @@
                 </div>
               </div>
             </div>
-          </a>
+          {%- if block.settings.link != blank -%}
+            </a>
+          {%- else -%}
+            </div>
+          {%- endif -%}
         </div>
       {%- else -%}
         <div class="social-media-gallery__empty">

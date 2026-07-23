@@ -52,6 +52,12 @@
   height: 100%;
 }
 
+/* Applied when no link is set — the card still renders (image, caption,
+   likes/comments) but isn't a fake dead link to "#" */
+.social-media-gallery__link--static {
+  cursor: default;
+}
+
 .social-media-gallery__card {
   background: var(--smg-card-bg, #ffffff);
   border-radius: 12px;

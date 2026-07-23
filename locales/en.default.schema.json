@@ -209,7 +209,10 @@
         "note_text": { "label": "Note text" },
         "success_message": { "label": "Success message" },
         "header__5": { "content": "Social Links" },
-        "show_social": { "label": "Show social links" },
+        "show_social": {
+          "label": "Show social icons",
+          "info": "Set your social media URLs in Theme settings → Social media."
+        },
         "social_label": { "label": "Social label" }
       },
       "presets": {
@@ -499,7 +502,10 @@
         "newsletter_heading": { "label": "Newsletter heading" },
         "newsletter_text": { "label": "Newsletter text" },
         "header__3": { "content": "Social" },
-        "show_social": { "label": "Show social icons" },
+        "show_social": {
+          "label": "Show social icons",
+          "info": "Set your social media URLs in Theme settings → Social media."
+        },
         "social_instagram": { "label": "Instagram URL" },
         "social_facebook": { "label": "Facebook URL" },
         "social_tiktok": { "label": "TikTok URL" },

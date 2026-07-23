@@ -134,6 +134,15 @@
     "name": "Social media",
     "settings": [
       {
+        "type": "paragraph",
+        "content": "Leave any URL blank to hide that icon. Icons only appear for platforms with a URL entered."
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL"
+      },
+      {
         "type": "text",
         "id": "social_facebook_link",
         "label": "Facebook URL"
@@ -145,13 +154,18 @@
       },
       {
         "type": "text",
-        "id": "social_instagram_link",
-        "label": "Instagram URL"
+        "id": "social_tiktok_link",
+        "label": "TikTok URL"
       },
       {
         "type": "text",
         "id": "social_youtube_link",
         "label": "YouTube URL"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin_link",
+        "label": "LinkedIn URL"
       }
     ]
   }
