@@ -53,8 +53,22 @@
                       <div class="cart-item__details">
                         <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
 
-                        {% if item.variant.title != 'Default Title' %}
-                          <p class="cart-item__variant">{{ item.variant.title }}</p>
+                        {% assign has_real_options = false %}
+                        {% for option in item.options_with_values %}
+                          {% unless option.value == 'Default Title' %}
+                            {% assign has_real_options = true %}
+                          {% endunless %}
+                        {% endfor %}
+
+                        {% if has_real_options %}
+                          <dl class="cart-item__options">
+                            {% for option in item.options_with_values %}
+                              <div>
+                                <dt>{{ option.name }}:</dt>
+                                <dd>{{ option.value }}</dd>
+                              </div>
+                            {% endfor %}
+                          </dl>
                         {% endif %}
 
                         {% if item.selling_plan_allocation %}
@@ -102,6 +116,11 @@
                         <span class="price price--compare"><s>{{ item.original_price | money }}</s></span>
                       {% else %}
                         <span class="price">{{ item.final_price | money }}</span>
+                      {% endif %}
+                      {% if item.variant.unit_price %}
+                        <div class="cart-item__unit-price">
+                          {% render 'unit-price', object: item.variant %}
+                        </div>
                       {% endif %}
                       {% render 'unit-price', object: item %}
                     </td>
@@ -303,9 +322,26 @@
     text-decoration: underline;
   }
 
-  .cart-item__variant {
+  .cart-item__options {
     font-size: 0.85rem;
     color: var(--color-foreground-secondary, #777);
+    margin: 0;
+  }
+
+  .cart-item__options div {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .cart-item__options dt,
+  .cart-item__options dd {
+    margin: 0;
+  }
+
+  .cart-item__unit-price {
+    font-size: 0.75rem;
+    color: var(--color-foreground-secondary, #777);
+    margin-top: 0.25rem;
   }
 
   .cart-item__selling-plan {
