@@ -61,7 +61,8 @@
     "use_at_checkout": "Use this gift card at checkout",
     "disabled": "This gift card has been disabled",
     "copy_code": "Copy code",
-    "print": "Print"
+    "print": "Print",
+    "send_on": "Scheduled to be sent on {{ send_on }}"
   },
   "password": {
     "title": "This shop is private",
