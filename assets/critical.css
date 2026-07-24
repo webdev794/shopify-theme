@@ -118,6 +118,143 @@ body {
   grid-column: 1 / -1;
 }
 
+/**
+ * ---------- Rich text content (.rte) ----------
+ * Shared class for all Shopify RTE-generated content (page.content,
+ * product.description, collection.description, article.content, and
+ * any richtext/liquid setting rendered via {{ ... }}), so headings,
+ * lists, blockquotes, tables, etc. render identically no matter which
+ * template or section outputs them. Do not duplicate these rules under
+ * a section-local class — always apply .rte alongside it instead
+ * (e.g. class="product__description rte").
+ */
+.rte {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--color-foreground, #1a1a1a);
+}
+
+.rte > * + * {
+  margin-top: 1.25rem;
+}
+
+.rte h1,
+.rte h2,
+.rte h3,
+.rte h4,
+.rte h5,
+.rte h6 {
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.rte h1 {
+  font-size: 1.8rem;
+}
+
+.rte h2 {
+  font-size: 1.5rem;
+}
+
+.rte h3 {
+  font-size: 1.25rem;
+}
+
+.rte h4,
+.rte h5,
+.rte h6 {
+  font-size: 1.05rem;
+}
+
+.rte p {
+  margin: 0;
+}
+
+.rte a {
+  color: var(--color-foreground, #1a1a1a);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.rte a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.rte ul,
+.rte ol {
+  padding-left: 1.5rem;
+}
+
+.rte li + li {
+  margin-top: 0.4rem;
+}
+
+.rte blockquote {
+  border-left: 3px solid var(--color-border, #ddd);
+  padding-left: 1.25rem;
+  color: var(--color-foreground-secondary, #555);
+  font-style: italic;
+}
+
+.rte img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  display: block;
+}
+
+.rte hr {
+  border: none;
+  border-top: 1px solid var(--color-border, #e5e5e5);
+  margin: 2rem 0;
+}
+
+.rte code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--color-background-secondary, #f4f4f4);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.3rem;
+  font-size: 0.9em;
+}
+
+.rte pre {
+  background: var(--color-background-secondary, #f4f4f4);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.rte pre code {
+  background: none;
+  padding: 0;
+}
+
+.rte table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.rte th,
+.rte td {
+  border: 1px solid var(--color-border, #e5e5e5);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+}
+
+.rte th {
+  background: var(--color-background-secondary, #f4f4f4);
+  font-weight: 600;
+}
+
+@media screen and (max-width: 749px) {
+  .rte table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
 .collection__pagination,
 .collections-story__pagination,
 .pagination {
