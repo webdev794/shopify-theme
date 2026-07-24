@@ -387,58 +387,6 @@
         "view_all_label": "View All Articles"
       }
     },
-    "scrolling_text_AwxRQn": {
-      "type": "scrolling-text",
-      "blocks": {
-        "text_item_PT8jVe": {
-          "type": "text_item",
-          "settings": {
-            "text": "Free shipping on orders over $50",
-            "icon": "truck"
-          }
-        },
-        "text_item_nWpQaa": {
-          "type": "text_item",
-          "settings": {
-            "text": "30-day money-back guarantee",
-            "icon": "shield"
-          }
-        },
-        "text_item_dww3fF": {
-          "type": "text_item",
-          "settings": {
-            "text": "Subscribe and save 10%",
-            "icon": "star"
-          }
-        },
-        "text_item_8A3NLH": {
-          "type": "text_item",
-          "settings": {
-            "text": "Customer support available 24/7",
-            "icon": "chat"
-          }
-        }
-      },
-      "block_order": [
-        "text_item_PT8jVe",
-        "text_item_nWpQaa",
-        "text_item_dww3fF",
-        "text_item_8A3NLH"
-      ],
-      "name": "Scrolling Text",
-      "settings": {
-        "speed": 30,
-        "gap": 40,
-        "repeat_count": 3,
-        "show_divider": true,
-        "divider_symbol": "•",
-        "font_size": 20,
-        "background_color": "#1a1a1a",
-        "text_color": "#ffffff",
-        "pause_on_hover": true,
-        "aria_label": "Scrolling announcement bar"
-      }
-    },
     "text_with_icons_DtVBgt": {
       "type": "text-with-icons",
       "blocks": {
@@ -486,31 +434,6 @@
         "alignment": "center"
       }
     },
-    "wavy_marquee_hQfcyj": {
-      "type": "wavy-marquee",
-      "name": "Wavy Marquee",
-      "settings": {
-        "text": "Welcome to our store! Free shipping on orders over $50",
-        "repeats": 2,
-        "speed": 30,
-        "gap": 40,
-        "reverse": false,
-        "wavy_text": true,
-        "wave_speed": 12,
-        "text_color": "#ffffff",
-        "background_color": "#1a1a1a",
-        "font_size": 24,
-        "mobile_font_size": 16,
-        "padding": 16,
-        "full_width": true,
-        "show_icon": true,
-        "icon": "star",
-        "icon_size": 24,
-        "show_separator": true,
-        "separator_symbol": "•",
-        "aria_label": "Scrolling announcement banner"
-      }
-    },
     "lookbook_PJk88J": {
       "type": "lookbook",
       "blocks": {
@@ -546,31 +469,6 @@
         "color_dot": "#ffffff",
         "color_card_background": "#ffffff",
         "color_card_foreground": "#121212"
-      }
-    },
-    "wavy_marquee_qEWb6V": {
-      "type": "wavy-marquee",
-      "name": "Wavy Marquee",
-      "settings": {
-        "text": "Welcome to our store! Free shipping on orders over $50",
-        "repeats": 2,
-        "speed": 30,
-        "gap": 40,
-        "reverse": false,
-        "wavy_text": true,
-        "wave_speed": 17,
-        "text_color": "#ffffff",
-        "background_color": "#1a1a1a",
-        "font_size": 24,
-        "mobile_font_size": 16,
-        "padding": 16,
-        "full_width": true,
-        "show_icon": true,
-        "icon": "star",
-        "icon_size": 24,
-        "show_separator": true,
-        "separator_symbol": "•",
-        "aria_label": "Scrolling announcement banner"
       }
     },
     "social_media_gallery_mTtQC4": {
@@ -640,31 +538,6 @@
         "follow_text": "Follow Us",
         "follow_link": "",
         "aria_label": "Social media gallery"
-      }
-    },
-    "wavy_marquee_a9hUnD": {
-      "type": "wavy-marquee",
-      "name": "Wavy Marquee",
-      "settings": {
-        "text": "Welcome to our store! Free shipping on orders over $50",
-        "repeats": 2,
-        "speed": 30,
-        "gap": 40,
-        "reverse": false,
-        "wavy_text": true,
-        "wave_speed": 9,
-        "text_color": "#ffffff",
-        "background_color": "#1a1a1a",
-        "font_size": 24,
-        "mobile_font_size": 16,
-        "padding": 16,
-        "full_width": true,
-        "show_icon": true,
-        "icon": "star",
-        "icon_size": 24,
-        "show_separator": true,
-        "separator_symbol": "•",
-        "aria_label": "Scrolling announcement banner"
       }
     },
     "testimonials_wwx7nK": {
@@ -744,13 +617,9 @@
     "scrolling_text_rmFJfM",
     "featured_products_teK6M3",
     "blog_posts_TUtF9Y",
-    "scrolling_text_AwxRQn",
     "text_with_icons_DtVBgt",
-    "wavy_marquee_hQfcyj",
     "lookbook_PJk88J",
-    "wavy_marquee_qEWb6V",
     "social_media_gallery_mTtQC4",
-    "wavy_marquee_a9hUnD",
     "testimonials_wwx7nK",
     "newsletter_phQKPk"
   ]
