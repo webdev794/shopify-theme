@@ -169,10 +169,10 @@
 
                     <div class="product-card__price">
                       {% if product.price_varies %}
-                        <span class="product-card__price-from">{{ 'products.product.from_price_html' | t }}</span>
-                      {% endif %}
-
-                      {% if product.compare_at_price_max > product.price_min %}
+                        <span class="price price--range">
+                          {{ product.price_min | money }} &ndash; {{ product.price_max | money }}
+                        </span>
+                      {% elsif product.compare_at_price_max > product.price_min %}
                         <span class="price price--sale">{{ product.price_min | money }}</span>
                         <span class="price price--compare">
                           <s>{{ product.compare_at_price_max | money }}</s>
@@ -535,9 +535,10 @@
     margin-top: 0.15rem;
   }
 
-  .product-card__price-from {
-    font-size: 0.68rem;
-    color: var(--collection-taupe);
+  .price--range {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--collection-ink);
   }
 
   .price--sale {
