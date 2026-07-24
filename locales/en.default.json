@@ -236,7 +236,7 @@
       "items": "Items",
       "rating": "Rating",
       "quantity": { "label": "Quantity", "increase": "Increase quantity", "decrease": "Decrease quantity" },
-      "price": { "sale_price": "Sale price", "regular_price": "Regular price", "total": "Total:" },
+      "price": { "sale_price": "Sale price", "regular_price": "Regular price", "total": "Total:", "tax_included": "Tax included.", "shipping_policy_html": "Shipping calculated at checkout." },
       "media": { "load_image": "Load image {{ index }} in gallery view" },
       "unit_price_label": "Unit price",
       "purchase_option": "Purchase option",

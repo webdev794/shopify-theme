@@ -739,3 +739,9 @@ variant-selects {
   color: #fff;
   pointer-events: none;
 }
+
+.product__tax-note {
+  font-size: 0.8rem;
+  color: var(--color-foreground-secondary, #666);
+  margin-top: 0.25rem;
+}

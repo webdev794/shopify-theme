@@ -120,6 +120,16 @@
                 <span class="price">{{ current_variant.price | money }}</span>
               {% endif %}
             </div>
+            {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+              <p class="product__tax-note">
+                {%- if cart.taxes_included -%}
+                  {{ 'products.product.price.tax_included' | t | default: 'Tax included.' }}
+                {%- endif -%}
+                {%- if shop.shipping_policy.body != blank -%}
+                  {{ 'products.product.price.shipping_policy_html' | t: link: shop.shipping_policy.url | default: 'Shipping calculated at checkout.' }}
+                {%- endif -%}
+              </p>
+            {%- endif -%}
             <div id="unit-price-{{ section.id }}">
               {% render 'unit-price', object: current_variant %}
             </div>
