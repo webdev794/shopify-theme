@@ -51,6 +51,7 @@
     "empty": "Your cart is empty.",
     "continue_shopping": "Continue shopping",
     "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout",
+    "taxes_included": "Tax included.",
     "recalculated_note": "Totals update instantly as an estimate. Discounts that depend on quantity (like tiered offers) are recalculated exactly when you click \"Update cart.\""
   },
   "gift_card": {

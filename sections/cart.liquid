@@ -179,6 +179,12 @@
                 <span data-subtotal-amount>{{ cart.total_price | money }}</span>
               </div>
 
+              {%- if cart.taxes_included -%}
+                <p class="cart__tax-note">
+                  {{ 'cart.taxes_included' | t | default: 'Tax included.' }}
+                </p>
+              {%- endif -%}
+
               {% if cart.cart_level_discount_applications.size > 0 %}
                 {% for discount_application in cart.cart_level_discount_applications %}
                   <div class="cart__row cart__row--discount">
@@ -504,6 +510,12 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.95rem;
+  }
+
+  .cart__tax-note {
+    font-size: 0.8rem;
+    color: var(--color-foreground-secondary, #777);
+    margin: 0.25rem 0 0;
   }
 
   .cart__row--discount {
