@@ -134,7 +134,7 @@
                       {% unless product.available %}
                         <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
                       {% else %}
-                        {% if section.settings.show_sale_badge and product.compare_at_price_min > product.price_min %}
+                        {% if section.settings.show_sale_badge and product.compare_at_price_max > product.price_min %}
                           <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>
                         {% endif %}
                       {% endunless %}
@@ -172,10 +172,10 @@
                         <span class="product-card__price-from">{{ 'products.product.from_price_html' | t }}</span>
                       {% endif %}
 
-                      {% if product.compare_at_price_min > product.price_min %}
+                      {% if product.compare_at_price_max > product.price_min %}
                         <span class="price price--sale">{{ product.price_min | money }}</span>
                         <span class="price price--compare">
-                          <s>{{ product.compare_at_price_min | money }}</s>
+                          <s>{{ product.compare_at_price_max | money }}</s>
                         </span>
                       {% else %}
                         <span class="price">{{ product.price_min | money }}</span>
