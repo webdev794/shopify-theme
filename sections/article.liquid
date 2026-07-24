@@ -128,17 +128,25 @@
         </h2>
 
         {% if article.comments_count > 0 %}
-          <ul class="article__comment-list">
-            {% for comment in article.comments %}
-              <li class="article__comment">
-                <p class="article__comment-author">{{ comment.author }}</p>
-                <time class="article__comment-date" datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">
-                  {{ comment.created_at | date: format: 'date' }}
-                </time>
-                <div class="article__comment-content">{{ comment.content }}</div>
-              </li>
-            {% endfor %}
-          </ul>
+          {% paginate article.comments by 10 %}
+            <ul class="article__comment-list">
+              {% for comment in article.comments %}
+                <li class="article__comment">
+                  <p class="article__comment-author">{{ comment.author }}</p>
+                  <time class="article__comment-date" datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">
+                    {{ comment.created_at | date: format: 'date' }}
+                  </time>
+                  <div class="article__comment-content">{{ comment.content }}</div>
+                </li>
+              {% endfor %}
+            </ul>
+
+            {% if paginate.pages > 1 %}
+              <div class="article__comments-pagination">
+                {{ paginate | default_pagination }}
+              </div>
+            {% endif %}
+          {% endpaginate %}
         {% endif %}
 
         <div class="article__comment-form-wrapper">
@@ -398,6 +406,10 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+  }
+
+  .article__comments-pagination {
+    margin-bottom: 2rem;
   }
 
   .article__comment {
