@@ -171,7 +171,7 @@
   display: flex;
   gap: 16px;
   font-size: 13px;
-  color: var(--smg-meta-color, #999999);
+  color: var(--smg-meta-color, #666666);
   margin-top: auto;
 }
 
@@ -184,7 +184,7 @@
 
 .social-media-gallery__likes svg,
 .social-media-gallery__comments svg {
-  fill: var(--smg-meta-color, #999999);
+  fill: var(--smg-meta-color, #666666);
 }
 
 .social-media-gallery__footer {

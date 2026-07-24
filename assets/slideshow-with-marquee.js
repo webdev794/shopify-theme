@@ -39,7 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
       // Update dots
       dots.forEach(function(dot, i) {
         dot.classList.toggle('slideshow-with-marquee__dot--active', i === index);
-        dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
+        if (i === index) {
+          dot.setAttribute('aria-current', 'true');
+        } else {
+          dot.removeAttribute('aria-current');
+        }
       });
       
       currentIndex = index;
