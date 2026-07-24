@@ -149,8 +149,14 @@
     {%- else -%}
       <div class="header__logo-wrapper">
     {%- endif -%}
-      <a href="{{ routes.root_url }}" class="header__logo-link">
+      <a href="{{ routes.root_url }}" class="header__logo-link" aria-label="{{ shop.name | escape }}">
         {%- if logo != blank -%}
+          {%- liquid
+            assign logo_alt = shop.name
+            if logo.alt != blank
+              assign logo_alt = logo.alt
+            endif
+          -%}
           {{
             logo
             | image_url: width: 500
@@ -158,7 +164,7 @@
               class: 'header__logo-image',
               widths: '100, 200, 300, 400, 500',
               sizes: '(max-width: 749px) 50vw, 250px',
-              alt: logo.alt | default: shop.name,
+              alt: logo_alt,
               loading: 'lazy'
           }}
         {%- else -%}

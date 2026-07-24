@@ -269,3 +269,4 @@ Featured collection
 17 test all theme settings
 --done above--
 18 image on collection page and products in collections. 
+19 Improve lighthouse score with sections present. (Double verify if only screenshot needed or sections live as well.)

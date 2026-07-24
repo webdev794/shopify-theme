@@ -31,10 +31,22 @@
           
           {%- if block.settings.image != blank -%}
             <div class="slideshow-with-marquee__image-wrapper">
+              {%- liquid
+                assign slide_alt = block.settings.heading
+                if block.settings.image.alt != blank
+                  assign slide_alt = block.settings.image.alt
+                endif
+              -%}
               <img
-                src="{{ block.settings.image | image_url: width: 2000 }}"
-                srcset="{{ block.settings.image | image_url: width: 2000 }} 1x, {{ block.settings.image | image_url: width: 4000 }} 2x"
-                alt="{{ block.settings.image.alt | default: block.settings.heading | escape }}"
+                src="{{ block.settings.image | image_url: width: 1600 }}"
+                srcset="
+                  {{ block.settings.image | image_url: width: 750 }} 750w,
+                  {{ block.settings.image | image_url: width: 1100 }} 1100w,
+                  {{ block.settings.image | image_url: width: 1600 }} 1600w,
+                  {{ block.settings.image | image_url: width: 2000 }} 2000w
+                "
+                sizes="100vw"
+                alt="{{ slide_alt | escape }}"
                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                 width="2000"
                 height="800"
