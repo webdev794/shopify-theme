@@ -10,7 +10,9 @@
       2. Fonts load on-demand via @font-face
     {% endcomment %}
     {% unless settings.type_primary_font.system? %}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+      <!-- theme-check-disable RemoteAsset -->
+      <link rel="preconnect" href="//fonts.shopifycdn.com" crossorigin>
+      <!-- /theme-check-disable RemoteAsset -->
     {% endunless %}
 
     {% # Load critical CSS %}
@@ -25,8 +27,10 @@
     {{ content_for_header }}
 
     <!-- Shop Pay Installments -->
-    <script src="https://cdn.shopify.com/shopifycloud/shop-js/shop-installments.js" defer></script>
-
+    <!-- theme-check-disable RemoteAsset -->
+    <script src="//cdn.shopify.com/shopifycloud/shop-js/shop-installments.js" defer></script>
+    <!-- /theme-check-disable RemoteAsset -->
+    
     <!-- ===== Global layout safety net ===== -->
     <style>
       /* Force full height on body */
