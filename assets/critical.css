@@ -117,3 +117,76 @@ body {
 .shopify-section > .full-width {
   grid-column: 1 / -1;
 }
+
+.collection__pagination,
+.collections-story__pagination,
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+
+.collection__pagination .page,
+.collection__pagination .prev,
+.collection__pagination .next,
+.collections-story__pagination .page,
+.collections-story__pagination .prev,
+.collections-story__pagination .next,
+.pagination .page,
+.pagination .prev,
+.pagination .next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: var(--style-border-radius-inputs, 0.4rem);
+  font-size: 0.9rem;
+}
+
+.collection__pagination .page a,
+.collection__pagination .prev a,
+.collection__pagination .next a,
+.collections-story__pagination .page a,
+.collections-story__pagination .prev a,
+.collections-story__pagination .next a,
+.pagination .page a,
+.pagination .prev a,
+.pagination .next a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.collection__pagination .page a:hover,
+.collection__pagination .prev a:hover,
+.collection__pagination .next a:hover,
+.collections-story__pagination .page a:hover,
+.collections-story__pagination .prev a:hover,
+.collections-story__pagination .next a:hover,
+.pagination .page a:hover,
+.pagination .prev a:hover,
+.pagination .next a:hover {
+  background: var(--color-accent-background, #121212);
+  color: var(--color-accent-foreground, #fff);
+  border-color: var(--color-accent-background, #121212);
+}
+
+.collection__pagination .current,
+.collections-story__pagination .current,
+.pagination .current {
+  background: var(--color-accent-background, #121212);
+  color: var(--color-accent-foreground, #fff);
+  font-weight: 600;
+  border-radius: var(--style-border-radius-inputs, 0.4rem);
+}

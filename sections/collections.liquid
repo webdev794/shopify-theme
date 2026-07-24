@@ -6,7 +6,7 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/list-collections
 {% endcomment %}
 
-{% assign romans = 'I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII,XIII,XIV,XV,XVI,XVII,XVIII,XIX,XX' | split: ',' %}
+{% assign romans = 'I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII,XIII,XIV,XV,XVI,XVII,XVIII,XIX,XX,XXI,XXII,XXIII,XXIV,XXV' | split: ',' %}
 
 {%- comment -%} Native Shopify fonts — no uploads, served from Shopify's CDN {%- endcomment -%}
 {% assign display_font_italic = section.settings.story_display_font %}
@@ -37,6 +37,7 @@
       <p>{{ 'collections.general.no_collections' | t }}</p>
     </div>
   {% else %}
+  {% paginate collections by 20 %}
     <nav class="collections-story__rail" aria-label="{{ 'collections.title' | t }}">
       {% for collection in collections %}
         {% assign roman = romans[forloop.index0] | default: forloop.index %}
@@ -110,6 +111,13 @@
         </section>
       {% endfor %}
     </div>
+
+    {% if paginate.pages > 1 %}
+      <div class="collections-story__pagination">
+        {{ paginate | default_pagination }}
+      </div>
+    {% endif %}
+  {% endpaginate %}
   {% endif %}
 </div>
 
@@ -207,6 +215,22 @@
     color: var(--story-taupe);
     font-family: var(--story-font-display-roman);
     font-size: 1.4rem;
+  }
+
+  .collections-story__pagination {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+    color: var(--story-ivory);
+  }
+
+  .collections-story__pagination a,
+  .collections-story__pagination span {
+    color: inherit;
+  }
+
+  .collections-story__pagination a:hover {
+    color: var(--story-bronze);
   }
 
   /* ---------- Roman numeral rail ---------- */
