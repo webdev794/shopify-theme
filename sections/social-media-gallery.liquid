@@ -48,7 +48,13 @@
                   <div class="social-media-gallery__placeholder-icon">
                     {%- render 'social-icon', platform: block.settings.platform -%}
                   </div>
-                  <span class="social-media-gallery__placeholder-text">@{{ block.settings.username | default: 'username' }}</span>
+                  <span class="social-media-gallery__placeholder-text">
+                    {%- if block.settings.username != blank -%}
+                      @{{ block.settings.username }}
+                    {%- else -%}
+                      {{ 'sections.social_gallery.blocks.post.settings.username.label' | t }}
+                    {%- endif -%}
+                  </span>                
                 </div>
               {%- endif -%}
 

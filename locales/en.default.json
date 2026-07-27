@@ -140,7 +140,8 @@
       "next_pairing": "Next pairing"
     },
     "social_gallery": {
-      "empty": "Add social posts to display them here."
+      "empty": "Add social posts to display them here.",
+      "username_placeholder": "Add a username"
     },
     "slideshow_with_marquee": {
       "previous_slide": "Previous slide",

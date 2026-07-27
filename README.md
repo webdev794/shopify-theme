@@ -270,3 +270,8 @@ Featured collection
 --done above--
 18 image on collection page and products in collections. 
 19 Improve lighthouse score with sections present. (after all improvements done.)
+20 Update README.md with your own branding + usage instructions.
+21 Consider adding a clear commercial license in LICENSE.md.
+22 Remove/replace/ all images with watermark of website name, product images 1:1.
+23 product category, to search relevant products, like hat? (check shopify requirements)
+24 Collection top image, ratio, check later. 
