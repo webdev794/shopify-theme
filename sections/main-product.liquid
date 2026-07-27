@@ -17,6 +17,7 @@
   <div class="product__container page-width">
 
     {% comment %} ---------- MEDIA GALLERY ---------- {% endcomment %}
+    {% capture media_block %}
     <div class="product__media">
       {% if product.media.size > 0 %}
         <div class="product__media-main" id="product-media-main-{{ section.id }}">
@@ -84,8 +85,10 @@
         </div>
       {% endif %}
     </div>
+    {% endcapture %}
 
     {% comment %} ---------- PRODUCT INFO ---------- {% endcomment %}
+    {% capture info_block %}
     <div class="product__info">
       {% for block in section.blocks %}
         {% case block.type %}
@@ -559,6 +562,22 @@
         {% endcase %}
       {% endfor %}
     </div>
+    {% endcapture %}
+
+    {% comment %}
+      Physically reorder the DOM to match the visual layout, so keyboard
+      tab order always follows top-to-bottom, left-to-right regardless of
+      the merchant's chosen media position. CSS alone (order/grid-column)
+      only changes visual position, not tab order, so this must be a real
+      DOM swap, not a style-only reorder.
+    {% endcomment %}
+    {% if section.settings.media_position == 'right' %}
+      {{ info_block }}
+      {{ media_block }}
+    {% else %}
+      {{ media_block }}
+      {{ info_block }}
+    {% endif %}
   </div>
 </section>
 

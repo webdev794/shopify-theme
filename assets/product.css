@@ -22,10 +22,6 @@
     align-items: start;
   }
 
-  .product--media-right .product__media {
-    order: 2;
-  }
-
   .product__info {
     position: sticky;
     top: 2rem;
