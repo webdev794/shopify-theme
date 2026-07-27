@@ -60,14 +60,13 @@
         </div>
 
         {% if product.media.size > 1 %}
-          <div class="product__media-thumbs" role="tablist" aria-label="{{ product.title }} media">
+          <div class="product__media-thumbs" aria-label="{{ product.title }} media">
             {% for media in product.media %}
               <a
                 href="#media-{{ section.id }}-{{ media.id }}"
                 class="product__media-thumb{% if media == featured_media %} is-active{% endif %}"
                 data-media-id="{{ media.id }}"
-                role="tab"
-                aria-selected="{% if media == featured_media %}true{% else %}false{% endif %}"
+                {% if media == featured_media %}aria-current="true"{% endif %}
                 aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
               >
                 {{
@@ -482,7 +481,7 @@
                       </svg>
                       {{ block.settings.installments_provider | default: "Shop Pay" }}
                     </span>
-                    <span class="installments-info" tabindex="0" aria-label="{{ tooltip_text | escape }}">
+                    <span class="installments-info" tabindex="0" role="button" aria-label="{{ tooltip_text | escape }}">
                       i
                       <span class="installments-info__tooltip" role="tooltip">
                         {{ tooltip_text }}

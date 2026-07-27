@@ -43,7 +43,7 @@
       {% if section_heading != blank or section_subheading != blank %}
         <div class="detailed-contact-form__header text-center">
           {% if section_heading != blank %}
-            <h2 class="detailed-contact-form__heading">{{ section_heading | escape }}</h2>
+            <h1 class="detailed-contact-form__heading">{{ section_heading | escape }}</h1>
           {% endif %}
           {% if section_subheading != blank %}
             <p class="detailed-contact-form__subheading">{{ section_subheading | escape }}</p>
@@ -101,7 +101,6 @@
                   value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
                   placeholder="{{ 'contact.form.name' | t }}"
                   required
-                  aria-required="true"
                   autocomplete="name"
                 >
               </div>
@@ -120,7 +119,6 @@
                   value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
                   placeholder="{{ 'contact.form.email' | t }}"
                   required
-                  aria-required="true"
                   autocomplete="email"
                   pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                 >
@@ -167,7 +165,6 @@
                   class="field__input field__select"
                   name="contact[subject]"
                   required
-                  aria-required="true"
                 >
                   <option value="" disabled selected>
                     {{ 'contact.form.subject_placeholder' | t }}
@@ -242,7 +239,6 @@
                   rows="6"
                   placeholder="{{ 'contact.form.message_placeholder' | t }}"
                   required
-                  aria-required="true"
                 >{% if form.body %}{{ form.body }}{% endif %}</textarea>
                 <small class="field__character-count">
                   <span id="char-count-{{ form_id }}">0</span> / 1000

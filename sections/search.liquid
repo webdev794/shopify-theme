@@ -124,9 +124,9 @@
                         <p class="search-result__vendor">{{ result.vendor }}</p>
                       {% endif %}
 
-                      <h3 class="search-result__title">
+                      <h2 class="search-result__title">
                         <a href="{{ result.url }}">{{ result.title }}</a>
-                      </h3>
+                      </h2>
 
                       <div class="search-result__price">
                         {% if result.compare_at_price > result.price %}
@@ -139,26 +139,26 @@
 
                     {% when 'article' %}
                       <p class="search-result__meta">{{ 'search.result_type.article' | t }}</p>
-                      <h3 class="search-result__title">
+                      <h2 class="search-result__title">
                         <a href="{{ result.url }}">{{ result.title }}</a>
-                      </h3>
+                      </h2>
                       <p class="search-result__excerpt">
                         {{ result.excerpt_or_content | strip_html | truncatewords: 20 }}
                       </p>
 
                     {% when 'page' %}
                       <p class="search-result__meta">{{ 'search.result_type.page' | t }}</p>
-                      <h3 class="search-result__title">
+                      <h2 class="search-result__title">
                         <a href="{{ result.url }}">{{ result.title }}</a>
-                      </h3>
+                      </h2>
                       <p class="search-result__excerpt">
                         {{ result.content | strip_html | truncatewords: 20 }}
                       </p>
 
                     {% else %}
-                      <h3 class="search-result__title">
+                      <h2 class="search-result__title">
                         <a href="{{ result.url }}">{{ result.title }}</a>
-                      </h3>
+                      </h2>
                   {% endcase %}
                 </div>
               </div>

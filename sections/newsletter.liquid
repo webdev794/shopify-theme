@@ -25,7 +25,7 @@
         <div class="newsletter__description">{{ section.settings.description }}</div>
       {% endif %}
       
-      {% form 'customer' %}
+      {% form 'customer', id: 'newsletter-form' %}
         {{ form.errors | default_errors }}
         
         {% if form.posted_successfully? %}

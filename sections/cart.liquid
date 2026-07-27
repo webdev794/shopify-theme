@@ -30,7 +30,6 @@
                   <th scope="col">{{ 'cart.price' | t }}</th>
                   <th scope="col">{{ 'cart.quantity' | t }}</th>
                   <th scope="col">{{ 'cart.total' | t }}</th>
-                  <th scope="col" class="visually-hidden">{{ 'cart.remove' | t }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,6 +43,7 @@
                             | image_url: width: 200
                             | image_tag:
                               widths: '100,150,200',
+                              sizes: '80px',
                               alt: item.image.alt | default: item.product.title,
                               loading: 'lazy',
                               class: 'cart-item__image'
@@ -122,7 +122,6 @@
                           {% render 'unit-price', object: item.variant %}
                         </div>
                       {% endif %}
-                      {% render 'unit-price', object: item %}
                     </td>
 
                     <td class="cart-item__quantity-cell" data-label="{{ 'cart.quantity' | t }}">

@@ -104,9 +104,15 @@ class VariantSelects extends HTMLElement {
 
     document
       .querySelectorAll('.product__media-thumb')
-      .forEach((thumb) =>
-        thumb.classList.toggle('is-active', thumb.dataset.mediaId === String(variant.featured_media_id))
-      );
+      .forEach((thumb) => {
+        const isActive = thumb.dataset.mediaId === String(variant.featured_media_id);
+        thumb.classList.toggle('is-active', isActive);
+        if (isActive) {
+          thumb.setAttribute('aria-current', 'true');
+        } else {
+          thumb.removeAttribute('aria-current');
+        }
+      });
   }
 
   updateAddToCart(variant) {
@@ -368,9 +374,14 @@ document.addEventListener('click', (event) => {
 
   const mediaId = thumb.dataset.mediaId;
 
-  document.querySelectorAll('.product__media-thumb').forEach((t) =>
-    t.classList.toggle('is-active', t === thumb)
-  );
+  document.querySelectorAll('.product__media-thumb').forEach((t) => {
+    t.classList.toggle('is-active', t === thumb);
+    if (t === thumb) {
+      t.setAttribute('aria-current', 'true');
+    } else {
+      t.removeAttribute('aria-current');
+    }
+  });
 
   document.querySelectorAll('.product__media-item').forEach((item) =>
     item.classList.toggle('is-active', item.dataset.mediaId === mediaId)

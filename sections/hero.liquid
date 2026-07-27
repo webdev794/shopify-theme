@@ -78,11 +78,7 @@
         {%- if mobile_image != blank -%}
           <source
             media="(max-width: 749px)"
-            srcset="
-              {{ mobile_image | image_url: width: 375 }} 375w,
-              {{ mobile_image | image_url: width: 750 }} 750w,
-              {{ mobile_image | image_url: width: 1100 }} 1100w
-            "
+            srcset="{{ mobile_image | image_url: width: 375 }} 375w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1100 }} 1100w"
             sizes="100vw"
           >
         {%- endif -%}

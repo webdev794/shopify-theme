@@ -65,10 +65,7 @@
                     if block.settings.image.presentation.focal_point
                       assign focal_style = 'object-position: ' | append: block.settings.image.presentation.focal_point
                     endif
-                    assign image_alt = block.settings.text
-                    if block.settings.image.alt != blank
-                      assign image_alt = block.settings.image.alt
-                    endif
+                    assign image_alt = block.settings.image.alt | default: section.settings.caption | default: 'Decorative image'
                   -%}
                   {{
                     block.settings.image

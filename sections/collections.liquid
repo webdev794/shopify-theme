@@ -31,6 +31,7 @@
     }
   {% endstyle %}
 
+  <h1 class="visually-hidden">{{ 'collections.title' | t }}</h1>
 
   {% if collections.size == 0 %}
     <div class="collections-story__empty">
@@ -171,6 +172,25 @@
     if (railItems.length) {
       setActive('1');
     }
+
+    // Hide the fixed rail as soon as any part of the footer becomes
+    // visible. Footer renders after this section in the DOM, so wait
+    // until the full page has loaded before looking for it.
+    var rail = root.querySelector('.collections-story__rail');
+    window.addEventListener('load', function () {
+      var footer = document.querySelector('.shopify-section-group-footer-group');
+      if (!rail || !footer) return;
+
+      var railVisibility = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            rail.classList.toggle('is-hidden', entry.isIntersecting);
+          });
+        },
+        { threshold: 0 }
+      );
+      railVisibility.observe(footer);
+    });
   })();
 </script>
 
@@ -180,6 +200,18 @@
     above (--story-font-*), sourced from the font_picker settings.
     This stylesheet block stays 100% static -- no Liquid runs here.
   */
+
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
   .collections-story {
     --story-ink: #171310;
@@ -244,6 +276,13 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 0.85rem;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .collections-story__rail.is-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .collections-story__rail-item {

@@ -60,9 +60,9 @@
         <a href="{{ product.url }}" class="product-card__image-link" tabindex="-1" aria-hidden="true">
           {%- case card_media.media_type -%}
             {%- when 'video', 'external_video' -%}
-              {{ card_media | media_tag: image_size: '600x', controls: true, class: 'product-card__media-tag' }}
+              {{ card_media | media_tag: image_size: '600x', controls: true, class: 'product-card__media-tag', alt: product.title }}
             {%- when 'model' -%}
-              {{ card_media | media_tag: image_size: '600x', class: 'product-card__media-tag' }}
+              {{ card_media | media_tag: image_size: '600x', class: 'product-card__media-tag', alt: product.title }}
           {%- endcase -%}
         </a>
         <span class="product-card__media-badge" aria-hidden="true">

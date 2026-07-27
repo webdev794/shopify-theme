@@ -39,12 +39,7 @@
               -%}
               <img
                 src="{{ block.settings.image | image_url: width: 1600 }}"
-                srcset="
-                  {{ block.settings.image | image_url: width: 750 }} 750w,
-                  {{ block.settings.image | image_url: width: 1100 }} 1100w,
-                  {{ block.settings.image | image_url: width: 1600 }} 1600w,
-                  {{ block.settings.image | image_url: width: 2000 }} 2000w
-                "
+                srcset="{{ block.settings.image | image_url: width: 750 }} 750w, {{ block.settings.image | image_url: width: 1100 }} 1100w, {{ block.settings.image | image_url: width: 1600 }} 1600w, {{ block.settings.image | image_url: width: 2000 }} 2000w"
                 sizes="100vw"
                 alt="{{ slide_alt | escape }}"
                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"

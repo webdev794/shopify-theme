@@ -15,7 +15,7 @@
       <div class="footer__brand">
         <a href="{{ routes.root_url }}" class="footer__logo">
           {%- if section.settings.logo -%}
-            {{ section.settings.logo | image_url: width: 300 | image_tag: alt: shop.name, widths: '150, 300', class: 'footer__logo-img' }}
+            {{ section.settings.logo | image_url: width: 300 | image_tag: alt: shop.name, widths: '150, 300', sizes: '150px', class: 'footer__logo-img' }}  
           {%- else -%}
             <span class="footer__logo-text">{{ shop.name }}</span>
           {%- endif -%}

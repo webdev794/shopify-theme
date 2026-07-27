@@ -33,7 +33,6 @@
       <summary
         class="header__icon-button header__mobile-toggle"
         aria-label="{{ 'sections.header.open_menu' | t }}"
-        role="button"
       >
         {% render 'icon-hamburger' %}
       </summary>
@@ -45,7 +44,7 @@
             <li>
               {%- if link.links != blank -%}
                 <details class="header__mobile-dropdown">
-                  <summary class="header__mobile-link" role="button">
+                  <summary class="header__mobile-link">
                     <span>{{ link.title | escape }}</span>
                     <span class="header__caret" aria-hidden="true">{% render 'icon-caret' %}</span>
                   </summary>
@@ -93,7 +92,7 @@
 
         <!-- Mobile Localization -->
         {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
-          {%- form 'localization', class: 'header__localization-form header__localization-form--mobile' -%}
+          {%- form 'localization', class: 'header__localization-form header__localization-form--mobile', id: 'localization-form-mobile-country' -%}
             <label for="CountrySelectorMobile-{{ section.id }}" class="visually-hidden">
               {{ 'sections.header.country_label' | t }}
             </label>
@@ -117,8 +116,7 @@
         {%- endif -%}
 
         {%- if section.settings.show_language_selector and localization.available_languages.size > 1 -%}
-          {%- form 'localization', class: 'header__localization-form header__localization-form--mobile' -%}
-            <label for="LanguageSelectorMobile-{{ section.id }}" class="visually-hidden">
+            {%- form 'localization', class: 'header__localization-form header__localization-form--mobile', id: 'localization-form-mobile-language' -%}            <label for="LanguageSelectorMobile-{{ section.id }}" class="visually-hidden">
               {{ 'sections.header.language_label' | t }}
             </label>
             <select
@@ -190,7 +188,7 @@
             <li class="header__menu-item{% if link.links != blank and show_mega %} header__menu-item--mega{% endif %}">
               {%- if link.links != blank -%}
                 <details class="header__dropdown{% if show_mega %} header__dropdown--mega{% endif %}" data-header-dropdown>
-                  <summary class="header__menu-link header__menu-trigger" role="button">
+                  <summary class="header__menu-link header__menu-trigger">
                     <span>{{ link.title | escape }}</span>
                     <span class="header__caret" aria-hidden="true">{% render 'icon-caret' %}</span>
                   </summary>
@@ -323,7 +321,6 @@
           <summary
             class="header__icon-button"
             aria-label="{{ 'search.title' | t }}"
-            role="button"
           >
             {% render 'icon-search' %}
           </summary>
@@ -364,7 +361,7 @@
 
       <!-- Country Selector -->
       {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
-        {%- form 'localization', class: 'header__localization-form' -%}
+        {%- form 'localization', class: 'header__localization-form', id: 'localization-form-desktop-country' -%}
           <label for="CountrySelector-{{ section.id }}" class="visually-hidden">
             {{ 'sections.header.country_label' | t }}
           </label>
@@ -389,7 +386,7 @@
 
       <!-- Language Selector -->
       {%- if section.settings.show_language_selector and localization.available_languages.size > 1 -%}
-        {%- form 'localization', class: 'header__localization-form' -%}
+        {%- form 'localization', class: 'header__localization-form', id: 'localization-form-desktop-language' -%}
           <label for="LanguageSelector-{{ section.id }}" class="visually-hidden">
             {{ 'sections.header.language_label' | t }}
           </label>
