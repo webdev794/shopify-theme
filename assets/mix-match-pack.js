@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxItems = parseInt(section.dataset.maxItems) || 4;
     const selectBtns = section.querySelectorAll('.mix-match-pack__select-product');
     const addPackBtn = section.querySelector('.mix-match-pack__add-pack');
-    const totalPriceElement = section.querySelector('#pack-total-price');
-    const selectedCountElement = section.querySelector('#selected-count');
+    const totalPriceElement = section.querySelector('.mix-match-pack__total-price');
+    const selectedCountElement = section.querySelector('.mix-match-pack__selected-count');
     const variantSelectors = section.querySelectorAll('.mix-match-pack__variant-selector');
     
     let selectedProducts = [];

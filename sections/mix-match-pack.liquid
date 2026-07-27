@@ -28,12 +28,12 @@
         <div class="mix-match-pack__selection-info">
           <span class="mix-match-pack__selection-label">{{ section.settings.selection_label | default: 'Your Selection' | escape }}</span>
           <span class="mix-match-pack__selection-count">
-            <span id="selected-count">0</span> / {{ section.settings.max_items | default: 4 }} {{ 'products.product.items' | t | default: 'items' }}
+            <span class="mix-match-pack__selected-count" id="selected-count-{{ section.id }}">0</span> / {{ section.settings.max_items | default: 4 }} {{ 'products.product.items' | t | default: 'items' }}
           </span>
         </div>
         <div class="mix-match-pack__total">
           <span class="mix-match-pack__total-label">{{ section.settings.total_label | default: 'Total' | escape }}:</span>
-          <span class="mix-match-pack__total-price" id="pack-total-price">{{ 0 | money }}</span>
+          <span class="mix-match-pack__total-price" id="pack-total-price-{{ section.id }}">{{ 0 | money }}</span>
         </div>
         <button class="mix-match-pack__add-pack btn btn--primary" type="button" disabled>
           {{ section.settings.add_pack_text | default: 'Add Pack to Cart' | escape }}
