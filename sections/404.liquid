@@ -101,6 +101,11 @@
     overflow: hidden;
   }
 
+  .error-404__search-input-wrapper:focus-within {
+    border-color: var(--color-foreground, #1a1a1a);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-foreground, #1a1a1a) 12%, transparent);
+  }
+
   .error-404__search-input {
     flex: 1;
     border: none;
