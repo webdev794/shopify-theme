@@ -275,3 +275,4 @@ Featured collection
 22 Remove/replace/ all images with watermark of website name, product images 1:1.
 23 product category, to search relevant products, like hat? (check shopify requirements)
 24 Collection top image, ratio, check later. 
+25 Add one product to each 20+ collections. 

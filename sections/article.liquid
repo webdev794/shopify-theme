@@ -102,15 +102,19 @@
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5H16l.4-3H13.5V8.4c0-.87.24-1.46 1.5-1.46H16.5V4.35c-.26-.03-1.15-.1-2.19-.1-2.17 0-3.66 1.32-3.66 3.76v2.5H8.2v3h2.45V21h2.85z"/></svg>
         </a>
 
-        <a
-          href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: article.url | url_encode }}&description={{ article.title | url_encode }}"
-          target="_blank"
-          rel="noopener"
-          class="article__share-link"
-          aria-label="{{ 'blog.share_on_pinterest' | t }}"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.3-.09-.79-.17-2.01.03-2.87.19-.79 1.23-5.02 1.23-5.02s-.31-.63-.31-1.55c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.57 2.25-.87 3.5-.25 1.05.52 1.9 1.55 1.9 1.86 0 3.29-1.96 3.29-4.79 0-2.5-1.8-4.25-4.36-4.25-2.97 0-4.71 2.23-4.71 4.53 0 .9.34 1.86.78 2.38.09.1.1.19.07.3l-.28 1.15c-.05.19-.16.24-.36.14-1.35-.63-2.19-2.6-2.19-4.19 0-3.41 2.48-6.55 7.15-6.55 3.75 0 6.67 2.68 6.67 6.25 0 3.73-2.35 6.73-5.62 6.73-1.1 0-2.13-.57-2.48-1.24l-.68 2.57c-.24.94-.9 2.11-1.35 2.83.99.31 2.05.47 3.15.47 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
-        </a>
+        {%- assign pinterest_image = article.image | default: shop.brand.square_logo | default: shop.brand.logo -%}
+        {%- if pinterest_image != blank -%}
+          {%- assign pinterest_media_url = pinterest_image | image_url: width: 1200 | prepend: 'https:' -%}
+          <a
+            href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: article.url | url_encode }}&media={{ pinterest_media_url | url_encode }}&description={{ article.title | url_encode }}"
+            target="_blank"
+            rel="noopener"
+            class="article__share-link"
+            aria-label="{{ 'blog.share_on_pinterest' | t }}"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.3-.09-.79-.17-2.01.03-2.87.19-.79 1.23-5.02 1.23-5.02s-.31-.63-.31-1.55c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.57 2.25-.87 3.5-.25 1.05.52 1.9 1.55 1.9 1.86 0 3.29-1.96 3.29-4.79 0-2.5-1.8-4.25-4.36-4.25-2.97 0-4.71 2.23-4.71 4.53 0 .9.34 1.86.78 2.38.09.1.1.19.07.3l-.28 1.15c-.05.19-.16.24-.36.14-1.35-.63-2.19-2.6-2.19-4.19 0-3.41 2.48-6.55 7.15-6.55 3.75 0 6.67 2.68 6.67 6.25 0 3.73-2.35 6.73-5.62 6.73-1.1 0-2.13-.57-2.48-1.24l-.68 2.57c-.24.94-.9 2.11-1.35 2.83.99.31 2.05.47 3.15.47 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </a>
+        {%- endif -%}
 
         <button type="button" class="article__share-link article__share-copy" data-copy-link aria-label="{{ 'blog.copy_link' | t }}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
