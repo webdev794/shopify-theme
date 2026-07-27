@@ -11,6 +11,29 @@
     return moneyFormat.replace(/\{\{\s*amount\s*\}\}/, amount);
   }
 
+  let modelViewerLoading = null;
+  function ensureModelViewerLoaded() {
+    if (customElements.get('model-viewer')) return Promise.resolve();
+    if (modelViewerLoading) return modelViewerLoading;
+
+    // Google's official @google/model-viewer library — the same open-source
+    // library Shopify's own model_viewer_tag/Hydrogen components use
+    // internally. Shopify's own hosted copy lives at a shop-specific path
+    // (not a fixed URL a theme can reference), so we load the official
+    // upstream distribution instead, matching main-product.liquid's visual
+    // behavior since it's the same underlying component.
+    modelViewerLoading = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+
+    return modelViewerLoading;
+  }
+
   function mediaHtml(media) {
     switch (media.media_type) {
       case 'video':
@@ -38,6 +61,10 @@
   function buildContent(product) {
     const media = product.media && product.media.length ? product.media : [{ media_type: 'image', preview_image: { src: product.featured_image } }];
     const variant = product.variants[0];
+
+    if (media.some((m) => m.media_type === 'model')) {
+      ensureModelViewerLoaded();
+    }
 
     const mediaSlides = media
       .map((m, i) => `<div class="quick-view-modal__media-slide${i === 0 ? ' is-active' : ''}" data-media-index="${i}">${mediaHtml(m)}</div>`)
