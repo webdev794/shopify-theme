@@ -268,8 +268,8 @@
   .footer__submit:hover { opacity: 0.85; }
 
   .footer__form-message { margin: 0.6rem 0 0; font-size: 0.85rem; }
-  .footer__form-message--error { color: #c0392b; }
-  .footer__form-message--success { color: #1e8e5a; }
+  .footer__form-message--error { color: var(--color-error, #c0392b); }
+  .footer__form-message--success { color: var(--color-success, #1e8e5a); }
 
   /* ── Bottom bar ── */
   .footer__bottom {
@@ -403,7 +403,8 @@
         {
           "type": "link_list",
           "id": "menu",
-          "label": "t:labels.menu"
+          "label": "t:labels.menu",
+          "default": "footer"
         }
       ]
     },
