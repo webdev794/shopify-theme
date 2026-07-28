@@ -346,7 +346,7 @@
           "info": "Add HTML, Liquid, or JavaScript. CSS goes in the theme assets."
         },
         "custom_liquid": {
-          "label": "Custom liquid"
+          "label": "Code"
         },
         "header__2": { "content": "Layout" },
         "layout": {
@@ -498,7 +498,7 @@
     "footer": {
       "settings": {
         "header__1": { "content": "Brand" },
-        "logo": { "label": "Footer logo" },
+        "logo": { "label": "Logo" },
         "tagline": { "label": "Tagline" },
         "header__2": { "content": "Newsletter" },
         "show_newsletter": { "label": "Show newsletter signup" },
@@ -1113,11 +1113,11 @@
         "slide_height": { "label": "Slide height" },
         "header__2": { "content": "Marquee settings" },
         "show_marquee": { "label": "Show marquee bar" },
-        "marquee_text": { "label": "Marquee text" },
-        "marquee_speed": { "label": "Marquee speed" },
+        "marquee_text": { "label": "Text" },
+        "marquee_speed": { "label": "Speed" },
         "header__3": { "content": "Style settings" },
-        "marquee_bg": { "label": "Marquee background" },
-        "marquee_text_color": { "label": "Marquee text color" },
+        "marquee_bg": { "label": "Background" },
+        "marquee_text_color": { "label": "Text color" },
         "overlay_color": { "label": "Slide overlay color" },
         "text_color": { "label": "Slide text color" },
         "header__4": { "content": "Accessibility" },
@@ -1337,7 +1337,7 @@
       "name": "Wavy marquee",
       "settings": {
         "text": {
-          "label": "Marquee text",
+          "label": "Text",
           "info": "The text that will scroll across the marquee."
         },
         "repeats": {
