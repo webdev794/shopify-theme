@@ -3,8 +3,8 @@
 
 /* Base Container */
 .wavy-marquee {
-  background-color: var(--marquee-bg, #1a1a1a);
-  color: var(--marquee-color, #ffffff);
+  background-color: var(--marquee-bg, var(--color-accent-background, #1a1a1a));
+  color: var(--marquee-color, var(--color-accent-foreground, #ffffff));
   padding: var(--marquee-padding, 16px 0);
   overflow: hidden;
   position: relative;

@@ -113,13 +113,13 @@
   cursor: wait;
 }
 
-/* Free-shipping green is a conventional status color, kept fixed */
+/* Free-shipping green is a conventional status color, uses status variable */
 .mix-match-pack__free-shipping {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: var(--mmp-free-shipping-color, #2e7d32);
+  color: var(--mmp-free-shipping-color, var(--color-success, #2e7d32));
   margin: 0;
   justify-content: center;
 }

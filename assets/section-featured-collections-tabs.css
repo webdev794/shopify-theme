@@ -239,10 +239,9 @@
   font-size: 1rem;
 }
 
-/* Star gold kept as conventional review color, darkened slightly from
-   #f5a623 for 3:1 non-text contrast, matching testimonials.css */
+/* Star gold kept as conventional review color, uses status variable */
 .star--filled {
-  color: #b8860b;
+  color: var(--color-star, #b8860b);
 }
 
 .star--empty {

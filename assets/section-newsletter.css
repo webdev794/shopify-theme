@@ -1,10 +1,6 @@
 /* ============================================
    NEWSLETTER SECTION
-   v2 — recolored to use the theme's palette
-   (--color-background, --color-foreground,
-   --color-background-secondary, --color-accent-background/foreground)
-   instead of a hardcoded purple/indigo scheme, so merchant brand
-   colors actually apply here. Success/error stay conventional.
+   v3 — Added status color variables for success states.
    ============================================ */
 
 .newsletter {
@@ -288,22 +284,22 @@
   margin: 0.5rem 0 0;
 }
 
-/* Success message keeps a conventional green — status color, not brand */
+/* Success message uses status color variables */
 .newsletter__success {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: #e6f4ea;
+  background: var(--color-success-bg, #e6f4ea);
   border-radius: 8px;
-  color: #1e4620;
+  color: var(--color-success-text, #1e4620);
 }
 
 .newsletter__success-icon {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
-  color: #2e7d32;
+  color: var(--color-success, #2e7d32);
 }
 
 .newsletter__success p {

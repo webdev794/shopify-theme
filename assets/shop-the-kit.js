@@ -168,7 +168,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // If it's the last item, show success
             if (index === items.length - 1) {
               addToCartBtn.textContent = 'Added! ✓';
-              addToCartBtn.style.background = '#2ecc71';
+              // Use CSS variable for success color
+              addToCartBtn.style.background = 'var(--color-success, #2ecc71)';
               
               // Trigger cart update
               setTimeout(function() {

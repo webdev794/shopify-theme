@@ -80,7 +80,7 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  background: #c62828;
+  background: var(--color-sale, #c62828);
   color: #fff;
   padding: 4px 12px;
   border-radius: 20px;
@@ -126,9 +126,9 @@
   margin-bottom: 10px;
 }
 
-/* Star gold kept conventional, darkened for contrast */
+/* Star gold kept conventional, uses status color variable */
 .trending-products__stars {
-  color: #b8860b;
+  color: var(--color-star, #b8860b);
   font-size: 14px;
   letter-spacing: 1px;
 }

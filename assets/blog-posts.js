@@ -37,15 +37,15 @@ document.addEventListener('DOMContentLoaded', function() {
       </svg>
     `;
     
-    // Style buttons
+    // Style buttons with CSS variables instead of hardcoded colors
     const btnStyle = `
       .blog-posts__carousel-btn {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
         z-index: 10;
-        background: white;
-        border: 1px solid #e5e7eb;
+        background: var(--color-background, #ffffff);
+        border: 1px solid var(--color-border, #e5e7eb);
         border-radius: 50%;
         width: 44px;
         height: 44px;
@@ -55,12 +55,13 @@ document.addEventListener('DOMContentLoaded', function() {
         justify-content: center;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
+        color: var(--color-foreground, #1a1a1a);
       }
       .blog-posts__carousel-btn:hover {
-        background: #667eea;
-        border-color: #667eea;
-        color: white;
-        box-shadow: 0 4px 20px rgba(102,126,234,0.3);
+        background: var(--color-accent-background, #1a1a2e);
+        border-color: var(--color-accent-background, #1a1a2e);
+        color: var(--color-accent-foreground, #ffffff);
+        box-shadow: 0 4px 20px color-mix(in srgb, var(--color-accent-background, #1a1a2e) 30%, transparent);
       }
       .blog-posts__carousel-btn svg {
         width: 20px;

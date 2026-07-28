@@ -214,11 +214,12 @@
   }
 
   .collections-story {
-    --story-ink: #171310;
-    --story-ivory: #f3ece1;
-    --story-bronze: #c9a063;
-    --story-wine: #6e1f31;
-    --story-taupe: #a79883;
+    /* Uses theme CSS variables instead of hardcoded editorial palette */
+    --story-ink: var(--color-foreground, #171310);
+    --story-ivory: var(--color-background, #f3ece1);
+    --story-bronze: var(--color-accent-background, #c9a063);
+    --story-wine: var(--color-sale, #6e1f31);
+    --story-taupe: var(--color-foreground-secondary, #a79883);
 
     position: relative;
     background: var(--story-ink);

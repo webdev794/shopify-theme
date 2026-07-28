@@ -89,7 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(function() {
         btn.textContent = 'Added ✓';
-        btn.style.background = '#2ecc71';
+        // Use CSS variable for success color
+        btn.style.background = 'var(--color-success, #2ecc71)';
         
         setTimeout(function() {
           btn.textContent = originalText;
@@ -154,7 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
           completed++;
           if (completed === totalItems) {
             btn.textContent = 'Bundle Added ✓';
-            btn.style.background = '#2ecc71';
+            // Use CSS variable for success color
+            btn.style.background = 'var(--color-success, #2ecc71)';
             
             setTimeout(function() {
               btn.textContent = 'Add Bundle to Cart';

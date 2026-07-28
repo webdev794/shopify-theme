@@ -183,12 +183,13 @@ class DetailedContactForm {
         const currentLength = this.messageField.value.length;
         this.charCountElement.textContent = currentLength;
 
+        // Use CSS variables instead of hardcoded colors
         if (currentLength > 900) {
-          this.charCountElement.style.color = '#ef4444';
+          this.charCountElement.style.color = 'var(--color-error, #c62828)';
         } else if (currentLength > 700) {
-          this.charCountElement.style.color = '#f59e0b';
+          this.charCountElement.style.color = 'var(--color-sale, #c62828)';
         } else {
-          this.charCountElement.style.color = '#6366f1';
+          this.charCountElement.style.color = 'var(--color-accent-background, #1a1a2e)';
         }
 
         if (currentLength > maxChars) {

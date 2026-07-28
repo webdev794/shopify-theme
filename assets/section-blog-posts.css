@@ -193,13 +193,15 @@
 
 /* ============================================
    CATEGORY BADGE
+   Uses foreground color with opacity instead of hardcoded black
    ============================================ */
 
 .blog-posts__category {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--color-foreground, #1a1a1a);
+  opacity: 0.85;
   color: white;
   padding: 0.3rem 0.8rem;
   border-radius: 50px;
@@ -231,7 +233,7 @@
   display: block;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1a1a2e;
+  color: var(--color-foreground, #1a1a1a);
   line-height: 1.1;
 }
 
@@ -386,7 +388,7 @@
 }
 
 .blog-posts[data-layout="carousel"] .blog-posts__grid::-webkit-scrollbar-thumb {
-  background: var(--color-accent-background, #667eea);
+  background: var(--color-accent-background, #1a1a2e);
   border-radius: 10px;
 }
 

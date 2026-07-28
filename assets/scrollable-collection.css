@@ -132,13 +132,13 @@
   fill: color-mix(in srgb, var(--color-foreground, #1a1a1a) 25%, transparent);
 }
 
-/* "Sale/featured"-style badge kept as fixed conventional red */
+/* Badge uses sale color variable */
 .scrollable-collection__badge {
   position: absolute;
   top: 12px;
   left: 12px;
   padding: 4px 12px;
-  background: #c62828;
+  background: var(--color-sale, #c62828);
   color: #ffffff;
   font-size: 11px;
   font-weight: 600;
@@ -215,9 +215,9 @@
   gap: 6px;
 }
 
-/* Star gold kept conventional, darkened for 3:1 non-text contrast */
+/* Star gold kept conventional, uses status color variable */
 .scrollable-collection__stars {
-  color: #b8860b;
+  color: var(--color-star, #b8860b);
   font-size: 13px;
   letter-spacing: 1px;
 }

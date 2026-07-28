@@ -256,9 +256,9 @@
   margin-bottom: 4px;
 }
 
-/* Star gold kept conventional, darkened for 3:1 non-text contrast */
+/* Star gold kept conventional, uses status color variable */
 .pairing-products__stars {
-  color: #b8860b;
+  color: var(--color-star, #b8860b);
   font-size: 12px;
   letter-spacing: 1px;
 }

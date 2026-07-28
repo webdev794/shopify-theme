@@ -1,11 +1,6 @@
 /* Featured Products Styles
-   v1.7 — color system audit: neutral grays now pull from the theme
-   palette (--color-background-secondary, --color-foreground, mixes);
-   badge accent now uses --color-accent-background/foreground.
-   Semantic status colors (sale red, sold-out gray, success/error,
-   star rating gold) are intentionally left as fixed conventional colors —
-   these carry meaning independent of brand color and shouldn't shift
-   with a merchant's palette.
+   v1.8 — Added status color variables for sale, sold-out, success, error, and stars.
+   All status colors now use CSS variables with appropriate fallbacks.
    ============================================ */
 
 .featured-products-section {
@@ -312,16 +307,14 @@
   color: var(--color-accent-foreground, #ffffff);
 }
 
-/* Sale/sold-out badges use fixed conventional colors (red = sale,
-   gray = unavailable) rather than the brand accent, so they stay
-   instantly recognizable regardless of a merchant's chosen palette. */
+/* Sale/sold-out badges use status color variables */
 .product-card__badge--sale {
-  background: #e32b2b;
+  background: var(--color-sale, #c62828);
   color: #ffffff;
 }
 
 .product-card__badge--sold-out {
-  background: #767676;
+  background: var(--color-sold-out, #767676);
   color: #ffffff;
 }
 
@@ -368,16 +361,15 @@
   transform: translateX(-50%) scale(0.95);
 }
 
-/* Feedback states (set by JS instead of inline styles). Success/error
-   use fixed conventional green/red — status colors, not brand colors. */
+/* Feedback states use status color variables */
 .product-card__quick-add--success {
-  background: #2e7d32 !important;
+  background: var(--color-success, #2e7d32) !important;
   color: #ffffff !important;
   opacity: 1;
 }
 
 .product-card__quick-add--error {
-  background: #c62828 !important;
+  background: var(--color-error, #c62828) !important;
   color: #ffffff !important;
   opacity: 1;
 }
@@ -439,11 +431,11 @@
   gap: 2px;
 }
 
-/* Star rating gold is a conventional review-UI color, kept fixed */
+/* Star rating uses status color variable */
 .product-card__stars svg {
   width: 16px;
   height: 16px;
-  fill: #f5a623;
+  fill: var(--color-star, #b8860b);
 }
 
 .product-card__stars svg.empty {
@@ -475,7 +467,7 @@
 }
 
 .product-card__price--sale .product-card__price-current {
-  color: #e32b2b;
+  color: var(--color-sale, #c62828);
 }
 
 /* Product Card Variations */
@@ -554,7 +546,7 @@
   cursor: not-allowed;
 }
 
-/* Notification styles — status colors, kept fixed/conventional */
+/* Notification styles use status color variables */
 .featured-products__notification {
   position: fixed;
   bottom: 20px;
@@ -570,12 +562,12 @@
 }
 
 .featured-products__notification--success {
-  background: #2e7d32;
+  background: var(--color-success, #2e7d32);
   color: #ffffff;
 }
 
 .featured-products__notification--error {
-  background: #c62828;
+  background: var(--color-error, #c62828);
   color: #ffffff;
 }
 

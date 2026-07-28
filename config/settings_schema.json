@@ -126,6 +126,77 @@
         "unit": "px",
         "label": "t:labels.input_corner_radius",
         "default": 4
+      },
+
+      {
+        "type": "header",
+        "content": "Status Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "default": "#c62828",
+        "label": "Sale / Discount color"
+      },
+      {
+        "type": "color",
+        "id": "color_sold_out",
+        "default": "#767676",
+        "label": "Sold out color"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "default": "#2e7d32",
+        "label": "Success color"
+      },
+      {
+        "type": "color",
+        "id": "color_success_bg",
+        "default": "#e6f4ea",
+        "label": "Success background"
+      },
+      {
+        "type": "color",
+        "id": "color_success_text",
+        "default": "#1e4620",
+        "label": "Success text color"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "default": "#c62828",
+        "label": "Error color"
+      },
+      {
+        "type": "color",
+        "id": "color_error_bg",
+        "default": "#fee2e2",
+        "label": "Error background"
+      },
+      {
+        "type": "color",
+        "id": "color_error_text",
+        "default": "#991b1b",
+        "label": "Error text color"
+      },
+      {
+        "type": "color",
+        "id": "color_star",
+        "default": "#b8860b",
+        "label": "Star rating color"
+      },
+      {
+        "type": "color",
+        "id": "color_disabled",
+        "default": "#888",
+        "label": "Disabled color"
+      },
+      {
+        "type": "color",
+        "id": "color_disabled_dark",
+        "default": "#aaa",
+        "label": "Disabled dark color"
       }
     ]
   },

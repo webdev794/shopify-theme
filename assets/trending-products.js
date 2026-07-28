@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
           this.textContent = 'Added ✓';
-          this.style.background = '#2ecc71';
+          // Use CSS variable for success color
+          this.style.background = 'var(--color-success, #2ecc71)';
           setTimeout(() => {
             this.textContent = 'Add to Cart';
             this.style.background = '';

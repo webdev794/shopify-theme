@@ -28,7 +28,7 @@
 }
 
 .gift-card__card--disabled {
-  background: linear-gradient(135deg, #888, #aaa);
+  background: linear-gradient(135deg, var(--color-disabled, #888), var(--color-disabled-dark, #aaa));
 }
 
 .gift-card__shop-name {
@@ -63,7 +63,7 @@
   justify-content: center;
   gap: 0.5rem;
   margin-top: 1.75rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--color-background, #fff) 10%, transparent);
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
 }
@@ -76,7 +76,7 @@
 
 .gift-card__copy-button {
   border: none;
-  background: rgba(255, 255, 255, 0.15);
+  background: color-mix(in srgb, var(--color-background, #fff) 15%, transparent);
   color: #fff;
   font-size: 0.75rem;
   padding: 0.35rem 0.6rem;
@@ -85,7 +85,7 @@
 }
 
 .gift-card__copy-button.is-copied {
-  background: rgba(255, 255, 255, 0.35);
+  background: color-mix(in srgb, var(--color-background, #fff) 35%, transparent);
 }
 
 .gift-card__redeem-button {

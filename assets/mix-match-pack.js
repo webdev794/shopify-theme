@@ -229,7 +229,8 @@ document.addEventListener('DOMContentLoaded', function() {
             completed++;
             if (completed === totalItems) {
               addPackBtn.textContent = 'Pack Added ✓';
-              addPackBtn.style.background = '#2ecc71';
+              // Use CSS variable for success color
+              addPackBtn.style.background = 'var(--color-success, #2ecc71)';
               
               // Reset all selections
               setTimeout(function() {

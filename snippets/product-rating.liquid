@@ -48,3 +48,31 @@
     {%- endif -%}
   </span>
 </div>
+
+{% stylesheet %}
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .product-rating__stars {
+    display: flex;
+    gap: 0.1rem;
+    flex-shrink: 0;
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .product-rating__count {
+    font-size: 0.85rem;
+    color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 60%, transparent);
+  }
+  /* Star colors use the theme's star color variable */
+  .star--filled {
+    color: var(--color-star, #b8860b);
+  }
+  .star--empty {
+    color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
+  }
+{% endstylesheet %}

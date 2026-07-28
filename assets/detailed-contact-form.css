@@ -3,7 +3,10 @@
    --color-background-secondary, --color-accent-background/foreground) instead
    of a hardcoded indigo/purple/pink scheme with no tie to merchant settings.
    The separate hardcoded dark-mode media query has been removed — it fought
-   the merchant's own light/dark theme settings rather than following them. */
+   the merchant's own light/dark theme settings rather than following them.
+   
+   v2.1 — Added status color variables for validation and form status messages.
+*/
 .detailed-contact-form {
   background-color: var(--section-bg, var(--color-background, #ffffff));
   color: var(--text-color, var(--color-foreground, #1a1a2e));
@@ -117,9 +120,9 @@
   color: var(--text-color, var(--color-foreground, #1a1a2e));
 }
 
-/* Required-field asterisk kept as a conventional fixed red */
+/* Required-field asterisk uses error color variable */
 .field__required {
-  color: #c62828;
+  color: var(--color-error, #c62828);
   margin-left: 0.2rem;
 }
 
@@ -155,16 +158,15 @@
   opacity: 1;
 }
 
-/* Validation states use conventional fixed red/green — status colors,
-   not brand colors */
+/* Validation states use status color variables */
 .field__input.error {
-  border-color: #c62828;
-  background: #fef2f2;
+  border-color: var(--color-error, #c62828);
+  background: var(--color-error-bg, #fef2f2);
 }
 
 .field__input.valid {
-  border-color: #2e7d32;
-  background: #f0fdf4;
+  border-color: var(--color-success, #2e7d32);
+  background: var(--color-success-bg, #f0fdf4);
 }
 
 .field__textarea {
@@ -359,7 +361,7 @@
   color: var(--color-accent-background, #1a1a2e);
 }
 
-/* Form Status Messages — conventional fixed status colors */
+/* Form Status Messages use status color variables */
 .form-status {
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
@@ -379,15 +381,15 @@
 }
 
 .form-status--success {
-  background: #d1fae5;
-  border: 1px solid #6ee7b7;
-  color: #065f46;
+  background: var(--color-success-bg, #d1fae5);
+  border: 1px solid var(--color-success, #2e7d32);
+  color: var(--color-success-text, #065f46);
 }
 
 .form-status--error {
-  background: #fee2e2;
-  border: 1px solid #fca5a5;
-  color: #991b1b;
+  background: var(--color-error-bg, #fee2e2);
+  border: 1px solid var(--color-error, #c62828);
+  color: var(--color-error-text, #991b1b);
 }
 
 .form-status ul {

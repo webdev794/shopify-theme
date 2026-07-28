@@ -103,7 +103,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  background: var(--vc-nav-bg, rgba(0,0,0,0.5));
+  background: color-mix(in srgb, var(--color-foreground, #1a1a1a) 50%, transparent);
   color: var(--vc-nav-color, #ffffff);
   border: none;
   border-radius: 50%;
