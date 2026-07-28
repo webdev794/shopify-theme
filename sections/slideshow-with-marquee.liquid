@@ -39,7 +39,12 @@
               -%}
               <img
                 src="{{ block.settings.image | image_url: width: 1600 }}"
-                srcset="{{ block.settings.image | image_url: width: 750 }} 750w, {{ block.settings.image | image_url: width: 1100 }} 1100w, {{ block.settings.image | image_url: width: 1600 }} 1600w, {{ block.settings.image | image_url: width: 2000 }} 2000w"
+                srcset="
+                  {{ block.settings.image | image_url: width: 750 }} 750w,
+                  {{ block.settings.image | image_url: width: 1100 }} 1100w,
+                  {{ block.settings.image | image_url: width: 1600 }} 1600w,
+                  {{ block.settings.image | image_url: width: 2000 }} 2000w
+                "
                 sizes="100vw"
                 alt="{{ slide_alt | escape }}"
                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
@@ -172,7 +177,7 @@
       "type": "text",
       "id": "marquee_text",
       "label": "t:sections.slideshow_with_marquee.settings.marquee_text.label",
-      "default": "Free Shipping • 30-Day Returns • Subscribe & Save 10% • Shop Now"
+      "default": "Free Shipping • 30-Day Returns • Subscribe and Save 10% • Shop Now"
     },
     {
       "type": "range",
@@ -277,7 +282,7 @@
         {
           "type": "slide",
           "settings": {
-            "heading": "Subscribe & Save",
+            "heading": "Subscribe and Save",
             "subheading": "Get 10% off your first order",
             "button_text": "Learn More"
           }

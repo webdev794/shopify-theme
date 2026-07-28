@@ -54,7 +54,7 @@
         "autoplay_speed": 5000,
         "slide_height": 600,
         "show_marquee": true,
-        "marquee_text": "Free Shipping • 30-Day Returns • Subscribe & Save 10% • Shop Now",
+        "marquee_text": "Free Shipping • 30-Day Returns • Subscribe and Save 10% • Shop Now",
         "marquee_speed": 30,
         "marquee_bg": "#1a1a1a",
         "marquee_text_color": "#ffffff",
@@ -235,7 +235,7 @@
         "product_jajyDY",
         "product_GMCDGH"
       ],
-      "name": "Mix & Match Pack",
+      "name": "Mix and Match Pack",
       "settings": {
         "heading": "Build Your Own Pack",
         "subheading": "Mix and match your favorite items",

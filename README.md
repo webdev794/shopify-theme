@@ -1194,3 +1194,109 @@ json
     "newsletter_phQKPk"
   ]
 }
+
+----------
+When you supply a default value for resource-based settings such as product, the referenced resource must exist.
+✅ You're Correct
+Your default product values ("cowboy-hat", "plaid-shirt", etc.) in index.json and product.json are test data — they exist in your current test store but may not exist in a fresh Shopify store.
+
+Best practice: Use generic default handles that are guaranteed to exist in any Shopify store (even with no products), or don't set defaults at all.
+
+Standard Shopify Default Product Handles
+Shopify creates these products automatically when a store is created:
+
+Handle	Product Name
+gift-card-product	Gift Card (created by default on all stores)
+sample-product	Not guaranteed
+The only truly safe default across all stores is gift-card-product.
+
+Updated Files
+1. index.json - Update Product Defaults
+Replace test product handles with gift-card-product:
+
+json
+{
+  "product_V7nRVz": {
+    "type": "product",
+    "settings": {
+      "product": "gift-card-product"
+    }
+  },
+  "product_KNzkU8": {
+    "type": "product",
+    "settings": {
+      "product": "gift-card-product"
+    }
+  },
+  "product_RYKm6r": {
+    "type": "product",
+    "settings": {
+      "product": "gift-card-product"
+    }
+  },
+  "product_jpKEDz": {
+    "type": "product",
+    "settings": {
+      "product": "gift-card-product"
+    }
+  }
+}
+Or simply: Remove the product setting entirely from the preset — the merchant will see a placeholder with a "Select product" prompt, which is acceptable.
+
+2. product.json - Update Complementary Products Default
+json
+"complementary_products_KMrx6K": {
+  "type": "complementary_products",
+  "settings": {
+    "enable_complementary_products": true,
+    "complementary_heading": "Pairs well with:",
+    "complementary_products_count": 3
+  }
+}
+No product default here — complementary products are algorithmically generated based on the current product.
+
+3. index.json - Update Mix & Match Pack Defaults
+Replace with gift-card-product:
+
+json
+"product_CnPgeg": {
+  "type": "product",
+  "settings": {
+    "product": "gift-card-product"
+  }
+}
+4. settings_data.json - Update Presets
+json
+"presets": {
+  "Default": {
+    "type_primary_font": "work_sans_n4",
+    "max_page_width": "90rem",
+    "min_page_margin": 20,
+    "background_color": "#FFFFFF",
+    "foreground_color": "#333333",
+    "background_color_secondary": "#F5F5F5",
+    "foreground_color_secondary": "#1A1A1A",
+    "accent_background": "#121212",
+    "accent_foreground": "#FFFFFF",
+    "input_corner_radius": 4,
+    "color_sale": "#c62828",
+    "color_sold_out": "#767676",
+    "color_success": "#2e7d32",
+    "color_success_bg": "#e6f4ea",
+    "color_success_text": "#1e4620",
+    "color_error": "#c62828",
+    "color_error_bg": "#fee2e2",
+    "color_error_text": "#991b1b",
+    "color_star": "#b8860b",
+    "color_disabled": "#888",
+    "color_disabled_dark": "#aaa"
+  }
+}
+No product defaults in presets — these are just color settings.
+
+Summary
+File	Issue	Fix
+index.json	Test product handles (cowboy-hat, plaid-shirt)	Replace with gift-card-product or remove
+product.json	No product defaults needed	✅ Already correct
+settings_data.json	No product defaults	✅ Already correct
+Recommendation: The safest approach is to not set product defaults in presets. When a merchant adds the section, they see a placeholder prompting them to select a product. This avoids broken references entirely.
