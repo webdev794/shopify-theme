@@ -202,8 +202,8 @@
 }
 
 .field__checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   cursor: pointer;
   accent-color: var(--color-accent-background, #1a1a2e);
   flex-shrink: 0;

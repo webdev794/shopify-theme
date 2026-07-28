@@ -161,10 +161,24 @@ body {
   font-size: 1.25rem;
 }
 
-.rte h4,
-.rte h5,
-.rte h6 {
+.rte h4 {
   font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.rte h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.rte h6 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-foreground-secondary, #555);
 }
 
 .rte p {
