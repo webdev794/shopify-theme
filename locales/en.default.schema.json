@@ -263,7 +263,7 @@
       }
     },
     "burst_effects": {
-      "name": "Burst effects",
+      "name": "Image banner",
       "settings": {
         "header__1": { "content": "Content" },
         "image": {
@@ -296,7 +296,7 @@
         "animation_delay": { "label": "Animation delay" }
       },
       "presets": {
-        "name": "Burst effects"
+        "name": "Image banner"
       }
     },
     "cart": {
