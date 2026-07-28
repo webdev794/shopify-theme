@@ -238,9 +238,21 @@
       "products": "Products",
       "items": "Items",
       "rating": "Rating",
-      "quantity": { "label": "Quantity", "increase": "Increase quantity", "decrease": "Decrease quantity" },
-      "price": { "sale_price": "Sale price", "regular_price": "Regular price", "total": "Total:", "tax_included": "Tax included.", "shipping_policy_html": "Shipping calculated at checkout." },
-      "media": { "load_image": "Load image {{ index }} in gallery view" },
+      "quantity": {
+        "label": "Quantity",
+        "increase": "Increase quantity",
+        "decrease": "Decrease quantity"
+      },
+      "price": {
+        "sale_price": "Sale price",
+        "regular_price": "Regular price",
+        "total": "Total:",
+        "tax_included": "Tax included.",
+        "shipping_policy_html": "Shipping calculated at checkout."
+      },
+      "media": {
+        "load_image": "Load image {{ index }} in gallery view"
+      },
       "unit_price_label": "Unit price",
       "purchase_option": "Purchase option",
       "one_time_purchase": "One-time purchase",
@@ -264,7 +276,26 @@
       "success": "Thanks for subscribing!"
     },
     "payment_methods": "Payment methods",
-    "close": "Close"
+    "close": "Close",
+    "primary": "Primary font",
+    "fonts": "Fonts"
+  },
+  "labels": {
+    "page_width": "Page width",
+    "page_margin": "Page margin",
+    "background": "Background",
+    "foreground": "Foreground",
+    "favicon": "Favicon",
+    "input_corner_radius": "Input corner radius"
+  },
+  "options": {
+    "page_width": {
+      "narrow": "Narrow",
+      "wide": "Wide"
+    }
+  },
+  "info": {
+    "favicon": "Upload a square PNG or ICO file to replace the browser tab icon. Recommended size: 32x32 or 96x96 pixels."
   },
   "contact": {
     "form": {
