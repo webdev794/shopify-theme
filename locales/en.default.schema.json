@@ -536,7 +536,7 @@
       }
     },
     "highlight_text_with_images": {
-      "name": "Highlight text + images",
+      "name": "Highlight text and images",
       "settings": {
         "caption": { "label": "Caption" },
         "text_size": {
@@ -612,7 +612,7 @@
         }
       },
       "presets": {
-        "name": "Highlight text + images"
+        "name": "Highlight text and images"
       }
     },
     "image_comparison": {
@@ -1121,7 +1121,8 @@
         "overlay_color": { "label": "Slide overlay color" },
         "text_color": { "label": "Slide text color" },
         "header__4": { "content": "Accessibility" },
-        "aria_label": { "label": "Screen reader label" }
+        "aria_label": { "label": "Screen reader label" },
+        "stop_on_hover": { "label": "Pause autoplay on hover" }
       },
       "blocks": {
         "slide": {
