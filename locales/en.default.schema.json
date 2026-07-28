@@ -62,7 +62,7 @@
     "text": "Text"
   },
   "info": {
-    "favicon": "Will be scaled down to 32 x 32px. PNG format recommended."
+    "favicon": "Will be scaled down to 32 x 32px. .png format recommended."
   },
   "options": {
     "alignment": {
@@ -208,7 +208,7 @@
         "show_note": { "label": "Show note" },
         "note_text": { "label": "Note text" },
         "success_message": { "label": "Success message" },
-        "header__5": { "content": "Social links" },
+        "header__5": { "content": "Social media links" },
         "show_social": {
           "label": "Show social icons",
           "info": "Set your social media URLs in Theme settings → Social media."
@@ -504,7 +504,7 @@
         "show_newsletter": { "label": "Show newsletter signup" },
         "newsletter_heading": { "label": "Newsletter heading" },
         "newsletter_text": { "label": "Newsletter text" },
-        "header__3": { "content": "Social" },
+        "header__3": { "content": "Social media" },
         "show_social": {
           "label": "Show social icons",
           "info": "Set your social media URLs in Theme settings → Social media."
@@ -518,7 +518,7 @@
       },
       "blocks": {
         "link_list": {
-          "name": "Menu column",
+          "name": "Footer menu",
           "settings": {
             "heading": {
               "label": "Heading",
@@ -846,7 +846,7 @@
           "label": "Mobile layout",
           "options__1": { "label": "One column" },
           "options__2": { "label": "Two columns" },
-          "options__3": { "label": "Swipeable slider" },
+          "options__3": { "label": "Swipeable slideshow" },
           "info": "Column and row spans only apply on desktop"
         },
         "header__2": { "content": "Captions" },
@@ -856,7 +856,7 @@
           "options__2": { "label": "Below the media" }
         },
         "show_caption_on_hover": {
-          "label": "Reveal overlay captions on hover",
+          "label": "Show overlay captions on hover",
           "info": "Desktop only. Captions stay visible on touch screens and for keyboard focus."
         },
         "color_overlay_text": { "label": "Overlay caption text color" },
@@ -996,7 +996,7 @@
               "info": "400 x 400px recommended (square image)"
             },
             "tag": { "label": "Tag" },
-            "title": { "label": "Title" },
+            "title": { "label": "Heading" },
             "text": { "label": "Description" },
             "button_text": { "label": "Button text" },
             "button_link": { "label": "Button link" }
@@ -1180,7 +1180,7 @@
               "options__7": { "label": "Clock" },
               "options__8": { "label": "Gift" }
             },
-            "title": { "label": "Title" },
+            "title": { "label": "Heading" },
             "text": { "label": "Text" },
             "button_text": { "label": "Button text" },
             "button_link": { "label": "Button link" }
@@ -1255,7 +1255,7 @@
               "options__13": { "label": "Chat" },
               "options__14": { "label": "Phone" }
             },
-            "title": { "label": "Title" },
+            "title": { "label": "Heading" },
             "text": { "label": "Text" },
             "button_text": { "label": "Button text" },
             "button_link": { "label": "Button link" }
@@ -1405,11 +1405,11 @@
         "logo_width": { "label": "Logo width" },
         "header__2": { "content": "Navigation" },
         "menu": {
-          "label": "Menu",
+          "label": "Main menu",
           "info": "Select the menu to display in the header"
         },
         "open_on_hover": {
-          "label": "Open menus on hover",
+          "label": "Open navigation on hover",
           "info": "On desktop, dropdowns and mega menus open on mouse hover. Click and keyboard still work."
         },
         "enable_sticky_header": { "label": "Enable sticky header" },
@@ -1423,7 +1423,7 @@
           "info": "Enable mega menu layout for selected parent menu items"
         },
         "mega_menu_parents": {
-          "label": "Menu items with a mega menu",
+          "label": "Main menu items with a mega menu",
           "info": "Enter the exact titles of your top-level menu items that should show a mega menu, separated by commas — e.g. Catalog, About us. Titles are matched exactly as they appear in your menu."
         },
         "mega_show_images": {
