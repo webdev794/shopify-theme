@@ -735,7 +735,7 @@
           "label": "Map style",
           "options__1": { "label": "Interactive map" },
           "options__2": { "label": "Image" },
-          "info": "The interactive map is embedded from Google Maps and needs no API key. Use an image for full visual control or to avoid third-party embeds."
+          "info": "The interactive map embeds directly from Google Maps and needs no API key. Use an image for full visual control or to avoid third-party embeds."
         },
         "zoom": {
           "label": "Map zoom",
@@ -743,7 +743,7 @@
         },
         "image": {
           "label": "Image",
-          "info": "Shown when map style is set to image, or as a fallback when no address is entered. 3000 x 1500px recommended."
+          "info": "Shows when you set map style to image, or as a fallback if you don't enter an address. 3000 x 1500px recommended."
         },
         "desaturate": {
           "label": "Desaturate map",
@@ -873,7 +873,7 @@
             },
             "video": {
               "label": "Video",
-              "info": "Optional. Replaces the image. Plays muted on a loop and can be paused by visitors."
+              "info": "Optional. Replaces the image. Plays muted on a loop; visitors can pause it."
             },
             "caption_heading": { "label": "Caption heading" },
             "caption_text": { "label": "Caption text" },
@@ -1479,7 +1479,7 @@
         },
         "video": {
           "label": "Background video",
-          "info": "Optional. Replaces the image. Plays muted on a loop and can be paused by visitors."
+          "info": "Optional. Replaces the image. Plays muted on a loop; visitors can pause it."
         },
         "header__2": { "content": "Layout" },
         "height": {
@@ -1618,7 +1618,7 @@
         "color_foreground": { "label": "Text color" },
         "color_overlay": {
           "label": "Overlay color",
-          "info": "Overlay opacity is set per slide"
+          "info": "Set overlay opacity per slide"
         }
       },
       "blocks": {
