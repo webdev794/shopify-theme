@@ -200,7 +200,7 @@
         },
         "background_image": {
           "label": "Background image (for background style)",
-          "info": "Recommended: 1920x600px"
+          "info": "1920 x 600px recommended"
         },
         "background_color": { "label": "Background color" },
         "section_text_color": { "label": "Text color" },
@@ -623,11 +623,11 @@
         "header__1": { "content": "Images" },
         "before_image": {
           "label": "Before image",
-          "info": "Recommended: 1200x800px"
+          "info": "1200 x 800px recommended"
         },
         "after_image": {
           "label": "After image",
-          "info": "Recommended: 1200x800px"
+          "info": "1200 x 800px recommended"
         },
         "header__2": { "content": "Labels" },
         "show_labels": { "label": "Show labels on images" },
@@ -993,7 +993,7 @@
           "settings": {
             "image": {
               "label": "Image",
-              "info": "Recommended: Square images (400x400px)"
+              "info": "400 x 400px recommended (square image)"
             },
             "tag": { "label": "Tag" },
             "title": { "label": "Title" },
@@ -1079,7 +1079,7 @@
         "subheading": { "label": "Subheading" },
         "image": {
           "label": "Kit image",
-          "info": "Recommended: 800x800px square image"
+          "info": "800 x 800px recommended (square image)"
         },
         "kit_title": { "label": "Kit title" },
         "kit_description": { "label": "Kit description" },
@@ -1129,7 +1129,7 @@
           "settings": {
             "image": {
               "label": "Image",
-              "info": "Recommended: 2000x800px"
+              "info": "2000 x 800px recommended"
             },
             "heading": { "label": "Heading" },
             "subheading": { "label": "Subheading" },
@@ -1706,7 +1706,7 @@
         },
         "image": {
           "label": "Image",
-          "info": "Recommended: 2000x800px"
+          "info": "2000 x 800px recommended"
         },
         "video_url": {
           "label": "Video URL",
