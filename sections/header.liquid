@@ -180,11 +180,19 @@
       <nav class="header__nav" aria-label="{{ 'sections.header.nav_label' | t }}">
         <ul class="header__menu list-unstyled">
           {%- for link in menu.links -%}
-            {%- assign show_mega = false -%}
-            {%- if enable_mega_menu and mega_menu_parents contains link.handle -%}
-              {%- assign show_mega = true -%}
-            {%- endif -%}
-            
+            {%- liquid
+              assign show_mega = false
+              assign link_title_clean = link.title | strip | downcase
+              if enable_mega_menu
+                for parent_title in mega_menu_parents
+                  assign parent_title_clean = parent_title | strip | downcase
+                  if link_title_clean == parent_title_clean
+                    assign show_mega = true
+                  endif
+                endfor
+              endif
+            -%}
+
             <li class="header__menu-item{% if link.links != blank and show_mega %} header__menu-item--mega{% endif %}">
               {%- if link.links != blank -%}
                 <details class="header__dropdown{% if show_mega %} header__dropdown--mega{% endif %}" data-header-dropdown>
@@ -504,8 +512,8 @@
       "id": "mega_menu_parents",
       "label": "t:sections.header.settings.mega_menu_parents.label",
       "info": "t:sections.header.settings.mega_menu_parents.info",
-      "default": "catalog",
-      "placeholder": "e.g., catalog, about-us"
+      "default": "Catalog",
+      "placeholder": "e.g., Catalog, About us"
     },
     {
       "type": "checkbox",

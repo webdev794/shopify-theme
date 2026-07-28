@@ -1423,8 +1423,8 @@
           "info": "Enable mega menu layout for selected parent menu items"
         },
         "mega_menu_parents": {
-          "label": "Mega menu parent handles",
-          "info": "Enter menu item handles separated by commas. Available handles: catalog, about-us, home (check your Navigation > Main Menu for all handles)"
+          "label": "Menu items with a mega menu",
+          "info": "Enter the exact titles of your top-level menu items that should show a mega menu, separated by commas — e.g. Catalog, About us. Titles are matched exactly as they appear in your menu."
         },
         "mega_show_images": {
           "label": "Show collection images",
@@ -1541,7 +1541,7 @@
             },
             "heading_tag": {
               "label": "Heading tag",
-              "info": "Use H1 only when this is the first section on the page and the page has no other H1."
+              "info": "Choose \"Main heading\" only if this is the first section on the page and nothing else on the page is already set as the main heading."
             }
           }
         },
@@ -1632,11 +1632,11 @@
             },
             "schedule_start": {
               "label": "Start date",
-              "info": "Format: YYYY-MM-DD. Leave blank for no start date."
+              "info": "The date this slide should start showing. Leave blank to show it right away."
             },
             "schedule_end": {
               "label": "End date",
-              "info": "Format: YYYY-MM-DD. Leave blank for no end date."
+              "info": "The date this slide should stop showing. Leave blank to show it indefinitely."
             },
             "header__2": { "content": "Image" },
             "image": {

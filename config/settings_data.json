@@ -15,12 +15,12 @@
     "background_color": "#FFFFFF",
     "foreground_color": "#333333",
     "input_corner_radius": 4,
-    "social_instagram_link": "instagram.com/#",
-    "social_facebook_link": "https://facebook.co",
-    "social_twitter_link": "x.com",
-    "social_tiktok_link": "tiktok.com",
-    "social_youtube_link": "youtube.com/#",
-    "social_linkedin_link": "linkedin.com",
+    "social_instagram_link": "https://www.instagram.com/caresortsolutions/",
+    "social_facebook_link": "https://www.facebook.com/caresortwebsolution/",
+    "social_twitter_link": "https://x.com/Caresortweb",
+    "social_tiktok_link": "",
+    "social_youtube_link": "https://www.youtube.com/@caresortwebsolution2610",
+    "social_linkedin_link": "https://www.linkedin.com/in/caresortweb/",
     "content_for_index": []
   },
   "presets": {
