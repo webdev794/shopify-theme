@@ -256,28 +256,28 @@
         "text_item_mn8Jnc": {
           "type": "text_item",
           "settings": {
-            "text": "Free shipping on orders over $50",
+            "text": "Free shipping available",
             "icon": "truck"
           }
         },
         "text_item_AykxxL": {
           "type": "text_item",
           "settings": {
-            "text": "30-day money-back guarantee",
+            "text": "Easy returns",
             "icon": "shield"
           }
         },
         "text_item_VTycPV": {
           "type": "text_item",
           "settings": {
-            "text": "Subscribe and save 10%",
+            "text": "Exclusive offers for subscribers",
             "icon": "star"
           }
         },
         "text_item_XAbkdf": {
           "type": "text_item",
           "settings": {
-            "text": "Customer support available 24/7",
+            "text": "Here to help",
             "icon": "chat"
           }
         }

@@ -271,11 +271,6 @@ Featured collection
 18 image on collection page and products in collections. 
 19 Improve lighthouse score with sections present. (after all improvements done.)
 20 Update README.md with your own branding + usage instructions.
-21 Consider adding a clear commercial license in LICENSE.md.
-22 Remove/replace/ all images with watermark of website name, product images 1:1.
-23 product category, to search relevant products, like hat? (check shopify requirements)
-24 Collection top image, ratio, check later. 
-25 Add one product to each 20+ collections. 
 26 Work on it at end: 
 Default setting values for section and block content should indicate how to use the setting. Don't use Lorem Ipsum text or demo store content as a placeholder. 
 (Leave demo store different from theme to submit.)
@@ -1300,3 +1295,63 @@ index.json	Test product handles (cowboy-hat, plaid-shirt)	Replace with gift-card
 product.json	No product defaults needed	✅ Already correct
 settings_data.json	No product defaults	✅ Already correct
 Recommendation: The safest approach is to not set product defaults in presets. When a merchant adds the section, they see a placeholder prompting them to select a product. This avoids broken references entirely.
+--
+Caresort Technologies have actual documentation/support pages set up for Suvara yet? If yes, send me the URLs and I'll update the file. If not, this is something to set up before submission — Shopify's review process does check that these links actually work and lead somewhere theme-specific.
+--
+Is suvara-beauty.myshopify.com currently published/live (not just a password-protected dev preview only you can see)?
+Does it have enough real products/collections populated to look like a genuine store, not a half-finished demo?
+-
+Remove Jeans, Men's Shirts, Men's Shorts, Men's Outerwear, Activewear, Formal Wear, Graphic Tees, Sweaters, Swimwear, T-Shirts, Skirts, Women's Blouses, Shoes, Sandals, Ribbon, the Men/Woman gender-based collections. No
+-
+New collection (Keep 15 based on avail, minimum 2 products/collection https://www.shopify.com/stock-photos/photos/search?q=Skincare&button=): 
+Skincare
+
+Skincare
+Cleansers
+Moisturizers
+Serums & Treatments
+Sunscreen
+Face Masks
+Eye Care
+Anti-Aging
+
+Makeup
+
+Makeup
+Face (Foundation & Concealer)
+Lips
+Eyes
+Cheeks (Blush & Highlighter)
+Makeup Sets
+
+Hair
+
+Haircare
+Shampoo & Conditioner
+Hair Treatments
+Styling Products
+Hair Tools
+
+Body & Bath
+
+Bath & Body
+Body Lotion
+Body Wash & Scrubs
+Hand & Foot Care
+
+Fragrance
+
+Fragrance
+Perfume
+Body Mist
+
+Extras
+
+Nail Care
+Tools & Accessories (brushes, sponges, mirrors)
+Men's Grooming
+Gift Sets
+Clean & Natural Beauty
+Best Sellers
+New Arrivals
+-
