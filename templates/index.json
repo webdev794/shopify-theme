@@ -69,25 +69,25 @@
         "product_V7nRVz": {
           "type": "product",
           "settings": {
-            "product": "cowboy-hat"
+            "product": ""
           }
         },
         "product_KNzkU8": {
           "type": "product",
           "settings": {
-            "product": "plaid-shirt"
+            "product": ""
           }
         },
         "product_RYKm6r": {
           "type": "product",
           "settings": {
-            "product": "blue-jeans"
+            "product": ""
           }
         },
         "product_jpKEDz": {
           "type": "product",
           "settings": {
-            "product": "leather-shoes"
+            "product": ""
           }
         }
       },
@@ -157,7 +157,7 @@
         "image_EnXP7D",
         "text_F4DFGH"
       ],
-      "name": "Highlight text + images",
+      "name": "Highlight text and images",
       "settings": {
         "caption": "Our story",
         "text_size": "large",
@@ -179,49 +179,49 @@
         "product_CnPgeg": {
           "type": "product",
           "settings": {
-            "product": "yellow-hat"
+            "product": ""
           }
         },
         "product_c76iPJ": {
           "type": "product",
           "settings": {
-            "product": "white-t-shirt"
+            "product": ""
           }
         },
         "product_3X4iLM": {
           "type": "product",
           "settings": {
-            "product": "black-jeans"
+            "product": ""
           }
         },
         "product_FmTMzn": {
           "type": "product",
           "settings": {
-            "product": "mesh-sneaker-shoes"
+            "product": ""
           }
         },
         "product_pLwcJQ": {
           "type": "product",
           "settings": {
-            "product": "cowboy-hat"
+            "product": ""
           }
         },
         "product_QWBjdi": {
           "type": "product",
           "settings": {
-            "product": "blue-t-shirt"
+            "product": ""
           }
         },
         "product_jajyDY": {
           "type": "product",
           "settings": {
-            "product": "black-jeans"
+            "product": ""
           }
         },
         "product_GMCDGH": {
           "type": "product",
           "settings": {
-            "product": "formal-leader-shoes"
+            "product": ""
           }
         }
       },
@@ -308,25 +308,25 @@
         "product_fC6EgV": {
           "type": "product",
           "settings": {
-            "product": "black-jeans"
+            "product": ""
           }
         },
         "product_YAyiAe": {
           "type": "product",
           "settings": {
-            "product": "tshirt-navy"
+            "product": ""
           }
         },
         "product_bXmh4V": {
           "type": "product",
           "settings": {
-            "product": "formal-leader-shoes"
+            "product": ""
           }
         },
         "product_Jh4LYF": {
           "type": "product",
           "settings": {
-            "product": "gift-card-product"
+            "product": ""
           }
         }
       },
@@ -440,7 +440,7 @@
         "hotspot_mJ8zd9": {
           "type": "hotspot",
           "settings": {
-            "product": "navy-blue-jeans",
+            "product": "",
             "position_x": 36,
             "position_y": 64
           }
@@ -448,7 +448,7 @@
         "hotspot_4ycDmf": {
           "type": "hotspot",
           "settings": {
-            "product": "white-t-shirt",
+            "product": "",
             "position_x": 38,
             "position_y": 45
           }
