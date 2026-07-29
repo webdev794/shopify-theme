@@ -9,14 +9,23 @@
   means this file should be sections/main-collection-product-grid.liquid).
 {% endcomment %}
 
-{% assign title_font_italic = section.settings.card_title_font %}
+{% assign title_font_base = section.settings.card_title_font %}
+{% assign title_font_italic = title_font_base | font_modify: 'weight', '500' | font_modify: 'style', 'italic' %}
 {% assign label_font = section.settings.card_label_font %}
 {% assign label_font_bold = label_font | font_modify: 'weight', '600' %}
 
 <div class="collection" id="collection-{{ section.id }}">
   {% style %}
+    {{ title_font_base | font_face: font_display: 'swap' }}
+    {{ title_font_base | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+    {{ title_font_base | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+    {{ title_font_base | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
     {{ title_font_italic | font_face: font_display: 'swap' }}
+
     {{ label_font | font_face: font_display: 'swap' }}
+    {{ label_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+    {{ label_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+    {{ label_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
     {{ label_font_bold | font_face: font_display: 'swap' }}
 
     #collection-{{ section.id }} {
