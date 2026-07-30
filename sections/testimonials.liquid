@@ -3,7 +3,8 @@
   Version: 1.0
 {% endcomment %}
 
-{{ 'testimonials.css' | asset_url | stylesheet_tag }}
+<link rel="preload" href="{{ 'testimonials.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>{{ 'testimonials.css' | asset_url | stylesheet_tag }}</noscript>
 
 <div class="testimonials" data-section-id="{{ section.id }}" data-section-type="testimonials">
   <div class="page-width">

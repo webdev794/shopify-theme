@@ -4,7 +4,8 @@
   Description: A section that allows customers to build their own custom pack/bundle by selecting products
 {% endcomment %}
 
-{{ 'mix-match-pack.css' | asset_url | stylesheet_tag }}
+<link rel="preload" href="{{ 'mix-match-pack.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>{{ 'mix-match-pack.css' | asset_url | stylesheet_tag }}</noscript>
 
 <div class="mix-match-pack" 
      data-section-id="{{ section.id }}" 

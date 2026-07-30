@@ -19,7 +19,8 @@
   endif
 -%}
 
-{{ 'highlight-text-with-images.css' | asset_url | stylesheet_tag }}
+<link rel="preload" href="{{ 'highlight-text-with-images.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>{{ 'highlight-text-with-images.css' | asset_url | stylesheet_tag }}</noscript>
 {%- if section.settings.enable_animation -%}
   <script src="{{ 'highlight-text-with-images.js' | asset_url }}" defer></script>
 {%- endif -%}
@@ -69,10 +70,10 @@
                   -%}
                   {{
                     block.settings.image
-                    | image_url: width: 400
+                    | image_url: width: 320
                     | image_tag:
                       class: 'hlt__image',
-                      widths: '200, 400',
+                      widths: '160, 320',
                       sizes: '160px',
                       loading: loading,
                       alt: image_alt,

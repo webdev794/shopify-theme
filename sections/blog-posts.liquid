@@ -1,4 +1,5 @@
-{{ 'section-blog-posts.css' | asset_url | stylesheet_tag }}
+<link rel="preload" href="{{ 'section-blog-posts.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>{{ 'section-blog-posts.css' | asset_url | stylesheet_tag }}</noscript>
 
 <script src="{{ 'blog-posts.js' | asset_url }}" defer></script>
 

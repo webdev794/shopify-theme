@@ -4,7 +4,8 @@
   Design: Clean, accessible, responsive
 {% endcomment %}
 
-{{ 'text-with-icons.css' | asset_url | stylesheet_tag }}
+<link rel="preload" href="{{ 'text-with-icons.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>{{ 'text-with-icons.css' | asset_url | stylesheet_tag }}</noscript>
 
 <div class="text-with-icons" data-section-id="{{ section.id }}" data-section-type="text-with-icons">
   <div class="page-width">
