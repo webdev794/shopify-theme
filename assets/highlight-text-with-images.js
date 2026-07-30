@@ -29,7 +29,8 @@
   };
 
   const initAll = (root) => {
-    (root || document).querySelectorAll('[data-hlt]').forEach(initSection);
+    const scope = root && typeof root.querySelectorAll === 'function' ? root : document;
+    scope.querySelectorAll('[data-hlt]').forEach(initSection);
   };
 
   initAll();

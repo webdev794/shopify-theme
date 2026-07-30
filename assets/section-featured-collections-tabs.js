@@ -49,9 +49,8 @@
   }
 
   function initAll(root) {
-    (root || document)
-      .querySelectorAll('.featured-collections-tabs')
-      .forEach(initTabs);
+    var scope = root && typeof root.querySelectorAll === 'function' ? root : document;
+    scope.querySelectorAll('.featured-collections-tabs').forEach(initTabs);
   }
 
   if (document.readyState === 'loading') {

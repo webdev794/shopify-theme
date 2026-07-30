@@ -274,7 +274,8 @@
   };
 
   const initAll = (root) => {
-    (root || document).querySelectorAll('[data-lookbook]').forEach(initSection);
+    const scope = root && typeof root.querySelectorAll === 'function' ? root : document;
+    scope.querySelectorAll('[data-lookbook]').forEach(initSection);
   };
 
   initAll();

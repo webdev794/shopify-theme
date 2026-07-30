@@ -181,24 +181,21 @@
       setActive('1');
     }
 
-    // Hide the fixed rail as soon as any part of the footer becomes
-    // visible. Footer renders after this section in the DOM, so wait
-    // until the full page has loaded before looking for it.
+    // Hide the fixed rail whenever the collections-story section itself
+    // isn't in view — whether the visitor has scrolled up to a section
+    // above it, down past it to another section, or reached the footer.
     var rail = root.querySelector('.collections-story__rail');
-    window.addEventListener('load', function () {
-      var footer = document.querySelector('.shopify-section-group-footer-group');
-      if (!rail || !footer) return;
-
+    if (rail) {
       var railVisibility = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
-            rail.classList.toggle('is-hidden', entry.isIntersecting);
+            rail.classList.toggle('is-hidden', !entry.isIntersecting);
           });
         },
-        { threshold: 0 }
+        { threshold: 0.15 }
       );
-      railVisibility.observe(footer);
-    });
+      railVisibility.observe(root);
+    }
   })();
 </script>
 

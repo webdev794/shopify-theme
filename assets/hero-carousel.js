@@ -139,7 +139,8 @@
   };
 
   const initAll = (root) => {
-    (root || document).querySelectorAll('[data-hero-carousel]').forEach(initCarousel);
+    const scope = root && typeof root.querySelectorAll === 'function' ? root : document;
+    scope.querySelectorAll('[data-hero-carousel]').forEach(initCarousel);
   };
 
   initAll();

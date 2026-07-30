@@ -206,7 +206,8 @@
   }
 
   function initAll(root) {
-    (root || document).querySelectorAll('[data-section-type="featured-products"]').forEach(initSection);
+    var scope = root && typeof root.querySelectorAll === 'function' ? root : document;
+    scope.querySelectorAll('[data-section-type="featured-products"]').forEach(initSection);
   }
 
   if (document.readyState === 'loading') {
