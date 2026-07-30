@@ -1,1 +1,21 @@
 extends: theme-check:recommended
+
+exclude:
+  - node_modules/**
+  - dist/**
+
+checks:
+  UnusedAssign:
+    enabled: true
+
+  UndefinedObject:
+    enabled: true
+
+  SchemaJsonFormat:
+    enabled: true
+
+  MissingAsset:
+    enabled: true
+
+  ParserBlockingJavaScript:
+    enabled: true
