@@ -30,6 +30,8 @@
           {%- assign focal_style = 'object-position: ' | append: image.presentation.focal_point | append: ';' -%}
         {%- endif -%}
 
+        {%- assign img_style = 'aspect-ratio: ' | append: img_width | append: ' / ' | append: img_height | append: '; object-fit: cover; width: 100%; height: auto; ' | append: focal_style -%}
+
         {{
           image
           | image_url: width: 1000
@@ -41,7 +43,7 @@
             alt: image.alt | default: product.title,
             width: img_width,
             height: img_height,
-            style: 'aspect-ratio: ' | append: img_width | append: ' / ' | append: img_height | append: '; object-fit: cover; width: 100%; height: auto; ' | append: focal_style
+            style: img_style
         }}
       {%- else -%}
         <div class="card__placeholder">

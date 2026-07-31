@@ -53,8 +53,9 @@
 
 .image-comparison__after {
   z-index: 2;
-  width: 50%;
   overflow: hidden;
+  clip-path: inset(0 0 0 50%);
+  -webkit-clip-path: inset(0 0 0 50%);
 }
 
 .image-comparison__image {

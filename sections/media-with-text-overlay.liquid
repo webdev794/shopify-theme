@@ -15,6 +15,8 @@
        --mwto-height: {{ section.settings.section_height }}px;
        --mwto-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
        --mwto-overlay-color: {{ section.settings.overlay_color }};
+       --mwto-preheading-color: {{ section.settings.preheading_color | default: '#ffffff' }};
+       --mwto-heading-color: {{ section.settings.heading_color | default: '#ffffff' }};
        --mwto-text-color: {{ section.settings.text_color }};
        --mwto-content-width: {{ section.settings.content_width }}%;
        --mwto-content-position: {{ section.settings.content_position }};
@@ -73,8 +75,10 @@
       {%- endif -%}
     {%- endif -%}
 
+    <div class="media-with-text-overlay__overlay"></div>
+
     <div class="media-with-text-overlay__content">
-      <div class="media-with-text-overlay__content-inner page-width">
+      <div class="media-with-text-overlay__content-inner page-width text-{{ section.settings.content_alignment | default: 'center' }}">
         {%- if section.settings.preheading != blank -%}
           <p class="media-with-text-overlay__preheading">{{ section.settings.preheading | escape }}</p>
         {%- endif -%}
@@ -216,6 +220,18 @@
       "step": 5,
       "default": 40,
       "unit": "%"
+    },
+    {
+      "type": "color",
+      "id": "preheading_color",
+      "label": "Preheading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
     },
     {
       "type": "color",

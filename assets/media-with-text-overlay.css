@@ -148,6 +148,7 @@
   letter-spacing: 2px;
   margin: 0;
   opacity: 0.8;
+  color: var(--mwto-preheading-color, #ffffff);
 }
 
 .media-with-text-overlay__heading {
@@ -156,6 +157,7 @@
   margin: 0;
   line-height: 1.1;
   letter-spacing: 0.5px;
+  color: var(--mwto-heading-color, #ffffff);
 }
 
 .media-with-text-overlay__text {
@@ -164,6 +166,11 @@
   margin: 0;
   opacity: 0.9;
   max-width: 600px;
+  color: var(--mwto-text-color, #ffffff);
+}
+
+.media-with-text-overlay__text.rte {
+  color: var(--mwto-text-color, #ffffff);
 }
 
 .media-with-text-overlay__text p {
@@ -174,7 +181,7 @@
   display: inline-block;
   padding: 14px 40px;
   background: var(--mwto-button-bg, #ffffff);
-  color: var(--mwto-button-text, #1a1a1a);
+  color: var(--mwto-button-text-color, #1a1a1a);
   border-radius: 6px;
   font-weight: 600;
   font-size: 16px;

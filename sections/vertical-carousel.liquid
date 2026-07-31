@@ -16,6 +16,10 @@
        --vc-height: {{ section.settings.height }}px;
        --vc-bg: {{ section.settings.background_color }};
        --vc-text-color: {{ section.settings.text_color }};
+       --vc-title-color: {{ section.settings.title_color | default: section.settings.text_color }};
+       --vc-icon-color: {{ section.settings.icon_color | default: section.settings.text_color }};
+       --vc-button-bg: {{ section.settings.button_background_color }};
+       --vc-button-text: {{ section.settings.button_text_color }};
        --vc-nav-color: {{ section.settings.nav_color }};
        --vc-nav-bg: {{ section.settings.nav_background }};
        --vc-indicator-color: {{ section.settings.indicator_color }};
@@ -114,7 +118,11 @@
     { "type": "checkbox", "id": "show_indicators", "label": "t:sections.vertical_carousel.settings.show_indicators.label", "default": true },
     { "type": "header", "content": "t:sections.vertical_carousel.settings.header__2.content" },
     { "type": "color", "id": "background_color", "label": "t:sections.vertical_carousel.settings.background_color.label", "default": "#f5f5f5" },
-    { "type": "color", "id": "text_color", "label": "t:sections.vertical_carousel.settings.text_color.label", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Slide text color", "default": "#1a1a1a" },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#1a1a1a" },
+    { "type": "color", "id": "icon_color", "label": "Icon color", "default": "#1a1a1a" },
+    { "type": "color", "id": "button_background_color", "label": "Button background color", "default": "#1a1a1a" },
+    { "type": "color", "id": "button_text_color", "label": "Button text color", "default": "#f5f5f5" },
     { "type": "color", "id": "nav_color", "label": "t:sections.vertical_carousel.settings.nav_color.label", "default": "#ffffff" },
     { "type": "color", "id": "nav_background", "label": "t:sections.vertical_carousel.settings.nav_background.label", "default": "rgba(0, 0, 0, 0.5)" },
     { "type": "color", "id": "indicator_color", "label": "t:sections.vertical_carousel.settings.indicator_color.label", "default": "rgba(255, 255, 255, 0.5)" },

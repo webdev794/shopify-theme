@@ -8,12 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const track = section.querySelector('.scrolling-media-cards__track');
     const prevBtn = section.querySelector('.scrolling-media-cards__control--prev');
     const nextBtn = section.querySelector('.scrolling-media-cards__control--next');
-    const autoplay = section.dataset.autoplay === 'true';
-    const autoplaySpeed = parseInt(section.dataset.autoplaySpeed) || 4000;
     const pauseOnHover = section.dataset.pauseOnHover === 'true';
     
-    let autoplayTimer = null;
-    let isPaused = false;
     let currentScrollPosition = 0;
     let cardWidth = 280;
     let gap = 24;
@@ -95,65 +91,31 @@ document.addEventListener('DOMContentLoaded', function() {
       scrollToPosition(newPos);
     }
     
-    // Start autoplay
-    function startAutoplay() {
-      if (!autoplay || section.blocks.length <= 1) return;
-      stopAutoplay();
-      autoplayTimer = setInterval(function() {
-        if (!isPaused) {
-          scrollNext();
-        }
-      }, autoplaySpeed);
-    }
-    
-    // Stop autoplay
-    function stopAutoplay() {
-      if (autoplayTimer) {
-        clearInterval(autoplayTimer);
-        autoplayTimer = null;
-      }
-    }
-    
     // Event listeners
     if (prevBtn) {
       prevBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        stopAutoplay();
         scrollPrev();
-        if (autoplay) startAutoplay();
       });
     }
     
     if (nextBtn) {
       nextBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        stopAutoplay();
         scrollNext();
-        if (autoplay) startAutoplay();
       });
     }
     
     // Pause on hover
     if (pauseOnHover) {
       section.addEventListener('mouseenter', function() {
-        isPaused = true;
         section.classList.add('scrolling-media-cards--paused');
       });
       
       section.addEventListener('mouseleave', function() {
-        isPaused = false;
         section.classList.remove('scrolling-media-cards--paused');
       });
     }
-    
-    // Handle visibility change
-    document.addEventListener('visibilitychange', function() {
-      if (document.hidden) {
-        isPaused = true;
-      } else {
-        isPaused = false;
-      }
-    });
     
     // Initialize
     updateDimensions();
@@ -177,43 +139,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }, 250);
     });
-    
-    if (autoplay) startAutoplay();
-    
-    // Store instance for cleanup
-    section._smcInstance = {
-      stopAutoplay: stopAutoplay,
-      startAutoplay: startAutoplay
-    };
   });
-});
-
-// Shopify section events
-document.addEventListener('shopify:section:unload', function(e) {
-  const section = e.target;
-  if (section && section._smcInstance) {
-    section._smcInstance.stopAutoplay();
-  }
-});
-
-document.addEventListener('shopify:section:load', function(e) {
-  const section = e.target;
-  if (section && section._smcInstance) {
-    section._smcInstance.startAutoplay();
-  }
-});
-
-// Initialize on Shopify section load
-document.addEventListener('shopify:section:select', function(e) {
-  const section = e.target;
-  if (section && section._smcInstance) {
-    section._smcInstance.stopAutoplay();
-  }
-});
-
-document.addEventListener('shopify:section:deselect', function(e) {
-  const section = e.target;
-  if (section && section._smcInstance) {
-    section._smcInstance.startAutoplay();
-  }
 });

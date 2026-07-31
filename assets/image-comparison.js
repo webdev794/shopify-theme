@@ -15,7 +15,9 @@ function initImageComparisonSection(section) {
   // Set initial position
   function setPosition(percentage) {
     const clamped = Math.min(Math.max(percentage, 5), 95);
-    afterImage.style.width = clamped + '%';
+    const clip = 'inset(0 0 0 ' + clamped + '%)';
+    afterImage.style.clipPath = clip;
+    afterImage.style.webkitClipPath = clip;
     slider.style.left = clamped + '%';
   }
 
@@ -90,7 +92,7 @@ function initImageComparisonSection(section) {
     }
 
     if (step !== 0) {
-      const current = parseFloat(afterImage.style.width) || defaultPosition;
+      const current = parseFloat(slider.style.left) || defaultPosition;
       const newPosition = Math.min(Math.max(current + step, 5), 95);
       setPosition(newPosition);
       slider.setAttribute('aria-valuenow', newPosition);
@@ -112,7 +114,7 @@ function initImageComparisonSection(section) {
     resizeTimer = setTimeout(function() {
       containerWidth = container.offsetWidth;
       // Maintain position
-      const current = parseFloat(afterImage.style.width) || defaultPosition;
+      const current = parseFloat(slider.style.left) || defaultPosition;
       setPosition(current);
     }, 250);
   });

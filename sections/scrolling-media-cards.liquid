@@ -9,11 +9,10 @@
 <div class="scrolling-media-cards" 
      data-section-id="{{ section.id }}" 
      data-section-type="scrolling-media-cards"
-     data-autoplay="{{ section.settings.autoplay }}"
-     data-autoplay-speed="{{ section.settings.autoplay_speed }}"
      data-pause-on-hover="{{ section.settings.pause_on_hover }}"
      role="region"
-     aria-label="{{ section.settings.aria_label | escape }}">
+     aria-label="{{ section.settings.aria_label | escape }}"
+     style="--smc-duration: {{ section.settings.scroll_speed | default: 30 }}s;">
   
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
@@ -28,7 +27,7 @@
 
   <div class="scrolling-media-cards__wrapper">
     <div class="scrolling-media-cards__track">
-      {%- assign repeat_count = section.settings.repeat_count | default: 2 -%}
+      {%- assign repeat_count = 2 -%}
       {%- for i in (1..repeat_count) -%}
         {%- for block in section.blocks -%}
           <div class="scrolling-media-cards__card" {{ block.shopify_attributes }}>
@@ -125,36 +124,21 @@
     },
     { "type": "header", "content": "t:sections.scrolling_media_cards.settings.header__1.content" },
     {
-      "type": "checkbox",
-      "id": "autoplay",
-      "label": "t:sections.scrolling_media_cards.settings.autoplay.label",
-      "default": true
-    },
-    {
       "type": "range",
-      "id": "autoplay_speed",
-      "label": "t:sections.scrolling_media_cards.settings.autoplay_speed.label",
-      "min": 2000,
-      "max": 8000,
-      "step": 500,
-      "default": 4000,
-      "unit": "ms"
+      "id": "scroll_speed",
+      "label": "Auto-scroll speed",
+      "info": "Lower is faster",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s"
     },
     {
       "type": "checkbox",
       "id": "pause_on_hover",
       "label": "t:sections.scrolling_media_cards.settings.pause_on_hover.label",
       "default": true
-    },
-    {
-      "type": "range",
-      "id": "repeat_count",
-      "label": "t:sections.scrolling_media_cards.settings.repeat_count.label",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "default": 2,
-      "info": "t:sections.scrolling_media_cards.settings.repeat_count.info"
     },
     { "type": "header", "content": "t:sections.scrolling_media_cards.settings.header__2.content" },
     {

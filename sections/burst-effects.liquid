@@ -25,7 +25,7 @@
         </div>
       {% endif %}
     </div>
-    <div class="burst-effects__content">
+    <div class="burst-effects__content" style="--burst-heading-color: {{ section.settings.heading_color | default: '#ffffff' }}; --burst-text-color: {{ section.settings.text_color | default: '#ffffff' }};">
       <h2 class="burst-effects__title">{{ section.settings.title }}</h2>
       <div class="burst-effects__text">{{ section.settings.text }}</div>
       
@@ -84,6 +84,18 @@
       "type": "url",
       "id": "button_link",
       "label": "t:sections.burst_effects.settings.button_link.label"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description color",
+      "default": "#ffffff"
     },
     { "type": "header", "content": "t:sections.burst_effects.settings.header__2.content" },
     {
