@@ -1,15 +1,17 @@
 {{ 'section-custom-liquid.css' | asset_url | stylesheet_tag }}
 
 <div
-  class="custom-liquid custom-liquid--{{ section.settings.layout }} custom-liquid--align-{{ section.settings.alignment }}"
+  class="custom-liquid color-{{ section.settings.color_scheme }} custom-liquid--{{ section.settings.layout }} custom-liquid--align-{{ section.settings.alignment }}"
   data-section-id="{{ section.id }}"
+  data-layout="{{ section.settings.layout }}"
+  data-alignment="{{ section.settings.alignment }}"
   style="--custom-liquid-padding-top: {{ section.settings.padding_top }}px; --custom-liquid-padding-bottom: {{ section.settings.padding_bottom }}px;"
 >
   <div class="custom-liquid__container">
     {% if section.settings.title != blank %}
       <h2 class="custom-liquid__title">{{ section.settings.title }}</h2>
     {% endif %}
-    
+
     <div class="custom-liquid__content">
       {{ section.settings.custom_code }}
     </div>
@@ -59,6 +61,12 @@
         { "value": "right", "label": "t:sections.custom_liquid.settings.alignment.options__3.label" }
       ],
       "default": "left"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     { "type": "header", "content": "t:sections.custom_liquid.settings.header__3.content" },
     {

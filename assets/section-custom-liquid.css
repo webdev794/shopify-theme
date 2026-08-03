@@ -1,13 +1,20 @@
 /* ============================================
    CUSTOM LIQUID SECTION
-   Fixed: --color-heading / --color-text don't exist in css-variables.liquid,
-   so these always fell through to hardcoded hex. Now reference the real
-   palette variables. Link color also switched from hardcoded purple to accent.
+   Fixed: padding CSS variables were being set inline but never
+   consumed anywhere in this file - now applied to .custom-liquid.
+   Fixed: --color-foreground / --color-foreground-secondary /
+   --color-accent-background aren't real theme variables. This theme's
+   real color scheme variables are --color-text, --color-background,
+   --color-links, etc. (from color_scheme_group), and only resolve
+   correctly inside a .color-scheme-N wrapper - added color_scheme
+   setting + class in the .liquid file to make that work.
    ============================================ */
 
 .custom-liquid {
   width: 100%;
   background: var(--color-background, #ffffff);
+  padding-top: var(--custom-liquid-padding-top, 40px);
+  padding-bottom: var(--custom-liquid-padding-bottom, 40px);
 }
 
 .custom-liquid__container {
@@ -47,14 +54,15 @@
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0 0 1.5rem;
-  color: var(--color-foreground, #1a1a2e);
+  color: var(--color-text, #1a1a2e);
 }
 
 /* Content */
 .custom-liquid__content {
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--color-foreground-secondary, #4a4a6a);
+  color: var(--color-text, #4a4a6a);
+  opacity: 0.85;
 }
 
 /* Content Styles */
@@ -64,7 +72,7 @@
 }
 
 .custom-liquid__content a {
-  color: var(--color-accent-background, #1a1a2e);
+  color: var(--color-links, #1a1a2e);
   text-decoration: none;
 }
 
@@ -85,7 +93,7 @@
 
 .custom-liquid__content table td,
 .custom-liquid__content table th {
-  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-text, #1a1a2e) 12%, transparent);
   padding: 0.5rem 1rem;
 }
 
