@@ -1,7 +1,7 @@
 {{ 'section-custom-liquid.css' | asset_url | stylesheet_tag }}
 
 <div
-  class="custom-liquid color-{{ section.settings.color_scheme }} custom-liquid--{{ section.settings.layout }} custom-liquid--align-{{ section.settings.alignment }}"
+  class="custom-liquid custom-liquid--{{ section.settings.layout }} custom-liquid--align-{{ section.settings.alignment }}"
   data-section-id="{{ section.id }}"
   data-layout="{{ section.settings.layout }}"
   data-alignment="{{ section.settings.alignment }}"
@@ -61,12 +61,6 @@
         { "value": "right", "label": "t:sections.custom_liquid.settings.alignment.options__3.label" }
       ],
       "default": "left"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
     },
     { "type": "header", "content": "t:sections.custom_liquid.settings.header__3.content" },
     {
