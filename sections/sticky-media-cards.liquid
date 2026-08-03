@@ -67,7 +67,7 @@
             {%- endif -%}
           </div>
 
-          <div class="sticky-media-cards__content">
+          <div class="sticky-media-cards__content{% if block.settings.text_alignment != 'left' %} sticky-media-cards__content--{{ block.settings.text_alignment }}{% endif %}">
             <div class="sticky-media-cards__card">
               <div class="sticky-media-cards__card-inner">
                 {%- if block.settings.icon != 'none' -%}
@@ -160,6 +160,18 @@
           "options": [
             { "value": "left", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_position.options__1.label" },
             { "value": "right", "label": "t:sections.sticky_media_cards.blocks.media_card.settings.media_position.options__2.label" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "info": "Position of the text card within its column",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
           ],
           "default": "left"
         },
