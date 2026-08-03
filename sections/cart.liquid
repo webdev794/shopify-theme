@@ -574,7 +574,7 @@
     border: 0;
   }
 
-  /* ---------- Mobile: table becomes stacked cards ---------- */
+  /* ---------- Mobile: table becomes stacked, centered cards ---------- */
   @media screen and (max-width: 749px) {
     .cart-table thead {
       display: none;
@@ -590,21 +590,45 @@
 
     .cart-item {
       padding-block: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .cart-item__media-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 100%;
+      gap: 0.5rem;
+    }
+
+    .cart-item__image-link {
+      margin: 0 auto;
+    }
+
+    .cart-item__details {
+      align-items: center;
+      text-align: center;
+    }
+
+    .cart-item__options div,
+    .cart-item__properties div,
+    .cart-item__discount {
+      justify-content: center;
     }
 
     .cart-item__price-cell,
     .cart-item__quantity-cell,
     .cart-item__total-cell {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      gap: 0.5rem;
       border-bottom: none;
       padding-block: 0.4rem;
-      padding-left: calc(80px + 1rem);
+      padding-left: 0;
     }
 
     .cart-item__price-cell::before,
