@@ -19,9 +19,11 @@
 
     {% # Load critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag }}
+    {{ 'section-reveal.css' | asset_url | stylesheet_tag }}
 
     {{ 'buttons.css' | asset_url | stylesheet_tag }}
     {{ 'unit-price.css' | asset_url | stylesheet_tag }}
+
 
     {% # Social, title, etc. %}
 
@@ -66,5 +68,8 @@
     {% sections 'footer-group' %}
 
     {% render 'quick-view-modal' %}
+
+    <script src="{{ 'section-reveal.js' | asset_url }}" defer></script>
+
   </body>
 </html>
