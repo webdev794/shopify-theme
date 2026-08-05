@@ -17,6 +17,59 @@
       });
   };
 
+  /* --- Character Animation on Hover for ALL Menu Items --- */
+  const animateMenuLetters = () => {
+    const menuLinks = document.querySelectorAll('.header__menu-link:not([data-char-animated])');
+    
+    menuLinks.forEach(link => {
+      // Skip if link has children (already processed)
+      if (link.children.length > 0) return;
+      
+      const text = link.textContent.trim();
+      if (!text) return;
+      
+      // Apply to ALL menu items
+      link.setAttribute('data-char-animated', 'true');
+      
+      // Store original text
+      const originalText = text;
+      link.innerHTML = '';
+      
+      // Create wrapper with individual character spans
+      const wrapper = document.createElement('span');
+      wrapper.className = 'char-wrapper';
+      wrapper.setAttribute('aria-label', originalText.toUpperCase());
+      
+      // Split into characters
+      originalText.split('').forEach((letter, index) => {
+        const span = document.createElement('span');
+        span.textContent = letter;
+        span.className = 'char-split';
+        span.setAttribute('aria-hidden', 'true');
+        span.style.whiteSpace = 'pre';
+        span.style.transitionDelay = (index * 30) + 'ms';
+        wrapper.appendChild(span);
+      });
+      
+      link.appendChild(wrapper);
+    });
+  };
+
+  // Run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateMenuLetters);
+  } else {
+    animateMenuLetters();
+  }
+
+  // Also run after delays for dynamic content
+  setTimeout(animateMenuLetters, 300);
+  setTimeout(animateMenuLetters, 1000);
+
+  // Run again when Shopify updates sections
+  document.addEventListener('shopify:section:load', animateMenuLetters);
+  document.addEventListener('shopify:section:reload', animateMenuLetters);
+
   document.addEventListener('click', (event) => {
     if (!header.contains(event.target)) closeDropdowns();
   });

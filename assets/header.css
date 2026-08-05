@@ -785,3 +785,46 @@ body.header-mobile-menu-open {
     transform: none;
   }
 }
+
+/* ========== CHARACTER ANIMATION STYLES ========== */
+
+/* Character wrapper - applies to ALL menu items */
+.header__menu-link .char-wrapper {
+  display: inline-block;
+}
+
+/* Individual character spans - applies to ALL menu items */
+.header__menu-link .char-split {
+  display: inline-block;
+  white-space: pre;
+  transition: transform 0.2s ease, color 0.2s ease;
+  will-change: transform;
+}
+
+/* Hover effect - ALL letters pop up slightly on hover */
+.header__menu-link:hover .char-split {
+  transform: translateY(-2px);
+  color: var(--header-hover, #000);
+}
+
+/* Staggered animation delays - each letter moves at different time */
+/* Supports up to 12 characters for longer menu items */
+.header__menu-link .char-split:nth-child(1) { transition-delay: 0ms; }
+.header__menu-link .char-split:nth-child(2) { transition-delay: 20ms; }
+.header__menu-link .char-split:nth-child(3) { transition-delay: 40ms; }
+.header__menu-link .char-split:nth-child(4) { transition-delay: 60ms; }
+.header__menu-link .char-split:nth-child(5) { transition-delay: 80ms; }
+.header__menu-link .char-split:nth-child(6) { transition-delay: 100ms; }
+.header__menu-link .char-split:nth-child(7) { transition-delay: 120ms; }
+.header__menu-link .char-split:nth-child(8) { transition-delay: 140ms; }
+.header__menu-link .char-split:nth-child(9) { transition-delay: 160ms; }
+.header__menu-link .char-split:nth-child(10) { transition-delay: 180ms; }
+.header__menu-link .char-split:nth-child(11) { transition-delay: 200ms; }
+.header__menu-link .char-split:nth-child(12) { transition-delay: 220ms; }
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .header__menu-link .char-split {
+    transition: none !important;
+  }
+}
