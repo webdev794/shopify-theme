@@ -14,38 +14,51 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "menu-1": {
+        "col-1": {
           "type": "link_list",
           "settings": {
-            "heading": "Links",
+            "heading": "Shop",
             "menu": "footer"
           }
         },
-        "menu-2": {
+        "col-2": {
           "type": "link_list",
           "settings": {
-            "heading": "Pages",
+            "heading": "Support",
             "menu": "main-menu"
+          }
+        },
+        "col-3": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Company",
+            "menu": "quick-links"
+          }
+        },
+        "col-4": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Policies",
+            "menu": "footer"
           }
         }
       },
       "block_order": [
-        "menu-1",
-        "menu-2"
+        "col-1",
+        "col-2",
+        "col-3",
+        "col-4"
       ],
       "settings": {
-        "logo": "shopify://shop_images/recently-generated-suvara-shopify-theme-logo.png",
         "tagline": "Quality products, thoughtfully made.",
-        "show_newsletter": true,
-        "newsletter_heading": "Stay in the loop",
-        "newsletter_text": "New arrivals, exclusive offers, and more — straight to your inbox.",
-        "show_social": true,
-        "social_instagram": "",
+        "social_instagram": "a.com",
         "social_facebook": "",
-        "social_tiktok": "",
-        "social_youtube": "",
         "social_x": "",
-        "show_payment_icons": false
+        "social_linkedin": "",
+        "social_pinterest": "",
+        "social_youtube": "",
+        "copyright_text": "",
+        "bottom_right_text": "Powered by Shop"
       }
     }
   },
