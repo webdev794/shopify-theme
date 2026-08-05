@@ -27,6 +27,13 @@
 
     {{ content_for_header }}
 
+    <!-- Custom Cursor -->
+    <!-- Custom Cursor -->
+    <style>
+      {% render 'custom-cursor' %}
+    </style>
+    <script src="{{ 'custom-cursor.js' | asset_url }}" defer></script>
+
     <!-- Shop Pay Installments -->
     <!-- theme-check-disable RemoteAsset -->
     <script src="//cdn.shopify.com/shopifycloud/shop-js/shop-installments.js" defer></script>
