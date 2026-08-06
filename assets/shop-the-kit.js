@@ -114,92 +114,136 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addToCartBtn) {
       addToCartBtn.addEventListener('click', function() {
         const items = [];
-        let isValid = true;
-        
-        products.forEach(function(product) {
+        const missing = [];
+
+        products.forEach(function(product, index) {
           const productId = product.dataset.productId;
+          const titleEl = product.querySelector('.shop-the-kit__product-title');
+          const title = titleEl ? titleEl.textContent.trim() : ('Product ' + (index + 1));
           const selector = product.querySelector('.shop-the-kit__variant-selector');
-          let variantId;
-          
+          let variantId = null;
+
           if (selector) {
             variantId = selector.value;
           } else {
-            // Get first variant ID from data attribute or hidden input
             const variantInput = product.querySelector('[data-variant-id]');
-            variantId = variantInput ? variantInput.dataset.variantId : null;
+            variantId = variantInput ? variantInput.getAttribute('data-variant-id') : null;
           }
-          
-          if (variantId) {
+
+          // Guard: empty / placeholder select values
+          if (variantId && String(variantId).trim() !== '' && String(variantId) !== '0') {
             items.push({
-              id: parseInt(variantId),
+              id: parseInt(variantId, 10),
               quantity: 1
             });
           } else {
-            isValid = false;
+            missing.push(title);
           }
         });
-        
-        if (!isValid || items.length === 0) {
-          alert('Please select options for all products.');
+
+        if (missing.length || items.length === 0) {
+          alert(
+            missing.length
+              ? 'Please select options for: ' + missing.join(', ')
+              : 'Please select options for all products.'
+          );
           return;
         }
-        
-        // Disable button
+
+        // Expected count must match product cards on the page
+        if (items.length !== products.length) {
+          console.warn('[shop-the-kit] item count mismatch', items.length, products.length);
+          alert('Could not read all kit products. Please refresh and try again.');
+          return;
+        }
+
+        const defaultLabel =
+          addToCartBtn.getAttribute('data-default-label') ||
+          addToCartBtn.textContent ||
+          'Add Kit to Cart';
+        addToCartBtn.setAttribute('data-default-label', defaultLabel);
+
         addToCartBtn.disabled = true;
         addToCartBtn.textContent = 'Adding...';
         addToCartBtn.classList.add('loading');
-        
-        // Add items to cart
-        items.forEach(function(item, index) {
-          fetch('/cart/add.js', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(item)
-          })
+
+        /*
+         * ONE request for the whole kit.
+         * Parallel /cart/add.js calls race each other and Shopify often
+         * drops one line item (e.g. 4 products → only 3 in cart).
+         * https://shopify.dev/docs/api/ajax/reference/cart#post-locale-cart-add-js
+         */
+        fetch((window.Shopify && window.Shopify.routes && window.Shopify.routes.root
+          ? window.Shopify.routes.root
+          : '/') + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({ items: items })
+        })
           .then(function(response) {
-            if (!response.ok) {
-              throw new Error('Failed to add item to cart');
-            }
-            return response.json();
+            return response.json().then(function(data) {
+              return { ok: response.ok, status: response.status, data: data };
+            });
           })
-          .then(function(data) {
-            // If it's the last item, show success
-            if (index === items.length - 1) {
-              addToCartBtn.textContent = 'Added! ✓';
-              // Use CSS variable for success color
-              addToCartBtn.style.background = 'var(--color-success, #2ecc71)';
-              
-              // Trigger cart update
-              setTimeout(function() {
-                addToCartBtn.disabled = false;
-                addToCartBtn.textContent = 'Add Kit to Cart';
-                addToCartBtn.style.background = '';
-                addToCartBtn.classList.remove('loading');
-              }, 2000);
-              
-              // Update cart count if needed
-              if (window.theme && window.theme.updateCartCount) {
-                window.theme.updateCartCount();
-              }
-              
-              // Redirect or open cart drawer
-              if (window.theme && window.theme.openCartDrawer) {
-                window.theme.openCartDrawer();
-              }
+          .then(function(result) {
+            if (!result.ok) {
+              var msg =
+                (result.data && (result.data.description || result.data.message)) ||
+                'Failed to add kit to cart';
+              throw new Error(msg);
             }
+
+            // Shopify returns { items: [...] } for multi-add
+            var added = (result.data && result.data.items) ? result.data.items.length : items.length;
+            if (added < items.length) {
+              console.warn('[shop-the-kit] only some items added', added, 'of', items.length, result.data);
+              throw new Error('Only ' + added + ' of ' + items.length + ' products were added. Please check availability and try again.');
+            }
+
+            addToCartBtn.textContent = 'Added! ✓';
+            addToCartBtn.style.background = 'var(--color-success, #2ecc71)';
+
+            // Refresh cart UI
+            document.dispatchEvent(new CustomEvent('cart:updated', { detail: result.data }));
+            if (window.theme && typeof window.theme.updateCartCount === 'function') {
+              window.theme.updateCartCount();
+            }
+            // Header cart count (common pattern)
+            fetch((window.Shopify && window.Shopify.routes && window.Shopify.routes.root
+              ? window.Shopify.routes.root
+              : '/') + 'cart.js')
+              .then(function(r) { return r.json(); })
+              .then(function(cart) {
+                var countEls = document.querySelectorAll('[data-cart-count], .header__cart-count, .cart-count');
+                countEls.forEach(function(el) {
+                  el.textContent = String(cart.item_count || 0);
+                  if (cart.item_count > 0) el.classList.remove('hidden', 'is-empty');
+                });
+              })
+              .catch(function() {});
+
+            if (window.theme && typeof window.theme.openCartDrawer === 'function') {
+              window.theme.openCartDrawer();
+            }
+
+            setTimeout(function() {
+              addToCartBtn.disabled = false;
+              addToCartBtn.textContent = defaultLabel;
+              addToCartBtn.style.background = '';
+              addToCartBtn.classList.remove('loading');
+            }, 2000);
           })
           .catch(function(error) {
-            console.error('Error adding to cart:', error);
-            alert('There was an error adding the kit to your cart. Please try again.');
-            
-            // Reset button
+            console.error('[shop-the-kit] add error:', error);
+            alert(error.message || 'There was an error adding the kit to your cart. Please try again.');
             addToCartBtn.disabled = false;
-            addToCartBtn.textContent = 'Add Kit to Cart';
+            addToCartBtn.textContent = defaultLabel;
             addToCartBtn.classList.remove('loading');
+            addToCartBtn.style.background = '';
           });
-        });
       });
     }
   });
