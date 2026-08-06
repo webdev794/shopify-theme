@@ -1,10 +1,7 @@
 /**
- * Luxury product image reveal — card/product media only.
- * Does not target titles, prices, vendors, or text blocks.
- * Above-the-fold media: untouched. Below-the-fold: animate once on scroll in.
- *
- * Safety: failsafe clears any stuck opacity:0; classes removed after motion.
- * Once an element has been prepared/revealed, it is never re-hidden.
+ * Product image reveal — card/product media only.
+ * Above-the-fold: untouched. Below-the-fold: animate once on scroll in.
+ * Performance: no MutationObserver; idle init; one observer; failsafe only for on-screen stuck nodes.
  */
 (function () {
   'use strict';
@@ -29,8 +26,9 @@
 
   var prepared = new WeakSet();
   var revealed = new WeakSet();
-  var FAILSAFE_MS = 3000;
+  var FAILSAFE_MS = 4000;
   var CLEAR_MS = 700;
+  var started = false;
 
   function isAboveOrInView(el) {
     var rect = el.getBoundingClientRect();
@@ -47,6 +45,9 @@
   }
 
   function init() {
+    if (started) return;
+    started = true;
+
     var nodes = document.querySelectorAll(SELECTORS);
     if (!nodes.length) return;
 
@@ -60,8 +61,8 @@
       },
       {
         root: null,
-        rootMargin: '0px 0px -10% 0px',
-        threshold: 0.15
+        rootMargin: '0px 0px -8% 0px',
+        threshold: 0.12
       }
     );
 
@@ -78,39 +79,31 @@
       observer.observe(el);
     });
 
-    // Failsafe only — normal path is still the IntersectionObserver animation
     window.setTimeout(function () {
       document.querySelectorAll('.pir-prepare:not(.pir-visible)').forEach(function (el) {
+        if (!isAboveOrInView(el)) return;
         show(el);
-        try {
-          observer.unobserve(el);
-        } catch (e) {}
+        try { observer.unobserve(el); } catch (e) {}
       });
     }, FAILSAFE_MS);
   }
 
+  function scheduleInit() {
+    if (window.requestIdleCallback) {
+      requestIdleCallback(function () { init(); }, { timeout: 1200 });
+    } else {
+      setTimeout(init, 1);
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', scheduleInit);
   } else {
-    init();
+    scheduleInit();
   }
 
   document.addEventListener('shopify:section:load', function () {
-    setTimeout(init, 50);
+    started = false;
+    setTimeout(init, 100);
   });
-
-  // Re-scan when the DOM grows (e.g. infinite scroll / section AJAX),
-  // but never re-hide something already revealed.
-  if (typeof MutationObserver !== 'undefined') {
-    var scheduled = false;
-    var mo = new MutationObserver(function () {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(function () {
-        scheduled = false;
-        init();
-      });
-    });
-    mo.observe(document.body, { childList: true, subtree: true });
-  }
 })();

@@ -55,20 +55,20 @@
     });
   };
 
-  // Run on DOM ready
+  // Run once when idle so it does not compete with first paint / LCP
+  var runMenuLetters = function () {
+    if (window.requestIdleCallback) {
+      requestIdleCallback(animateMenuLetters, { timeout: 2000 });
+    } else {
+      setTimeout(animateMenuLetters, 1);
+    }
+  };
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', animateMenuLetters);
+    document.addEventListener('DOMContentLoaded', runMenuLetters);
   } else {
-    animateMenuLetters();
+    runMenuLetters();
   }
-
-  // Also run after delays for dynamic content
-  setTimeout(animateMenuLetters, 300);
-  setTimeout(animateMenuLetters, 1000);
-
-  // Run again when Shopify updates sections
   document.addEventListener('shopify:section:load', animateMenuLetters);
-  document.addEventListener('shopify:section:reload', animateMenuLetters);
 
   document.addEventListener('click', (event) => {
     if (!header.contains(event.target)) closeDropdowns();

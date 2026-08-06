@@ -362,7 +362,6 @@ body {
 .media-grid--zoom .media-grid__placeholder {
   transform: scale(1.06);
   transition: transform 0.5s ease;
-  will-change: transform;
 }
 
 @media (hover: hover) {
@@ -409,6 +408,5 @@ body {
   .media-grid--zoom .media-grid__item:hover .media-grid__placeholder {
     transform: none !important;
     transition: none !important;
-    will-change: auto;
   }
 }

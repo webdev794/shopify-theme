@@ -105,10 +105,18 @@
     }, FAILSAFE_MS);
   }
 
+  function scheduleInit() {
+    if (window.requestIdleCallback) {
+      requestIdleCallback(function () { init(); }, { timeout: 1200 });
+    } else {
+      setTimeout(init, 1);
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', scheduleInit);
   } else {
-    init();
+    scheduleInit();
   }
 
   document.addEventListener('shopify:section:load', function () {

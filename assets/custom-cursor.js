@@ -52,24 +52,7 @@
   document.addEventListener('shopify:section:load', updateCursor);
   document.addEventListener('shopify:section:reload', updateCursor);
 
-  // Update on page changes (for AJAX navigation)
-  const observer = new MutationObserver(() => {
-    const currentPath = window.location.pathname;
-    if (currentPath !== observer._lastPath) {
-      observer._lastPath = currentPath;
-      updateCursor();
-    }
-  });
-  observer._lastPath = window.location.pathname;
-  const targetNode = document.querySelector('main') || document.body;
-  if (targetNode) {
-    observer.observe(targetNode, {
-      childList: true,
-      subtree: true
-    });
-  }
-
-  // Also update when history changes (SPA navigation)
+  // History / SPA navigation only — avoid a full-tree MutationObserver
   window.addEventListener('popstate', updateCursor);
 
   // Optional: Add subtle cursor trail effect for product pages

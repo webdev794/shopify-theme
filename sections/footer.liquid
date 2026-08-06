@@ -5,7 +5,7 @@
   • Up to 4 merchant-configurable link_list columns (rename/repoint any of them,
     including a "Policies" column pointed at a Policies menu you create)
   • Copyright + bottom-right text, both fully editable
-  • Per-letter hover animation on every footer link (pure CSS, no JS)
+  • Per-letter dual-line hover: text exits downward, replacement enters from above (top → bottom)
 {%- endcomment -%}
 
 {%- capture social_links -%}
@@ -69,9 +69,20 @@
                 {%- assign link_chars = link.title | split: '' -%}
                 <li>
                   <a href="{{ link.url }}" class="footer__link">
-                    {%- for ch in link_chars -%}
-                      <span class="footer__letter"{% if ch == ' ' %} style="white-space:pre"{% endif %}>{{ ch }}</span>
-                    {%- endfor -%}
+                    <span class="footer__link-text">
+                      {%- comment -%} Primary line (visible) — exits downward on hover {%- endcomment -%}
+                      <span class="footer__link-line footer__link-line--primary">
+                        {%- for ch in link_chars -%}
+                          <span class="footer__letter"{% if ch == ' ' %} style="white-space:pre"{% endif %}>{{ ch }}</span>
+                        {%- endfor -%}
+                      </span>
+                      {%- comment -%} Secondary line — enters from above (top → bottom) {%- endcomment -%}
+                      <span class="footer__link-line footer__link-line--secondary" aria-hidden="true">
+                        {%- for ch in link_chars -%}
+                          <span class="footer__letter"{% if ch == ' ' %} style="white-space:pre"{% endif %}>{{ ch }}</span>
+                        {%- endfor -%}
+                      </span>
+                    </span>
                   </a>
                 </li>
               {%- endfor -%}
@@ -191,12 +202,11 @@
     gap: 0.875rem;
   }
 
+  /* Dual-line letter swap: primary exits downward, secondary enters from above
+     (top → bottom — reverse of nav links that rise bottom → top). */
   .footer__link {
     position: relative;
     display: inline-block;
-    overflow: hidden;
-    height: 1.3em;
-    line-height: 1.3em;
     text-decoration: none;
     color: color-mix(in oklch, var(--footer-fg) 85%, transparent);
     font-size: 0.9375rem;
@@ -204,35 +214,83 @@
   }
   .footer__link:hover { color: var(--footer-accent); }
 
+  .footer__link-text {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    height: 1.3em;
+    line-height: 1.3em;
+    vertical-align: top;
+  }
+
+  .footer__link-line {
+    display: block;
+    white-space: nowrap;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .footer__link-line--primary {
+    transform: translateY(0);
+  }
+
+  .footer__link-line--secondary {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(-110%);
+  }
+
+  /* Hover: primary drops out (top → bottom), secondary slides in from above */
+  .footer__link:hover .footer__link-line--primary {
+    transform: translateY(110%);
+  }
+  .footer__link:hover .footer__link-line--secondary {
+    transform: translateY(0);
+  }
+
   .footer__letter {
     display: inline-block;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .footer__link:hover .footer__letter { transform: translateY(6px); }
-  .footer__letter:nth-child(1) { transition-delay: 25ms; }
-  .footer__letter:nth-child(2) { transition-delay: 50ms; }
-  .footer__letter:nth-child(3) { transition-delay: 75ms; }
-  .footer__letter:nth-child(4) { transition-delay: 100ms; }
-  .footer__letter:nth-child(5) { transition-delay: 125ms; }
-  .footer__letter:nth-child(6) { transition-delay: 150ms; }
-  .footer__letter:nth-child(7) { transition-delay: 175ms; }
-  .footer__letter:nth-child(8) { transition-delay: 200ms; }
-  .footer__letter:nth-child(9) { transition-delay: 225ms; }
-  .footer__letter:nth-child(10) { transition-delay: 250ms; }
-  .footer__letter:nth-child(11) { transition-delay: 275ms; }
-  .footer__letter:nth-child(12) { transition-delay: 300ms; }
-  .footer__letter:nth-child(13) { transition-delay: 325ms; }
-  .footer__letter:nth-child(14) { transition-delay: 350ms; }
-  .footer__letter:nth-child(15) { transition-delay: 375ms; }
-  .footer__letter:nth-child(16) { transition-delay: 400ms; }
-  .footer__letter:nth-child(17) { transition-delay: 425ms; }
-  .footer__letter:nth-child(18) { transition-delay: 450ms; }
-  .footer__letter:nth-child(19) { transition-delay: 475ms; }
-  .footer__letter:nth-child(20) { transition-delay: 500ms; }
-  .footer__letter:nth-child(21) { transition-delay: 525ms; }
-  .footer__letter:nth-child(22) { transition-delay: 550ms; }
-  .footer__letter:nth-child(23) { transition-delay: 575ms; }
-  .footer__letter:nth-child(24) { transition-delay: 600ms; }
+
+  /* Stagger per letter for a cascading top→bottom feel */
+  .footer__link-line .footer__letter:nth-child(1) { transition-delay: 0ms; }
+  .footer__link-line .footer__letter:nth-child(2) { transition-delay: 20ms; }
+  .footer__link-line .footer__letter:nth-child(3) { transition-delay: 40ms; }
+  .footer__link-line .footer__letter:nth-child(4) { transition-delay: 60ms; }
+  .footer__link-line .footer__letter:nth-child(5) { transition-delay: 80ms; }
+  .footer__link-line .footer__letter:nth-child(6) { transition-delay: 100ms; }
+  .footer__link-line .footer__letter:nth-child(7) { transition-delay: 120ms; }
+  .footer__link-line .footer__letter:nth-child(8) { transition-delay: 140ms; }
+  .footer__link-line .footer__letter:nth-child(9) { transition-delay: 160ms; }
+  .footer__link-line .footer__letter:nth-child(10) { transition-delay: 180ms; }
+  .footer__link-line .footer__letter:nth-child(11) { transition-delay: 200ms; }
+  .footer__link-line .footer__letter:nth-child(12) { transition-delay: 220ms; }
+  .footer__link-line .footer__letter:nth-child(13) { transition-delay: 240ms; }
+  .footer__link-line .footer__letter:nth-child(14) { transition-delay: 260ms; }
+  .footer__link-line .footer__letter:nth-child(15) { transition-delay: 280ms; }
+  .footer__link-line .footer__letter:nth-child(16) { transition-delay: 300ms; }
+  .footer__link-line .footer__letter:nth-child(17) { transition-delay: 320ms; }
+  .footer__link-line .footer__letter:nth-child(18) { transition-delay: 340ms; }
+  .footer__link-line .footer__letter:nth-child(19) { transition-delay: 360ms; }
+  .footer__link-line .footer__letter:nth-child(20) { transition-delay: 380ms; }
+  .footer__link-line .footer__letter:nth-child(21) { transition-delay: 400ms; }
+  .footer__link-line .footer__letter:nth-child(22) { transition-delay: 420ms; }
+  .footer__link-line .footer__letter:nth-child(23) { transition-delay: 440ms; }
+  .footer__link-line .footer__letter:nth-child(24) { transition-delay: 460ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__link-line,
+    .footer__letter {
+      transition: none !important;
+    }
+    .footer__link-line--secondary {
+      display: none;
+    }
+    .footer__link:hover .footer__link-line--primary {
+      transform: none;
+    }
+  }
 
   .footer__bottom {
     margin-top: 3.5rem;

@@ -19,11 +19,16 @@
 
     {% # Load critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag }}
-    {{ 'section-reveal.css' | asset_url | stylesheet_tag }}
-    {{ 'product-image-reveal.css' | asset_url | stylesheet_tag }}
-
     {{ 'buttons.css' | asset_url | stylesheet_tag }}
     {{ 'unit-price.css' | asset_url | stylesheet_tag }}
+
+    {% comment %} Non-critical motion CSS — load async so it does not block first paint {% endcomment %}
+    <link rel="preload" href="{{ 'section-reveal.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{{ 'product-image-reveal.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      {{ 'section-reveal.css' | asset_url | stylesheet_tag }}
+      {{ 'product-image-reveal.css' | asset_url | stylesheet_tag }}
+    </noscript>
 
 
 
@@ -31,7 +36,6 @@
 
     {{ content_for_header }}
 
-    <!-- Custom Cursor -->
     <!-- Custom Cursor -->
     <style>
       {% render 'custom-cursor' %}
