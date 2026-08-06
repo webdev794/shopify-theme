@@ -1,0 +1,45 @@
+/**
+ * Mouse-tilt (Cobloc-style)
+ * Content items lean toward the cursor on desktop.
+ * Enabled only when the section has [data-mouse-tilt] and
+ * the environment supports hover + fine pointer.
+ */
+
+[data-mouse-tilt] {
+  perspective: 900px;
+  perspective-origin: 50% 50%;
+}
+
+[data-tilt-item] {
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  /* Keep stacking predictable inside heroes */
+  backface-visibility: hidden;
+}
+
+[data-mouse-tilt].is-tilting [data-tilt-item] {
+  transition: transform 0.12s ease-out;
+}
+
+/* Max angle via CSS variable (set on section root from Liquid) */
+[data-mouse-tilt] {
+  --tilt-max: 6;
+}
+
+@media (hover: none), (pointer: coarse) {
+  [data-mouse-tilt] [data-tilt-item] {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-mouse-tilt] [data-tilt-item] {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
