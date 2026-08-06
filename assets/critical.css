@@ -410,3 +410,62 @@ body {
     transition: none !important;
   }
 }
+
+/* ========== Word-stagger reveal (VERO-style) ==========
+   Words rise from below with a staggered delay.
+   Coordinates with section-reveal: words stay prepared (hidden)
+   while the parent section is still in its bottom-right entrance
+   state; word-reveal.js adds .is-visible after the section starts.
+   ============================================================ */
+
+.word-reveal__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.word-reveal__word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 110%, 0);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--stagger, 0) * 55ms);
+  will-change: opacity, transform;
+}
+
+.word-reveal__word + .word-reveal__word {
+  margin-left: 0.28em;
+}
+
+.word-reveal.is-visible .word-reveal__word {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.word-reveal.is-done .word-reveal__word {
+  will-change: auto;
+  transition: none;
+}
+
+/*
+ * While the parent section is still in section-reveal's hidden state,
+ * keep words at their start pose. Do NOT force section opacity/transform
+ * here — section-reveal.css owns those exclusively.
+ */
+.shopify-section.section-reveal:not(.is-visible) .word-reveal__word {
+  opacity: 0;
+  transform: translate3d(0, 110%, 0);
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-reveal__word {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
