@@ -251,58 +251,6 @@
         "aria_label": "Mix and match pack builder"
       }
     },
-    "scrolling_text_rmFJfM": {
-      "type": "scrolling-text",
-      "blocks": {
-        "text_item_mn8Jnc": {
-          "type": "text_item",
-          "settings": {
-            "text": "Free shipping available",
-            "icon": "truck"
-          }
-        },
-        "text_item_AykxxL": {
-          "type": "text_item",
-          "settings": {
-            "text": "Easy returns",
-            "icon": "shield"
-          }
-        },
-        "text_item_VTycPV": {
-          "type": "text_item",
-          "settings": {
-            "text": "Exclusive offers for subscribers",
-            "icon": "star"
-          }
-        },
-        "text_item_XAbkdf": {
-          "type": "text_item",
-          "settings": {
-            "text": "Here to help",
-            "icon": "chat"
-          }
-        }
-      },
-      "block_order": [
-        "text_item_mn8Jnc",
-        "text_item_AykxxL",
-        "text_item_VTycPV",
-        "text_item_XAbkdf"
-      ],
-      "name": "Scrolling Text",
-      "settings": {
-        "speed": 30,
-        "gap": 40,
-        "repeat_count": 3,
-        "show_divider": true,
-        "divider_symbol": "•",
-        "font_size": 20,
-        "background_color": "#1a1a1a",
-        "text_color": "#ffffff",
-        "pause_on_hover": true,
-        "aria_label": "Scrolling announcement bar"
-      }
-    },
     "featured_products_teK6M3": {
       "type": "featured-products",
       "blocks": {
@@ -617,7 +565,6 @@
     "shop_the_kit_NLcrJy",
     "highlight_text_with_images_APQhQN",
     "mix_match_pack_NmakBm",
-    "scrolling_text_rmFJfM",
     "featured_products_teK6M3",
     "blog_posts_TUtF9Y",
     "text_with_icons_DtVBgt",
