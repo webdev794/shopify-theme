@@ -92,14 +92,6 @@
   transition: transform 0.4s ease;
 }
 
-@media (hover: hover) {
-  .media-grid--zoom .media-grid__item:hover .media-grid__image,
-  .media-grid--zoom .media-grid__item:hover .media-grid__video,
-  .media-grid--zoom .media-grid__item:hover .media-grid__placeholder {
-    transform: scale(1.05);
-  }
-}
-
 /* ---- Desktop spans ---- */
 @media (min-width: 750px) {
   .media-grid__item--span-2 {

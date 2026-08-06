@@ -88,9 +88,6 @@
   transition: transform 0.5s ease;
 }
 
-.social-media-gallery__card:hover .social-media-gallery__image {
-  transform: scale(1.05);
-}
 
 .social-media-gallery__platform-badge {
   position: absolute;

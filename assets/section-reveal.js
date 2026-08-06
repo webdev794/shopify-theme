@@ -1,15 +1,15 @@
 /**
  * Global section scroll-reveal
- * Uses IntersectionObserver so every .shopify-section animates in
- * from the bottom-right when it enters the viewport while scrolling.
- *
- * Opt out: add data-section-reveal="false" on a section root, or it is
- * skipped automatically for header/footer groups.
+ * Full motion: fade + move in from bottom-right when scrolled into view.
+ * Safety: never leaves sections stuck invisible; clears classes after motion
+ * so transforms do not keep covering the header mega menu.
  */
 (function () {
   'use strict';
 
   var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FAILSAFE_MS = 3000;
+  var CLEAR_MS = 800;
 
   function shouldSkip(el) {
     if (!el || el.nodeType !== 1) return true;
@@ -23,7 +23,16 @@
 
   function isInViewport(el) {
     var rect = el.getBoundingClientRect();
-    return rect.top < window.innerHeight * 0.95 && rect.bottom > 40;
+    return rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
+  }
+
+  function reveal(el) {
+    if (!el) return;
+    el.classList.add('is-visible');
+    // Drop animation classes after the transition so no transform remains
+    window.setTimeout(function () {
+      el.classList.remove('section-reveal', 'is-visible');
+    }, CLEAR_MS);
   }
 
   function init() {
@@ -32,7 +41,7 @@
 
     if (REDUCED_MOTION) {
       sections.forEach(function (section) {
-        section.classList.add('section-reveal', 'is-visible');
+        section.classList.remove('section-reveal', 'is-visible');
       });
       return;
     }
@@ -41,18 +50,18 @@
 
     sections.forEach(function (section) {
       if (shouldSkip(section)) {
-        section.classList.add('section-reveal', 'is-visible');
+        section.classList.remove('section-reveal', 'is-visible');
         return;
       }
 
-      // Already on screen: leave visible, no hide/show flash
+      // Already on screen: leave fully visible (no flash)
       if (isInViewport(section)) {
-        section.classList.add('section-reveal', 'is-visible');
+        section.classList.remove('section-reveal', 'is-visible');
         return;
       }
 
-      // Below the fold: start hidden, observe for entry
       section.classList.add('section-reveal');
+      section.classList.remove('is-visible');
       toObserve.push(section);
     });
 
@@ -62,7 +71,7 @@
       function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
+          reveal(entry.target);
           observer.unobserve(entry.target);
         });
       },
@@ -76,6 +85,16 @@
     toObserve.forEach(function (section) {
       observer.observe(section);
     });
+
+    // Failsafe only — does not change the normal animation path
+    window.setTimeout(function () {
+      document.querySelectorAll('.shopify-section.section-reveal:not(.is-visible)').forEach(function (el) {
+        reveal(el);
+        try {
+          observer.unobserve(el);
+        } catch (e) {}
+      });
+    }, FAILSAFE_MS);
   }
 
   if (document.readyState === 'loading') {

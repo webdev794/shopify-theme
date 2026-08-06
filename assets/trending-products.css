@@ -70,9 +70,6 @@
   transition: transform 0.5s ease;
 }
 
-.trending-products__card:hover .trending-products__image {
-  transform: scale(1.05);
-}
 
 /* "Trending"-style badge kept as a fixed attention-red, matching the
    sale-badge convention used elsewhere (featured-products.css) */

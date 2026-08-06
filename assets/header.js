@@ -106,16 +106,52 @@
 
       let closeTimer = null;
 
+      const cancelClose = () => {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      };
+
+      const scheduleClose = () => {
+        cancelClose();
+        closeTimer = setTimeout(() => {
+          // Keep open if the pointer is still over the item or the panel
+          // (covers the gap between trigger and full-bleed mega menu).
+          if (item.matches(':hover') || details.matches(':hover')) return;
+          details.removeAttribute('open');
+        }, 220);
+      };
+
       item.addEventListener('pointerenter', (event) => {
         if (!desktopHover.matches || event.pointerType === 'touch') return;
-        clearTimeout(closeTimer);
+        cancelClose();
         if (!details.open) details.setAttribute('open', '');
       });
 
       item.addEventListener('pointerleave', (event) => {
         if (!desktopHover.matches || event.pointerType === 'touch') return;
-        clearTimeout(closeTimer);
-        closeTimer = setTimeout(() => details.removeAttribute('open'), 150);
+        // Moving into a descendant panel (mega menu / submenu) — stay open
+        if (event.relatedTarget && details.contains(event.relatedTarget)) {
+          cancelClose();
+          return;
+        }
+        scheduleClose();
+      });
+
+      // Mega / dropdown panels can sit outside the <li> hit box visually;
+      // keep the menu open while the pointer is over the panel itself.
+      details.addEventListener('pointerenter', (event) => {
+        if (!desktopHover.matches || event.pointerType === 'touch') return;
+        cancelClose();
+        if (!details.open) details.setAttribute('open', '');
+      });
+
+      details.addEventListener('pointerleave', (event) => {
+        if (!desktopHover.matches || event.pointerType === 'touch') return;
+        if (event.relatedTarget && item.contains(event.relatedTarget)) {
+          cancelClose();
+          return;
+        }
+        scheduleClose();
       });
     });
   }

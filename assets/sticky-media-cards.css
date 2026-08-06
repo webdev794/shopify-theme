@@ -74,9 +74,6 @@
   transition: transform 0.6s ease;
 }
 
-.sticky-media-cards__section:hover .sticky-media-cards__image {
-  transform: scale(1.03);
-}
 
 .sticky-media-cards__placeholder {
   width: 100%;

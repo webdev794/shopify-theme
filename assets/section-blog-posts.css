@@ -175,9 +175,6 @@
   transition: transform 0.5s ease;
 }
 
-.blog-posts__post:hover .blog-posts__image {
-  transform: scale(1.05);
-}
 
 .blog-posts__image-placeholder {
   background: var(--color-background-secondary, #e5e7eb);

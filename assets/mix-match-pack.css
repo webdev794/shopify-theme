@@ -194,9 +194,6 @@
   transition: transform 0.5s ease;
 }
 
-.mix-match-pack__product-card:hover .mix-match-pack__product-image {
-  transform: scale(1.05);
-}
 
 .mix-match-pack__product-check {
   position: absolute;

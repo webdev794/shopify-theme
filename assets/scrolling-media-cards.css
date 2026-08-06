@@ -79,9 +79,6 @@
   transition: transform 0.5s ease;
 }
 
-.scrolling-media-cards__card-inner:hover .scrolling-media-cards__image {
-  transform: scale(1.05);
-}
 
 .scrolling-media-cards__placeholder {
   aspect-ratio: 1/1;

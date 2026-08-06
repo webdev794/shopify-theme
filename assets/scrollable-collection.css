@@ -113,9 +113,6 @@
   transition: transform 0.5s ease;
 }
 
-.scrollable-collection__product-card:hover .scrollable-collection__product-image {
-  transform: scale(1.05);
-}
 
 .scrollable-collection__product-placeholder {
   width: 100%;

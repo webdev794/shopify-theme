@@ -4,17 +4,32 @@
 /* ---- Base Header ---- */
 .header {
   position: relative;
-  background-color: var(--header-background);
-  color: var(--header-foreground);
-  border-bottom: 1px solid color-mix(in srgb, var(--header-foreground) 12%, transparent);
+  background-color: var(--header-background, #ffffff);
+  color: var(--header-foreground, #121212);
+  border-bottom: 1px solid color-mix(in srgb, var(--header-foreground, #121212) 12%, transparent);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Keep dropdowns/mega menus above page content on every template. */
+  z-index: 50;
+  isolation: isolate;
+}
+
+/* Header section wrapper must sit above content sections at all times
+   (not only when sticky), so full-bleed mega menus remain clickable
+   and keep their solid background. */
+.shopify-section:has(> .header),
+.shopify-section-group-header-group,
+.shopify-section-group-header-group .shopify-section {
+  position: relative;
+  z-index: 200;
+  isolation: isolate;
 }
 
 .shopify-section:has(.header--sticky) {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 200;
 }
+
 
 /* Shadow appears once the page is scrolled (set by JS), not on hover */
 .header--scrolled {
@@ -227,13 +242,31 @@ body.header-mobile-menu-open {
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 40;
   padding: 2rem 1.25rem 2.25rem;
-  background-color: var(--header-background);
-  color: var(--header-foreground);
-  border-top: 1px solid color-mix(in srgb, var(--header-foreground) 8%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--header-foreground) 12%, transparent);
+  /* Solid fallback so the panel never looks transparent if a CSS variable
+     is missing or overridden by a stacking context above it. */
+  background-color: var(--header-background, #ffffff);
+  color: var(--header-foreground, #121212);
+  border-top: 1px solid color-mix(in srgb, var(--header-foreground, #121212) 8%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--header-foreground, #121212) 12%, transparent);
   box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.1);
+  /* Hover bridge: absorb the gap between the trigger and the panel so
+     pointerleave on the menu item does not close the menu while moving down. */
+  margin-top: 0;
+  padding-top: 2rem;
+}
+
+/* Invisible hit-area bridging the header bar and the panel content.
+   Without this, moving the cursor from the trigger into the panel can
+   briefly leave the <li> and close the open <details> on hover menus. */
+.header__mega-menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1.25rem;
+  height: 1.25rem;
 }
 
 .header__dropdown--mega[open] .header__mega-menu {

@@ -267,9 +267,6 @@
   transition: transform 0.6s ease;
 }
 
-.product-card:hover .product-card__image {
-  transform: scale(1.05);
-}
 
 .product-card__image-placeholder {
   position: absolute;
@@ -605,6 +602,7 @@
     transition: none !important;
   }
 
+  .product-card__image,
   .product-card:hover,
   .product-card:hover .product-card__image,
   .featured-products__view-all:hover {

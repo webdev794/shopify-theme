@@ -1,43 +1,52 @@
 /**
  * Global section scroll-reveal
- * Sections start offset toward the bottom-right and ease into place
- * when they enter the viewport. Driven by section-reveal.js.
+ * Soft rise + fade when a section enters the viewport.
+ *
+ * After the animation finishes, JS removes these classes so no transform
+ * is left on the section (leftover transform creates a stacking context
+ * that can cover the header mega menu).
  */
 
-/* Initial (hidden) state — applied before JS runs so there is no flash */
-.shopify-section.section-reveal {
+.shopify-section.section-reveal:not(.is-visible) {
   opacity: 0;
-  transform: translate3d(48px, 64px, 0);
+  transform: translate3d(24px, 40px, 0);
   transition:
     opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
-/* Visible state */
 .shopify-section.section-reveal.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Stagger child content slightly for a more organic feel (optional depth) */
-.shopify-section.section-reveal.is-visible > * {
-  animation: section-reveal-children 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+/*
+ * Header / footer: never animate, always fully visible, always on top.
+ * High z-index + isolation keep the mega menu above page sections even
+ * while those sections still have a temporary transform during reveal.
+ */
+.shopify-section-group-header-group {
+  position: relative;
+  z-index: 200;
+  isolation: isolate;
 }
 
-@keyframes section-reveal-children {
-  from {
-    opacity: 0.85;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Skip animation for header / footer groups (always in view or sticky) */
 .shopify-section-group-header-group .shopify-section,
+.shopify-section:has(> .header),
+#shopify-section-header {
+  position: relative;
+  z-index: 200;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  will-change: auto;
+}
+
 .shopify-section-group-footer-group .shopify-section,
-#shopify-section-header,
 #shopify-section-footer,
 .shopify-section[data-section-reveal="false"] {
   opacity: 1 !important;
@@ -48,21 +57,18 @@
 
 .shopify-section-group-header-group .shopify-section > *,
 .shopify-section-group-footer-group .shopify-section > *,
+.shopify-section:has(> .header) > *,
 .shopify-section[data-section-reveal="false"] > * {
   animation: none !important;
 }
 
-/* Reduced motion: show content immediately, no transform */
 @media (prefers-reduced-motion: reduce) {
   .shopify-section.section-reveal,
+  .shopify-section.section-reveal:not(.is-visible),
   .shopify-section.section-reveal.is-visible {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
     will-change: auto;
-  }
-
-  .shopify-section.section-reveal.is-visible > * {
-    animation: none !important;
   }
 }

@@ -341,3 +341,74 @@ body {
   font-weight: 600;
   border-radius: var(--style-border-radius-inputs, 0.4rem);
 }
+
+/* ========== Global media zoom-out on hover ==========
+   Single source of truth for card/gallery image hover.
+   Images rest slightly zoomed in (crop edges) and ease out
+   to scale(1) on hover so more of the photo is visible.
+   Section CSS should not redeclare these transforms.
+   ============================================================ */
+.product-card__image,
+.trending-products__image,
+.social-media-gallery__image,
+.sticky-media-cards__image,
+.mix-match-pack__product-image,
+.blog-posts__image,
+.scrolling-media-cards__image,
+.scrollable-collection__product-image,
+.card__image,
+.media-grid--zoom .media-grid__image,
+.media-grid--zoom .media-grid__video,
+.media-grid--zoom .media-grid__placeholder {
+  transform: scale(1.06);
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .product-card:hover .product-card__image,
+  .trending-products__card:hover .trending-products__image,
+  .social-media-gallery__card:hover .social-media-gallery__image,
+  .sticky-media-cards__section:hover .sticky-media-cards__image,
+  .mix-match-pack__product-card:hover .mix-match-pack__product-image,
+  .blog-posts__post:hover .blog-posts__image,
+  .scrolling-media-cards__card-inner:hover .scrolling-media-cards__image,
+  .scrollable-collection__product-card:hover .scrollable-collection__product-image,
+  .card:hover .card__image,
+  .media-grid--zoom .media-grid__item:hover .media-grid__image,
+  .media-grid--zoom .media-grid__item:hover .media-grid__video,
+  .media-grid--zoom .media-grid__item:hover .media-grid__placeholder {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card__image,
+  .trending-products__image,
+  .social-media-gallery__image,
+  .sticky-media-cards__image,
+  .mix-match-pack__product-image,
+  .blog-posts__image,
+  .scrolling-media-cards__image,
+  .scrollable-collection__product-image,
+  .card__image,
+  .media-grid--zoom .media-grid__image,
+  .media-grid--zoom .media-grid__video,
+  .media-grid--zoom .media-grid__placeholder,
+  .product-card:hover .product-card__image,
+  .trending-products__card:hover .trending-products__image,
+  .social-media-gallery__card:hover .social-media-gallery__image,
+  .sticky-media-cards__section:hover .sticky-media-cards__image,
+  .mix-match-pack__product-card:hover .mix-match-pack__product-image,
+  .blog-posts__post:hover .blog-posts__image,
+  .scrolling-media-cards__card-inner:hover .scrolling-media-cards__image,
+  .scrollable-collection__product-card:hover .scrollable-collection__product-image,
+  .card:hover .card__image,
+  .media-grid--zoom .media-grid__item:hover .media-grid__image,
+  .media-grid--zoom .media-grid__item:hover .media-grid__video,
+  .media-grid--zoom .media-grid__item:hover .media-grid__placeholder {
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+}
