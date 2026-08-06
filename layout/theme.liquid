@@ -59,12 +59,26 @@
         position: relative !important;
       }
 
-      /* Header always above page sections (mega menu background + clicks) */
+      /* Header always above page sections (mega menu background + clicks).
+         Do NOT force position:relative when sticky is enabled — that would
+         override header.css `.shopify-section:has(.header--sticky) { position: sticky }`. */
       .shopify-section-group-header-group,
       .shopify-section:has(> .header) {
-        position: relative !important;
         z-index: 200 !important;
         isolation: isolate;
+      }
+
+      /* Only force relative when sticky is off */
+      .shopify-section-group-header-group:not(:has(.header--sticky)),
+      .shopify-section:has(> .header:not(.header--sticky)) {
+        position: relative !important;
+      }
+
+      /* Ensure sticky works when enabled */
+      .shopify-section:has(.header--sticky) {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 200 !important;
       }
 
       /* Hide dev-only elements */
