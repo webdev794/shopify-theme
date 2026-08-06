@@ -28,26 +28,39 @@
   }
 }
 
-/* ---------- Media gallery ---------- */
-.product__media-main {
+/* ---------- Media gallery ----------
+   Single active main image + bottom thumbnail strip (Lula-style).
+   Non-active slides are hidden so the page does not grow with every image.
+   --------------------------------------------------------------- */
+.product__media {
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  border-radius: var(--product-radius);
-  scrollbar-width: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 100%;
 }
 
-.product__media-main::-webkit-scrollbar {
-  display: none;
+.product__media-main {
+  position: relative;
+  border-radius: var(--product-radius);
+  background: var(--color-background-secondary, #f4f4f4);
+  overflow: hidden;
+  /* Cap height so the info column stays in view without endless scroll */
+  max-height: min(70vh, 640px);
+  aspect-ratio: 1 / 1;
 }
 
 .product__media-item {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-  aspect-ratio: 1 / 1;
-  background: var(--color-background-secondary, #f4f4f4);
-  padding: 1rem;
+  display: none;
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem;
   box-sizing: border-box;
+}
+
+.product__media-item.is-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product__media-image,
@@ -56,26 +69,47 @@
 .product__media-item model-viewer {
   width: 100%;
   height: 100%;
+  max-height: min(70vh, 640px);
   object-fit: contain;
   display: block;
 }
 
+/* Bottom thumbnail strip — horizontal scroll when many images */
 .product__media-thumbs {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  margin-top: 0;
   overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.15rem;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.product__media-thumbs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.product__media-thumbs::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-foreground, #1a1a1a) 25%, transparent);
+  border-radius: 2px;
 }
 
 .product__media-thumb {
-  flex: 0 0 64px;
-  width: 64px;
-  height: 64px;
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
   border-radius: calc(var(--product-radius) / 2);
   overflow: hidden;
   border: 2px solid transparent;
-  opacity: 0.7;
+  opacity: 0.65;
   transition: opacity 0.15s ease, border-color 0.15s ease;
+  scroll-snap-align: start;
+  cursor: pointer;
+  background: var(--color-background-secondary, #f4f4f4);
+  padding: 0;
+  text-decoration: none;
 }
 
 .product__media-thumb img {
@@ -94,6 +128,25 @@
 .product__media-placeholder svg {
   width: 100%;
   height: auto;
+}
+
+@media screen and (max-width: 749px) {
+  .product__media-main {
+    max-height: min(60vh, 520px);
+  }
+
+  .product__media-image,
+  .product__media-item img,
+  .product__media-item video,
+  .product__media-item model-viewer {
+    max-height: min(60vh, 520px);
+  }
+
+  .product__media-thumb {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+  }
 }
 
 /* ---------- Info column ---------- */

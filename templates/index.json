@@ -52,6 +52,7 @@
       "settings": {
         "autoplay": true,
         "autoplay_speed": 5000,
+        "stop_on_hover": true,
         "slide_height": 600,
         "show_marquee": true,
         "marquee_text": "Free Shipping • 30-Day Returns • Subscribe and Save 10% • Shop Now",
@@ -308,25 +309,25 @@
         "product_fC6EgV": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "active-wear"
           }
         },
         "product_YAyiAe": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "blouse"
           }
         },
         "product_bXmh4V": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "cowboy-hat"
           }
         },
         "product_Jh4LYF": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "formal-pants"
           }
         }
       },
@@ -466,6 +467,8 @@
         "content_position": "top",
         "image": "shopify://shop_images/pexels-mart-production-7679862.jpg",
         "full_width": false,
+        "enable_scroll_zoom": true,
+        "scroll_zoom_start": 55,
         "color_dot": "#ffffff",
         "color_card_background": "#ffffff",
         "color_card_foreground": "#121212"
@@ -478,7 +481,7 @@
           "type": "post",
           "settings": {
             "image": "shopify://shop_images/photo-1565945887714-d5139f4eb0ce.avif",
-            "platform": "instagram",
+            "platform": "facebook",
             "username": "",
             "caption": "Beautiful sunset views 🌅",
             "likes": "2.4k",

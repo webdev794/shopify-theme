@@ -39,15 +39,15 @@
                     class="social-media-gallery__image"
                   >
                   {%- if block.settings.platform != 'none' -%}
-                    <div class="social-media-gallery__platform-badge">
-                      {%- render 'social-icon', platform: block.settings.platform -%}
+                    <div class="social-media-gallery__platform-badge social-media-gallery__platform-badge--{{ block.settings.platform }}" aria-hidden="true">
+                      {%- render 'social-platform-icon', platform: block.settings.platform -%}
                     </div>
                   {%- endif -%}
                 </div>
               {%- else -%}
                 <div class="social-media-gallery__placeholder">
                   <div class="social-media-gallery__placeholder-icon">
-                    {%- render 'social-icon', platform: block.settings.platform -%}
+                    {%- render 'social-platform-icon', platform: block.settings.platform -%}
                   </div>
                   <span class="social-media-gallery__placeholder-text">
                     {%- if block.settings.username != blank -%}

@@ -93,26 +93,45 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.7);
+  /* Transparent — logo only, image stays fully visible */
+  background: transparent;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
-  transition: transform 0.3s ease;
+  /* Soft edge so white logos stay readable on light or dark photos */
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  opacity: 0.72;
 }
 
 .social-media-gallery__card:hover .social-media-gallery__platform-badge {
-  transform: scale(1.1);
+  opacity: 0.95;
+  transform: scale(1.06);
 }
 
 .social-media-gallery__platform-badge svg {
   width: 18px;
   height: 18px;
+  display: block;
   fill: currentColor;
+  stroke: currentColor;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+/* Instagram uses stroked paths */
+.social-media-gallery__platform-badge--instagram svg {
+  fill: none;
+  stroke: currentColor;
+}
+.social-media-gallery__platform-badge--instagram svg circle[fill] {
+  fill: currentColor;
+  stroke: none;
 }
 
 .social-media-gallery__placeholder {
@@ -224,33 +243,15 @@
   grid-column: 1 / -1;
 }
 
-/* Platform-specific colors */
-.social-media-gallery__platform-badge--instagram {
-  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-}
-
-.social-media-gallery__platform-badge--facebook {
-  background: #1877f2;
-}
-
-.social-media-gallery__platform-badge--twitter {
-  background: #000000;
-}
-
-.social-media-gallery__platform-badge--pinterest {
-  background: #e60023;
-}
-
-.social-media-gallery__platform-badge--tiktok {
-  background: #000000;
-}
-
-.social-media-gallery__platform-badge--youtube {
-  background: #ff0000;
-}
-
+/* Platform badges stay transparent — white glyph only */
+.social-media-gallery__platform-badge--instagram,
+.social-media-gallery__platform-badge--facebook,
+.social-media-gallery__platform-badge--twitter,
+.social-media-gallery__platform-badge--pinterest,
+.social-media-gallery__platform-badge--tiktok,
+.social-media-gallery__platform-badge--youtube,
 .social-media-gallery__platform-badge--linkedin {
-  background: #0a66c2;
+  background: transparent;
 }
 
 /* Responsive */
