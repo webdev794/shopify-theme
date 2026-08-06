@@ -8,14 +8,116 @@
   const desktopHover = window.matchMedia('(min-width: 990px) and (hover: hover)');
   const desktopWidth = window.matchMedia('(min-width: 990px)');
 
+    /* --- Animated panel close (slide up) then remove [open] --- */
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PANEL_CLOSE_MS = 900;
+
+  const getDropdownPanel = (details) =>
+    details.querySelector('.header__mega-menu, .header__submenu');
+
+  const clearPanelInline = (panel) => {
+    if (!panel) return;
+    panel.style.animation = '';
+    panel.style.transition = '';
+    panel.style.opacity = '';
+    panel.style.transform = '';
+  };
+
+  const forceClose = (details) => {
+    const panel = getDropdownPanel(details);
+    clearPanelInline(panel);
+    details.classList.remove('is-closing');
+    details.removeAttribute('open');
+    delete details.dataset.closing;
+  };
+
+  const animatedClose = (details) => {
+    if (!details || !details.open) return;
+    if (details.dataset.closing === 'true') return;
+
+    const panel = getDropdownPanel(details);
+    // Mobile / reduced motion / no panel → instant
+    if (!panel || REDUCED_MOTION || !desktopWidth.matches) {
+      forceClose(details);
+      return;
+    }
+
+    details.dataset.closing = 'true';
+    details.classList.add('is-closing');
+
+    const isMega = panel.classList.contains('header__mega-menu');
+
+    // Freeze plate at fully-open pose (cancel open keyframe)
+    panel.style.animation = 'none';
+    panel.style.transition = 'none';
+    if (isMega) {
+      panel.style.opacity = '1';
+      panel.style.transform = 'translate3d(0, 0, 0)';
+    } else {
+      panel.style.opacity = '1';
+      panel.style.transform = 'translateX(-50%) translateY(0)';
+    }
+    void panel.offsetHeight;
+
+    // Whole plate moves up as one unit (content stays fixed on the plate)
+    if (isMega) {
+      panel.style.transition =
+        'opacity 0.5s ease, transform 0.72s cubic-bezier(0.4, 0, 0.2, 1)';
+      panel.style.opacity = '0';
+      panel.style.transform = 'translate3d(0, -56px, 0)';
+    } else {
+      panel.style.transition =
+        'opacity 0.4s ease, transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)';
+      panel.style.opacity = '0';
+      panel.style.transform = 'translateX(-50%) translateY(-20px)';
+    }
+
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      panel.removeEventListener('transitionend', onEnd);
+      forceClose(details);
+    };
+
+    const onEnd = (event) => {
+      if (event.target !== panel) return;
+      if (event.propertyName !== 'transform' && event.propertyName !== 'opacity') return;
+      finish();
+    };
+    panel.addEventListener('transitionend', onEnd);
+    window.setTimeout(finish, PANEL_CLOSE_MS);
+  };
+
+
   /* --- Close open dropdowns on outside click and Escape --- */
   const closeDropdowns = (except) => {
-    header
-      .querySelectorAll('details[open]')
-      .forEach((details) => {
-        if (details !== except) details.removeAttribute('open');
-      });
+    header.querySelectorAll('details[open]').forEach((details) => {
+      if (details === except) return;
+      // Don't animate-close the mobile drawer or search with mega logic
+      if (details.classList.contains('header__mobile-menu') || details.classList.contains('header__search')) {
+        details.removeAttribute('open');
+        return;
+      }
+      animatedClose(details);
+    });
   };
+
+  /* --- Desktop: animate close when summary is clicked while open --- */
+  header.querySelectorAll('[data-header-dropdown] > summary').forEach((summary) => {
+    summary.addEventListener('click', (event) => {
+      if (!desktopWidth.matches) return;
+      const details = summary.parentElement;
+      if (!details || !details.open) return;
+      if (details.dataset.closing === 'true') {
+        event.preventDefault();
+        return;
+      }
+      // Prevent native instant close; run slide-up instead
+      event.preventDefault();
+      animatedClose(details);
+    });
+  });
 
   /* --- Character Animation on Hover for ALL Menu Items --- */
   const animateMenuLetters = () => {
@@ -78,7 +180,11 @@
     if (event.key !== 'Escape') return;
     const openDetails = event.target.closest('details[open]');
     if (openDetails) {
-      openDetails.removeAttribute('open');
+      if (openDetails.classList.contains('header__mobile-menu') || openDetails.classList.contains('header__search')) {
+        openDetails.removeAttribute('open');
+      } else {
+        animatedClose(openDetails);
+      }
       const summary = openDetails.querySelector('summary');
       if (summary) summary.focus();
     }
@@ -117,13 +223,25 @@
           // Keep open if the pointer is still over the item or the panel
           // (covers the gap between trigger and full-bleed mega menu).
           if (item.matches(':hover') || details.matches(':hover')) return;
-          details.removeAttribute('open');
-        }, 220);
+          animatedClose(details);
+        }, 120);
       };
 
       item.addEventListener('pointerenter', (event) => {
         if (!desktopHover.matches || event.pointerType === 'touch') return;
         cancelClose();
+        // Cancel in-progress close animation if user re-enters
+        if (details.dataset.closing === 'true') {
+          const panel = getDropdownPanel(details);
+          clearPanelInline(panel);
+          details.classList.remove('is-closing');
+          delete details.dataset.closing;
+          // stay open; replay open animation
+          details.removeAttribute('open');
+          void details.offsetHeight;
+          details.setAttribute('open', '');
+          return;
+        }
         if (!details.open) details.setAttribute('open', '');
       });
 
@@ -142,6 +260,16 @@
       details.addEventListener('pointerenter', (event) => {
         if (!desktopHover.matches || event.pointerType === 'touch') return;
         cancelClose();
+        if (details.dataset.closing === 'true') {
+          const panel = getDropdownPanel(details);
+          clearPanelInline(panel);
+          details.classList.remove('is-closing');
+          delete details.dataset.closing;
+          details.removeAttribute('open');
+          void details.offsetHeight;
+          details.setAttribute('open', '');
+          return;
+        }
         if (!details.open) details.setAttribute('open', '');
       });
 

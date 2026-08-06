@@ -55,17 +55,33 @@ body.header-mobile-menu-open {
   overflow: hidden;
 }
 
-/* ---- Shared open/close animation ----
-   <details> content is not rendered while closed, so transitions on
-   opacity/visibility never fire. Keyframes run reliably on open. */
+/* ---- Shared panel motion ----
+   Open: keyframe slide-down (details content is display:none while closed,
+   so enter transitions alone are unreliable).
+   Close: .is-closing class + JS keeps [open] until the slide-up finishes. */
 @keyframes header-panel-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-18px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/*
+ * IPER-like: the whole plate (panel) moves up/down as one unit.
+ * Content stays fixed on the plate — no separate item motion.
+ */
+@keyframes header-mega-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -56px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -192,7 +208,18 @@ body.header-mobile-menu-open {
 }
 
 .header__dropdown[open] .header__submenu {
-  animation: header-panel-in 0.18s ease;
+  animation: header-panel-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+.header__dropdown[open].is-closing .header__submenu {
+  animation: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-14px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .header__submenu-link {
@@ -270,7 +297,31 @@ body.header-mobile-menu-open {
 }
 
 .header__dropdown--mega[open] .header__mega-menu {
-  animation: header-panel-in 0.22s ease;
+  animation: header-mega-in 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+
+/* Content stays glued to the plate — never animate columns separately */
+.header__dropdown--mega[open] .header__mega-column,
+.header__dropdown--mega[open] .header__mega-featured,
+.header__dropdown--mega[open] .header__mega-inner,
+.header__dropdown--mega[open] .header__mega-grid {
+  animation: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+/* Close: whole plate moves up together — JS keeps [open] until done */
+.header__dropdown--mega[open].is-closing .header__mega-menu {
+  animation: none;
+  opacity: 0;
+  transform: translate3d(0, -56px, 0);
+  transition:
+    opacity 0.5s ease,
+    transform 0.72s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
 .header__mega-inner {
@@ -811,7 +862,16 @@ body.header-mobile-menu-open {
   .header__search-panel,
   .header__mobile-nav,
   .header__cart-count--bump {
-    animation: none;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .header__dropdown[open].is-closing .header__submenu,
+  .header__dropdown--mega[open].is-closing .header__mega-menu {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
   }
 
   .header__mega-link:hover {
