@@ -552,4 +552,73 @@
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) syncCartFromServer();
   });
+
+  /* --- Minimal / Floating menu overlay --- */
+  (function initFloatingMenu() {
+    const root = document.querySelector('.header[data-header-minimal]') || header;
+    if (!root || !root.hasAttribute('data-header-minimal')) return;
+
+    const trigger = root.querySelector('[data-header-float-trigger]');
+    const overlay = root.querySelector('[data-header-float-overlay]');
+    if (!trigger || !overlay) return;
+
+    // Move overlay to <body> so parent stacking/overflow cannot hide it
+    if (overlay.parentElement !== document.body) {
+      document.body.appendChild(overlay);
+    }
+
+    const closeBtns = overlay.querySelectorAll('[data-header-float-close]');
+    let lastFocus = null;
+    let closingTimer = null;
+
+    const openOverlay = (event) => {
+      if (event) event.preventDefault();
+      lastFocus = document.activeElement;
+      overlay.removeAttribute('hidden');
+      overlay.hidden = false;
+      // reflow before adding class so CSS transition runs
+      void overlay.offsetWidth;
+      overlay.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('header-float-menu-open');
+      const closeBtn = overlay.querySelector('.header-float-overlay__close');
+      if (closeBtn) {
+        try { closeBtn.focus(); } catch (e) {}
+      }
+    };
+
+    const closeOverlay = () => {
+      overlay.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('header-float-menu-open');
+      clearTimeout(closingTimer);
+      closingTimer = window.setTimeout(() => {
+        if (!overlay.classList.contains('is-open')) {
+          overlay.setAttribute('hidden', '');
+          overlay.hidden = true;
+        }
+      }, 450);
+      if (lastFocus && typeof lastFocus.focus === 'function') {
+        try { lastFocus.focus(); } catch (e) {}
+      }
+    };
+
+    trigger.addEventListener('click', (event) => {
+      if (overlay.classList.contains('is-open')) closeOverlay();
+      else openOverlay(event);
+    });
+
+    closeBtns.forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeOverlay();
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && overlay.classList.contains('is-open')) {
+        closeOverlay();
+      }
+    });
+  })();
 })();
