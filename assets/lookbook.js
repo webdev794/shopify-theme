@@ -7,9 +7,58 @@
 // /cart/add.js endpoint with an items array.
 
 (() => {
+
+  /* Sticky scroll-zoom: scale media from --lookbook-zoom-start to 1
+     as the tall track is scrolled through the viewport. */
+  const initScrollZoom = (section) => {
+    if (!section.hasAttribute('data-scroll-zoom')) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const track = section.querySelector('.lookbook__scroll-track');
+    const target = section.querySelector('.lookbook__scale-target');
+    if (!track || !target) return;
+
+    const startScale = (() => {
+      const raw = getComputedStyle(section).getPropertyValue('--lookbook-zoom-start').trim();
+      const n = parseFloat(raw);
+      return Number.isFinite(n) && n > 0 && n <= 1 ? n : 0.55;
+    })();
+
+    let ticking = false;
+
+    const update = () => {
+      const rect = track.getBoundingClientRect();
+      const trackHeight = track.offsetHeight;
+      const viewH = window.innerHeight || document.documentElement.clientHeight;
+      const scrollable = Math.max(trackHeight - viewH, 1);
+      // 0 when sticky pins; 1 when track is about to unstick
+      const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
+      // Reach full size by ~55% of the track, then HOLD at 1 for the rest
+      // so the full-bleed image stays on screen for a stretch of scroll
+      const zoomEnd = 0.55;
+      const scaleProgress = Math.min(1, progress / zoomEnd);
+      const scale = startScale + (1 - startScale) * scaleProgress;
+      target.style.transform = 'scale(' + scale + ')';
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  };
+
   const initSection = (section) => {
     if (section.dataset.lookbookInit) return;
     section.dataset.lookbookInit = 'true';
+
+    // ---- Scroll zoom (sticky gallery) ----
+    initScrollZoom(section);
 
     const hotspots = section.querySelectorAll('[data-lookbook-hotspot]');
     if (!hotspots.length) return;

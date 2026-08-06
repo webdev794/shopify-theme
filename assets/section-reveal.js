@@ -18,12 +18,16 @@
     if (el.closest('.shopify-section-group-footer-group')) return true;
     var id = el.id || '';
     if (id === 'shopify-section-header' || id === 'shopify-section-footer') return true;
+    // Sticky scroll-zoom sections manage their own motion
+    if (el.querySelector('[data-scroll-zoom]')) return true;
     return false;
   }
 
   function isInViewport(el) {
     var rect = el.getBoundingClientRect();
-    return rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
+    // Only treat as "already visible" when the section top is well into
+    // the upper half of the screen — otherwise keep entrance animation.
+    return rect.top < window.innerHeight * 0.45 && rect.bottom > 0;
   }
 
   function reveal(el) {
@@ -77,8 +81,9 @@
       },
       {
         root: null,
-        rootMargin: '0px 0px -6% 0px',
-        threshold: 0.08
+        // Trigger a bit before the section is fully in view
+        rootMargin: '0px 0px -4% 0px',
+        threshold: 0.05
       }
     );
 
@@ -86,9 +91,12 @@
       observer.observe(section);
     });
 
-    // Failsafe only — does not change the normal animation path
+    // Failsafe: only force-reveal sections that are ON SCREEN but still
+    // stuck hidden. Do NOT reveal below-the-fold sections early — that
+    // would remove the entrance animation before the user scrolls to them.
     window.setTimeout(function () {
       document.querySelectorAll('.shopify-section.section-reveal:not(.is-visible)').forEach(function (el) {
+        if (!isInViewport(el)) return;
         reveal(el);
         try {
           observer.unobserve(el);

@@ -569,3 +569,121 @@
     transition: none;
   }
 }
+/* ========== Scroll zoom (sticky gallery) ==========
+   Image starts scaled down; as the tall track is scrolled,
+   it eases to full viewport coverage (Longbow-style sticky zoom).
+   ============================================================ */
+
+.lookbook--scroll-zoom {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lookbook--scroll-zoom.lookbook--content-left,
+.lookbook--scroll-zoom.lookbook--content-right {
+  display: block;
+}
+
+.lookbook__scroll-track {
+  position: relative;
+  /* Extra height = more scroll while sticky stays pinned after full zoom */
+  height: 240vh;
+}
+
+.lookbook__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-background, #0a0a0a);
+}
+
+.lookbook--scroll-zoom .lookbook__content--overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  margin: 0;
+  padding: 1.5rem 1.25rem 0;
+  pointer-events: none;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+.lookbook--scroll-zoom .lookbook__content--overlay .lookbook__text {
+  max-width: 36rem;
+}
+
+.lookbook--scroll-zoom .lookbook__content--overlay a {
+  pointer-events: auto;
+}
+
+.lookbook--scroll-zoom .lookbook__scale-target {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: scale(var(--lookbook-zoom-start, 0.55));
+  transform-origin: center center;
+  will-change: transform;
+  border-radius: 0;
+}
+
+.lookbook--scroll-zoom .lookbook__image,
+.lookbook--scroll-zoom .lookbook__placeholder {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  aspect-ratio: auto;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.lookbook--scroll-zoom .lookbook__actions {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  margin: 0;
+}
+
+/* Keep hotspot cards usable while scaled */
+.lookbook--scroll-zoom .lookbook__hotspot {
+  z-index: 2;
+}
+
+@media (max-width: 749px) {
+  .lookbook__scroll-track {
+    height: 200vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lookbook--scroll-zoom .lookbook__scale-target {
+    transform: none !important;
+  }
+
+  .lookbook__scroll-track {
+    height: auto;
+  }
+
+  .lookbook__sticky {
+    position: relative;
+    height: auto;
+    min-height: 70vh;
+  }
+
+  .lookbook--scroll-zoom .lookbook__scale-target {
+    position: relative;
+    inset: auto;
+  }
+}

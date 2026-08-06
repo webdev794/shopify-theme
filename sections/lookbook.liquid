@@ -22,18 +22,29 @@
 <noscript>{{ 'lookbook.css' | asset_url | stylesheet_tag }}</noscript>
 <script src="{{ 'lookbook.js' | asset_url }}" defer></script>
 
+{%- liquid
+  assign enable_scroll_zoom = section.settings.enable_scroll_zoom
+-%}
+
 <div
-  class="lookbook lookbook--content-{{ section.settings.content_position }}{% if section.settings.full_width %} lookbook--full-width{% endif %}"
+  class="lookbook lookbook--content-{{ section.settings.content_position }}{% if section.settings.full_width or enable_scroll_zoom %} lookbook--full-width{% endif %}{% if enable_scroll_zoom %} lookbook--scroll-zoom{% endif %}"
   style="
     --lookbook-dot: {{ section.settings.color_dot }};
     --lookbook-card-background: {{ section.settings.color_card_background }};
     --lookbook-card-foreground: {{ section.settings.color_card_foreground }};
+    --lookbook-zoom-start: {{ section.settings.scroll_zoom_start | default: 55 | divided_by: 100.0 }};
     {%- if image != blank %} --lookbook-aspect-ratio: {{ image.aspect_ratio }};{% endif -%}
   "
   data-lookbook
+  {% if enable_scroll_zoom %}data-scroll-zoom{% endif %}
 >
+  {%- if enable_scroll_zoom -%}
+  <div class="lookbook__scroll-track">
+    <div class="lookbook__sticky">
+  {%- endif -%}
+
   {%- if section.settings.heading != blank or section.settings.text != blank -%}
-    <div class="lookbook__content">
+    <div class="lookbook__content{% if enable_scroll_zoom %} lookbook__content--overlay{% endif %}">
       {%- if section.settings.heading != blank -%}
         <h2 class="lookbook__heading lookbook__heading--{{ section.settings.heading_size }}">
           {{ section.settings.heading }}
@@ -45,12 +56,17 @@
     </div>
   {%- endif -%}
 
-  <div class="lookbook__image-wrapper">
+  <div class="lookbook__image-wrapper{% if enable_scroll_zoom %} lookbook__scale-target{% endif %}">
     {%- if image != blank -%}
       {%- liquid
         assign lookbook_alt = section.settings.heading | default: 'Lookbook'
         if image.alt != blank
           assign lookbook_alt = image.alt
+        endif
+        if enable_scroll_zoom
+          assign lookbook_sizes = '100vw'
+        else
+          assign lookbook_sizes = '(max-width: 989px) 100vw, 66vw'
         endif
       -%}
       {{
@@ -59,7 +75,7 @@
         | image_tag:
           class: 'lookbook__image',
           widths: '750, 1100, 1500, 2000, 3000',
-          sizes: '(max-width: 989px) 100vw, 66vw',
+          sizes: lookbook_sizes,
           loading: loading,
           fetchpriority: fetchpriority,
           alt: lookbook_alt
@@ -252,6 +268,11 @@
       </button>
     </div>
   </div>
+
+  {%- if enable_scroll_zoom -%}
+    </div>{# /.lookbook__sticky #}
+  </div>{# /.lookbook__scroll-track #}
+  {%- endif -%}
 </div>
 
 {% schema %}
@@ -310,6 +331,24 @@
       "id": "full_width",
       "label": "t:sections.lookbook.settings.full_width.label",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_scroll_zoom",
+      "label": "Scroll zoom image",
+      "default": true,
+      "info": "Image starts smaller and zooms to full viewport height as you scroll, similar to a sticky gallery."
+    },
+    {
+      "type": "range",
+      "id": "scroll_zoom_start",
+      "label": "Starting image size",
+      "min": 40,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 55,
+      "info": "How small the image appears before you scroll into the section."
     },
     { "type": "header", "content": "t:sections.lookbook.settings.header__2.content" },
     {
