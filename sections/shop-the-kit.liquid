@@ -54,6 +54,21 @@
             {%- if block.settings.product != blank -%}
               {%- assign product = block.settings.product -%}
               <div class="shop-the-kit__product" data-product-id="{{ product.id }}" {{ block.shopify_attributes }}>
+                {%- if product.featured_image != blank -%}
+                  <div class="shop-the-kit__product-preview" aria-hidden="true">
+                    <img
+                      src="{{ product.featured_image | image_url: width: 800 }}"
+                      srcset="{{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 800 }} 800w, {{ product.featured_image | image_url: width: 1200 }} 1200w"
+                      sizes="320px"
+                      alt=""
+                      loading="lazy"
+                      width="800"
+                      height="{{ 800 | divided_by: product.featured_image.aspect_ratio | round }}"
+                      class="shop-the-kit__product-preview-image"
+                    >
+                    <p class="shop-the-kit__product-preview-title">{{ product.title | escape }}</p>
+                  </div>
+                {%- endif -%}
                 <div class="shop-the-kit__product-card">
                   <div class="shop-the-kit__product-image-wrapper">
                     {%- if product.featured_image != blank -%}
