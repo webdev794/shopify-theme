@@ -64,6 +64,19 @@
         "aria_label": "Slideshow with marquee"
       }
     },
+    "trending_products_XPtKR6": {
+      "type": "trending-products",
+      "name": "t:sections.trending_products.presets.name",
+      "settings": {
+        "heading": "Trending Now",
+        "subheading": "Our most popular products this week",
+        "collection": "men",
+        "products_to_show": 4,
+        "show_vendor": true,
+        "show_rating": true,
+        "show_view_all": true
+      }
+    },
     "shop_the_kit_NLcrJy": {
       "type": "shop-the-kit",
       "blocks": {
@@ -562,6 +575,7 @@
   },
   "order": [
     "slideshow_with_marquee_FNTTcB",
+    "trending_products_XPtKR6",
     "shop_the_kit_NLcrJy",
     "highlight_text_with_images_APQhQN",
     "mix_match_pack_NmakBm",
