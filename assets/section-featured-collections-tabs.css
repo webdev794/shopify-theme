@@ -48,21 +48,24 @@
 }
 
 .featured-collections-tabs .tab-button {
-  padding: 12px 24px;
+  padding: 0.9rem 0.25rem;
+  margin-right: 1.75rem;
   background: transparent;
   border: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 2px solid transparent;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: all 0.25s ease;
-  color: var(--color-foreground, #1a1a1a);
-  font-size: 1.05rem;
+  transition: border-color 0.25s ease, color 0.25s ease;
+  color: color-mix(in srgb, var(--color-foreground, #1a1a1a) 55%, transparent);
+  font-size: 0.8rem;
 }
 
 .featured-collections-tabs .tab-button:hover,
 .featured-collections-tabs .tab-button.active {
   border-bottom-color: var(--color-accent-background, #121212);
-  color: var(--color-accent-background, #121212);
+  color: var(--color-foreground, #1a1a1a);
 }
 
 .featured-collections-tabs .tab-button:focus-visible {
@@ -145,8 +148,9 @@
 
 .card__title {
   font-size: 1rem;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
   font-weight: 500;
+  letter-spacing: -0.005em;
   line-height: 1.4;
   overflow-wrap: break-word;
   color: var(--color-foreground, #1a1a1a);
@@ -172,7 +176,11 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover .card__image {
+  transform: scale(1.03);
 }
 
 
@@ -256,20 +264,24 @@
 
 .button {
   display: inline-block;
-  padding: 12px 24px;
+  padding: 0.8rem 1.75rem;
   font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-decoration: none;
-  border-radius: 4px;
-  transition: all 0.25s ease;
+  border-radius: 2px;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, color 0.2s ease;
 }
 
 .button--secondary {
   background: transparent;
   color: var(--color-accent-background, #121212);
-  border: 2px solid var(--color-accent-background, #121212);
+  border: 1px solid var(--color-accent-background, #121212);
 }
 
 .button--secondary:hover {
   background: var(--color-accent-background, #121212);
   color: var(--color-accent-foreground, #ffffff);
+  transform: translateY(-2px);
 }

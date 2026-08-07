@@ -128,15 +128,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   min-height: 44px;
   padding: 0.625rem 1.75rem;
   margin-top: 0.25rem;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, color 0.2s ease;
 }
 
 .iwt-carousel__button--primary {
@@ -147,7 +149,7 @@
 
 .iwt-carousel__button--primary:hover,
 .iwt-carousel__button--primary:focus-visible {
-  opacity: 0.85;
+  transform: translateY(-2px);
 }
 
 .iwt-carousel__button--secondary {

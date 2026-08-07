@@ -217,9 +217,9 @@
   width: min(300px, calc(100vw - 3.5rem));
   animation: lookbook-card-in 0.18s ease;
   background: var(--lookbook-card-background, #ffffff);
-  border-radius: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-  padding: 1rem;
+  border-radius: 2px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  padding: 1.125rem;
   color: var(--lookbook-card-foreground, #121212);
 }
 
@@ -357,13 +357,15 @@
 
 .lookbook__add-btn {
   width: 100%;
-  padding: 0.625rem;
-  font-size: 0.875rem;
+  padding: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   border: none;
-  border-radius: 6px;
+  border-radius: 2px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
 }
 
 .lookbook__add-btn--individual {
@@ -372,7 +374,6 @@
 }
 
 .lookbook__add-btn--individual:hover:not(:disabled) {
-  opacity: 0.85;
   transform: translateY(-1px);
 }
 
@@ -418,22 +419,24 @@
 .lookbook__whole-look-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
   padding: 0.875rem 1.75rem;
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   background: var(--lookbook-card-foreground, #121212);
   color: var(--lookbook-card-background, #ffffff);
   border: none;
-  border-radius: 50px;
+  border-radius: 2px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease;
+  box-shadow: none;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lookbook__whole-look-btn:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
+  box-shadow: none;
 }
 
 .lookbook__whole-look-btn:disabled {
@@ -448,7 +451,7 @@
 }
 
 .lookbook__whole-look-icon {
-  font-size: 1.25rem;
+  flex-shrink: 0;
 }
 
 /* ---- Feedback Messages ---- */

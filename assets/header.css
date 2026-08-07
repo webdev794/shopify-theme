@@ -989,6 +989,14 @@ body.header-mobile-menu-open {
   pointer-events: auto;
 }
 
+/* On pages without a full-bleed hero directly under the header, the fixed
+   logo/trigger would float over the page's own heading — reserve space. */
+body:has(.header--minimal)
+  .shopify-section-group-header-group
+  + .shopify-section:not(:has(.hero)):not(:has(.hero-carousel)) {
+  padding-top: 5.5rem;
+}
+
 .header--minimal .header__logo-image {
   max-height: 40px;
   width: auto;

@@ -10,10 +10,34 @@
 
 .media-grid--full-width {
   max-width: none;
+  width: 100%;
   padding-left: 0;
   padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
+/* Break out of the theme’s page-width / section containers */
+.section-media-grid:has(.media-grid--full-width),
+.shopify-section:has(.media-grid--full-width) {
+  max-width: none !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.section-media-grid:has(.media-grid--full-width) .page-width,
+.shopify-section:has(.media-grid--full-width) .page-width,
+.media-grid--full-width .page-width {
+  max-width: none !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Keep heading readable when grid is edge-to-edge */
 .media-grid--full-width .media-grid__heading {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
@@ -22,7 +46,8 @@
 /* ---- Heading ---- */
 .media-grid__heading {
   margin: 0 0 1.75rem;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1.15;
 }
 
@@ -38,9 +63,16 @@
   font-size: clamp(2rem, 1.3rem + 2.75vw, 3.25rem);
 }
 
-.media-grid__heading--align-left { text-align: left; }
-.media-grid__heading--align-center { text-align: center; }
-.media-grid__heading--align-right { text-align: right; }
+/* Higher specificity so theme styles cannot override alignment */
+.media-grid .media-grid__heading.media-grid__heading--align-left {
+  text-align: left;
+}
+.media-grid .media-grid__heading.media-grid__heading--align-center {
+  text-align: center;
+}
+.media-grid .media-grid__heading.media-grid__heading--align-right {
+  text-align: right;
+}
 
 /* ---- Grid ---- */
 .media-grid__grid {
@@ -89,7 +121,15 @@
 .media-grid--zoom .media-grid__image,
 .media-grid--zoom .media-grid__video,
 .media-grid--zoom .media-grid__placeholder {
-  transition: transform 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .media-grid--zoom .media-grid__item:hover .media-grid__image,
+  .media-grid--zoom .media-grid__item:hover .media-grid__video,
+  .media-grid--zoom .media-grid__item:hover .media-grid__placeholder {
+    transform: scale(1.04);
+  }
 }
 
 /* ---- Desktop spans ---- */

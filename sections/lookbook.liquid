@@ -263,7 +263,11 @@
         data-whole-look-btn
         aria-label="{{ 'sections.lookbook.shop_whole_look_aria' | t }}"
       >
-        <span class="lookbook__whole-look-icon">🛒</span>
+        <svg class="lookbook__whole-look-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="20" r="1"></circle>
+          <circle cx="18" cy="20" r="1"></circle>
+          <path d="M3 3h2l2.2 11.2a2 2 0 0 0 2 1.6h7.5a2 2 0 0 0 2-1.6L21 7H6"></path>
+        </svg>
         {{ 'sections.lookbook.shop_whole_look' | t }}
       </button>
     </div>

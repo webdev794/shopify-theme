@@ -149,6 +149,14 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
   pointer-events: none;
 }
 
+.hero-carousel__overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--hc-overlay, #000000) 65%, black 20%) 100%);
+  opacity: calc(var(--hc-overlay-opacity, 0.25) * 0.9 + 0.1);
+}
+
 /* ---- Content placement ---- */
 .hero-carousel__content-wrapper {
   display: flex;
@@ -221,12 +229,31 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
 }
 
 .hero-carousel__caption {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  opacity: 0.9;
+  letter-spacing: 0.16em;
+}
+
+.hero-carousel__caption::before {
+  content: '';
+  width: 1.5rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.hero-carousel__content--align-center .hero-carousel__caption,
+.hero-carousel__content--align-right .hero-carousel__caption {
+  justify-content: center;
+}
+
+.hero-carousel__content--align-right .hero-carousel__caption {
+  flex-direction: row-reverse;
 }
 
 .hero-carousel__heading {
@@ -282,17 +309,34 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
 }
 
 .hero-carousel__button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   min-height: 44px;
   padding: 0.625rem 1.75rem;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 2px;
   cursor: pointer;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-carousel__button::after {
+  content: '\2192';
+  display: inline-block;
+  transform: translateX(-4px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+.hero-carousel__button:hover::after,
+.hero-carousel__button:focus-visible::after {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .hero-carousel__button--primary {
@@ -303,18 +347,19 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
 
 .hero-carousel__button--primary:hover,
 .hero-carousel__button--primary:focus-visible {
-  opacity: 0.85;
+  transform: translateY(-2px);
 }
 
 .hero-carousel__button--secondary {
   color: currentColor;
   background-color: transparent;
-  border: 1px solid currentColor;
+  border: 1px solid color-mix(in srgb, currentColor 55%, transparent);
 }
 
 .hero-carousel__button--secondary:hover,
 .hero-carousel__button--secondary:focus-visible {
-  background-color: rgba(255, 255, 255, 0.15);
+  border-color: currentColor;
+  background-color: color-mix(in srgb, currentColor 12%, transparent);
 }
 
 .hero-carousel__button[aria-disabled='true'] {
@@ -336,24 +381,27 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
   height: 44px;
   padding: 0;
   color: #ffffff;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease, transform 0.25s ease;
 }
 
 .hero-carousel__arrow--prev {
-  left: 1rem;
+  left: 1.25rem;
 }
 
 .hero-carousel__arrow--next {
-  right: 1rem;
+  right: 1.25rem;
 }
 
 .hero-carousel__arrow:hover,
 .hero-carousel__arrow:focus-visible {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-50%) scale(1.06);
 }
 
 .hero-carousel__arrow svg {
@@ -384,9 +432,12 @@ body:not(.theme-editor) .hero-carousel__vip-badge {
 .hero-carousel__dots {
   display: flex;
   align-items: center;
-  gap: 0.125rem;
-  padding: 0.25rem;
-  background: rgba(0, 0, 0, 0.35);
+  gap: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
   pointer-events: auto;
 }

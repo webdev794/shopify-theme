@@ -27,10 +27,11 @@
 }
 
 .detailed-contact-form__heading {
-  font-size: 2.75rem;
-  font-weight: 800;
+  font-size: clamp(2rem, 1.5rem + 1.8vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
   margin: 0 0 0.75rem 0;
-  line-height: 1.2;
+  line-height: 1.15;
   color: var(--text-color, var(--color-foreground, #1a1a2e));
   position: relative;
   display: inline-block;
@@ -39,13 +40,12 @@
 .detailed-contact-form__heading::after {
   content: '';
   position: absolute;
-  bottom: -0.25rem;
+  bottom: -0.6rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
+  width: 2.5rem;
+  height: 1px;
   background: var(--color-accent-background, #1a1a2e);
-  border-radius: 2px;
 }
 
 .detailed-contact-form__subheading {
@@ -75,10 +75,10 @@
 /* Form Wrapper */
 .detailed-contact-form__form-wrapper {
   background: var(--color-background, #ffffff);
-  border-radius: 1.5rem;
-  padding: 2.5rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 6%, transparent);
+  border-radius: 0.15rem;
+  padding: 2.75rem;
+  box-shadow: none;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
 }
 
 .detailed-contact-form__form {
@@ -114,9 +114,11 @@
 /* Field Labels */
 .field__label {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.6rem;
   color: var(--text-color, var(--color-foreground, #1a1a2e));
 }
 
@@ -134,9 +136,9 @@
   font-family: inherit;
   color: var(--text-color, var(--color-foreground, #1a1a2e));
   background: var(--color-background-secondary, #f8fafc);
-  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 12%, transparent);
-  border-radius: var(--style-border-radius-inputs, 0.75rem);
-  transition: all 0.3s ease;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a2e) 18%, transparent);
+  border-radius: var(--style-border-radius-inputs, 0.15rem);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
   appearance: none;
   -webkit-appearance: none;
 }
@@ -145,7 +147,7 @@
   outline: none;
   border-color: var(--color-accent-background, #1a1a2e);
   background: var(--color-background, #ffffff);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent-background, #1a1a2e) 10%, transparent);
+  box-shadow: none;
 }
 
 .field__input:hover {
@@ -227,16 +229,18 @@
 /* Submit Button */
 .detailed-contact-form__submit {
   width: 100%;
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
-  font-weight: 700;
+  padding: 1.125rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-accent-foreground, #ffffff);
   background: var(--color-accent-background, #1a1a2e);
   border: none;
-  border-radius: var(--style-border-radius-inputs, 0.75rem);
+  border-radius: var(--style-border-radius-inputs, 0.15rem);
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-height: 60px;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,9 +249,8 @@
 }
 
 .detailed-contact-form__submit:hover {
-  opacity: 0.85;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px color-mix(in srgb, var(--color-accent-background, #1a1a2e) 35%, transparent);
+  box-shadow: none;
 }
 
 .detailed-contact-form__submit:active {
@@ -281,10 +284,10 @@
 /* Contact Information Sidebar */
 .detailed-contact-form__info {
   background: var(--color-background-secondary, #f8fafc);
-  border-radius: 1.5rem;
-  padding: 2.5rem;
+  border-radius: 0.15rem;
+  padding: 2.75rem;
   height: 100%;
-  border: 1px solid color-mix(in srgb, var(--color-accent-background, #1a1a2e) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent-background, #1a1a2e) 14%, transparent);
 }
 
 .detailed-contact-form__info-content {
@@ -294,8 +297,10 @@
 }
 
 .detailed-contact-form__info-heading {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   margin: 0;
   color: var(--text-color, var(--color-foreground, #1a1a2e));
   display: flex;
@@ -306,10 +311,9 @@
 .detailed-contact-form__info-heading::before {
   content: '';
   display: inline-block;
-  width: 4px;
-  height: 28px;
+  width: 1.25rem;
+  height: 1px;
   background: var(--color-accent-background, #1a1a2e);
-  border-radius: 2px;
 }
 
 .detailed-contact-form__info-text {
