@@ -10,7 +10,8 @@
 
 .pairing-products__heading {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.3px;
   margin: 0 0 12px;
   color: var(--pp-heading-color, var(--color-foreground, #1a1a1a));
 }
@@ -30,7 +31,7 @@
 
 .pairing-products__main-card {
   background: var(--pp-card-bg, var(--color-background-secondary, #f8f8f8));
-  border-radius: 16px;
+  border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
@@ -53,7 +54,8 @@
 
 .pairing-products__main-title {
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.2px;
   margin: 0 0 8px;
   color: var(--pp-text-color, var(--color-foreground, #1a1a1a));
 }
@@ -88,11 +90,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: var(--pp-link-color, var(--color-accent-background, #1a1a1a));
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: gap 0.3s ease;
 }
 
 .pairing-products__main-link:hover {
@@ -121,8 +125,10 @@
 }
 
 .pairing-products__pairings-label {
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--pp-text-color, var(--color-foreground, #1a1a1a));
 }
 
@@ -187,9 +193,9 @@
 
 .pairing-products__pairing-card {
   background: var(--pp-card-bg, var(--color-background-secondary, #f8f8f8));
-  border-radius: 12px;
+  border-radius: 2px;
   padding: 16px;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -214,7 +220,7 @@
   flex-shrink: 0;
   width: 80px;
   height: 80px;
-  border-radius: 8px;
+  border-radius: 2px;
   overflow: hidden;
   background: var(--color-background-secondary, #f5f5f5);
 }
@@ -286,21 +292,23 @@
 }
 
 .pairing-products__add-to-cart {
-  padding: 8px 16px;
+  padding: 9px 16px;
   background: var(--pp-accent, var(--color-accent-background, #1a1a1a));
   color: var(--color-accent-foreground, #ffffff);
   border: none;
-  border-radius: 6px;
+  border-radius: 2px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
   white-space: nowrap;
 }
 
 .pairing-products__add-to-cart:hover {
   opacity: 0.85;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .pairing-products__add-to-cart:disabled {
@@ -310,13 +318,15 @@
 }
 
 .pairing-products__sold-out {
-  padding: 8px 16px;
+  padding: 9px 16px;
   background: var(--color-background-secondary, #e5e5e5);
   color: var(--color-foreground-secondary, #666666);
   border: none;
-  border-radius: 6px;
+  border-radius: 2px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: not-allowed;
   white-space: nowrap;
 }
@@ -332,7 +342,7 @@
   justify-content: space-between;
   padding: 24px 32px;
   background: var(--pp-accent, var(--color-accent-background, #1a1a1a));
-  border-radius: 16px;
+  border-radius: 2px;
   color: var(--color-accent-foreground, #ffffff);
   gap: 20px;
   flex-wrap: wrap;
@@ -392,29 +402,33 @@
 
 .pairing-products__bundle-savings-amount {
   display: inline-block;
-  padding: 2px 12px;
+  padding: 2px 10px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 2px;
+  font-size: 12px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .pairing-products__add-bundle {
-  padding: 14px 32px;
+  padding: 15px 32px;
   background: var(--color-background, #ffffff);
   color: var(--pp-accent, var(--color-accent-background, #1a1a1a));
   border: none;
-  border-radius: 8px;
+  border-radius: 2px;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   white-space: nowrap;
 }
 
 .pairing-products__add-bundle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .pairing-products__add-bundle:disabled {

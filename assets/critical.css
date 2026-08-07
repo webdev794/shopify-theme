@@ -316,7 +316,7 @@ body {
   color: inherit;
   border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   border-radius: inherit;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .collection__pagination .page a:hover,
@@ -331,6 +331,7 @@ body {
   background: var(--color-accent-background, #121212);
   color: var(--color-accent-foreground, #fff);
   border-color: var(--color-accent-background, #121212);
+  transform: translateY(-2px);
 }
 
 .collection__pagination .current,
@@ -512,6 +513,7 @@ body {
 .back-to-top:hover {
   background-color: var(--color-foreground, #000);
   color: var(--color-background, #fff);
+  transform: translateY(-2px);
 }
 
 .back-to-top:focus-visible {
