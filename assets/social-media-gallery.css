@@ -10,7 +10,8 @@
 
 .social-media-gallery__heading {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.3px;
   margin: 0 0 12px;
   color: var(--smg-heading-color, #1a1a1a);
 }
@@ -60,7 +61,7 @@
 
 .social-media-gallery__card {
   background: var(--smg-card-bg, #ffffff);
-  border-radius: 12px;
+  border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   /* Rest pose */
@@ -236,21 +237,23 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 40px;
+  padding: 15px 40px;
   background: var(--smg-btn-bg, #1a1a1a);
   color: var(--smg-btn-text, #ffffff);
   border: none;
-  border-radius: 8px;
+  border-radius: 2px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .social-media-gallery__follow-btn:hover {
   background: var(--smg-btn-hover, #000000);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
   color: var(--smg-btn-text, #ffffff);
 }
 

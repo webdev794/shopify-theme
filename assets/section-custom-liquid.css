@@ -54,7 +54,8 @@
 /* Title */
 .custom-liquid__title {
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.2px;
   margin: 0 0 1.5rem;
   color: var(--color-foreground, #1a1a2e);
 }

@@ -1,6 +1,6 @@
 {% comment %}
   Trending Products Section
-  Version: 1.0
+  Version: 1.1 – fast sliding button swap + Quick View modal
 {% endcomment %}
 
 {{ 'trending-products.css' | asset_url | stylesheet_tag }}
@@ -91,6 +91,7 @@
                 <button
                   class="trending-products__quick-view"
                   data-product-id="{{ product.id }}"
+                  data-product-handle="{{ product.handle }}"
                   aria-label="{{ 'products.product.quick_view' | t }}"
                   type="button"
                 >

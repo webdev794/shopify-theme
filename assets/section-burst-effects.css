@@ -56,13 +56,13 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 2.5rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-decoration: none;
   border: none;
-  border-radius: 50px;
+  border-radius: 2px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -113,7 +113,7 @@
 
 .burst-btn--outline {
   background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   color: white;
 }
 
@@ -121,7 +121,7 @@
   background: white;
   color: #1a1a2e;
   border-color: white;
-  transform: scale(1.05);
+  transform: translateY(-3px);
 }
 
 /* ============================================
@@ -165,7 +165,7 @@
 
 .burst-btn--slide {
   background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   color: white;
   z-index: 1;
 }
