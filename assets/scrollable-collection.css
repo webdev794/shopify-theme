@@ -19,7 +19,8 @@
 
 .scrollable-collection__heading {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.3px;
   margin: 0 0 8px;
   color: var(--sc-heading-color, var(--color-foreground, #1a1a1a));
 }
@@ -34,12 +35,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: var(--sc-link-color, var(--color-accent-background, #1a1a1a));
   text-decoration: none;
   white-space: nowrap;
-  transition: all 0.3s ease;
+  transition: gap 0.3s ease;
 }
 
 .scrollable-collection__view-all:hover {
@@ -77,10 +80,10 @@
 
 .scrollable-collection__product-card {
   background: var(--sc-card-bg, var(--color-background, #ffffff));
-  border-radius: 12px;
+  border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -88,7 +91,7 @@
 
 .scrollable-collection__product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .scrollable-collection__product-link {
@@ -134,13 +137,14 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  padding: 4px 12px;
+  padding: 4px 10px;
   background: var(--color-sale, #c62828);
   color: #ffffff;
   font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  border-radius: 20px;
+  border-radius: 2px;
 }
 
 .scrollable-collection__quick-add {
@@ -171,7 +175,6 @@
 .scrollable-collection__quick-add:hover {
   background: var(--color-accent-background, #1a1a1a);
   color: var(--color-accent-foreground, #ffffff);
-  transform: scale(1.1);
 }
 
 .scrollable-collection__quick-add svg {
@@ -249,20 +252,23 @@
 
 .scrollable-collection__add-to-cart {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
   background: var(--sc-accent, var(--color-accent-background, #1a1a1a));
   color: var(--color-accent-foreground, #ffffff);
   border: none;
-  border-radius: 6px;
+  border-radius: 2px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
 }
 
 .scrollable-collection__add-to-cart:hover {
   opacity: 0.85;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .scrollable-collection__add-to-cart:disabled {
@@ -273,13 +279,15 @@
 
 .scrollable-collection__sold-out {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
   background: var(--color-background-secondary, #e5e5e5);
   color: var(--color-foreground-secondary, #666666);
   border: none;
-  border-radius: 6px;
+  border-radius: 2px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: not-allowed;
 }
 
@@ -299,7 +307,7 @@
 .scrollable-collection__control {
   width: 44px;
   height: 44px;
-  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 15%, transparent);
   border-radius: 50%;
   background: var(--color-background, #ffffff);
   color: var(--color-foreground, #1a1a1a);
@@ -308,7 +316,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: auto;
-  transition: all 0.3s ease;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -316,7 +324,6 @@
   background: var(--color-foreground, #1a1a1a);
   color: var(--color-background, #ffffff);
   border-color: var(--color-foreground, #1a1a1a);
-  transform: scale(1.05);
 }
 
 .scrollable-collection__control:disabled {

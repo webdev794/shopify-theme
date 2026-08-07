@@ -10,7 +10,8 @@
 
 .sticky-media-cards__heading {
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.3px;
   margin: 0 0 12px;
   color: var(--smc-heading-color, #1a1a1a);
 }
@@ -50,7 +51,7 @@
   position: sticky;
   top: 100px;
   align-self: flex-start;
-  border-radius: 16px;
+  border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0,0,0,0.08);
   background: var(--smc-media-bg, #f5f5f5);
@@ -112,13 +113,13 @@
   height: 48px;
   border-radius: 50%;
   background: rgba(0,0,0,0.6);
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,0.4);
   color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
   opacity: 0;
 }
 
@@ -128,7 +129,7 @@
 
 .sticky-media-cards__video-control:hover {
   background: rgba(0,0,0,0.8);
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
 .sticky-media-cards__video-control svg {
@@ -203,7 +204,8 @@
 
 .sticky-media-cards__title {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.2px;
   margin: 0 0 16px;
   color: var(--smc-title-color, #1a1a1a);
   line-height: 1.2;
@@ -226,19 +228,22 @@
 
 .sticky-media-cards__button {
   display: inline-block;
-  padding: 12px 32px;
+  padding: 14px 32px;
   background: var(--smc-btn-bg, #1a1a1a);
   color: var(--smc-btn-text, #ffffff);
-  border-radius: 6px;
+  border-radius: 2px;
   font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .sticky-media-cards__button:hover {
   background: var(--smc-btn-hover, #000000);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
 }
 
 .sticky-media-cards__empty {
@@ -281,7 +286,7 @@
     top: 0;
     aspect-ratio: 4/3;
     width: 100%;
-    border-radius: 12px;
+    border-radius: 2px;
   }
 
   .sticky-media-cards__media--right {
