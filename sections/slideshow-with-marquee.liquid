@@ -71,22 +71,32 @@
             </div>
           {%- endif -%}
 
-          <div class="slideshow-with-marquee__content">
+          <div class="slideshow-with-marquee__content" data-word-reveal="false">
             <div class="slideshow-with-marquee__content-inner page-width">
               {%- if block.settings.heading != blank -%}
-                <h2 class="slideshow-with-marquee__heading">
-                  {{ block.settings.heading | escape }}
+                <h2 class="slideshow-with-marquee__heading sm-reveal" aria-label="{{ block.settings.heading | escape }}">
+                  <span class="sm-reveal__line" aria-hidden="true">
+                    {%- assign sm_words = block.settings.heading | strip | split: ' ' -%}
+                    {%- for word in sm_words -%}
+                      <span class="sm-reveal__word" style="--i: {{ forloop.index0 }};">{{ word | escape }}</span>
+                    {%- endfor -%}
+                  </span>
                 </h2>
               {%- endif -%}
               
               {%- if block.settings.subheading != blank -%}
-                <p class="slideshow-with-marquee__subheading">
-                  {{ block.settings.subheading | escape }}
+                <p class="slideshow-with-marquee__subheading sm-reveal sm-reveal--delay" aria-label="{{ block.settings.subheading | escape }}">
+                  <span class="sm-reveal__line" aria-hidden="true">
+                    {%- assign sm_sub_words = block.settings.subheading | strip | split: ' ' -%}
+                    {%- for word in sm_sub_words -%}
+                      <span class="sm-reveal__word" style="--i: {{ forloop.index0 }};">{{ word | escape }}</span>
+                    {%- endfor -%}
+                  </span>
                 </p>
               {%- endif -%}
 
               {%- if block.settings.button_text != blank and block.settings.button_link != blank -%}
-                <a href="{{ block.settings.button_link }}" class="slideshow-with-marquee__button btn">
+                <a href="{{ block.settings.button_link }}" class="slideshow-with-marquee__button btn sm-reveal__btn">
                   {{ block.settings.button_text | escape }}
                 </a>
               {%- endif -%}

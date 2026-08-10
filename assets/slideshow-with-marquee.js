@@ -13,54 +13,89 @@ document.addEventListener('DOMContentLoaded', function() {
     const autoplay = section.dataset.autoplay === 'true';
     const autoplaySpeed = parseInt(section.dataset.autoplaySpeed) || 5000;
     const slideHeight = parseInt(section.dataset.slideHeight) || 600;
+    const DURATION = 950;
     
     let currentIndex = 0;
     let isAnimating = false;
     let autoplayTimer = null;
     
-    // Set slide height
     const slideshow = section.querySelector('.slideshow-with-marquee__slideshow');
     if (slideshow) {
       slideshow.style.setProperty('--slide-height', slideHeight + 'px');
     }
+
+    // Initial state: first slide expanded from left
+    slides.forEach(function(slide, i) {
+      slide.setAttribute('data-origin', 'left');
+      if (i === 0) {
+        slide.setAttribute('data-active', 'true');
+        slide.setAttribute('aria-hidden', 'false');
+      } else {
+        slide.setAttribute('data-active', 'false');
+        slide.setAttribute('aria-hidden', 'true');
+      }
+    });
     
-    function goTo(index) {
+    function goTo(index, direction) {
       if (isAnimating || index === currentIndex || index < 0 || index >= slides.length) return;
       
       isAnimating = true;
-      
-      // Update slides
-      slides.forEach(function(slide, i) {
-        const isActive = i === index;
-        slide.setAttribute('data-active', isActive ? 'true' : 'false');
-        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-      });
-      
-      // Update dots
+      var from = currentIndex;
+      var to = index;
+      // direction: 1 = next (out left, in from right), -1 = prev
+      if (direction === undefined) {
+        direction = to > from || (from === slides.length - 1 && to === 0) ? 1 : -1;
+        if (from === 0 && to === slides.length - 1) direction = -1;
+        if (from === slides.length - 1 && to === 0) direction = 1;
+      }
+
+      var leaving = slides[from];
+      var entering = slides[to];
+
+      // Horizontal: next = collapse toward left, expand from right
+      //             prev = collapse toward right, expand from left
+      if (direction >= 0) {
+        leaving.setAttribute('data-origin', 'left');
+        entering.setAttribute('data-origin', 'right');
+      } else {
+        leaving.setAttribute('data-origin', 'right');
+        entering.setAttribute('data-origin', 'left');
+      }
+
+      leaving.setAttribute('data-leaving', 'true');
+      leaving.setAttribute('data-active', 'false');
+      leaving.setAttribute('aria-hidden', 'true');
+
+      // Force reflow so origin applies before scale
+      void entering.offsetWidth;
+
+      entering.setAttribute('data-active', 'true');
+      entering.setAttribute('aria-hidden', 'false');
+      entering.removeAttribute('data-leaving');
+
       dots.forEach(function(dot, i) {
-        dot.classList.toggle('slideshow-with-marquee__dot--active', i === index);
-        if (i === index) {
+        dot.classList.toggle('slideshow-with-marquee__dot--active', i === to);
+        if (i === to) {
           dot.setAttribute('aria-current', 'true');
         } else {
           dot.removeAttribute('aria-current');
         }
       });
       
-      currentIndex = index;
+      currentIndex = to;
       
       setTimeout(function() {
+        leaving.removeAttribute('data-leaving');
         isAnimating = false;
-      }, 800);
+      }, DURATION);
     }
     
     function next() {
-      const nextIndex = (currentIndex + 1) % slides.length;
-      goTo(nextIndex);
+      goTo((currentIndex + 1) % slides.length, 1);
     }
     
     function prev() {
-      const prevIndex = (currentIndex - 1 + slides.length) % slides.length;
-      goTo(prevIndex);
+      goTo((currentIndex - 1 + slides.length) % slides.length, -1);
     }
     
     function startAutoplay() {
@@ -76,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     
-    // Event listeners
     if (prevBtn) {
       prevBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -97,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     dots.forEach(function(dot) {
       dot.addEventListener('click', function() {
-        const index = parseInt(this.dataset.index);
+        const index = parseInt(this.dataset.index, 10);
         if (index !== currentIndex) {
           stopAutoplay();
           goTo(index);
@@ -106,7 +140,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
     
-    // Keyboard navigation
     section.addEventListener('keydown', function(e) {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
@@ -122,17 +155,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Pause on hover
     if (section.dataset.stopOnHover === 'true') {
       section.addEventListener('mouseenter', stopAutoplay);
       section.addEventListener('mouseleave', startAutoplay);
     }
     
-    // Initialize
-    goTo(0);
     if (autoplay) startAutoplay();
     
-    // Store instance for cleanup
     section._slideshowInstance = {
       stopAutoplay: stopAutoplay,
       startAutoplay: startAutoplay
@@ -140,7 +169,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Shopify section reload
 document.addEventListener('shopify:section:unload', function(e) {
   const section = e.target;
   if (section && section._slideshowInstance) {
@@ -149,8 +177,10 @@ document.addEventListener('shopify:section:unload', function(e) {
 });
 
 document.addEventListener('shopify:section:load', function(e) {
-  const section = e.target;
-  if (section && section._slideshowInstance) {
-    section._slideshowInstance.startAutoplay();
+  const root = e.target;
+  if (!root) return;
+  const section = root.querySelector('[data-section-type="slideshow-with-marquee"]') || root;
+  if (section && section.matches && section.matches('[data-section-type="slideshow-with-marquee"]')) {
+    section.dataset.initialized = '';
   }
 });
