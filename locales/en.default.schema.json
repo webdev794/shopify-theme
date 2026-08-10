@@ -407,7 +407,8 @@
         "layout": {
           "label": "Layout",
           "options__1": { "label": "Grid" },
-          "options__2": { "label": "Carousel" }
+          "options__2": { "label": "Carousel" },
+          "options__3": { "label": "Scroll gallery" }
         },
         "products_per_row": {
           "label": "Products per row",

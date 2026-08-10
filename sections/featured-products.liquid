@@ -1,11 +1,11 @@
 {% comment %}
   Featured Products Section
-  Version: 1.7 (Added @app block support)
+  Version: 1.11 (Removed scroll prev/next buttons – focus on reliable pin)
 {% endcomment %}
 
 {{ 'featured-products.css' | asset_url | stylesheet_tag }}
 
-<div class="featured-products"
+<div class="featured-products{% if section.settings.layout == 'scroll' %} featured-products--scroll{% endif %}"
      data-section-id="{{ section.id }}"
      data-section-type="featured-products"
      data-layout="{{ section.settings.layout }}"
@@ -54,12 +54,13 @@
       </div>
     {%- endif -%}
 
-    <div class="featured-products__grid-wrapper">
-      {%- comment -%}
-        The carousel class is applied in Liquid (not by JS) so the layout is
-        correct on first paint and never depends on scripts loading.
-      {%- endcomment -%}
-      <div class="featured-products__grid{% if section.settings.layout == 'carousel' %} featured-products__grid--carousel{% endif %}"
+    <div class="featured-products__grid-wrapper{% if section.settings.layout == 'scroll' %} featured-products__grid-wrapper--scroll{% endif %}">
+      {%- if section.settings.layout == 'scroll' -%}
+        <div class="featured-products__scroll-pin" data-fp-scroll-pin>
+          <div class="featured-products__scroll-track" data-fp-scroll-track>
+      {%- endif -%}
+
+      <div class="featured-products__grid{% if section.settings.layout == 'carousel' %} featured-products__grid--carousel{% endif %}{% if section.settings.layout == 'scroll' %} featured-products__grid--scroll{% endif %}"
            role="list"
            data-fp-grid>
         {%- for block in section.blocks -%}
@@ -79,11 +80,6 @@
                       card_style: section.settings.card_style -%}
                 </div>
               {%- else -%}
-                {%- comment -%}
-                  Placeholder cards mirror the real card settings (style, image
-                  size) so every setting previews correctly before products are
-                  selected.
-                {%- endcomment -%}
                 <div class="featured-products__item featured-products__item--placeholder" role="listitem" {{ block.shopify_attributes }}>
                   <div class="product-card product-card--{{ section.settings.card_style }}">
                     <div class="product-card__image-wrapper product-card__image-wrapper--{{ section.settings.image_size }}">
@@ -126,14 +122,8 @@
               {%- endif -%}
 
             {%- when '@app' -%}
-              {%- comment -%}
-                Render app blocks. This allows apps to inject content
-                (like reviews or size charts) into the featured products section.
-                The block is rendered using the {% render block %} tag which
-                calls the app's block template.
-              {%- endcomment -%}
-              <div class="featured-products__item featured-products__item--app" 
-                   role="listitem" 
+              <div class="featured-products__item featured-products__item--app"
+                   role="listitem"
                    {{ block.shopify_attributes }}>
                 {% render block %}
               </div>
@@ -148,6 +138,11 @@
           {%- endcase -%}
         {%- endfor -%}
       </div>
+
+      {%- if section.settings.layout == 'scroll' -%}
+          </div><!-- /.scroll-track -->
+        </div><!-- /.scroll-pin -->
+      {%- endif -%}
     </div>
 
     {%- if section.settings.layout == 'carousel' and section.blocks.size > 1 -%}
@@ -202,7 +197,8 @@
       "default": "grid",
       "options": [
         { "value": "grid", "label": "t:sections.featured_products.settings.layout.options__1.label" },
-        { "value": "carousel", "label": "t:sections.featured_products.settings.layout.options__2.label" }
+        { "value": "carousel", "label": "t:sections.featured_products.settings.layout.options__2.label" },
+        { "value": "scroll", "label": "t:sections.featured_products.settings.layout.options__3.label" }
       ]
     },
     {

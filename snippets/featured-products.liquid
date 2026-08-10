@@ -114,6 +114,23 @@
         {%- endunless -%}
       </div>
 
+      <!-- Name/price overlay: only visible in the scroll layout (see CSS);
+           grid/carousel layouts hide this entirely and keep showing
+           title/price in the normal info block below the image, exactly
+           as before. -->
+      <div class="product-card__overlay-info">
+        <h3 class="product-card__overlay-title">{{ product.title }}</h3>
+        <div class="product-card__overlay-price{% if on_sale %} product-card__overlay-price--sale{% endif %}">
+          <span class="product-card__overlay-price-current">{{ current_variant.price | money }}</span>
+          {%- if show_compare_at and on_sale -%}
+            <span class="product-card__overlay-price-compare">
+              <span class="visually-hidden">{{ 'sections.featured_products.regular_price' | t }}</span>
+              {{ current_variant.compare_at_price | money }}
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+
       <!-- Quick View + Quick Add -->
       <button
         class="product-card__quick-view"
@@ -127,10 +144,25 @@
       </button>
 
       {%- if show_quick_add and current_variant.available -%}
-        <button class="product-card__quick-add"
+        <button type="button"
+                class="product-card__quick-add product-card__quick-add--trionn"
                 data-variant-id="{{ current_variant.id }}"
-                type="button">
-          {{ 'products.product.add_to_cart' | t }}
+                data-fp-atc>
+          <span class="fp-atc__underline">
+            <span class="fp-atc__u-right"></span>
+            <span class="fp-atc__u-left"></span>
+          </span>
+          <span class="fp-atc__word" data-fp-atc-label>{{ 'products.product.add_to_cart' | t }}</span>
+          <span class="fp-atc__arrow fp-atc__arrow--right" aria-hidden="true">
+            <svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.47372 8.652V6.552L8.32972 3.752V4.9L5.47372 2.1V-3.09944e-06L9.32372 3.836V4.816L5.47372 8.652ZM-0.000281237 5.11V3.542H8.60972V5.11H-0.000281237Z" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="fp-atc__arrow fp-atc__arrow--left" aria-hidden="true">
+            <svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.47372 8.652V6.552L8.32972 3.752V4.9L5.47372 2.1V-3.09944e-06L9.32372 3.836V4.816L5.47372 8.652ZM-0.000281237 5.11V3.542H8.60972V5.11H-0.000281237Z" fill="currentColor"/>
+            </svg>
+          </span>
         </button>
       {%- endif -%}
     </div>

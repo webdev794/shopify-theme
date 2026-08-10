@@ -375,6 +375,30 @@
     "featured_products_teK6M3": {
       "type": "featured-products",
       "blocks": {
+        "product_jfyKK3": {
+          "type": "product",
+          "settings": {
+            "product": "mesh-sneaker-shoes"
+          }
+        },
+        "product_NpBp8r": {
+          "type": "product",
+          "settings": {
+            "product": "yellow-hat"
+          }
+        },
+        "product_K8bLb3": {
+          "type": "product",
+          "settings": {
+            "product": "gift-card-product"
+          }
+        },
+        "product_b3gwnM": {
+          "type": "product",
+          "settings": {
+            "product": "tshirt-navy"
+          }
+        },
         "product_fC6EgV": {
           "type": "product",
           "settings": {
@@ -401,6 +425,10 @@
         }
       },
       "block_order": [
+        "product_jfyKK3",
+        "product_NpBp8r",
+        "product_K8bLb3",
+        "product_b3gwnM",
         "product_fC6EgV",
         "product_YAyiAe",
         "product_bXmh4V",
@@ -408,8 +436,8 @@
       ],
       "name": "t:sections.featured_products.presets.name",
       "settings": {
-        "layout": "grid",
-        "products_per_row": "4",
+        "layout": "scroll",
+        "products_per_row": "5",
         "gap": 20,
         "border_radius": 8,
         "full_width": true,
