@@ -5,8 +5,8 @@
   - Text phrases can be styled: regular, accent color, italic, highlighted
   - Images are sized in em so they scale perfectly with the text, with a
     per-image tilt for an editorial, hand-placed feel
-  - Optional staggered reveal on scroll (tiny JS, only loaded when enabled,
-    disabled under prefers-reduced-motion)
+  - Optional staggered reveal on scroll (disabled under prefers-reduced-motion)
+  - Water-bubble magnifier follows the mouse over the section (desktop only)
   - Empty image blocks render placeholders so the section always looks
     composed in the editor and demo store
 {%- endcomment -%}
@@ -20,9 +20,7 @@
 -%}
 
 {{ 'highlight-text-with-images.css' | asset_url | stylesheet_tag }}
-{%- if section.settings.enable_animation -%}
-  <script src="{{ 'highlight-text-with-images.js' | asset_url }}" defer></script>
-{%- endif -%}
+<script src="{{ 'highlight-text-with-images.js' | asset_url }}" defer></script>
 
 <div
   class="hlt hlt--{{ section.settings.text_size }} hlt--align-{{ section.settings.alignment }} hlt--shape-{{ section.settings.image_shape }}{% if section.settings.enable_animation %} hlt--animated{% endif %}"
@@ -32,7 +30,8 @@
     --hlt-accent: {{ section.settings.color_accent }};
     --hlt-image-scale: {{ section.settings.image_size | divided_by: 100.0 }};
   "
-  {% if section.settings.enable_animation %}data-hlt{% endif %}
+  data-hlt
+  data-hlt-bubble
 >
   <div class="hlt__inner">
     {%- if section.settings.caption != blank -%}
@@ -99,6 +98,15 @@
         </a>
       </div>
     {%- endif -%}
+  </div>
+
+  {%- comment -%} Water-bubble magnifier lens (positioned by JS) {%- endcomment -%}
+  <div class="hlt__bubble" aria-hidden="true">
+    <div class="hlt__bubble-lens">
+      <div class="hlt__bubble-content"></div>
+    </div>
+    <div class="hlt__bubble-glare"></div>
+    <div class="hlt__bubble-rim"></div>
   </div>
 </div>
 
