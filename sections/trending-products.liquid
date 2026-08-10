@@ -1,6 +1,6 @@
 {% comment %}
   Trending Products Section
-  Version: 1.1 – fast sliding button swap + Quick View modal
+  Version: 1.2 – multi-image auto-cycle (Serotoninn-style scaleX wipe) + fast sliding button swap + Quick View modal
 {% endcomment %}
 
 {{ 'trending-products.css' | asset_url | stylesheet_tag }}
@@ -22,16 +22,19 @@
         <div class="trending-products__item" data-index="{{ index }}" style="animation-delay: {{ index | times: 0.1 }}s">
           <div class="trending-products__card">
             {%- if product.featured_image -%}
-              <a href="{{ product.url }}" class="trending-products__image-wrapper">
-                <img
-                  src="{{ product.featured_image | image_url: width: 500, height: 500, crop: 'center' }}"
-                  srcset="{{ product.featured_image | image_url: width: 500, height: 500, crop: 'center' }} 1x, {{ product.featured_image | image_url: width: 1000, height: 1000, crop: 'center' }} 2x"
-                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
-                  loading="lazy"
-                  width="500"
-                  height="500"
-                  class="trending-products__image"
-                >
+              <a href="{{ product.url }}" class="trending-products__image-wrapper"{% if product.images.size > 1 %} data-image-cycle{% endif %}>
+                {%- for image in product.images limit: 5 -%}
+                  <img
+                    src="{{ image | image_url: width: 500, height: 500, crop: 'center' }}"
+                    srcset="{{ image | image_url: width: 500, height: 500, crop: 'center' }} 1x, {{ image | image_url: width: 1000, height: 1000, crop: 'center' }} 2x"
+                    alt="{{ image.alt | default: product.title | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    width="500"
+                    height="500"
+                    class="trending-products__image{% if forloop.first %} is-active{% endif %}"
+                    data-index="{{ forloop.index0 }}"
+                  >
+                {%- endfor -%}
                 {%- if product.compare_at_price > product.price -%}
                   <span class="trending-products__badge">{{ 'products.product.on_sale' | t }}</span>
                 {%- endif -%}

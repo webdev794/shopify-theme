@@ -148,6 +148,102 @@
       .catch(() => showError('Sorry, we could not load this product.'));
   }
 
+  /* ----- Automatic multi-image cycle (Serotoninn-style scaleX wipe) ----- */
+  const CYCLE_INTERVAL = 3200;
+  const TRANSITION_MS = 750;
+
+  function setupImageCycle(wrapper) {
+    const images = Array.from(wrapper.querySelectorAll('.trending-products__image'));
+    if (images.length < 2) return;
+
+    let current = 0;
+    let direction = 1; // 1 = next (enter from right), -1 = prev (enter from left)
+    let timer = null;
+    let isPaused = false;
+    let isTransitioning = false;
+
+    // Ensure only the first is active
+    images.forEach((img, i) => {
+      img.classList.toggle('is-active', i === 0);
+      img.classList.remove(
+        'is-entering-from-left',
+        'is-entering-from-right',
+        'is-exiting-to-left',
+        'is-exiting-to-right'
+      );
+    });
+
+    function goTo(nextIndex) {
+      if (isTransitioning || nextIndex === current) return;
+      isTransitioning = true;
+
+      const from = images[current];
+      const to = images[nextIndex];
+      const enterClass = direction > 0 ? 'is-entering-from-right' : 'is-entering-from-left';
+      const exitClass = direction > 0 ? 'is-exiting-to-left' : 'is-exiting-to-right';
+
+      // Prepare incoming image
+      to.classList.remove('is-active', 'is-entering-from-left', 'is-entering-from-right', 'is-exiting-to-left', 'is-exiting-to-right');
+      to.classList.add(enterClass);
+      // Force reflow so the starting transform is applied
+      void to.offsetWidth;
+      to.classList.add('is-active');
+
+      // Exit current
+      from.classList.remove('is-active');
+      from.classList.add(exitClass);
+
+      current = nextIndex;
+
+      setTimeout(() => {
+        from.classList.remove(exitClass);
+        to.classList.remove(enterClass);
+        isTransitioning = false;
+      }, TRANSITION_MS);
+    }
+
+    function next() {
+      if (isPaused) return;
+      direction = 1;
+      const nextIndex = (current + 1) % images.length;
+      goTo(nextIndex);
+    }
+
+    function start() {
+      stop();
+      timer = setInterval(next, CYCLE_INTERVAL);
+    }
+
+    function stop() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    // Pause while hovering the card so user can focus on one image
+    const card = wrapper.closest('.trending-products__card');
+    if (card) {
+      card.addEventListener('mouseenter', () => {
+        isPaused = true;
+        stop();
+      });
+      card.addEventListener('mouseleave', () => {
+        isPaused = false;
+        start();
+      });
+    }
+
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    // Stagger start slightly per card so they don't all flip at once
+    const index = parseInt(wrapper.closest('.trending-products__item')?.dataset.index || '0', 10);
+    setTimeout(start, 400 + index * 180);
+  }
+
   /* ----- Fast button swap on card hover ----- */
   function setupCardSwap(card) {
     const actions = card.querySelector('.trending-products__actions');
@@ -219,6 +315,8 @@
     });
 
     section.querySelectorAll('.trending-products__card').forEach(setupCardSwap);
+
+    section.querySelectorAll('.trending-products__image-wrapper[data-image-cycle]').forEach(setupImageCycle);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
