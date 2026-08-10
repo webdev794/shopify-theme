@@ -7,6 +7,8 @@
   - LCP-aware: when this is the first section, the first tiles load eagerly
   - Tile videos are muted loops with a per-tile pause control (WCAG 2.2.2),
     respect prefers-reduced-motion, and pause while off screen
+  - Optional Trionn-style entry: horizontal blind wipe + staggered tile reveal
+  - Image hover/tap popup with link to full image in a new tab
 {%- endcomment -%}
 
 {%- liquid
@@ -29,12 +31,10 @@
 -%}
 
 {{ 'media-grid.css' | asset_url | stylesheet_tag }}
-{%- if has_video -%}
-  <script src="{{ 'media-grid.js' | asset_url }}" defer></script>
-{%- endif -%}
+<script src="{{ 'media-grid.js' | asset_url }}" defer></script>
 
 <div
-  class="media-grid{% if section.settings.full_width %} media-grid--full-width{% endif %} media-grid--caption-{{ section.settings.caption_position }}{% if section.settings.show_caption_on_hover and section.settings.caption_position == 'overlay' %} media-grid--caption-hover{% endif %}{% if section.settings.enable_hover_zoom %} media-grid--zoom{% endif %} media-grid--mobile-{{ section.settings.mobile_layout }}"
+  class="media-grid{% if section.settings.full_width %} media-grid--full-width{% endif %} media-grid--caption-{{ section.settings.caption_position }}{% if section.settings.show_caption_on_hover and section.settings.caption_position == 'overlay' %} media-grid--caption-hover{% endif %}{% if section.settings.enable_hover_zoom %} media-grid--zoom{% endif %}{% if section.settings.enable_entry_animation %} media-grid--entry{% endif %} media-grid--mobile-{{ section.settings.mobile_layout }}"
   style="
     --grid-columns: {{ columns }};
     --grid-gap: {{ section.settings.gap }}px;
@@ -42,12 +42,24 @@
     --grid-aspect: {{ section.settings.aspect_ratio }};
     --grid-overlay-text: {{ section.settings.color_overlay_text }};
   "
+  data-media-grid
   {% if has_video %}
-    data-media-grid
     data-pause-label="{{ 'sections.media_grid.pause_video' | t }}"
     data-play-label="{{ 'sections.media_grid.play_video' | t }}"
   {% endif %}
+  {% if section.settings.enable_entry_animation %}data-media-grid-entry{% endif %}
 >
+
+  {%- if section.settings.enable_entry_animation -%}
+    <div class="media-grid__blinds" aria-hidden="true">
+      <span class="media-grid__blind"></span>
+      <span class="media-grid__blind"></span>
+      <span class="media-grid__blind"></span>
+      <span class="media-grid__blind"></span>
+      <span class="media-grid__blind"></span>
+    </div>
+  {%- endif -%}
+
   {%- if section.settings.heading != blank -%}
     <h2 class="media-grid__heading media-grid__heading--{{ section.settings.heading_size }} media-grid__heading--align-{{ section.settings.heading_alignment }}">
       {{ section.settings.heading }}
@@ -83,8 +95,15 @@
 
       <div
         class="media-grid__item media-grid__item--span-{{ span }}{% if block.settings.row_span == '2' %} media-grid__item--tall{% endif %}{% if video != blank %} media-grid__item--video{% endif %}"
+        style="--mg-i: {{ forloop.index0 }};"
         {{ block.shopify_attributes }}
         {% if video != blank %}data-media-grid-item{% endif %}
+        {% if video == blank and image != blank %}
+          data-media-grid-popup
+          data-full-src="{{ image | image_url: width: 2400 }}"
+          data-popup-src="{{ image | image_url: width: 1400 }}"
+          data-alt="{{ image.alt | escape }}"
+        {% endif %}
       >
         <div class="media-grid__media">
           {%- if video != blank -%}
@@ -156,6 +175,23 @@
         {%- endif -%}
       </div>
     {%- endfor -%}
+  </div>
+
+  <div class="media-grid__popup" id="media-grid-popup-{{ section.id }}" hidden aria-hidden="true" role="dialog" aria-label="{{ 'sections.media_grid.image_preview' | t }}">
+    <div class="media-grid__popup-backdrop" data-media-grid-popup-close></div>
+    <div class="media-grid__popup-panel">
+      <button type="button" class="media-grid__popup-close" data-media-grid-popup-close aria-label="{{ 'general.close' | t }}">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="media-grid__popup-media">
+        <img class="media-grid__popup-image" src="" alt="" width="1400" height="1400">
+      </div>
+      <div class="media-grid__popup-footer">
+        <a class="media-grid__popup-full" href="#" target="_blank" rel="noopener noreferrer">
+          {{ 'sections.media_grid.see_full_image' | t }}
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -286,6 +322,13 @@
       "id": "enable_hover_zoom",
       "label": "t:sections.media_grid_section.settings.enable_hover_zoom.label",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_entry_animation",
+      "label": "t:sections.media_grid_section.settings.enable_entry_animation.label",
+      "default": true,
+      "info": "t:sections.media_grid_section.settings.enable_entry_animation.info"
     }
   ],
   "blocks": [

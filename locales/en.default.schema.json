@@ -861,7 +861,11 @@
         },
         "color_overlay_text": { "label": "Overlay caption text color" },
         "header__3": { "content": "Effects" },
-        "enable_hover_zoom": { "label": "Zoom media on hover" }
+        "enable_hover_zoom": { "label": "Zoom media on hover" },
+        "enable_entry_animation": {
+          "label": "Animate on scroll entry",
+          "info": "Horizontal blind wipe and staggered tile reveal when the section enters the viewport. Disabled for visitors who prefer reduced motion."
+        }
       },
       "blocks": {
         "media": {

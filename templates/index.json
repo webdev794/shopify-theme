@@ -187,6 +187,114 @@
         "color_accent": "#b4552d"
       }
     },
+    "media_grid_xftqVD": {
+      "type": "media-grid",
+      "blocks": {
+        "media_B3Jwdm": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/photo-1591195853828-11db59a44f6b.jpg",
+            "caption_heading": "",
+            "caption_text": "",
+            "link": "",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        },
+        "media_xrYtxh": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/jacket-947395_1280.jpg",
+            "caption_heading": "",
+            "caption_text": "",
+            "link": "",
+            "column_span": "2",
+            "row_span": "2"
+          }
+        },
+        "media_BBNNJE": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/trousers-2685231_1280.jpg",
+            "caption_heading": "",
+            "caption_text": "",
+            "link": "",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        },
+        "media_ibJrmx": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/swimming-trunks.jpg",
+            "caption_heading": "",
+            "caption_text": "",
+            "link": "",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        },
+        "media_7AG3Xg": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/sunglasses.jpg",
+            "caption_heading": "",
+            "caption_text": "",
+            "link": "",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        },
+        "media_49GJXT": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/earings.jpg",
+            "caption_heading": "",
+            "caption_text": "",
+            "link": "",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        },
+        "media_aNhDp6": {
+          "type": "media",
+          "settings": {
+            "image": "shopify://shop_images/clculator.jpg",
+            "caption_heading": "",
+            "caption_text": "",
+            "link": "",
+            "column_span": "1",
+            "row_span": "1"
+          }
+        }
+      },
+      "block_order": [
+        "media_B3Jwdm",
+        "media_xrYtxh",
+        "media_BBNNJE",
+        "media_ibJrmx",
+        "media_7AG3Xg",
+        "media_49GJXT",
+        "media_aNhDp6"
+      ],
+      "name": "t:sections.media_grid_section.presets.name",
+      "settings": {
+        "heading": "Media grid",
+        "heading_size": "medium",
+        "heading_alignment": "left",
+        "columns_desktop": 3,
+        "aspect_ratio": "1 / 1",
+        "gap": 16,
+        "border_radius": 8,
+        "full_width": false,
+        "mobile_layout": "slider",
+        "caption_position": "overlay",
+        "show_caption_on_hover": false,
+        "color_overlay_text": "#ffffff",
+        "enable_hover_zoom": true,
+        "enable_entry_animation": true
+      }
+    },
     "mix_match_pack_NmakBm": {
       "type": "mix-match-pack",
       "blocks": {
@@ -578,6 +686,7 @@
     "trending_products_XPtKR6",
     "shop_the_kit_NLcrJy",
     "highlight_text_with_images_APQhQN",
+    "media_grid_xftqVD",
     "mix_match_pack_NmakBm",
     "featured_products_teK6M3",
     "blog_posts_TUtF9Y",
