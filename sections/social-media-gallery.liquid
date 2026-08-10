@@ -4,8 +4,7 @@
   Description: Display social media posts with links to your social profiles
 {% endcomment %}
 
-<link rel="preload" href="{{ 'social-media-gallery.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'social-media-gallery.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'social-media-gallery.css' | asset_url | stylesheet_tag }}
 
 <div class="social-media-gallery" data-section-id="{{ section.id }}" data-section-type="social-media-gallery" role="region" aria-label="{{ section.settings.aria_label | escape }}">
   <div class="page-width">

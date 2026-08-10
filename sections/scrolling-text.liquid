@@ -4,8 +4,7 @@
   Description: A full-width scrolling text marquee for announcements, promotions, or brand messages
 {% endcomment %}
 
-<link rel="preload" href="{{ 'scrolling-text.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'scrolling-text.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'scrolling-text.css' | asset_url | stylesheet_tag }}
 
 <div class="scrolling-text" 
      data-section-id="{{ section.id }}" 

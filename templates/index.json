@@ -83,13 +83,13 @@
         "product_V7nRVz": {
           "type": "product",
           "settings": {
-            "product": "active-wear"
+            "product": "formal-leader-shoes"
           }
         },
         "product_KNzkU8": {
           "type": "product",
           "settings": {
-            "product": "navy-blue-jeans"
+            "product": "tshirt-navy"
           }
         },
         "product_RYKm6r": {
@@ -270,7 +270,7 @@
         "product_fC6EgV": {
           "type": "product",
           "settings": {
-            "product": "active-wear"
+            "product": "cowboy-hat"
           }
         },
         "product_YAyiAe": {
@@ -288,7 +288,7 @@
         "product_Jh4LYF": {
           "type": "product",
           "settings": {
-            "product": "formal-pants"
+            "product": "dress"
           }
         }
       },
@@ -349,10 +349,10 @@
         "view_all_label": "View All Articles"
       }
     },
-    "text_with_icons_DtVBgt": {
+    "text_with_icons_jrbwQC": {
       "type": "text-with-icons",
       "blocks": {
-        "item_y6VVrw": {
+        "item_QybnYF": {
           "type": "item",
           "settings": {
             "icon": "truck",
@@ -362,7 +362,7 @@
             "button_link": ""
           }
         },
-        "item_w76LiD": {
+        "item_4iKnkW": {
           "type": "item",
           "settings": {
             "icon": "shield",
@@ -372,7 +372,7 @@
             "button_link": ""
           }
         },
-        "item_Vwnmq7": {
+        "item_rzAtVa": {
           "type": "item",
           "settings": {
             "icon": "star",
@@ -384,11 +384,11 @@
         }
       },
       "block_order": [
-        "item_y6VVrw",
-        "item_w76LiD",
-        "item_Vwnmq7"
+        "item_QybnYF",
+        "item_4iKnkW",
+        "item_rzAtVa"
       ],
-      "name": "Text with Icons",
+      "name": "t:sections.text_with_icons.presets.name",
       "settings": {
         "heading": "Why Choose Us",
         "subheading": "Discover what makes us different",
@@ -581,7 +581,7 @@
     "mix_match_pack_NmakBm",
     "featured_products_teK6M3",
     "blog_posts_TUtF9Y",
-    "text_with_icons_DtVBgt",
+    "text_with_icons_jrbwQC",
     "lookbook_PJk88J",
     "social_media_gallery_mTtQC4",
     "testimonials_wwx7nK",

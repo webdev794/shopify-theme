@@ -3,8 +3,7 @@
   Version: 1.7 (Added @app block support)
 {% endcomment %}
 
-<link rel="preload" href="{{ 'featured-products.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'featured-products.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'featured-products.css' | asset_url | stylesheet_tag }}
 
 <div class="featured-products"
      data-section-id="{{ section.id }}"

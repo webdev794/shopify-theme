@@ -19,8 +19,7 @@
   endif
 -%}
 
-<link rel="preload" href="{{ 'highlight-text-with-images.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'highlight-text-with-images.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'highlight-text-with-images.css' | asset_url | stylesheet_tag }}
 {%- if section.settings.enable_animation -%}
   <script src="{{ 'highlight-text-with-images.js' | asset_url }}" defer></script>
 {%- endif -%}

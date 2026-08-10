@@ -6,7 +6,7 @@
 
 {{ 'slideshow-with-marquee.css' | asset_url | stylesheet_tag }}
 
-<div class="slideshow-with-marquee" 
+<div class="slideshow-with-marquee full-width" 
      data-section-id="{{ section.id }}"
      data-section-type="slideshow-with-marquee"
      data-autoplay="{{ section.settings.autoplay }}"
@@ -16,6 +16,7 @@
      role="region"
      aria-label="{{ section.settings.aria_label | escape }}"
      style="
+       --slide-height: {{ section.settings.slide_height | default: 600 }}px;
        --sm-marquee-bg: {{ section.settings.marquee_bg }};
        --sm-marquee-text-color: {{ section.settings.marquee_text_color }};
        --sm-overlay-color: {{ section.settings.overlay_color }};
@@ -37,6 +38,15 @@
                   assign slide_alt = block.settings.image.alt
                 endif
               -%}
+              {%- liquid
+                if section.index == 1 and forloop.first
+                  assign slide_loading = 'eager'
+                  assign slide_fetchpriority = 'high'
+                else
+                  assign slide_loading = 'lazy'
+                  assign slide_fetchpriority = 'low'
+                endif
+              -%}
               <img
                 src="{{ block.settings.image | image_url: width: 1600 }}"
                 srcset="
@@ -47,7 +57,9 @@
                 "
                 sizes="100vw"
                 alt="{{ slide_alt | escape }}"
-                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                loading="{{ slide_loading }}"
+                fetchpriority="{{ slide_fetchpriority }}"
+                decoding="async"
                 width="2000"
                 height="800"
                 class="slideshow-with-marquee__image"

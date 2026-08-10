@@ -18,8 +18,7 @@
   endif
 -%}
 
-<link rel="preload" href="{{ 'lookbook.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'lookbook.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'lookbook.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'lookbook.js' | asset_url }}" defer></script>
 
 {%- liquid
