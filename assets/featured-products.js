@@ -259,10 +259,12 @@
       pin.classList.remove('is-pinned', 'is-pinned-end');
       pin.style.width = '';
       pin.style.left = '';
-      track.style.transform = '';
+      pin.style.position = '';
+      track.style.transform = 'none';
+      track.style.willChange = 'auto';
       items.forEach(function (item) {
-        item.style.transform = '';
-        item.style.opacity = '';
+        item.style.transform = 'none';
+        item.style.opacity = '1';
       });
       state = 'before';
       targetProgress = 0;
@@ -451,6 +453,21 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
     window.addEventListener('load', recalc);
+
+    // When crossing the mobile breakpoint, fully disable pin so native
+    // horizontal swipe (CSS) works; re-enable pin when returning to desktop.
+    function onMobileChange() {
+      if (isMobile.matches) {
+        disablePin();
+      } else {
+        recalc();
+      }
+    }
+    if (typeof isMobile.addEventListener === 'function') {
+      isMobile.addEventListener('change', onMobileChange);
+    } else if (typeof isMobile.addListener === 'function') {
+      isMobile.addListener(onMobileChange);
+    }
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(recalc);

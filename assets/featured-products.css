@@ -867,34 +867,69 @@
   transform: scale(1.02);
 }
 
-/* ========== Mobile ========== */
+/* ========== Mobile ==========
+   Scroll layout becomes a native horizontal carousel on small screens.
+   Pin/transform gallery is desktop-only. */
 @media (max-width: 749px) {
   .featured-products__grid-wrapper--scroll {
-    height: auto;
+    height: auto !important;
   }
+
   .featured-products__scroll-pin {
-    position: relative;
-    height: auto;
-    overflow: visible;
-    -webkit-mask-image: none;
-    mask-image: none;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    display: block;
   }
+
   .featured-products__scroll-pin.is-pinned,
   .featured-products__scroll-pin.is-pinned-end {
-    position: relative;
-    top: auto;
-    bottom: auto;
-    left: auto;
-    width: 100%;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
   }
+
+  /* Track is the horizontal scroller on mobile */
   .featured-products__scroll-track {
-    padding: 0 1.25rem;
-  }
-  .featured-products__grid--scroll {
+    display: flex;
+    align-items: stretch;
+    gap: var(--fp-gap, 20px);
+    padding: 0 1.25rem 1rem;
     overflow-x: auto !important;
+    overflow-y: hidden !important;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    transform: none !important;
+    will-change: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .featured-products__scroll-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .featured-products__grid--scroll {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+    max-width: none !important;
+    overflow: visible !important;
+    transform: none !important;
+    gap: var(--fp-gap, 20px);
+    padding: 0;
+    margin: 0;
   }
 
   .featured-products__grid--scroll .featured-products__item {
@@ -909,6 +944,12 @@
   .featured-products__grid--scroll .product-card__image-wrapper {
     aspect-ratio: 3 / 4;
     max-height: min(48dvh, 340px);
+  }
+
+  /* Carousel layout: ensure touch scroll is never blocked */
+  .featured-products__grid--carousel {
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
   }
 }
 

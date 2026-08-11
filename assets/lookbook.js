@@ -1,4 +1,10 @@
 // ========== LOOKBOOK JAVASCRIPT ==========
+// Hotspot popover behavior: one open at a time, close on outside click
+// and Escape, aria-expanded kept in sync. Popovers still work without
+// this file thanks to native <details> behavior.
+//
+// New: "Shop the whole look" batch add to cart using Shopify's
+// /cart/add.js endpoint with an items array.
 
 (() => {
 
@@ -7,6 +13,8 @@
   const initScrollZoom = (section) => {
     if (!section.hasAttribute('data-scroll-zoom')) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Scroll-zoom is disabled on mobile via CSS; skip JS work too
+    if (window.matchMedia('(max-width: 749px)').matches) return;
 
     const track = section.querySelector('.lookbook__scroll-track');
     const target = section.querySelector('.lookbook__scale-target');
