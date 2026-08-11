@@ -1,5 +1,5 @@
 /* Featured Products Styles
-   v1.15 — Static ATC button in scroll layout so Quick View stays visible
+   v1.16 — ATC button always absolute at bottom of image + removed external theme references
    ============================================ */
 
 .featured-products-section {
@@ -936,16 +936,18 @@
   }
 }
 
-/* ========== TRIONN-style Add to cart button ========== */
-.product-card__quick-add--trionn {
-  position: relative;
+/* ========== Animated Add to cart button ========== */
+.product-card__quick-add--animated {
+  position: absolute;                    /* fixed: always at bottom of image */
+  left: 14px;
+  bottom: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
   width: auto;
   min-height: 2.5rem;
   padding: 0.35rem 2.75rem 0.35rem 0;
-  margin-top: 0.75rem;
+  margin: 0;
   border: none;
   border-radius: 0;
   background: transparent !important;
@@ -957,11 +959,14 @@
   cursor: pointer;
   overflow: hidden;
   box-shadow: none !important;
+  z-index: 3;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Default hover styles (grid / carousel) */
-.product-card__quick-add--trionn:hover,
-.product-card__quick-add--trionn:focus-visible {
+.product-card__quick-add--animated:hover,
+.product-card__quick-add--animated:focus-visible {
   background: rgba(0, 0, 0, 0.5) !important;
   color: #ffffff !important;
   border-radius: 2px;
@@ -995,14 +1000,14 @@
   transition-duration: 0.5s;
 }
 
-.product-card__quick-add--trionn:hover .fp-atc__u-right,
-.product-card__quick-add--trionn:focus-visible .fp-atc__u-right {
+.product-card__quick-add--animated:hover .fp-atc__u-right,
+.product-card__quick-add--animated:focus-visible .fp-atc__u-right {
   transform: scaleX(0);
   transition-duration: 0.2s;
 }
 
-.product-card__quick-add--trionn:hover .fp-atc__u-left,
-.product-card__quick-add--trionn:focus-visible .fp-atc__u-left {
+.product-card__quick-add--animated:hover .fp-atc__u-left,
+.product-card__quick-add--animated:focus-visible .fp-atc__u-left {
   transform: scaleX(1);
   transition-duration: 0.32s;
   transition-delay: 0.08s;
@@ -1021,8 +1026,8 @@
   transition-delay: calc(var(--i, 0) * 30ms);
 }
 
-.product-card__quick-add--trionn:hover .fp-atc__char,
-.product-card__quick-add--trionn:focus-visible .fp-atc__char {
+.product-card__quick-add--animated:hover .fp-atc__char,
+.product-card__quick-add--animated:focus-visible .fp-atc__char {
   transform: translateX(var(--fp-atc-shift, 10px));
 }
 
@@ -1057,20 +1062,20 @@
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
 }
 
-.product-card__quick-add--trionn:hover .fp-atc__arrow--right svg,
-.product-card__quick-add--trionn:focus-visible .fp-atc__arrow--right svg {
+.product-card__quick-add--animated:hover .fp-atc__arrow--right svg,
+.product-card__quick-add--animated:focus-visible .fp-atc__arrow--right svg {
   opacity: 0;
   transform: translateX(28px);
 }
 
-.product-card__quick-add--trionn:hover .fp-atc__arrow--left svg,
-.product-card__quick-add--trionn:focus-visible .fp-atc__arrow--left svg {
+.product-card__quick-add--animated:hover .fp-atc__arrow--left svg,
+.product-card__quick-add--animated:focus-visible .fp-atc__arrow--left svg {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* ===== SCROLL LAYOUT: keep ATC static (no upward movement) ===== */
-.featured-products__grid--scroll .product-card__quick-add--trionn {
+.featured-products__grid--scroll .product-card__quick-add--animated {
   position: absolute;
   left: 14px;
   bottom: 52px;               /* sits just above the name/price overlay */
@@ -1081,23 +1086,23 @@
   transform: none !important; /* never moves */
 }
 
-.featured-products__grid--scroll .product-card__quick-add--trionn:hover,
-.featured-products__grid--scroll .product-card__quick-add--trionn:focus-visible {
+.featured-products__grid--scroll .product-card__quick-add--animated:hover,
+.featured-products__grid--scroll .product-card__quick-add--animated:focus-visible {
   transform: none !important; /* force static */
   background: rgba(0, 0, 0, 0.55) !important;
   color: #ffffff !important;
 }
 
 /* Disable the letter-shift and arrow animations that cause movement */
-.featured-products__grid--scroll .product-card__quick-add--trionn:hover .fp-atc__char,
-.featured-products__grid--scroll .product-card__quick-add--trionn:focus-visible .fp-atc__char {
+.featured-products__grid--scroll .product-card__quick-add--animated:hover .fp-atc__char,
+.featured-products__grid--scroll .product-card__quick-add--animated:focus-visible .fp-atc__char {
   transform: none !important;
 }
 
-.featured-products__grid--scroll .product-card__quick-add--trionn:hover .fp-atc__arrow--right svg,
-.featured-products__grid--scroll .product-card__quick-add--trionn:focus-visible .fp-atc__arrow--right svg,
-.featured-products__grid--scroll .product-card__quick-add--trionn:hover .fp-atc__arrow--left svg,
-.featured-products__grid--scroll .product-card__quick-add--trionn:focus-visible .fp-atc__arrow--left svg {
+.featured-products__grid--scroll .product-card__quick-add--animated:hover .fp-atc__arrow--right svg,
+.featured-products__grid--scroll .product-card__quick-add--animated:focus-visible .fp-atc__arrow--right svg,
+.featured-products__grid--scroll .product-card__quick-add--animated:hover .fp-atc__arrow--left svg,
+.featured-products__grid--scroll .product-card__quick-add--animated:focus-visible .fp-atc__arrow--left svg {
   transform: none !important;
   opacity: 1;
 }

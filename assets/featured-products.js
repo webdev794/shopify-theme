@@ -1,10 +1,9 @@
 /**
  * Featured Products JavaScript
  * Handles carousel navigation, quick add to cart,
- * TRIONN-style ATC letter split, and scroll gallery.
+ * animated ATC letter split, and scroll gallery.
  *
- * v1.12 — Added smooth lerp / inertia so the horizontal
- * movement eases to a stop instead of stopping abruptly.
+ * v1.13 — Smooth lerp / inertia + removed external theme references
  */
 
 (function () {
@@ -195,7 +194,7 @@
     }, 3000);
   }
 
-  /* ---------------- TRIONN-style ATC letter split ---------------- */
+  /* ---------------- Animated ATC letter split ---------------- */
   function enhanceAtcButtons(section) {
     section.querySelectorAll('[data-fp-atc]').forEach(function (btn) {
       if (btn.dataset.fpAtcReady) return;

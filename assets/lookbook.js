@@ -1,10 +1,4 @@
 // ========== LOOKBOOK JAVASCRIPT ==========
-// Hotspot popover behavior: one open at a time, close on outside click
-// and Escape, aria-expanded kept in sync. Popovers still work without
-// this file thanks to native <details> behavior.
-//
-// New: "Shop the whole look" batch add to cart using Shopify's
-// /cart/add.js endpoint with an items array.
 
 (() => {
 
@@ -61,38 +55,39 @@
     initScrollZoom(section);
 
     const hotspots = section.querySelectorAll('[data-lookbook-hotspot]');
-    if (!hotspots.length) return;
 
-    // ---- Popover behavior ----
+    // ---- Popover behavior (only when hotspots exist) ----
     const closeAll = (except) => {
       hotspots.forEach((hotspot) => {
         if (hotspot !== except) hotspot.removeAttribute('open');
       });
     };
 
-    hotspots.forEach((hotspot) => {
-      const summary = hotspot.querySelector(':scope > summary');
-      if (summary) summary.setAttribute('aria-expanded', String(hotspot.open));
-
-      hotspot.addEventListener('toggle', () => {
+    if (hotspots.length) {
+      hotspots.forEach((hotspot) => {
+        const summary = hotspot.querySelector(':scope > summary');
         if (summary) summary.setAttribute('aria-expanded', String(hotspot.open));
-        if (hotspot.open) closeAll(hotspot);
+
+        hotspot.addEventListener('toggle', () => {
+          if (summary) summary.setAttribute('aria-expanded', String(hotspot.open));
+          if (hotspot.open) closeAll(hotspot);
+        });
       });
-    });
 
-    section.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') return;
-      const openHotspot = event.target.closest('details[open]');
-      if (openHotspot) {
-        openHotspot.removeAttribute('open');
-        const summary = openHotspot.querySelector('summary');
-        if (summary) summary.focus();
-      }
-    });
+      section.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        const openHotspot = event.target.closest('details[open]');
+        if (openHotspot) {
+          openHotspot.removeAttribute('open');
+          const summary = openHotspot.querySelector('summary');
+          if (summary) summary.focus();
+        }
+      });
 
-    document.addEventListener('click', (event) => {
-      if (!section.contains(event.target)) closeAll();
-    });
+      document.addEventListener('click', (event) => {
+        if (!section.contains(event.target)) closeAll();
+      });
+    }
 
     // ---- "Shop the Whole Look" batch add to cart ----
     const wholeLookBtn = section.querySelector('[data-whole-look-btn]');
