@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "t:general.footer",
@@ -5,51 +14,33 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "col-1": {
+        "menu-1": {
           "type": "link_list",
           "settings": {
-            "heading": "Shop",
+            "heading": "Links",
             "menu": "footer"
           }
         },
-        "col-2": {
+        "menu-2": {
           "type": "link_list",
           "settings": {
-            "heading": "Support",
+            "heading": "Pages",
             "menu": "main-menu"
-          }
-        },
-        "col-3": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Company",
-            "menu": "quick-links"
-          }
-        },
-        "col-4": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Policies",
-            "menu": "footer"
           }
         }
       },
       "block_order": [
-        "col-1",
-        "col-2",
-        "col-3",
-        "col-4"
+        "menu-1",
+        "menu-2"
       ],
       "settings": {
+        "logo": "shopify://shop_images/recently-generated-suvara-shopify-theme-logo.png",
         "tagline": "Quality products, thoughtfully made.",
-        "social_instagram": "",
-        "social_facebook": "",
-        "social_x": "",
-        "social_linkedin": "",
-        "social_pinterest": "",
-        "social_youtube": "",
-        "copyright_text": "",
-        "bottom_right_text": "Powered by Shop"
+        "show_newsletter": true,
+        "newsletter_heading": "Stay in the loop",
+        "newsletter_text": "New arrivals, exclusive offers, and more — straight to your inbox.",
+        "show_social": true,
+        "show_payment_icons": false
       }
     }
   },

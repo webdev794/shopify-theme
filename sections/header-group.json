@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
@@ -5,19 +14,16 @@
     "header": {
       "type": "header",
       "settings": {
-        "logo": "",
         "logo_width": 120,
-        "header_style": "minimal",
-        "float_button_position": "top-right",
-        "float_button_label": "Menu",
         "menu": "main-menu",
         "open_on_hover": true,
         "enable_sticky_header": false,
         "sticky_hide_on_scroll": false,
         "enable_mega_menu": true,
-        "mega_menu_parents": "home, catalog, about-us, collections, contact",
-        "mega_show_images": false,
+        "mega_menu_parents": "home, catalog, collections, about-us, contact",
+        "mega_show_images": true,
         "mega_show_featured": true,
+        "mega_featured_image": "shopify://shop_images/ChatGPT_Image_Aug_3_2026_10_14_30_AM.png",
         "mega_featured_title": "Featured Collection",
         "mega_featured_text": "Discover our latest arrivals and best sellers.",
         "mega_featured_link": "",

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "slideshow_with_marquee_FNTTcB": {
@@ -6,9 +15,9 @@
         "slide_qDLmdH": {
           "type": "slide",
           "settings": {
-            "image": "",
-            "heading": "New Collection",
-            "subheading": "Discover our latest arrivals",
+            "image": "shopify://shop_images/slide1_beauty-product.jpg",
+            "heading": "Natural Glow",
+            "subheading": "Beauty that feels pure",
             "button_text": "Shop Now",
             "button_link": ""
           }
@@ -16,7 +25,7 @@
         "slide_qpx74X": {
           "type": "slide",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/slide2.jpg",
             "heading": "New Collection",
             "subheading": "Discover our latest arrivals",
             "button_text": "Shop Now",
@@ -26,7 +35,7 @@
         "slide_4EDpqr": {
           "type": "slide",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/slide3_makeupbrush.jpg",
             "heading": "Limited Time Offer",
             "subheading": "Up to 50% off select items",
             "button_text": "View Deals",
@@ -54,66 +63,185 @@
         "text_color": "#ffffff",
         "aria_label": "Slideshow with marquee"
       }
-    },    
-    "trending_products_XPtKR6": {
-      "type": "trending-products",
-      "name": "t:sections.trending_products.presets.name",
+    },
+    "featured_collections_tabs_TjQXxL": {
+      "type": "featured-collections-tabs",
+      "blocks": {
+        "collection_RbD9Fr": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "",
+            "collection": "face-creams-moisturizer"
+          }
+        },
+        "collection_mNbPUp": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "",
+            "collection": "body-bath"
+          }
+        },
+        "collection_VmHieg": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "",
+            "collection": "perfume"
+          }
+        },
+        "collection_Eawwzx": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "",
+            "collection": "hair"
+          }
+        },
+        "collection_i8Je9U": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "",
+            "collection": "mature-skincare"
+          }
+        },
+        "collection_bT8xzz": {
+          "type": "collection",
+          "settings": {
+            "tab_title": "",
+            "collection": "makeup"
+          }
+        }
+      },
+      "block_order": [
+        "collection_RbD9Fr",
+        "collection_mNbPUp",
+        "collection_VmHieg",
+        "collection_Eawwzx",
+        "collection_i8Je9U",
+        "collection_bT8xzz"
+      ],
+      "name": "t:sections.featured_collections_tabs.presets.name",
       "settings": {
-        "heading": "Trending Now",
-        "subheading": "Our most popular products this week",
-        "collection": "men",
+        "heading": "Shop by Category",
+        "subheading": "Shop our curated selections",
+        "heading_size": "heading--medium",
+        "heading_alignment": "center",
         "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": 2,
         "show_vendor": true,
-        "show_rating": true,
-        "show_view_all": true
+        "show_rating": false,
+        "image_ratio": "portrait",
+        "show_view_all": true,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "shop_the_kit_NLcrJy": {
       "type": "shop-the-kit",
       "blocks": {
-        "product_V7nRVz": {
+        "product_ttqkCp": {
           "type": "product",
           "settings": {
-            "product": "formal-leader-shoes"
+            "product": "pink-lip-gloss"
           }
         },
         "product_KNzkU8": {
           "type": "product",
           "settings": {
-            "product": "tshirt-navy"
-          }
-        },
-        "product_RYKm6r": {
-          "type": "product",
-          "settings": {
-            "product": "brownish-frock"
+            "product": "lipstick-shade-of-red"
           }
         },
         "product_jpKEDz": {
           "type": "product",
           "settings": {
-            "product": "yellow-hat"
+            "product": "lip-balm"
+          }
+        },
+        "product_WaGCxg": {
+          "type": "product",
+          "settings": {
+            "product": "suvara-beauty-luxe-lip-nourishing-oil-with-hyaluronic-and-vitamin-e"
           }
         }
       },
       "block_order": [
-        "product_V7nRVz",
+        "product_ttqkCp",
         "product_KNzkU8",
-        "product_RYKm6r",
-        "product_jpKEDz"
+        "product_jpKEDz",
+        "product_WaGCxg"
       ],
       "name": "Shop the Kit",
       "settings": {
         "heading": "Shop the Kit",
         "subheading": "Everything you need in one complete bundle",
-        "image": "",
-        "kit_title": "The Complete Starter Kit",
+        "image": "shopify://shop_images/lipcare_kit.png",
+        "kit_title": "The Complete Lip Care Kit",
         "kit_description": "<p>This curated bundle includes everything you need to get started. Save 20% compared to buying items separately.</p>",
         "show_variant_selector": true,
         "add_to_cart_text": "Add Kit to Cart",
         "total_label": "Total",
         "free_shipping_text": "Free shipping on this kit",
         "aria_label": "Shop the kit"
+      }
+    },
+    "featured_products_KhYjYk": {
+      "type": "featured-products",
+      "blocks": {
+        "product_FE7Yfd": {
+          "type": "product",
+          "settings": {
+            "product": "blush-rose-perfume"
+          }
+        },
+        "product_Ke44Gx": {
+          "type": "product",
+          "settings": {
+            "product": "body-lotion"
+          }
+        },
+        "product_ye8JHG": {
+          "type": "product",
+          "settings": {
+            "product": "beard-oil"
+          }
+        },
+        "product_68QWPK": {
+          "type": "product",
+          "settings": {
+            "product": "moisturiser"
+          }
+        }
+      },
+      "block_order": [
+        "product_FE7Yfd",
+        "product_Ke44Gx",
+        "product_ye8JHG",
+        "product_68QWPK"
+      ],
+      "name": "t:sections.featured_products.presets.name",
+      "settings": {
+        "layout": "grid",
+        "products_per_row": "4",
+        "gap": 20,
+        "border_radius": 8,
+        "full_width": false,
+        "heading": "Featured Products",
+        "subheading": "Our Best Sellers",
+        "description": "<p>Discover our most popular products loved by our customers</p>",
+        "show_view_all": true,
+        "view_all_text": "View All",
+        "view_all_link": "",
+        "show_vendor": true,
+        "show_rating": true,
+        "show_quick_add": true,
+        "show_compare_at": true,
+        "image_size": "medium",
+        "card_style": "standard",
+        "background_color": "#ffffff",
+        "text_color": "#1a1a1a",
+        "heading_color": "#1a1a1a",
+        "card_background": "#ffffff",
+        "card_shadow": "rgba(0, 0, 0, 0.1)",
+        "aria_label": "Featured products"
       }
     },
     "highlight_text_with_images_APQhQN": {
@@ -129,7 +257,7 @@
         "image_gLgaHb": {
           "type": "image",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/professional-makeup-pallete.png",
             "tilt": -4
           }
         },
@@ -143,7 +271,7 @@
         "image_EnXP7D": {
           "type": "image",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/makeup-brushes-on-marble_2.jpg",
             "tilt": 3
           }
         },
@@ -178,175 +306,53 @@
         "color_accent": "#b4552d"
       }
     },
-    "media_grid_xftqVD": {
-      "type": "media-grid",
-      "blocks": {
-        "media_B3Jwdm": {
-          "type": "media",
-          "settings": {
-            "image": "",
-            "caption_heading": "",
-            "caption_text": "",
-            "link": "",
-            "column_span": "1",
-            "row_span": "1"
-          }
-        },
-        "media_xrYtxh": {
-          "type": "media",
-          "settings": {
-            "image": "",
-            "caption_heading": "",
-            "caption_text": "",
-            "link": "",
-            "column_span": "2",
-            "row_span": "2"
-          }
-        },
-        "media_BBNNJE": {
-          "type": "media",
-          "settings": {
-            "image": "",
-            "caption_heading": "",
-            "caption_text": "",
-            "link": "",
-            "column_span": "1",
-            "row_span": "1"
-          }
-        },
-        "media_ibJrmx": {
-          "type": "media",
-          "settings": {
-            "image": "",
-            "caption_heading": "",
-            "caption_text": "",
-            "link": "",
-            "column_span": "1",
-            "row_span": "1"
-          }
-        },
-        "media_7AG3Xg": {
-          "type": "media",
-          "settings": {
-            "image": "",
-            "caption_heading": "",
-            "caption_text": "",
-            "link": "",
-            "column_span": "1",
-            "row_span": "1"
-          }
-        },
-        "media_49GJXT": {
-          "type": "media",
-          "settings": {
-            "image": "",
-            "caption_heading": "",
-            "caption_text": "",
-            "link": "",
-            "column_span": "1",
-            "row_span": "1"
-          }
-        },
-        "media_aNhDp6": {
-          "type": "media",
-          "settings": {
-            "image": "",
-            "caption_heading": "",
-            "caption_text": "",
-            "link": "",
-            "column_span": "1",
-            "row_span": "1"
-          }
-        }
-      },
-      "block_order": [
-        "media_B3Jwdm",
-        "media_xrYtxh",
-        "media_BBNNJE",
-        "media_ibJrmx",
-        "media_7AG3Xg",
-        "media_49GJXT",
-        "media_aNhDp6"
-      ],
-      "name": "t:sections.media_grid_section.presets.name",
-      "settings": {
-        "heading": "Media grid",
-        "heading_size": "medium",
-        "heading_alignment": "left",
-        "columns_desktop": 3,
-        "aspect_ratio": "1 / 1",
-        "gap": 16,
-        "border_radius": 8,
-        "full_width": false,
-        "mobile_layout": "slider",
-        "caption_position": "overlay",
-        "show_caption_on_hover": false,
-        "color_overlay_text": "#ffffff",
-        "enable_hover_zoom": true,
-        "enable_entry_animation": true
-      }
-    },
     "mix_match_pack_NmakBm": {
       "type": "mix-match-pack",
       "blocks": {
-        "product_CnPgeg": {
-          "type": "product",
-          "settings": {
-            "product": ""
-          }
-        },
         "product_c76iPJ": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "blush-rose-perfume"
           }
         },
         "product_3X4iLM": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "sunset-bloom-perfume"
+          }
+        },
+        "product_CnPgeg": {
+          "type": "product",
+          "settings": {
+            "product": "suvara-beauty-advanced-brightening-moisturizer"
           }
         },
         "product_FmTMzn": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "moisturiser"
           }
         },
         "product_pLwcJQ": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "pink-lip-gloss"
           }
         },
         "product_QWBjdi": {
           "type": "product",
           "settings": {
-            "product": ""
-          }
-        },
-        "product_jajyDY": {
-          "type": "product",
-          "settings": {
-            "product": ""
-          }
-        },
-        "product_GMCDGH": {
-          "type": "product",
-          "settings": {
-            "product": ""
+            "product": "suvara-beauty-luxe-lip-nourishing-oil-with-hyaluronic-and-vitamin-e"
           }
         }
       },
       "block_order": [
-        "product_CnPgeg",
         "product_c76iPJ",
         "product_3X4iLM",
+        "product_CnPgeg",
         "product_FmTMzn",
         "product_pLwcJQ",
-        "product_QWBjdi",
-        "product_jajyDY",
-        "product_GMCDGH"
+        "product_QWBjdi"
       ],
       "name": "Mix and Match Pack",
       "settings": {
@@ -361,95 +367,6 @@
         "show_vendor": true,
         "show_variant_selector": true,
         "aria_label": "Mix and match pack builder"
-      }
-    },
-    "featured_products_teK6M3": {
-      "type": "featured-products",
-      "blocks": {
-        "product_jfyKK3": {
-          "type": "product",
-          "settings": {
-            "product": "mesh-sneaker-shoes"
-          }
-        },
-        "product_NpBp8r": {
-          "type": "product",
-          "settings": {
-            "product": "yellow-hat"
-          }
-        },
-        "product_K8bLb3": {
-          "type": "product",
-          "settings": {
-            "product": "gift-card-product"
-          }
-        },
-        "product_b3gwnM": {
-          "type": "product",
-          "settings": {
-            "product": "tshirt-navy"
-          }
-        },
-        "product_fC6EgV": {
-          "type": "product",
-          "settings": {
-            "product": "cowboy-hat"
-          }
-        },
-        "product_YAyiAe": {
-          "type": "product",
-          "settings": {
-            "product": "blouse"
-          }
-        },
-        "product_bXmh4V": {
-          "type": "product",
-          "settings": {
-            "product": "cowboy-hat"
-          }
-        },
-        "product_Jh4LYF": {
-          "type": "product",
-          "settings": {
-            "product": "dress"
-          }
-        }
-      },
-      "block_order": [
-        "product_jfyKK3",
-        "product_NpBp8r",
-        "product_K8bLb3",
-        "product_b3gwnM",
-        "product_fC6EgV",
-        "product_YAyiAe",
-        "product_bXmh4V",
-        "product_Jh4LYF"
-      ],
-      "name": "t:sections.featured_products.presets.name",
-      "settings": {
-        "layout": "scroll",
-        "products_per_row": "5",
-        "gap": 20,
-        "border_radius": 8,
-        "full_width": true,
-        "heading": "Featured Products",
-        "subheading": "Our Best Sellers",
-        "description": "<p>Discover our most popular products loved by our customers</p>",
-        "show_view_all": true,
-        "view_all_text": "View All",
-        "view_all_link": "",
-        "show_vendor": true,
-        "show_rating": true,
-        "show_quick_add": true,
-        "show_compare_at": true,
-        "image_size": "large",
-        "card_style": "standard",
-        "background_color": "#ffffff",
-        "text_color": "#1a1a1a",
-        "heading_color": "#1a1a1a",
-        "card_background": "#ffffff",
-        "card_shadow": "#0000001a",
-        "aria_label": "Featured products"
       }
     },
     "blog_posts_TUtF9Y": {
@@ -476,74 +393,54 @@
         "view_all_label": "View All Articles"
       }
     },
-    "text_with_icons_jrbwQC": {
-      "type": "text-with-icons",
-      "blocks": {
-        "item_QybnYF": {
-          "type": "item",
-          "settings": {
-            "icon": "truck",
-            "title": "Free Shipping",
-            "text": "<p>Enjoy free shipping on all orders over $50</p>",
-            "button_text": "",
-            "button_link": ""
-          }
-        },
-        "item_4iKnkW": {
-          "type": "item",
-          "settings": {
-            "icon": "shield",
-            "title": "Secure Payments",
-            "text": "<p>Your payment information is always secure</p>",
-            "button_text": "",
-            "button_link": ""
-          }
-        },
-        "item_rzAtVa": {
-          "type": "item",
-          "settings": {
-            "icon": "star",
-            "title": "Premium Quality",
-            "text": "<p>Handpicked products from trusted brands</p>",
-            "button_text": "",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "item_QybnYF",
-        "item_4iKnkW",
-        "item_rzAtVa"
-      ],
-      "name": "t:sections.text_with_icons.presets.name",
-      "settings": {
-        "heading": "Why Choose Us",
-        "subheading": "Discover what makes us different",
-        "columns": "3",
-        "alignment": "center"
-      }
-    },
     "lookbook_PJk88J": {
       "type": "lookbook",
       "blocks": {
+        "hotspot_MTTT7y": {
+          "type": "hotspot",
+          "settings": {
+            "product": "fresh-face-cream-anti-aging-tallow-moisturizer",
+            "position_x": 28,
+            "position_y": 83
+          }
+        },
+        "hotspot_yhdxTb": {
+          "type": "hotspot",
+          "settings": {
+            "product": "suvara-beauty-clarifying-cleansing-oil-for-acne-prone-skin",
+            "position_x": 63,
+            "position_y": 50
+          }
+        },
+        "hotspot_y7V447": {
+          "type": "hotspot",
+          "settings": {
+            "product": "super-serum-silk-bronzing-drops",
+            "position_x": 50,
+            "position_y": 56
+          }
+        },
         "hotspot_mJ8zd9": {
           "type": "hotspot",
           "settings": {
-            "product": "",
-            "position_x": 36,
+            "product": "charcoal-face-mask",
+            "position_x": 79,
             "position_y": 64
           }
         },
         "hotspot_4ycDmf": {
           "type": "hotspot",
           "settings": {
-            "product": "",
-            "position_x": 38,
-            "position_y": 45
+            "product": "suvara-beauty-advanced-brightening-moisturizer",
+            "position_x": 28,
+            "position_y": 35
           }
         }
       },
       "block_order": [
+        "hotspot_MTTT7y",
+        "hotspot_yhdxTb",
+        "hotspot_y7V447",
         "hotspot_mJ8zd9",
         "hotspot_4ycDmf"
       ],
@@ -553,10 +450,8 @@
         "heading_size": "medium",
         "text": "<p>Tap the dots to shop every piece in this look.</p>",
         "content_position": "top",
-        "image": "",
+        "image": "shopify://shop_images/Fm43w.jpg",
         "full_width": false,
-        "enable_scroll_zoom": true,
-        "scroll_zoom_start": 55,
         "color_dot": "#ffffff",
         "color_card_background": "#ffffff",
         "color_card_foreground": "#121212"
@@ -568,10 +463,10 @@
         "post_DyEXFr": {
           "type": "post",
           "settings": {
-            "image": "",
-            "platform": "facebook",
+            "image": "shopify://shop_images/brushes-blossoms_1_1.jpg",
+            "platform": "instagram",
             "username": "",
-            "caption": "Beautiful sunset views 🌅",
+            "caption": "Beautiful makup brushes 🌅",
             "likes": "2.4k",
             "comments": "156",
             "link": ""
@@ -580,10 +475,10 @@
         "post_WX3UAB": {
           "type": "post",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/brushing-on-red-lipsick_1.jpg",
             "platform": "instagram",
             "username": "",
-            "caption": "New collection just dropped ✨",
+            "caption": "Red lip gloss ✨",
             "likes": "1.8k",
             "comments": "89",
             "link": ""
@@ -592,7 +487,7 @@
         "post_FY78Xd": {
           "type": "post",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/person-looks-forward-with-the-shadow-of-a-leaf-on.jpg",
             "platform": "instagram",
             "username": "",
             "caption": "Behind the scenes 🎬",
@@ -604,7 +499,7 @@
         "post_pgTGRz": {
           "type": "post",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/applying-eyeshadow.jpg",
             "platform": "instagram",
             "username": "",
             "caption": "Customer favorites 💕",
@@ -696,21 +591,18 @@
         "note_text": "No spam. Unsubscribe anytime.",
         "success_message": "Thanks for subscribing!",
         "show_social": true,
-        "social_label": ""
+        "social_label": "Follow us:"
       }
     }
   },
   "order": [
     "slideshow_with_marquee_FNTTcB",
-    "scrolling_text_ArqGzq",
-    "trending_products_XPtKR6",
+    "featured_collections_tabs_TjQXxL",
     "shop_the_kit_NLcrJy",
+    "featured_products_KhYjYk",
     "highlight_text_with_images_APQhQN",
-    "media_grid_xftqVD",
     "mix_match_pack_NmakBm",
-    "featured_products_teK6M3",
     "blog_posts_TUtF9Y",
-    "text_with_icons_jrbwQC",
     "lookbook_PJk88J",
     "social_media_gallery_mTtQC4",
     "testimonials_wwx7nK",
