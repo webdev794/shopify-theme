@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "slideshow_with_marquee_FNTTcB": {
@@ -15,7 +6,7 @@
         "slide_qDLmdH": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/photo-1599968785168-4603c0afec56.avif",
+            "image": "",
             "heading": "New Collection",
             "subheading": "Discover our latest arrivals",
             "button_text": "Shop Now",
@@ -25,7 +16,7 @@
         "slide_qpx74X": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/photo-1599968785168-4603c0afec56.avif",
+            "image": "",
             "heading": "New Collection",
             "subheading": "Discover our latest arrivals",
             "button_text": "Shop Now",
@@ -35,7 +26,7 @@
         "slide_4EDpqr": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/photo-1776127839720-c0ab710d9d37.avif",
+            "image": "",
             "heading": "Limited Time Offer",
             "subheading": "Up to 50% off select items",
             "button_text": "View Deals",
@@ -63,60 +54,7 @@
         "text_color": "#ffffff",
         "aria_label": "Slideshow with marquee"
       }
-    },
-    "scrolling_text_ArqGzq": {
-      "type": "scrolling-text",
-      "blocks": {
-        "text_item_Kewwap": {
-          "type": "text_item",
-          "settings": {
-            "text": "Free shipping on orders over $50",
-            "icon": "truck"
-          }
-        },
-        "text_item_DbPVtJ": {
-          "type": "text_item",
-          "settings": {
-            "text": "30-day money-back guarantee",
-            "icon": "shield"
-          }
-        },
-        "text_item_NLr6V3": {
-          "type": "text_item",
-          "settings": {
-            "text": "Subscribe and save 10%",
-            "icon": "star"
-          }
-        },
-        "text_item_fRbrma": {
-          "type": "text_item",
-          "settings": {
-            "text": "Customer support available 24/7",
-            "icon": "chat"
-          }
-        }
-      },
-      "block_order": [
-        "text_item_Kewwap",
-        "text_item_DbPVtJ",
-        "text_item_NLr6V3",
-        "text_item_fRbrma"
-      ],
-      "name": "t:sections.scrolling_text.presets.name",
-      "settings": {
-        "speed": 30,
-        "gap": 40,
-        "repeat_count": 3,
-        "show_divider": true,
-        "divider_symbol": "•",
-        "font_size": 20,
-        "background_color": "#1a1a1a",
-        "text_color": "#ffffff",
-        "pause_on_hover": true,
-        "aria_label": "Scrolling announcement bar",
-        "scroll_velocity": true
-      }
-    },
+    },    
     "trending_products_XPtKR6": {
       "type": "trending-products",
       "name": "t:sections.trending_products.presets.name",
@@ -168,7 +106,7 @@
       "settings": {
         "heading": "Shop the Kit",
         "subheading": "Everything you need in one complete bundle",
-        "image": "shopify://shop_images/0b9df414a67ce75e1dd01aea1f311961.jpg",
+        "image": "",
         "kit_title": "The Complete Starter Kit",
         "kit_description": "<p>This curated bundle includes everything you need to get started. Save 20% compared to buying items separately.</p>",
         "show_variant_selector": true,
@@ -191,7 +129,7 @@
         "image_gLgaHb": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/photo-1613089222731-8841ac989caa.avif",
+            "image": "",
             "tilt": -4
           }
         },
@@ -205,7 +143,7 @@
         "image_EnXP7D": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/photo-1565945887714-d5139f4eb0ce.avif",
+            "image": "",
             "tilt": 3
           }
         },
@@ -246,7 +184,7 @@
         "media_B3Jwdm": {
           "type": "media",
           "settings": {
-            "image": "shopify://shop_images/photo-1591195853828-11db59a44f6b.jpg",
+            "image": "",
             "caption_heading": "",
             "caption_text": "",
             "link": "",
@@ -257,7 +195,7 @@
         "media_xrYtxh": {
           "type": "media",
           "settings": {
-            "image": "shopify://shop_images/jacket-947395_1280.jpg",
+            "image": "",
             "caption_heading": "",
             "caption_text": "",
             "link": "",
@@ -268,7 +206,7 @@
         "media_BBNNJE": {
           "type": "media",
           "settings": {
-            "image": "shopify://shop_images/trousers-2685231_1280.jpg",
+            "image": "",
             "caption_heading": "",
             "caption_text": "",
             "link": "",
@@ -279,7 +217,7 @@
         "media_ibJrmx": {
           "type": "media",
           "settings": {
-            "image": "shopify://shop_images/swimming-trunks.jpg",
+            "image": "",
             "caption_heading": "",
             "caption_text": "",
             "link": "",
@@ -290,7 +228,7 @@
         "media_7AG3Xg": {
           "type": "media",
           "settings": {
-            "image": "shopify://shop_images/sunglasses.jpg",
+            "image": "",
             "caption_heading": "",
             "caption_text": "",
             "link": "",
@@ -301,7 +239,7 @@
         "media_49GJXT": {
           "type": "media",
           "settings": {
-            "image": "shopify://shop_images/earings.jpg",
+            "image": "",
             "caption_heading": "",
             "caption_text": "",
             "link": "",
@@ -312,7 +250,7 @@
         "media_aNhDp6": {
           "type": "media",
           "settings": {
-            "image": "shopify://shop_images/clculator.jpg",
+            "image": "",
             "caption_heading": "",
             "caption_text": "",
             "link": "",
@@ -615,7 +553,7 @@
         "heading_size": "medium",
         "text": "<p>Tap the dots to shop every piece in this look.</p>",
         "content_position": "top",
-        "image": "shopify://shop_images/pexels-mart-production-7679862.jpg",
+        "image": "",
         "full_width": false,
         "enable_scroll_zoom": true,
         "scroll_zoom_start": 55,
@@ -630,7 +568,7 @@
         "post_DyEXFr": {
           "type": "post",
           "settings": {
-            "image": "shopify://shop_images/photo-1565945887714-d5139f4eb0ce.avif",
+            "image": "",
             "platform": "facebook",
             "username": "",
             "caption": "Beautiful sunset views 🌅",
@@ -642,7 +580,7 @@
         "post_WX3UAB": {
           "type": "post",
           "settings": {
-            "image": "shopify://shop_images/0b9df414a67ce75e1dd01aea1f311961.jpg",
+            "image": "",
             "platform": "instagram",
             "username": "",
             "caption": "New collection just dropped ✨",
@@ -654,7 +592,7 @@
         "post_FY78Xd": {
           "type": "post",
           "settings": {
-            "image": "shopify://shop_images/photo-1599968785168-4603c0afec56.avif",
+            "image": "",
             "platform": "instagram",
             "username": "",
             "caption": "Behind the scenes 🎬",
@@ -666,7 +604,7 @@
         "post_pgTGRz": {
           "type": "post",
           "settings": {
-            "image": "shopify://shop_images/photo-1718351041906-d1086f502f8a.avif",
+            "image": "",
             "platform": "instagram",
             "username": "",
             "caption": "Customer favorites 💕",
@@ -758,7 +696,7 @@
         "note_text": "No spam. Unsubscribe anytime.",
         "success_message": "Thanks for subscribing!",
         "show_social": true,
-        "social_label": "Follow us:"
+        "social_label": ""
       }
     }
   },
