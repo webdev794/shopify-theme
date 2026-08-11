@@ -1,9 +1,5 @@
 /**
  * Featured Products JavaScript
- * Handles carousel navigation, quick add to cart,
- * animated ATC letter split, and scroll gallery.
- *
- * v1.13 — Smooth lerp / inertia + removed external theme references
  */
 
 (function () {

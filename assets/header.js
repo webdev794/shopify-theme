@@ -1,5 +1,4 @@
 // ========== HEADER JAVASCRIPT ==========
-// This file contains all functionality for the header section
 
 (() => {
   const header = document.querySelector('.header');

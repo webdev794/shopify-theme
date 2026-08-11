@@ -1,11 +1,4 @@
 // ========== HERO CAROUSEL JAVASCRIPT ==========
-// Scroll-snap carousel controls: arrows with wrap-around, pagination dots,
-// and optional autoplay that pauses on hover, focus, interaction, when the
-// section is off screen, and permanently when the visitor hits pause.
-// Swiping works without this file thanks to native scroll-snap.
-//
-// Scheduling & VIP: The carousel automatically adapts to scheduled slides
-// and VIP ordering based on customer tags.
 
 (() => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');

@@ -1,8 +1,3 @@
-/**
- * Suvara polish — optional section micro-entrance helper
- * Elements with [data-suvara-animate] fade/rise when in view.
- * Honors prefers-reduced-motion and [data-reduced-motion="static"].
- */
 (function () {
   'use strict';
 

@@ -1,13 +1,3 @@
-/**
- * Suvara signature section reveal
- * Soft "bloom": slight scale-up + rise + fade.
- * Distinct from the common bottom-right slide used by many premium themes.
- *
- * After the animation finishes, JS removes these classes so no transform
- * remains on the section (leftover transform creates a stacking context
- * that can cover the header mega menu).
- */
-
 .shopify-section.section-reveal:not(.is-visible) {
   opacity: 0;
   transform: translate3d(0, 28px, 0) scale(0.965);

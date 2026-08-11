@@ -1,7 +1,4 @@
 // ========== MEDIA GRID JAVASCRIPT ==========
-// 1) Video pause/play controls + off-screen pause
-// 2) Trionn-style entry: horizontal blind wipe + staggered tile reveal
-// 3) Image hover/click popup with "See full image in new tab"
 
 (() => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');

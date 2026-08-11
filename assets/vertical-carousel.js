@@ -1,6 +1,5 @@
 /**
  * Vertical Carousel JavaScript
- * Version: 1.3 - Fixed slide visibility
  */
 
 (function() {

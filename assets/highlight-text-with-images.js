@@ -1,6 +1,4 @@
 // ========== HIGHLIGHT TEXT WITH IMAGES JAVASCRIPT ==========
-// 1) Optional staggered reveal on scroll (when .hlt--animated)
-// 2) Water-bubble magnifier that follows the mouse over the section
 
 (() => {
   /* ---------- Scroll reveal ---------- */

@@ -1,14 +1,3 @@
-/**
- * Suvara mouse-tilt
- * Items with [data-tilt-item] lean toward the cursor while the
- * pointer is over a [data-mouse-tilt] container.
- *
- * Also auto-binds product cards (.card-wrapper / .product-card) so tilt
- * becomes a central part of the shopping experience without per-section markup.
- *
- * Desktop + fine pointer only. Respects prefers-reduced-motion.
- * Does not run on touch devices.
- */
 (function () {
   'use strict';
 

@@ -1,8 +1,3 @@
-/**
- * Suvara Wavy Marquee — scroll-velocity linked ticker
- * Base CSS animation speed scales with page scroll velocity.
- * Optional hybrid items (text + image) supported via .wavy-marquee__item--media
- */
 (function () {
   'use strict';
 

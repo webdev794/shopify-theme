@@ -1,9 +1,3 @@
-/**
- * Suvara global section scroll-reveal
- * Soft bloom: scale + rise + fade when a section enters the viewport.
- * Safety: never leaves sections stuck invisible; clears classes after motion
- * so transforms do not keep covering the header mega menu.
- */
 (function () {
   'use strict';
 

@@ -1,6 +1,3 @@
-/* trending-products.css
-   Recolored to use the theme palette instead of a fully hardcoded
-   #1a1a1a / #999 / #e5e5e5 scheme with no tie to merchant settings. */
 .trending-products {
   padding: 60px 0;
   background-color: var(--tp-bg, var(--color-background, #ffffff));

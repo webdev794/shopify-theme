@@ -1,12 +1,3 @@
-/**
- * Suvara word-stagger reveal (signature typography motion)
- * Splits section heading / subheading text into words and animates
- * them rising from below with a staggered delay on scroll.
- *
- * Refined easing + slightly longer stagger for a more editorial feel.
- * Targets common section header patterns only — not product cards,
- * article titles inside grids, footer, or already-animated blocks.
- */
 (function () {
   'use strict';
 

@@ -1,11 +1,3 @@
-/**
- * Suvara Quick View
- * Opens #QuickViewModal (native <dialog>) for [data-quick-view-open] triggers.
- * Fetches /products/{handle}.js and builds media + variant UI.
- *
- * Critical: uses capture-phase listeners + stopPropagation so the full-bleed
- * product image <a> on cards cannot navigate when Quick View is clicked.
- */
 (function () {
   'use strict';
 

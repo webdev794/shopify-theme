@@ -1,11 +1,4 @@
 /* Detailed Contact Form Styles
-   Recolored to use the theme palette (--color-background, --color-foreground,
-   --color-background-secondary, --color-accent-background/foreground) instead
-   of a hardcoded indigo/purple/pink scheme with no tie to merchant settings.
-   The separate hardcoded dark-mode media query has been removed — it fought
-   the merchant's own light/dark theme settings rather than following them.
-   
-   v2.1 — Added status color variables for validation and form status messages.
 */
 .detailed-contact-form {
   background-color: var(--section-bg, var(--color-background, #ffffff));
