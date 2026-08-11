@@ -199,6 +199,13 @@
 .featured-products__footer {
   text-align: center;
   margin-top: 40px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+}
+
+/* Extra breathing room under View All for grid / carousel */
+.featured-products:not(.featured-products--scroll) {
+  padding-bottom: 56px;
 }
 
 /* Product Card Styles */
@@ -711,7 +718,14 @@
 /* ========== Scroll gallery ========== */
 .featured-products--scroll {
   padding-top: 0;
-  padding-bottom: 0;
+  /* Small bottom gap after the tall pin section so the next page block isn’t flush */
+  padding-bottom: 2.5rem;
+}
+
+/* Bottom “View All” sits under ~3 viewports of scroll — hide it in scroll layout.
+   Keep the header View All (above the gallery) if the merchant enabled it. */
+.featured-products--scroll .featured-products__footer {
+  display: none;
 }
 
 .featured-products__grid-wrapper--scroll {
