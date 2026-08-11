@@ -659,6 +659,7 @@
   margin: 0;
 }
 
+
 /* Keep hotspot cards usable while scaled */
 .lookbook--scroll-zoom .lookbook__hotspot {
   z-index: 2;

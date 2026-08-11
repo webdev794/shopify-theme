@@ -33,13 +33,15 @@
       const trackHeight = track.offsetHeight;
       const viewH = window.innerHeight || document.documentElement.clientHeight;
       const scrollable = Math.max(trackHeight - viewH, 1);
-      // 0 when sticky pins; 1 when track is about to unstick
-      const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-      // Reach full size by ~55% of the track, then HOLD at 1 for the rest
-      // so the full-bleed image stays on screen for a stretch of scroll
-      const zoomEnd = 0.55;
-      const scaleProgress = Math.min(1, progress / zoomEnd);
-      const scale = startScale + (1 - startScale) * scaleProgress;
+
+      // Start zoom as soon as the section header enters the viewport
+      // (track top at bottom of screen). Finish when sticky has scrolled
+      // through ~30% of its range, then HOLD full size for the rest.
+      const zoomStart = viewH;          // rect.top when header first visible
+      const zoomEndAt = -scrollable * 0.30; // rect.top when scale should be 1
+      const range = zoomStart - zoomEndAt;
+      const progress = Math.min(1, Math.max(0, (zoomStart - rect.top) / range));
+      const scale = startScale + (1 - startScale) * progress;
       target.style.transform = 'scale(' + scale + ')';
       ticking = false;
     };
