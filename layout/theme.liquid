@@ -19,6 +19,7 @@
 
     {% # Load critical CSS (includes minimal-header + slideshow FOUC safety net) %}
     {{ 'critical.css' | asset_url | stylesheet_tag }}
+    {{ 'suvara-polish.css' | asset_url | stylesheet_tag }}
     {{ 'buttons.css' | asset_url | stylesheet_tag }}
     {{ 'unit-price.css' | asset_url | stylesheet_tag }}
 
@@ -148,5 +149,6 @@
       })();
     </script>
 
+      <script src="{{ 'suvara-polish.js' | asset_url }}" defer></script>
   </body>
 </html>

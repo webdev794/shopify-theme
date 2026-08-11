@@ -1,6 +1,6 @@
 /**
- * Global section scroll-reveal
- * Full motion: fade + move in from bottom-right when scrolled into view.
+ * Suvara global section scroll-reveal
+ * Soft bloom: scale + rise + fade when a section enters the viewport.
  * Safety: never leaves sections stuck invisible; clears classes after motion
  * so transforms do not keep covering the header mega menu.
  */
@@ -9,7 +9,7 @@
 
   var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FAILSAFE_MS = 3000;
-  var CLEAR_MS = 800;
+  var CLEAR_MS = 900;
 
   function shouldSkip(el) {
     if (!el || el.nodeType !== 1) return true;

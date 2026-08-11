@@ -1,8 +1,9 @@
 /**
- * Global word-stagger reveal (VERO-style)
+ * Suvara word-stagger reveal (signature typography motion)
  * Splits section heading / subheading text into words and animates
  * them rising from below with a staggered delay on scroll.
  *
+ * Refined easing + slightly longer stagger for a more editorial feel.
  * Targets common section header patterns only — not product cards,
  * article titles inside grids, footer, or already-animated blocks.
  */
@@ -10,8 +11,8 @@
   'use strict';
 
   var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var STAGGER_STEP = 1; // CSS --stagger units; delay is calc(n * 55ms)
-  var CLEAR_MS = 900;
+  var STAGGER_STEP = 1; // CSS --stagger units; delay is calc(n * 60ms)
+  var CLEAR_MS = 1000;
   var FAILSAFE_MS = 3500;
 
   // Section-level titles only. Avoid product/card titles and nested content.
@@ -62,7 +63,12 @@
     '.pairing-products__heading',
     '.pairing-products__subheading',
     '.featured-collections-tabs__heading',
-    '.featured-collections-tabs__subheading'
+    '.featured-collections-tabs__subheading',
+    '.hero__heading',
+    '.hero__subheading',
+    '.hero-carousel__heading',
+    '.hero-carousel__subheading',
+    '.burst-effects__title'
   ].join(',');
 
   function shouldSkip(el) {
@@ -72,9 +78,9 @@
     if (el.closest('.hlt')) return true; // highlight-text-with-images has its own motion
     if (el.closest('.shopify-section-group-header-group')) return true;
     if (el.closest('.shopify-section-group-footer-group')) return true;
-    if (el.closest('.product-card, .cart-item, .blog-card, .article__comments')) return true;
+    if (el.closest('.product-card, .card, .cart-item, .blog-card, .article__comments')) return true;
     // Skip if element has complex nested HTML (RTE, links, images) — only plain text
-    if (el.querySelector('img, svg, video, iframe, a, button, input, .hlt__word')) return true;
+    if (el.querySelector('img, svg, video, iframe, a, button, input, .hlt__word, .word-reveal__word')) return true;
     var text = (el.textContent || '').trim();
     if (!text || text.length < 2) return true;
     return false;

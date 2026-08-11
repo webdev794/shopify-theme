@@ -166,3 +166,70 @@
     }
   });
 })();
+
+/* Suvara: parallax images + scroll-reactive text */
+(function () {
+  'use strict';
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function initParallax(section) {
+    if (section.dataset.hltParallax !== 'true') return;
+    if (section.dataset.hltParallaxInit) return;
+    section.dataset.hltParallaxInit = 'true';
+
+    var medias = section.querySelectorAll('.hlt__media');
+    if (!medias.length) return;
+
+    function update() {
+      var rect = section.getBoundingClientRect();
+      var viewH = window.innerHeight || 1;
+      // -0.5 when section top at bottom of view, +0.5 when bottom at top
+      var progress = (viewH / 2 - (rect.top + rect.height / 2)) / viewH;
+      progress = Math.max(-1, Math.min(1, progress));
+
+      medias.forEach(function (el, i) {
+        var strength = parseFloat(getComputedStyle(el).getPropertyValue('--hlt-parallax')) || 12;
+        var dir = i % 2 === 0 ? 1 : -1;
+        var y = progress * strength * dir;
+        el.style.transform =
+          'translate3d(0, calc(var(--hlt-img-offset-y, 0px) + ' +
+          y.toFixed(2) +
+          'px), 0) rotate(var(--hlt-tilt, 0deg))';
+      });
+
+      if (section.dataset.hltScrollText === 'true') {
+        section.querySelectorAll('.hlt__word--accent, .hlt__word--highlight').forEach(function (word, i) {
+          var shift = progress * (6 + (i % 3) * 2);
+          word.style.transform = 'translate3d(0, ' + shift.toFixed(2) + 'px, 0)';
+        });
+      }
+    }
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        update();
+        ticking = false;
+      });
+    }
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  }
+
+  function boot(scope) {
+    (scope || document).querySelectorAll('[data-hlt]').forEach(initParallax);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      boot();
+    });
+  } else boot();
+  document.addEventListener('shopify:section:load', function (e) {
+    boot(e.target);
+  });
+})();

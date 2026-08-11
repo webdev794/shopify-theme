@@ -6,7 +6,7 @@
 
 {{ 'sticky-media-cards.css' | asset_url | stylesheet_tag }}
 
-<div class="sticky-media-cards" data-section-id="{{ section.id }}" data-section-type="sticky-media-cards">
+<div class="sticky-media-cards" data-section-id="{{ section.id }}" data-section-type="sticky-media-cards" data-scroll-story="true">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <div class="sticky-media-cards__header">
@@ -25,7 +25,7 @@
           <div class="sticky-media-cards__media{% if block.settings.media_position == 'right' %} sticky-media-cards__media--right{% endif %}">
             {%- if block.settings.media_type == 'image' -%}
               {%- if block.settings.image != blank -%}
-                <div class="sticky-media-cards__image-wrapper">
+                <div class="sticky-media-cards__image-wrapper{% if block.settings.product != blank %} sticky-media-cards__image-wrapper--product{% endif %}">
                   <img
                     src="{{ block.settings.image | image_url: width: 800 }}"
                     srcset="{{ block.settings.image | image_url: width: 800 }} 1x, {{ block.settings.image | image_url: width: 1600 }} 2x"
@@ -35,6 +35,27 @@
                     height="600"
                     class="sticky-media-cards__image"
                   >
+                  {%- if block.settings.product != blank -%}
+                    {%- assign qv_product = block.settings.product -%}
+                    <div class="sticky-media-cards__product-layer">
+                      <div class="sticky-media-cards__product-info">
+                        <p class="sticky-media-cards__product-title">{{ qv_product.title | escape }}</p>
+                        <p class="sticky-media-cards__product-price">{{ qv_product.price | money }}</p>
+                      </div>
+                      <div class="sticky-media-cards__product-actions">
+                        <button
+                          type="button"
+                          class="sticky-media-cards__qv-btn"
+                          data-quick-view-open
+                          data-product-handle="{{ qv_product.handle }}"
+                          aria-label="Quick view {{ qv_product.title | escape }}"
+                        >
+                          Quick view
+                        </button>
+                        <a href="{{ qv_product.url }}" class="sticky-media-cards__product-link">View product</a>
+                      </div>
+                    </div>
+                  {%- endif -%}
                 </div>
               {%- else -%}
                 <div class="sticky-media-cards__placeholder">
@@ -203,6 +224,12 @@
           "id": "text",
           "label": "t:sections.sticky_media_cards.blocks.media_card.settings.text.label",
           "default": "<p>Describe this step in the process.</p>"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Linked product",
+          "info": "Shows price on hover and enables Quick view on the media"
         },
         {
           "type": "text",

@@ -6,7 +6,7 @@
 
 {{ 'text-with-icons.css' | asset_url | stylesheet_tag }}
 
-<div class="text-with-icons" data-section-id="{{ section.id }}" data-section-type="text-with-icons">
+<div class="text-with-icons" data-section-id="{{ section.id }}" data-section-type="text-with-icons" data-reduced-motion="{{ section.settings.reduced_motion_mode | default: 'system' }}" data-mobile-motion="{{ section.settings.mobile_motion | default: 'lighter' }}" style="--section-anim-duration: {{ section.settings.anim_duration | default: 700 | divided_by: 1000.0 }}s; --section-anim-delay: {{ section.settings.anim_delay | default: 0 | divided_by: 1000.0 }}s;">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <div class="text-with-icons__header">
@@ -68,15 +68,27 @@
       "label": "t:sections.text_with_icons.settings.subheading.label",
       "default": "Discover what makes us different"
     },
-    { "type": "header", "content": "t:sections.text_with_icons.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.text_with_icons.settings.header__1.content"
+    },
     {
       "type": "select",
       "id": "columns",
       "label": "t:sections.text_with_icons.settings.columns.label",
       "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" }
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
       ],
       "default": "3"
     },
@@ -85,11 +97,87 @@
       "id": "alignment",
       "label": "t:sections.text_with_icons.settings.alignment.label",
       "options": [
-        { "value": "left", "label": "t:sections.text_with_icons.settings.alignment.options__1.label" },
-        { "value": "center", "label": "t:sections.text_with_icons.settings.alignment.options__2.label" },
-        { "value": "right", "label": "t:sections.text_with_icons.settings.alignment.options__3.label" }
+        {
+          "value": "left",
+          "label": "t:sections.text_with_icons.settings.alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.text_with_icons.settings.alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.text_with_icons.settings.alignment.options__3.label"
+        }
       ],
       "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Motion"
+    },
+    {
+      "type": "select",
+      "id": "reduced_motion_mode",
+      "label": "Reduced-motion behavior",
+      "options": [
+        {
+          "value": "system",
+          "label": "Follow system preference"
+        },
+        {
+          "value": "animate",
+          "label": "Always allow motion"
+        },
+        {
+          "value": "static",
+          "label": "Always static (no motion)"
+        }
+      ],
+      "default": "system",
+      "info": "Controls how this section behaves when the visitor prefers less motion"
+    },
+    {
+      "type": "range",
+      "id": "anim_duration",
+      "label": "Animation duration",
+      "min": 200,
+      "max": 1200,
+      "step": 100,
+      "default": 700,
+      "unit": "ms",
+      "info": "Entrance duration in milliseconds"
+    },
+    {
+      "type": "range",
+      "id": "anim_delay",
+      "label": "Animation delay",
+      "min": 0,
+      "max": 800,
+      "step": 100,
+      "default": 0,
+      "unit": "ms",
+      "info": "Delay before entrance starts (ms)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_motion",
+      "label": "Mobile motion",
+      "options": [
+        {
+          "value": "match",
+          "label": "Same as desktop"
+        },
+        {
+          "value": "lighter",
+          "label": "Lighter"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "lighter"
     }
   ],
   "blocks": [
@@ -102,20 +190,62 @@
           "id": "icon",
           "label": "t:sections.text_with_icons.blocks.item.settings.icon.label",
           "options": [
-            { "value": "none", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__1.label" },
-            { "value": "truck", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__2.label" },
-            { "value": "shield", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__3.label" },
-            { "value": "star", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__4.label" },
-            { "value": "heart", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__5.label" },
-            { "value": "gift", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__6.label" },
-            { "value": "clock", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__7.label" },
-            { "value": "check", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__8.label" },
-            { "value": "cart", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__9.label" },
-            { "value": "tag", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__10.label" },
-            { "value": "lock", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__11.label" },
-            { "value": "globe", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__12.label" },
-            { "value": "chat", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__13.label" },
-            { "value": "phone", "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__14.label" }
+            {
+              "value": "none",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__1.label"
+            },
+            {
+              "value": "truck",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__2.label"
+            },
+            {
+              "value": "shield",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__3.label"
+            },
+            {
+              "value": "star",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__4.label"
+            },
+            {
+              "value": "heart",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__5.label"
+            },
+            {
+              "value": "gift",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__6.label"
+            },
+            {
+              "value": "clock",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__7.label"
+            },
+            {
+              "value": "check",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__8.label"
+            },
+            {
+              "value": "cart",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__9.label"
+            },
+            {
+              "value": "tag",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__10.label"
+            },
+            {
+              "value": "lock",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__11.label"
+            },
+            {
+              "value": "globe",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__12.label"
+            },
+            {
+              "value": "chat",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__13.label"
+            },
+            {
+              "value": "phone",
+              "label": "t:sections.text_with_icons.blocks.item.settings.icon.options__14.label"
+            }
           ],
           "default": "star"
         },

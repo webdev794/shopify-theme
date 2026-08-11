@@ -125,7 +125,7 @@
 
         try {
           wholeLookBtn.disabled = true;
-          wholeLookBtn.textContent = 'Adding...';
+          wholeLookBtn.dataset.label = wholeLookBtn.dataset.label || wholeLookBtn.textContent; wholeLookBtn.textContent = 'Adding...';
 
           // Use the cart add endpoint with items array
           const response = await fetch('/cart/add.js', {
@@ -174,7 +174,7 @@
           showFeedback(section, error.message || 'Something went wrong. Please try again.', 'error');
         } finally {
           wholeLookBtn.disabled = false;
-          wholeLookBtn.textContent = 'Shop the Whole Look';
+          wholeLookBtn.textContent = wholeLookBtn.dataset.label || 'Complete the Look';
         }
       });
     }
@@ -347,3 +347,39 @@
     if (target) target.removeAttribute('open');
   });
 })();
+
+
+/* Suvara Complete the Look — shared batch helper */
+window.SuvaraCompleteTheLook = window.SuvaraCompleteTheLook || {
+  async addItems(items) {
+    if (!items || !items.length) return { ok: false, error: 'No items' };
+    // Deduplicate by variant id, sum quantities
+    const map = new Map();
+    items.forEach((it) => {
+      const id = String(it.id);
+      const qty = Number(it.quantity) || 1;
+      if (!id) return;
+      map.set(id, (map.get(id) || 0) + qty);
+    });
+    const payload = {
+      items: Array.from(map.entries()).map(([id, quantity]) => ({
+        id: Number(id),
+        quantity: quantity
+      }))
+    };
+    const res = await fetch(window.Shopify?.routes?.root
+      ? window.Shopify.routes.root + 'cart/add.js'
+      : '/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.description || err.message || 'Could not add items');
+    }
+    const data = await res.json();
+    document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+    return { ok: true, data };
+  }
+};

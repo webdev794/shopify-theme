@@ -33,7 +33,7 @@
           <div class="scrolling-media-cards__card" {{ block.shopify_attributes }}>
             <div class="scrolling-media-cards__card-inner">
               {%- if block.settings.image != blank -%}
-                <div class="scrolling-media-cards__image-wrapper">
+                <div class="scrolling-media-cards__image-wrapper{% if block.settings.product != blank %} scrolling-media-cards__image-wrapper--product{% endif %}">
                   <img
                     src="{{ block.settings.image | image_url: width: 400, height: 400, crop: 'center' }}"
                     srcset="{{ block.settings.image | image_url: width: 400, height: 400, crop: 'center' }} 1x, {{ block.settings.image | image_url: width: 800, height: 800, crop: 'center' }} 2x"
@@ -43,6 +43,18 @@
                     height="400"
                     class="scrolling-media-cards__image"
                   >
+                  {%- if block.settings.product != blank -%}
+                    {%- assign qv_product = block.settings.product -%}
+                    <div class="scrolling-media-cards__product-layer">
+                      <p class="scrolling-media-cards__product-price">{{ qv_product.price | money }}</p>
+                      <button
+                        type="button"
+                        class="scrolling-media-cards__qv-btn"
+                        data-quick-view-open
+                        data-product-handle="{{ qv_product.handle }}"
+                      >Quick view</button>
+                    </div>
+                  {%- endif -%}
                 </div>
               {%- else -%}
                 <div class="scrolling-media-cards__placeholder">
@@ -194,6 +206,12 @@
           "id": "text",
           "label": "t:sections.scrolling_media_cards.blocks.card.settings.text.label",
           "default": "A brief description of this product"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Linked product",
+          "info": "Enables hover price + Quick view on the card image"
         },
         {
           "type": "text",

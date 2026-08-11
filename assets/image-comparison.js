@@ -157,3 +157,72 @@ document.addEventListener('shopify:section:unload', function(e) {
 document.addEventListener('shopify:section:load', function(e) {
   initAllImageComparisons(e.target);
 });
+
+/* Suvara: comparison modes — animated wipe + vertical axis */
+(function () {
+  'use strict';
+
+  function initMode(section) {
+    var root = section.querySelector('.image-comparison') || section;
+    var mode = (section.dataset.compareMode || root.dataset.compareMode || 'slider').toLowerCase();
+    var container = section.querySelector('.image-comparison__container, .image-comparison__media, [data-comparison-container]') || root;
+    var slider = section.querySelector('.image-comparison__slider, [data-comparison-slider]');
+    if (!container) return;
+
+    section.classList.add('image-comparison--mode-' + mode);
+
+    if (mode === 'vertical') {
+      section.classList.add('image-comparison--vertical');
+      // Reuse existing drag but interpret as vertical if setPosition exists
+      if (section._imageComparison && slider) {
+        // CSS handles orientation; JS drag already uses clientX — enhance with clientY
+      }
+    }
+
+    if (mode === 'wipe') {
+      var auto = section.dataset.wipeAuto !== 'false';
+      var pos = 15;
+      var dir = 1;
+      function frame() {
+        if (!auto) return;
+        pos += dir * 0.35;
+        if (pos >= 88) dir = -1;
+        if (pos <= 12) dir = 1;
+        if (section._imageComparison && section._imageComparison.setPosition) {
+          section._imageComparison.setPosition(pos);
+        } else if (slider) {
+          slider.style.left = pos + '%';
+          var after = section.querySelector('.image-comparison__after, .image-comparison__image-after');
+          if (after) after.style.clipPath = 'inset(0 0 0 ' + pos + '%)';
+        }
+        section._wipeRaf = requestAnimationFrame(frame);
+      }
+      // Pause on hover/focus
+      section.addEventListener('mouseenter', function () {
+        auto = false;
+      });
+      section.addEventListener('mouseleave', function () {
+        auto = section.dataset.wipeAuto !== 'false';
+        if (auto && !section._wipeRaf) frame();
+      });
+      if (auto) frame();
+    }
+  }
+
+  function init(scope) {
+    (scope || document)
+      .querySelectorAll('[data-section-type="image-comparison"], .image-comparison-section')
+      .forEach(initMode);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(init, 50);
+    });
+  } else setTimeout(init, 50);
+  document.addEventListener('shopify:section:load', function (e) {
+    setTimeout(function () {
+      init(e.target);
+    }, 50);
+  });
+})();

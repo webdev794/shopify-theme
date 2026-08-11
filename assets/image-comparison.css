@@ -323,3 +323,28 @@
     transition: none;
   }
 }
+
+/* Suvara: comparison modes */
+.image-comparison--vertical .image-comparison__slider,
+.image-comparison--mode-vertical .image-comparison__slider {
+  left: 0 !important;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  top: var(--compare-pos, 50%);
+  transform: translateY(-50%);
+  cursor: ns-resize;
+}
+
+.image-comparison--vertical .image-comparison__handle,
+.image-comparison--mode-vertical .image-comparison__handle {
+  flex-direction: column;
+}
+
+.image-comparison--mode-wipe .image-comparison__slider {
+  transition: left 0.05s linear;
+}
+
+.image-comparison--mode-wipe:hover .image-comparison__slider {
+  transition: none;
+}

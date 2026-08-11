@@ -64,6 +64,59 @@
         "aria_label": "Slideshow with marquee"
       }
     },
+    "scrolling_text_ArqGzq": {
+      "type": "scrolling-text",
+      "blocks": {
+        "text_item_Kewwap": {
+          "type": "text_item",
+          "settings": {
+            "text": "Free shipping on orders over $50",
+            "icon": "truck"
+          }
+        },
+        "text_item_DbPVtJ": {
+          "type": "text_item",
+          "settings": {
+            "text": "30-day money-back guarantee",
+            "icon": "shield"
+          }
+        },
+        "text_item_NLr6V3": {
+          "type": "text_item",
+          "settings": {
+            "text": "Subscribe and save 10%",
+            "icon": "star"
+          }
+        },
+        "text_item_fRbrma": {
+          "type": "text_item",
+          "settings": {
+            "text": "Customer support available 24/7",
+            "icon": "chat"
+          }
+        }
+      },
+      "block_order": [
+        "text_item_Kewwap",
+        "text_item_DbPVtJ",
+        "text_item_NLr6V3",
+        "text_item_fRbrma"
+      ],
+      "name": "t:sections.scrolling_text.presets.name",
+      "settings": {
+        "speed": 30,
+        "gap": 40,
+        "repeat_count": 3,
+        "show_divider": true,
+        "divider_symbol": "•",
+        "font_size": 20,
+        "background_color": "#1a1a1a",
+        "text_color": "#ffffff",
+        "pause_on_hover": true,
+        "aria_label": "Scrolling announcement bar",
+        "scroll_velocity": true
+      }
+    },
     "trending_products_XPtKR6": {
       "type": "trending-products",
       "name": "t:sections.trending_products.presets.name",
@@ -711,6 +764,7 @@
   },
   "order": [
     "slideshow_with_marquee_FNTTcB",
+    "scrolling_text_ArqGzq",
     "trending_products_XPtKR6",
     "shop_the_kit_NLcrJy",
     "highlight_text_with_images_APQhQN",

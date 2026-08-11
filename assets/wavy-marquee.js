@@ -1,147 +1,125 @@
 /**
- * Wavy Marquee JavaScript
- * Handles dynamic functionality and performance optimization
+ * Suvara Wavy Marquee — scroll-velocity linked ticker
+ * Base CSS animation speed scales with page scroll velocity.
+ * Optional hybrid items (text + image) supported via .wavy-marquee__item--media
  */
-
-(function() {
+(function () {
   'use strict';
 
-  // Use Shopify's DOM ready helper if available
-  const ready = function(fn) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', fn);
-    } else {
-      fn();
+  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function WavyMarquee(el) {
+    this.el = el;
+    this.track = el.querySelector('.wavy-marquee__track');
+    if (!this.track) return;
+
+    this.velocityLinked = el.dataset.scrollVelocity === 'true';
+    this.baseDuration = parseFloat(getComputedStyle(el).getPropertyValue('--marquee-speed')) || 20;
+    this.currentDuration = this.baseDuration;
+    this.lastY = window.scrollY;
+    this.lastT = performance.now();
+    this.velocity = 0;
+    this.raf = 0;
+    this.visible = true;
+
+    this.init();
+  }
+
+  WavyMarquee.prototype.init = function () {
+    if (REDUCED) {
+      this.track.style.animationPlayState = 'paused';
+      return;
     }
+
+    if ('IntersectionObserver' in window) {
+      var self = this;
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            self.visible = entry.isIntersecting;
+            self.track.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+          });
+        },
+        { threshold: 0.05, rootMargin: '40px' }
+      );
+      io.observe(this.el);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (!this.track) return;
+    }.bind(this));
+
+    document.addEventListener(
+      'visibilitychange',
+      function () {
+        if (!this.track) return;
+        this.track.style.animationPlayState = document.hidden || !this.visible ? 'paused' : 'running';
+      }.bind(this)
+    );
+
+    if (this.velocityLinked && !REDUCED) {
+      window.addEventListener('scroll', this.onScroll.bind(this), { passive: true });
+      this.tick();
+    }
+
+    // Duplicate track content once for seamless loop if needed
+    this.ensureLoop();
   };
 
-  ready(function() {
-    initializeMarquees();
-  });
+  WavyMarquee.prototype.ensureLoop = function () {
+    // Track already repeats items in Liquid; nothing required
+  };
 
-  /**
-   * Initialize all wavy marquee sections
-   */
-  function initializeMarquees() {
-    const sections = document.querySelectorAll('[data-section-type="wavy-marquee"]');
-    
-    if (sections.length === 0) return;
+  WavyMarquee.prototype.onScroll = function () {
+    var now = performance.now();
+    var y = window.scrollY;
+    var dt = Math.max(now - this.lastT, 1);
+    var dy = Math.abs(y - this.lastY);
+    // px per ms → normalize to a 0–1 boost factor
+    var v = dy / dt;
+    this.velocity = this.velocity * 0.7 + v * 0.3;
+    this.lastY = y;
+    this.lastT = now;
+  };
 
-    sections.forEach(function(section) {
-      new WavyMarquee(section);
+  WavyMarquee.prototype.tick = function () {
+    var self = this;
+    // Decay velocity when not scrolling
+    this.velocity *= 0.92;
+
+    if (this.visible && this.velocityLinked) {
+      // Faster scroll → shorter duration (faster marquee), clamp 0.35x–1.4x
+      var boost = 1 - Math.min(this.velocity * 8, 0.65);
+      var target = this.baseDuration * Math.max(0.35, Math.min(1.4, boost));
+      this.currentDuration += (target - this.currentDuration) * 0.12;
+      this.el.style.setProperty('--marquee-speed', this.currentDuration.toFixed(2) + 's');
+      // Direction nudge: slight skew on fast scroll
+      var skew = Math.min(this.velocity * 12, 4);
+      this.track.style.setProperty('--marquee-skew', skew.toFixed(2) + 'deg');
+    }
+
+    this.raf = requestAnimationFrame(function () {
+      self.tick();
+    });
+  };
+
+  function init(scope) {
+    var root = scope || document;
+    root.querySelectorAll('[data-section-type="wavy-marquee"]').forEach(function (el) {
+      if (el._wavyMarquee) return;
+      el._wavyMarquee = new WavyMarquee(el);
     });
   }
 
-  /**
-   * WavyMarquee Class
-   * Handles individual marquee instances
-   */
-  class WavyMarquee {
-    constructor(element) {
-      this.element = element;
-      this.track = element.querySelector('.wavy-marquee__track');
-      this.sectionId = element.dataset.sectionId;
-
-      if (!this.track) return;
-
-      this.init();
-    }
-
-    init() {
-      // Ensure smooth animation by checking for visibility
-      this.handleVisibility();
-
-      // Add intersection observer for performance
-      if ('IntersectionObserver' in window) {
-        this.setupIntersectionObserver();
-      }
-
-      // Handle resize for responsive adjustments
-      this.handleResize();
-    }
-
-    /**
-     * Setup Intersection Observer to pause animation when off-screen
-     */
-    setupIntersectionObserver() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            this.track.style.animationPlayState = 'running';
-          } else {
-            this.track.style.animationPlayState = 'paused';
-          }
-        });
-      }, {
-        threshold: 0.1,
-        rootMargin: '50px'
-      });
-
-      observer.observe(this.element);
-    }
-
-    /**
-     * Handle visibility change (tab switching)
-     */
-    handleVisibility() {
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          this.track.style.animationPlayState = 'paused';
-        } else {
-          this.track.style.animationPlayState = 'running';
-        }
-      });
-    }
-
-    /**
-     * Handle window resize for responsive adjustments
-     */
-    handleResize() {
-      let resizeTimeout;
-      
-      window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-          this.adjustForMobile();
-        }, 250);
-      });
-    }
-
-    /**
-     * Adjust font size for mobile via JavaScript (fallback)
-     */
-    adjustForMobile() {
-      const isMobile = window.innerWidth <= 749;
-      const fontSize = this.element.style.getPropertyValue('--marquee-font-size');
-      
-      if (isMobile) {
-        const mobileFontSize = this.element.dataset.mobileFontSize || '16px';
-        this.element.style.setProperty('--marquee-mobile-font-size', mobileFontSize);
-      }
-    }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      init();
+    });
+  } else {
+    init();
   }
 
-  /**
-   * Handle dynamic content updates (Shopify AJAX cart, etc.)
-   */
-  document.addEventListener('shopify:section:load', function(event) {
-    if (event.detail && event.detail.sectionId) {
-      const section = document.querySelector(`[data-section-id="${event.detail.sectionId}"]`);
-      if (section && section.dataset.sectionType === 'wavy-marquee') {
-        new WavyMarquee(section);
-      }
-    }
+  document.addEventListener('shopify:section:load', function (e) {
+    init(e.target);
   });
-
-  /**
-   * Handle theme editor updates
-   */
-  document.addEventListener('shopify:block:select', function(event) {
-    // Notify that marquee is being edited
-  });
-
-  document.addEventListener('shopify:block:deselect', function(event) {
-    // Resume normal behavior
-  });
-
 })();

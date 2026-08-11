@@ -181,3 +181,70 @@
   .vertical-carousel__text { font-size: 16px; }
   .vertical-carousel__icon { width: 52px; height: 52px; }
 }
+
+
+/* Suvara: editorial chapter rail navigation */
+.vertical-carousel {
+  position: relative;
+}
+
+.vertical-carousel__chapter-rail {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  z-index: 8;
+  max-width: 11rem;
+}
+
+.vertical-carousel__chapter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--vc-nav-color, inherit);
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.45;
+  transition: opacity 0.25s ease;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.vertical-carousel__chapter:hover,
+.vertical-carousel__chapter.is-active {
+  opacity: 1;
+}
+
+.vertical-carousel__chapter-index {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.vertical-carousel__chapter.is-active .vertical-carousel__chapter-index {
+  opacity: 1;
+}
+
+.vertical-carousel__chapter-label {
+  display: none;
+}
+
+@media (min-width: 990px) {
+  .vertical-carousel__chapter-label {
+    display: inline;
+  }
+}
+
+@media (max-width: 749px) {
+  .vertical-carousel__chapter-rail {
+    right: 0.5rem;
+    gap: 0.35rem;
+  }
+}

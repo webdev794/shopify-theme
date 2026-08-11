@@ -6,7 +6,7 @@
 
 {{ 'shop-the-kit.css' | asset_url | stylesheet_tag }}
 
-<div class="shop-the-kit" data-section-id="{{ section.id }}" data-section-type="shop-the-kit" role="region" aria-label="{{ section.settings.aria_label | escape }}">
+<div class="shop-the-kit" data-section-id="{{ section.id }}" data-section-type="shop-the-kit" data-complete-the-look role="region" aria-label="{{ section.settings.aria_label | escape }}">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <div class="shop-the-kit__header">
@@ -177,6 +177,12 @@
   "settings": [
     {
       "type": "text",
+      "id": "look_id",
+      "label": "Look ID (optional)",
+      "info": "Match a Lookbook section Look ID to treat both as one Complete the Look system."
+    },
+    {
+      "type": "text",
       "id": "heading",
       "label": "t:sections.shop_the_kit.settings.heading.label",
       "default": "Shop the Kit"
@@ -205,19 +211,25 @@
       "label": "t:sections.shop_the_kit.settings.kit_description.label",
       "default": "<p>This curated bundle includes everything you need to get started. Save 20% compared to buying items separately.</p>"
     },
-    { "type": "header", "content": "t:sections.shop_the_kit.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.shop_the_kit.settings.header__1.content"
+    },
     {
       "type": "checkbox",
       "id": "show_variant_selector",
       "label": "t:sections.shop_the_kit.settings.show_variant_selector.label",
       "default": true
     },
-    { "type": "header", "content": "t:sections.shop_the_kit.settings.header__2.content" },
+    {
+      "type": "header",
+      "content": "t:sections.shop_the_kit.settings.header__2.content"
+    },
     {
       "type": "text",
       "id": "add_to_cart_text",
       "label": "t:sections.shop_the_kit.settings.add_to_cart_text.label",
-      "default": "Add Kit to Cart"
+      "default": "Complete the Look"
     },
     {
       "type": "text",
@@ -231,12 +243,22 @@
       "label": "t:sections.shop_the_kit.settings.free_shipping_text.label",
       "default": "Free shipping on this kit"
     },
-    { "type": "header", "content": "t:sections.shop_the_kit.settings.header__3.content" },
+    {
+      "type": "header",
+      "content": "t:sections.shop_the_kit.settings.header__3.content"
+    },
     {
       "type": "text",
       "id": "aria_label",
       "label": "t:sections.shop_the_kit.settings.aria_label.label",
       "default": "Shop the kit"
+    },
+    {
+      "type": "checkbox",
+      "id": "complete_look_mode",
+      "label": "Use Complete the Look labeling",
+      "default": true,
+      "info": "Renames the primary CTA for consistency with Lookbook"
     }
   ],
   "blocks": [
@@ -247,7 +269,8 @@
         {
           "type": "product",
           "id": "product",
-          "label": "t:sections.shop_the_kit.blocks.product.settings.product.label"
+          "label": "t:sections.shop_the_kit.blocks.product.settings.product.label",
+          "info": "Only products you select here appear in the kit. Entire collections are never auto-loaded."
         }
       ]
     }

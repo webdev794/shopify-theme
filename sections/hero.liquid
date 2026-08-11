@@ -33,7 +33,7 @@
 {%- endif -%}
 
 <div
-  class="hero hero--{{ section.settings.height }} hero--content-{{ section.settings.content_position }}{% if section.settings.full_width %} hero--full-width{% endif %}{% if section.settings.stack_on_mobile %} hero--stack-mobile{% endif %}"
+  class="hero hero--{{ section.settings.height }} hero--content-{{ section.settings.content_position }}{% if section.settings.full_width %} hero--full-width{% endif %}{% if section.settings.stack_on_mobile %} hero--stack-mobile{% endif %}{% if video != blank %} hero--has-video{% endif %}"
   style="
     --hero-foreground: {{ section.settings.color_foreground }};
     --hero-overlay: {{ section.settings.color_overlay }};

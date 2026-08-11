@@ -134,3 +134,43 @@
     display: none;
   }
 }
+
+/* Suvara: scroll-velocity skew + hybrid media items */
+.wavy-marquee__track {
+  transform: skewX(calc(var(--marquee-skew, 0deg) * -1));
+  transition: transform 0.2s ease-out;
+}
+
+.wavy-marquee__item--media {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  vertical-align: middle;
+}
+
+.wavy-marquee__media-image {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.wavy-marquee__media-caption {
+  font-size: 0.75em;
+  opacity: 0.85;
+}
+
+.wavy-marquee__media-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wavy-marquee__track {
+    transform: none !important;
+  }
+}
