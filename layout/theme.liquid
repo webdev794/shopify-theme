@@ -12,9 +12,9 @@
       2. Fonts load on-demand via @font-face
     {% endcomment %}
     {% unless settings.type_primary_font.system? %}
-      <!-- theme-check-disable RemoteAsset -->
+      {% # theme-check-disable RemoteAsset %}
       <link rel="preconnect" href="//fonts.shopifycdn.com" crossorigin>
-      <!-- /theme-check-disable RemoteAsset -->
+      {% # theme-check-enable RemoteAsset %}
     {% endunless %}
 
     {% # Load critical CSS (includes minimal-header + slideshow FOUC safety net) %}
@@ -30,15 +30,12 @@
     {{ 'header.css' | asset_url | stylesheet_tag }}
     {{ 'hero.css' | asset_url | stylesheet_tag }}
 
-    {% comment %} Non-critical motion CSS — load async so it does not block first paint {% endcomment %}
-    <link rel="preload" href="{{ 'section-reveal.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{{ 'product-image-reveal.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-      {{ 'section-reveal.css' | asset_url | stylesheet_tag }}
-      {{ 'product-image-reveal.css' | asset_url | stylesheet_tag }}
-    </noscript>
-
-
+    {% comment %}
+      Non-critical motion CSS — use stylesheet_tag with preload so Theme Check is happy
+      and Shopify can emit Link headers / Early Hints. These files are small.
+    {% endcomment %}
+    {{ 'section-reveal.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'product-image-reveal.css' | asset_url | stylesheet_tag: preload: true }}
 
     {% # Social, title, etc. %}
 
@@ -50,10 +47,10 @@
     </style>
     <script src="{{ 'custom-cursor.js' | asset_url }}" defer></script>
 
-    <!-- Shop Pay Installments -->
-    <!-- theme-check-disable RemoteAsset -->
+    <!-- Shop Pay Installments (official Shopify CDN script) -->
+    {% # theme-check-disable RemoteAsset %}
     <script src="//cdn.shopify.com/shopifycloud/shop-js/shop-installments.js" defer></script>
-    <!-- /theme-check-disable RemoteAsset -->
+    {% # theme-check-enable RemoteAsset %}
     
     <!-- ===== Global layout safety net ===== -->
     <style>
