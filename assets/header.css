@@ -1311,6 +1311,10 @@ body:has(.header--minimal)
   border-top: 1px solid color-mix(in srgb, var(--header-foreground, #121212) 12%, transparent);
 }
 
+.header-float-overlay__account {
+  display: inline-flex;
+}
+
 .header-float-overlay__footer-link {
   font-size: 0.875rem;
   font-weight: 500;

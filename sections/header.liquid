@@ -574,10 +574,15 @@
 
         <div class="header-float-overlay__footer">
           {%- if section.settings.show_account_link and shop.customer_accounts_enabled -%}
-            <a href="{{ routes.account_url }}" class="header-float-overlay__footer-link">Account</a>
+            <shopify-account
+              menu="{{ section.settings.customer_account_menu | default: 'customer-account-main-menu' }}"
+              class="header-float-overlay__account"
+            >
+              <span slot="signed-out-avatar" class="header-float-overlay__footer-link">{{ 'sections.header.account' | t }}</span>
+            </shopify-account>
           {%- endif -%}
           <a href="{{ routes.cart_url }}" class="header-float-overlay__footer-link">
-            Cart
+            {{ 'sections.header.cart' | t }}
             {%- if cart.item_count > 0 -%}
               <span>({{ cart.item_count }})</span>
             {%- endif -%}
