@@ -158,7 +158,7 @@ document.addEventListener('shopify:section:load', function(e) {
   initAllImageComparisons(e.target);
 });
 
-/* Suvara: comparison modes — animated wipe + vertical axis */
+/* Theme: comparison modes — animated wipe + vertical axis */
 (function () {
   'use strict';
 

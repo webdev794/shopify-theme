@@ -165,7 +165,7 @@
   });
 })();
 
-/* Suvara: parallax images + scroll-reactive text */
+/* Theme: parallax images + scroll-reactive text */
 (function () {
   'use strict';
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

@@ -1,5 +1,5 @@
 /**
- * Suvara Wavy Marquee
+ * Theme Wavy Marquee
  */
 (function () {
   'use strict';

@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-/* Suvara: progressive storytelling + active card highlight */
+/* Theme: progressive storytelling + active card highlight */
 (function () {
   'use strict';
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

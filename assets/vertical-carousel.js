@@ -129,7 +129,7 @@
   document.addEventListener('shopify:section:load', initializeCarousels);
 })();
 
-/* Suvara: editorial chapter rail (unique navigation) */
+/* Theme: editorial chapter rail (unique navigation) */
 (function () {
   'use strict';
 

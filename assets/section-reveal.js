@@ -1,5 +1,5 @@
 /**
- * Suvara global section scroll-reveal
+ * Theme global section scroll-reveal
  */
 (function () {
   'use strict';

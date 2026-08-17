@@ -2,7 +2,7 @@
   Single Quick View modal, shared by every product card on the page.
   Opened via [data-quick-view-open] buttons (see snippets/featured-products.liquid).
   Content is fetched from /products/{handle}.js and built by assets/quick-view.js.
-  Render this once near the end of theme.liquid (already present in Suvara).
+  Render this once near the end of theme.liquid (already present in theme.liquid).
 {%- endcomment -%}
 
 {{ 'quick-view.css' | asset_url | stylesheet_tag }}

@@ -69,7 +69,7 @@ document.addEventListener('shopify:section:load', function(e) {
   }
 });
 
-/* Suvara: scroll-velocity link for scrolling-text */
+/* Theme: scroll-velocity link for scrolling-text */
 (function () {
   'use strict';
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

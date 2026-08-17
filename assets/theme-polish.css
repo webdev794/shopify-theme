@@ -1,0 +1,138 @@
+/**
+ * Theme polish — consistent premium micro-interactions
+ */
+
+:root {
+  --theme-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --theme-duration: 0.45s;
+  --theme-duration-fast: 0.22s;
+  --theme-lift: 4px;
+  --theme-focus: color-mix(in srgb, var(--color-foreground, #111) 55%, transparent);
+}
+
+/* ---------- Focus (keyboard) ---------- */
+:where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--theme-focus);
+  outline-offset: 3px;
+}
+
+:where(a, button, [role="button"]):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------- Buttons ---------- */
+:where(.button, .shopify-payment-button__button, [type="submit"]):not([disabled]) {
+  transition:
+    transform var(--theme-duration-fast) var(--theme-ease),
+    box-shadow var(--theme-duration-fast) var(--theme-ease),
+    background-color var(--theme-duration-fast) ease,
+    color var(--theme-duration-fast) ease,
+    border-color var(--theme-duration-fast) ease;
+}
+
+:where(.button, .shopify-payment-button__button, [type="submit"]):not([disabled]):hover {
+  transform: translateY(-1px);
+}
+
+:where(.button, .shopify-payment-button__button, [type="submit"]):not([disabled]):active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---------- Product / media cards ---------- */
+:where(
+  .product-card,
+  .card-wrapper,
+  .card,
+  .shop-the-kit__product,
+  .scrolling-media-cards__card,
+  .featured-products__item .product-card
+) {
+  transition:
+    transform var(--theme-duration) var(--theme-ease),
+    box-shadow var(--theme-duration) var(--theme-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(
+    .product-card,
+    .card-wrapper,
+    .scrolling-media-cards__card
+  ):hover {
+    transform: translateY(calc(var(--theme-lift) * -1));
+  }
+
+  :where(.product-card__image, .card__image, .scrolling-media-cards__image) {
+    transition: transform 0.7s var(--theme-ease);
+  }
+
+  :where(
+    .product-card:hover .product-card__image,
+    .card-wrapper:hover .card__image,
+    .scrolling-media-cards__card:hover .scrolling-media-cards__image
+  ) {
+    transform: scale(1.03);
+  }
+}
+
+/* ---------- Links underlines ---------- */
+:where(.product-card__title-link, .hlt__button, .shop-the-kit__product a) {
+  transition: opacity var(--theme-duration-fast) ease;
+}
+
+/* ---------- Form fields ---------- */
+:where(input, select, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]) {
+  transition:
+    border-color var(--theme-duration-fast) ease,
+    box-shadow var(--theme-duration-fast) ease;
+}
+
+:where(input, select, textarea):not([type="checkbox"]):not([type="radio"]):focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-foreground, #111) 12%, transparent);
+}
+
+/* ---------- Section motion defaults (overridable per section) ---------- */
+.theme-motion-ready [data-theme-animate] {
+  --theme-anim-duration: var(--section-anim-duration, 0.7s);
+  --theme-anim-delay: var(--section-anim-delay, 0s);
+}
+
+.theme-motion-ready [data-theme-animate]:not(.is-inview) {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+
+.theme-motion-ready [data-theme-animate].is-inview {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--theme-anim-duration) var(--theme-ease) var(--theme-anim-delay),
+    transform var(--theme-anim-duration) var(--theme-ease) var(--theme-anim-delay);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --theme-duration: 0.01ms;
+    --theme-duration-fast: 0.01ms;
+  }
+
+  :where(.button, .product-card, .card-wrapper, .scrolling-media-cards__card, .product-card__image, .card__image):hover,
+  :where(.button, .product-card, .card-wrapper):active {
+    transform: none !important;
+  }
+
+  .theme-motion-ready [data-theme-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Explicit section override: data-reduced-motion="static" */
+[data-reduced-motion="static"] [data-theme-animate],
+[data-reduced-motion="static"].theme-anim-target {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}

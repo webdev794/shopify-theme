@@ -72,13 +72,13 @@
   overflow: hidden;
 }
 
-/* ---- Suvara signature: subtle breathing on hero media ----
+/* ---- Theme signature: subtle breathing on hero media ----
    Continuous, very slow scale pulse. Disabled for reduced-motion
    and when the hero uses video (video already has motion). */
 .hero__media .hero__image,
 .hero__media .hero__placeholder {
   transform-origin: center center;
-  animation: suvara-breathe 14s ease-in-out infinite;
+  animation: theme-breathe 14s ease-in-out infinite;
   will-change: transform;
 }
 
@@ -87,7 +87,7 @@
   animation: none;
 }
 
-@keyframes suvara-breathe {
+@keyframes theme-breathe {
   0%, 100% {
     transform: scale(1);
   }

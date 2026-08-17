@@ -135,7 +135,7 @@
   }
 }
 
-/* Suvara: scroll-velocity skew + hybrid media items */
+/* Theme: scroll-velocity skew + hybrid media items */
 .wavy-marquee__track {
   transform: skewX(calc(var(--marquee-skew, 0deg) * -1));
   transition: transform 0.2s ease-out;

@@ -579,7 +579,7 @@ body {
   }
 }
 
-/* ========== Suvara word-stagger reveal (signature typography) ==========
+/* ========== Theme word-stagger reveal (signature typography) ==========
    Words rise from below with a staggered delay.
    Coordinates with section-reveal bloom: words stay prepared (hidden)
    while the parent section is still entering; word-reveal.js adds

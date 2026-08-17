@@ -354,8 +354,8 @@
 })();
 
 
-/* Suvara Complete the Look — shared batch helper */
-window.SuvaraCompleteTheLook = window.SuvaraCompleteTheLook || {
+/* Theme Complete the Look — shared batch helper */
+window.ThemeCompleteTheLook = window.ThemeCompleteTheLook || {
   async addItems(items) {
     if (!items || !items.length) return { ok: false, error: 'No items' };
     // Deduplicate by variant id, sum quantities

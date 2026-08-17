@@ -1,11 +1,11 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Suvara",
+    "theme_name": "Lumora",
     "theme_version": "1.0.0",
     "theme_author": "Caresort Technologies",
-    "theme_documentation_url": "https://www.caresortsolutions.com/suvara-theme-documentation/",
-    "theme_support_url": "https://www.caresortsolutions.com/suvara-theme-support/"
+    "theme_documentation_url": "https://www.caresortsolutions.com/lumora-theme-documentation/",
+    "theme_support_url": "https://www.caresortsolutions.com/lumora-theme-support/"
   },
   {
     "name": "t:general.typography",
