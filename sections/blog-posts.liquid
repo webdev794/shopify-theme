@@ -1,5 +1,4 @@
-<link rel="preload" href="{{ 'section-blog-posts.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'section-blog-posts.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'section-blog-posts.css' | asset_url | stylesheet_tag }}
 
 <script src="{{ 'blog-posts.js' | asset_url }}" defer></script>
 
@@ -8,6 +7,7 @@
   data-section-id="{{ section.id }}"
   data-layout="{{ section.settings.layout }}"
   data-columns="{{ section.settings.columns }}"
+  style="--blog-posts-bg: {{ section.settings.background_color }};"
 >
   <div class="blog-posts__container">
     
@@ -300,6 +300,16 @@
       "id": "view_all_label",
       "label": "t:sections.blog_posts.settings.view_all_label.label",
       "default": "View All Articles"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
     }
   ],
   "presets": [

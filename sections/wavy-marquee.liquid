@@ -1,13 +1,14 @@
 {% comment %}
   Wavy Marquee Section - Main Section File
-  Version: 2.0 (Modular)
+  Version: 2.1 (Suvara scroll-velocity + hybrid media)
 {% endcomment %}
 
 {{ 'wavy-marquee.css' | asset_url | stylesheet_tag }}
 
-<div class="wavy-marquee{% if section.settings.full_width %} wavy-marquee--full{% endif %}" 
-     data-section-id="{{ section.id }}" 
+<div class="wavy-marquee{% if section.settings.full_width %} wavy-marquee--full{% endif %}"
+     data-section-id="{{ section.id }}"
      data-section-type="wavy-marquee"
+     data-scroll-velocity="{{ section.settings.scroll_velocity }}"
      style="
        --marquee-speed: {{ section.settings.speed | times: 0.1 | round: 1 }}s;
        --marquee-gap: {{ section.settings.gap }}px;
@@ -19,8 +20,8 @@
        --marquee-icon-size: {{ section.settings.icon_size }}px;
        --marquee-wave-speed: {{ section.settings.wave_speed | times: 0.1 | round: 1 }}s;
      ">
-  <div class="wavy-marquee__track{% if section.settings.reverse %} wavy-marquee__track--reverse{% endif %}" 
-       role="marquee" 
+  <div class="wavy-marquee__track{% if section.settings.reverse %} wavy-marquee__track--reverse{% endif %}"
+       role="marquee"
        aria-label="{{ section.settings.aria_label | default: 'Scrolling announcement' }}">
     {%- for i in (1..section.settings.repeats) -%}
       <span class="wavy-marquee__item">
@@ -34,6 +35,29 @@
           <span class="wavy-marquee__separator" aria-hidden="true">{{ section.settings.separator_symbol }}</span>
         {%- endif -%}
       </span>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'image_item' and block.settings.image != blank -%}
+          <span class="wavy-marquee__item wavy-marquee__item--media" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="wavy-marquee__media-link">
+            {%- endif -%}
+            <img
+              class="wavy-marquee__media-image"
+              src="{{ block.settings.image | image_url: width: 160 }}"
+              alt="{{ block.settings.caption | escape }}"
+              width="80"
+              height="80"
+              loading="lazy"
+            >
+            {%- if block.settings.caption != blank -%}
+              <span class="wavy-marquee__media-caption">{{ block.settings.caption | escape }}</span>
+            {%- endif -%}
+            {%- if block.settings.link != blank -%}
+              </a>
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
     {%- endfor -%}
   </div>
 </div>
@@ -61,7 +85,10 @@
       "default": 4,
       "info": "t:sections.wavy_marquee.settings.repeats.info"
     },
-    { "type": "header", "content": "t:sections.wavy_marquee.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.wavy_marquee.settings.header__1.content"
+    },
     {
       "type": "range",
       "id": "speed",
@@ -104,7 +131,10 @@
       "default": 12,
       "info": "t:sections.wavy_marquee.settings.wave_speed.info"
     },
-    { "type": "header", "content": "t:sections.wavy_marquee.settings.header__2.content" },
+    {
+      "type": "header",
+      "content": "t:sections.wavy_marquee.settings.header__2.content"
+    },
     {
       "type": "color",
       "id": "text_color",
@@ -153,7 +183,10 @@
       "label": "t:sections.wavy_marquee.settings.full_width.label",
       "default": true
     },
-    { "type": "header", "content": "t:sections.wavy_marquee.settings.header__3.content" },
+    {
+      "type": "header",
+      "content": "t:sections.wavy_marquee.settings.header__3.content"
+    },
     {
       "type": "checkbox",
       "id": "show_icon",
@@ -166,14 +199,38 @@
       "label": "t:sections.wavy_marquee.settings.icon.label",
       "default": "star",
       "options": [
-        { "value": "star", "label": "t:sections.wavy_marquee.settings.icon.options__1.label" },
-        { "value": "heart", "label": "t:sections.wavy_marquee.settings.icon.options__2.label" },
-        { "value": "sparkle", "label": "t:sections.wavy_marquee.settings.icon.options__3.label" },
-        { "value": "arrow", "label": "t:sections.wavy_marquee.settings.icon.options__4.label" },
-        { "value": "cart", "label": "t:sections.wavy_marquee.settings.icon.options__5.label" },
-        { "value": "tag", "label": "t:sections.wavy_marquee.settings.icon.options__6.label" },
-        { "value": "truck", "label": "t:sections.wavy_marquee.settings.icon.options__7.label" },
-        { "value": "gift", "label": "t:sections.wavy_marquee.settings.icon.options__8.label" }
+        {
+          "value": "star",
+          "label": "t:sections.wavy_marquee.settings.icon.options__1.label"
+        },
+        {
+          "value": "heart",
+          "label": "t:sections.wavy_marquee.settings.icon.options__2.label"
+        },
+        {
+          "value": "sparkle",
+          "label": "t:sections.wavy_marquee.settings.icon.options__3.label"
+        },
+        {
+          "value": "arrow",
+          "label": "t:sections.wavy_marquee.settings.icon.options__4.label"
+        },
+        {
+          "value": "cart",
+          "label": "t:sections.wavy_marquee.settings.icon.options__5.label"
+        },
+        {
+          "value": "tag",
+          "label": "t:sections.wavy_marquee.settings.icon.options__6.label"
+        },
+        {
+          "value": "truck",
+          "label": "t:sections.wavy_marquee.settings.icon.options__7.label"
+        },
+        {
+          "value": "gift",
+          "label": "t:sections.wavy_marquee.settings.icon.options__8.label"
+        }
       ],
       "info": "t:sections.wavy_marquee.settings.icon.info"
     },
@@ -187,7 +244,10 @@
       "default": 24,
       "unit": "px"
     },
-    { "type": "header", "content": "t:sections.wavy_marquee.settings.header__4.content" },
+    {
+      "type": "header",
+      "content": "t:sections.wavy_marquee.settings.header__4.content"
+    },
     {
       "type": "checkbox",
       "id": "show_separator",
@@ -201,13 +261,23 @@
       "default": "•",
       "info": "t:sections.wavy_marquee.settings.separator_symbol.info"
     },
-    { "type": "header", "content": "t:sections.wavy_marquee.settings.header__5.content" },
+    {
+      "type": "header",
+      "content": "t:sections.wavy_marquee.settings.header__5.content"
+    },
     {
       "type": "text",
       "id": "aria_label",
       "label": "t:sections.wavy_marquee.settings.aria_label.label",
       "default": "Scrolling announcement banner",
       "info": "t:sections.wavy_marquee.settings.aria_label.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "scroll_velocity",
+      "label": "Link speed to page scroll",
+      "default": true,
+      "info": "Marquee speeds up as the visitor scrolls"
     }
   ],
   "presets": [
@@ -221,11 +291,29 @@
         "wavy_text": true
       }
     }
+  ],
+  "blocks": [
+    {
+      "type": "image_item",
+      "name": "Image item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
   ]
 }
 {% endschema %}
-
-{% comment %}
-  JavaScript is loaded asynchronously for performance
-{% endcomment %}
-<script src="{{ 'wavy-marquee.js' | asset_url }}" defer></script>

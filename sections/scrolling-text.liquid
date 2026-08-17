@@ -4,12 +4,11 @@
   Description: A full-width scrolling text marquee for announcements, promotions, or brand messages
 {% endcomment %}
 
-<link rel="preload" href="{{ 'scrolling-text.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'scrolling-text.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'scrolling-text.css' | asset_url | stylesheet_tag }}
 
 <div class="scrolling-text" 
      data-section-id="{{ section.id }}" 
-     data-section-type="scrolling-text"
+     data-section-type="scrolling-text" data-scroll-velocity="{{ section.settings.scroll_velocity }}" data-base-speed="{{ section.settings.speed | default: 30 }}"
      data-pause-on-hover="{{ section.settings.pause_on_hover }}"
      role="region"
      aria-label="{{ section.settings.aria_label | escape }}"
@@ -51,7 +50,10 @@
   "class": "scrolling-text-section",
   "max_blocks": 10,
   "settings": [
-    { "type": "header", "content": "t:sections.scrolling_text.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.scrolling_text.settings.header__1.content"
+    },
     {
       "type": "range",
       "id": "speed",
@@ -95,7 +97,10 @@
       "label": "t:sections.scrolling_text.settings.divider_symbol.label",
       "default": "•"
     },
-    { "type": "header", "content": "t:sections.scrolling_text.settings.header__2.content" },
+    {
+      "type": "header",
+      "content": "t:sections.scrolling_text.settings.header__2.content"
+    },
     {
       "type": "range",
       "id": "font_size",
@@ -118,7 +123,10 @@
       "label": "t:sections.scrolling_text.settings.text_color.label",
       "default": "#ffffff"
     },
-    { "type": "header", "content": "t:sections.scrolling_text.settings.header__3.content" },
+    {
+      "type": "header",
+      "content": "t:sections.scrolling_text.settings.header__3.content"
+    },
     {
       "type": "checkbox",
       "id": "pause_on_hover",
@@ -131,6 +139,13 @@
       "id": "aria_label",
       "label": "t:sections.scrolling_text.settings.aria_label.label",
       "default": "Scrolling announcement bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "scroll_velocity",
+      "label": "Link speed to page scroll",
+      "default": true,
+      "info": "Ticker speeds up as the visitor scrolls"
     }
   ],
   "blocks": [
@@ -150,18 +165,54 @@
           "id": "icon",
           "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.label",
           "options": [
-            { "value": "none", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__1.label" },
-            { "value": "star", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__2.label" },
-            { "value": "heart", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__3.label" },
-            { "value": "check", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__4.label" },
-            { "value": "truck", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__5.label" },
-            { "value": "shield", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__6.label" },
-            { "value": "clock", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__7.label" },
-            { "value": "gift", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__8.label" },
-            { "value": "tag", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__9.label" },
-            { "value": "phone", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__10.label" },
-            { "value": "chat", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__11.label" },
-            { "value": "globe", "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__12.label" }
+            {
+              "value": "none",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__1.label"
+            },
+            {
+              "value": "star",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__2.label"
+            },
+            {
+              "value": "heart",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__3.label"
+            },
+            {
+              "value": "check",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__4.label"
+            },
+            {
+              "value": "truck",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__5.label"
+            },
+            {
+              "value": "shield",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__6.label"
+            },
+            {
+              "value": "clock",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__7.label"
+            },
+            {
+              "value": "gift",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__8.label"
+            },
+            {
+              "value": "tag",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__9.label"
+            },
+            {
+              "value": "phone",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__10.label"
+            },
+            {
+              "value": "chat",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__11.label"
+            },
+            {
+              "value": "globe",
+              "label": "t:sections.scrolling_text.blocks.text_item.settings.icon.options__12.label"
+            }
           ],
           "default": "none"
         }

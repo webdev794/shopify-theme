@@ -1,11 +1,3 @@
-/**
- * Mouse-tilt for hero-style sections
- * Items with [data-tilt-item] lean toward the cursor while the
- * pointer is over a [data-mouse-tilt] container.
- *
- * Desktop + fine pointer only. Respects prefers-reduced-motion.
- * Does not run on touch devices.
- */
 (function () {
   'use strict';
 
@@ -17,6 +9,7 @@
   if (REDUCED || !FINE_HOVER) return;
 
   var MAX_DEFAULT = 6;
+  var MAX_CARD = 5;
   var active = null;
   var raf = 0;
   var lastX = 0;
@@ -25,16 +18,22 @@
   function getMax(root) {
     var raw = getComputedStyle(root).getPropertyValue('--tilt-max').trim();
     var n = parseFloat(raw);
-    return isNaN(n) ? MAX_DEFAULT : n;
+    if (!isNaN(n)) return n;
+    if (root.classList.contains('card-wrapper') || root.classList.contains('product-card')) {
+      return MAX_CARD;
+    }
+    return MAX_DEFAULT;
   }
 
   function applyTilt(root, clientX, clientY) {
     var max = getMax(root);
     var items = root.querySelectorAll('[data-tilt-item]');
-    if (!items.length) return;
+    if (!items.length) {
+      // Treat the root itself as the tilt item when no children are marked
+      items = [root];
+    }
 
     items.forEach(function (item) {
-      // Skip if not visible (e.g. inactive carousel slide)
       var style = window.getComputedStyle(item);
       if (style.display === 'none' || style.visibility === 'hidden') return;
       if (item.closest('[aria-hidden="true"]')) return;
@@ -45,13 +44,11 @@
       var px = (clientX - rect.left) / rect.width - 0.5;
       var py = (clientY - rect.top) / rect.height - 0.5;
 
-      // Clamp so edges don't overshoot when cursor is outside the item
       px = Math.max(-0.5, Math.min(0.5, px));
       py = Math.max(-0.5, Math.min(0.5, py));
 
       var rotY = px * max * 2;
       var rotX = -py * max * 2;
-      // Subtle lift toward camera while tilting (portfolio-card feel)
       var lift = (Math.abs(px) + Math.abs(py)) * 4;
 
       item.style.transform =
@@ -62,12 +59,16 @@
         'deg) rotateY(' +
         rotY.toFixed(2) +
         'deg)';
+      item.style.transition = 'transform 0.12s ease-out';
     });
   }
 
   function resetTilt(root) {
-    root.querySelectorAll('[data-tilt-item]').forEach(function (item) {
+    var items = root.querySelectorAll('[data-tilt-item]');
+    if (!items.length) items = [root];
+    items.forEach(function (item) {
       item.style.transform = '';
+      item.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
     });
     root.classList.remove('is-tilting');
   }
@@ -102,14 +103,33 @@
   function bind(root) {
     if (!root || root._mouseTiltBound) return;
     root._mouseTiltBound = true;
+    // Perspective on parent for nicer 3D
+    if (!root.style.perspective) {
+      root.style.perspective = '900px';
+    }
     root.addEventListener('pointerenter', onEnter);
     root.addEventListener('pointermove', onMove);
     root.addEventListener('pointerleave', onLeave);
   }
 
   function init(scope) {
-    var roots = (scope || document).querySelectorAll('[data-mouse-tilt]');
-    roots.forEach(bind);
+    var root = scope || document;
+
+    // Explicit containers
+    root.querySelectorAll('[data-mouse-tilt]').forEach(bind);
+
+    // Auto-bind product cards so tilt is central to the catalog experience
+    root.querySelectorAll('.card-wrapper, .product-card, [data-product-card]').forEach(function (card) {
+      // Prefer tilting the media / image area when present
+      var media = card.querySelector('.card__media, .product-card__media, [data-tilt-item]');
+      if (media && !media.hasAttribute('data-tilt-item')) {
+        media.setAttribute('data-tilt-item', '');
+      }
+      if (!card.hasAttribute('data-mouse-tilt')) {
+        card.setAttribute('data-mouse-tilt', '');
+      }
+      bind(card);
+    });
   }
 
   if (document.readyState === 'loading') {

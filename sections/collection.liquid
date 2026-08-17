@@ -76,6 +76,7 @@
     <div class="collection__page-width">
       <div class="collection__layout">
         {% if section.settings.enable_filtering %}
+          {{ 'facets.css' | asset_url | stylesheet_tag }}
           <aside class="collection__filters">
             {% render 'facets', filters: collection.filters, clear_url: collection.url, section: section %}
           </aside>
@@ -139,20 +140,8 @@
                             widths: '250,350,450,500',
                             sizes: '(min-width: 1400px) 16vw, (min-width: 990px) 20vw, 50vw',
                             alt: product.featured_image.alt | default: product.title,
-                            class: 'product-card__image product-card__image--primary'
+                            class: 'product-card__image'
                         }}
-                        {% if product.images.size > 1 %}
-                          {{
-                            product.images[1]
-                            | image_url: width: 500
-                            | image_tag:
-                              loading: 'lazy',
-                              widths: '250,350,450,500',
-                              sizes: '(min-width: 1400px) 16vw, (min-width: 990px) 20vw, 50vw',
-                              alt: '',
-                              class: 'product-card__image product-card__image--secondary'
-                          }}
-                        {% endif %}
                       {% else %}
                         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card__image' }}
                       {% endif %}
@@ -269,7 +258,7 @@
     }
 
     .collection__filters {
-      flex: 0 0 220px;
+      flex: 0 0 240px;
       position: sticky;
       top: 1.5rem;
     }
@@ -468,20 +457,8 @@
     transition: transform 0.5s ease;
   }
 
-  .product-card:hover .product-card__image--primary {
+  .product-card:hover .product-card__image {
     transform: scale(1.03);
-  }
-
-  .product-card__image--secondary {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .product-card__media:hover .product-card__image--secondary,
-  .product-card__media:focus-within .product-card__image--secondary {
-    opacity: 1;
   }
 
   .product-card__badges {
@@ -732,7 +709,15 @@
       "type": "checkbox",
       "id": "enable_filtering",
       "label": "t:sections.collection.settings.enable_filtering.label",
-      "default": true
+      "default": true,
+      "info": "Shows Shopify filters (variants like Size/Color, price, availability, vendor). Configure filters in Admin → Online Store → Navigation → Filters or Search & Discovery app."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collections_filter",
+      "label": "Show collections list",
+      "default": true,
+      "info": "Lists all collections in the left sidebar so shoppers can jump between collections."
     },
     {
       "type": "checkbox",

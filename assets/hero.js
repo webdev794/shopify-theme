@@ -1,7 +1,4 @@
 // ========== HERO JAVASCRIPT ==========
-// Background video controls: visitor pause/play toggle, reduced-motion
-// respect, and pausing playback while the section is off screen.
-// Only loaded when the section has a background video.
 
 (() => {
   const init = (wrapper) => {

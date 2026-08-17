@@ -1,8 +1,4 @@
-/**
- * Product image reveal — card/product media only.
- * Above-the-fold: untouched. Below-the-fold: animate once on scroll in.
- * Performance: no MutationObserver; idle init; one observer; failsafe only for on-screen stuck nodes.
- */
+
 (function () {
   'use strict';
 

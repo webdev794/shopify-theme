@@ -1,23 +1,19 @@
 /**
  * Featured Products JavaScript
- * Handles carousel navigation and quick add to cart.
+ * Handles carousel navigation, scroll gallery pin, and quick add to cart.
  *
- * v1.6 fixes:
- * - Arrow buttons scroll again. The old code set isAnimating = true and then
- *   called updateCarousel(), whose first line bailed out when isAnimating —
- *   so the scroll never ran. Navigation is now based on the grid's real
- *   scroll position instead of a fragile index + animation lock.
- * - cart:updated now dispatches { item_count } in detail, matching what the
- *   header badge listens for.
- * - Sections initialize exactly once (the old code created a second instance
- *   on shopify:section:load while the first one kept its listeners).
- * - Button/notification strings come from data attributes (translatable).
+ * v1.7:
+ * - Scroll gallery (desktop pin + horizontal track) implemented.
+ * - Space above/below CSS variables respected by the pin padding.
+ * - Pin end transition stabilized to reduce rare jump-to-bottom.
+ * - Mobile (≤749px) uses native horizontal scroll; pin logic is skipped.
  */
 
 (function () {
   'use strict';
 
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var mobileQuery = window.matchMedia('(max-width: 749px)');
 
   /* ---------------- Carousel ---------------- */
 
@@ -31,7 +27,6 @@
     if (!prevBtn || !nextBtn) return;
 
     function step() {
-      // One card width + gap, read from the real layout
       var item = grid.querySelector('.featured-products__item');
       if (!item) return 0;
       var gap = parseInt(getComputedStyle(grid).gap, 10) || 20;
@@ -60,7 +55,6 @@
     prevBtn.addEventListener('click', function () { scrollByStep(-1); });
     nextBtn.addEventListener('click', function () { scrollByStep(1); });
 
-    // Keep button states honest for clicks, swipes, and snapping
     var ticking = false;
     grid.addEventListener('scroll', function () {
       if (ticking) return;
@@ -71,7 +65,6 @@
       });
     }, { passive: true });
 
-    // Arrow-key support while the carousel controls are focused
     nav.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
@@ -89,6 +82,118 @@
     });
 
     updateButtons();
+  }
+
+  /* ---------------- Scroll gallery (desktop pin) ---------------- */
+
+  function initScrollGallery(section) {
+    if (section.dataset.layout !== 'scroll') return;
+
+    var wrapper = section.querySelector('.featured-products__grid-wrapper--scroll');
+    var pin = section.querySelector('[data-fp-scroll-pin]');
+    var track = section.querySelector('[data-fp-scroll-track]');
+    if (!wrapper || !pin || !track) return;
+
+    var rafId = null;
+    var lastState = ''; // '', 'before', 'pinned', 'after'
+
+    function maxTranslate() {
+      // How far the track needs to move so the last card can reach the left edge
+      var trackWidth = track.scrollWidth;
+      var viewWidth = pin.clientWidth || window.innerWidth;
+      return Math.max(0, trackWidth - viewWidth);
+    }
+
+    function setTransform(x) {
+      if (reducedMotion.matches) {
+        track.style.transform = 'translate3d(' + (-x) + 'px,0,0)';
+        return;
+      }
+      track.style.transform = 'translate3d(' + (-x) + 'px,0,0)';
+    }
+
+    function clearPinClasses() {
+      pin.classList.remove('is-pinned', 'is-pinned-end');
+    }
+
+    function update() {
+      rafId = null;
+
+      // On mobile the CSS turns this into a native horizontal scroller
+      if (mobileQuery.matches) {
+        if (lastState !== 'mobile') {
+          clearPinClasses();
+          track.style.transform = '';
+          lastState = 'mobile';
+        }
+        return;
+      }
+
+      var rect = wrapper.getBoundingClientRect();
+      var viewH = window.innerHeight || document.documentElement.clientHeight;
+
+      // Progress through the tall wrapper (0 = top of wrapper at top of viewport,
+      // 1 = bottom of wrapper at bottom of viewport)
+      // Usable pin range is the middle portion where the pin stays fixed.
+      var totalScrollable = rect.height - viewH;
+      if (totalScrollable <= 0) {
+        clearPinClasses();
+        setTransform(0);
+        lastState = 'before';
+        return;
+      }
+
+      var scrolled = -rect.top; // how much of the wrapper has scrolled past the top
+      var progress = scrolled / totalScrollable;
+      if (progress < 0) progress = 0;
+      if (progress > 1) progress = 1;
+
+      var translate = progress * maxTranslate();
+      setTransform(translate);
+
+      // Pin states with hysteresis-friendly thresholds to reduce flicker / jump
+      if (rect.top > 0) {
+        // Wrapper top is still below the viewport top → not pinned yet
+        if (lastState !== 'before') {
+          clearPinClasses();
+          lastState = 'before';
+        }
+      } else if (rect.bottom <= viewH) {
+        // Wrapper bottom has reached or passed the viewport bottom → end state
+        // Set absolute-at-bottom FIRST, then remove fixed, to avoid a frame where
+        // the pin is neither fixed nor anchored (which causes the jump).
+        if (lastState !== 'after') {
+          pin.classList.add('is-pinned-end');
+          // Force layout so absolute position is applied while still fixed
+          void pin.offsetHeight;
+          pin.classList.remove('is-pinned');
+          lastState = 'after';
+        }
+      } else {
+        // Inside the pin range
+        if (lastState !== 'pinned') {
+          pin.classList.add('is-pinned');
+          pin.classList.remove('is-pinned-end');
+          lastState = 'pinned';
+        }
+      }
+    }
+
+    function onScrollOrResize() {
+      if (rafId != null) return;
+      rafId = requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+    if (mobileQuery.addEventListener) {
+      mobileQuery.addEventListener('change', onScrollOrResize);
+    } else if (mobileQuery.addListener) {
+      mobileQuery.addListener(onScrollOrResize);
+    }
+
+    // Initial paint
+    update();
   }
 
   /* ---------------- Quick add ---------------- */
@@ -159,12 +264,10 @@
     fetch('/cart.js')
       .then(function (response) { return response.json(); })
       .then(function (cart) {
-        // Legacy selectors some themes use for the badge
         document.querySelectorAll('.cart-count, .cart__count, .cart-item-count').forEach(function (el) {
           el.textContent = cart.item_count;
         });
 
-        // The header section listens for event.detail.item_count
         document.dispatchEvent(new CustomEvent('cart:updated', {
           detail: { item_count: cart.item_count, cart: cart },
         }));
@@ -202,6 +305,7 @@
     if (section.dataset.fpInit) return;
     section.dataset.fpInit = 'true';
     initCarousel(section);
+    initScrollGallery(section);
     initQuickAdd(section);
   }
 
@@ -216,8 +320,17 @@
     initAll();
   }
 
-  // Theme editor: the section's DOM is replaced, so initialize the new copy
   document.addEventListener('shopify:section:load', function (event) {
+    // Allow re-init when the section DOM is replaced in the theme editor
+    var target = event.target;
+    if (target && target.querySelectorAll) {
+      target.querySelectorAll('[data-section-type="featured-products"]').forEach(function (el) {
+        delete el.dataset.fpInit;
+      });
+      if (target.dataset && target.dataset.sectionType === 'featured-products') {
+        delete target.dataset.fpInit;
+      }
+    }
     initAll(event.target);
   });
 })();

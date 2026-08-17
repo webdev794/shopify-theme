@@ -2,7 +2,7 @@
   Lookbook / Shoppable Image
   - Lifestyle image with product hotspots placed via per-block X/Y sliders
   - Each hotspot opens a product card with variant picker and add-to-cart
-  - "Shop the Whole Look" button adds all selected variants in one batch call
+  - "Complete the Look" button adds all selected variants in one batch call
   - Progressive enhancement: individual adds work without JavaScript
 {%- endcomment -%}
 
@@ -18,8 +18,7 @@
   endif
 -%}
 
-<link rel="preload" href="{{ 'lookbook.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>{{ 'lookbook.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'lookbook.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'lookbook.js' | asset_url }}" defer></script>
 
 {%- liquid
@@ -35,7 +34,7 @@
     --lookbook-zoom-start: {{ section.settings.scroll_zoom_start | default: 55 | divided_by: 100.0 }};
     {%- if image != blank %} --lookbook-aspect-ratio: {{ image.aspect_ratio }};{% endif -%}
   "
-  data-lookbook
+  data-lookbook data-complete-the-look
   {% if enable_scroll_zoom %}data-scroll-zoom{% endif %}
 >
   {%- if enable_scroll_zoom -%}
@@ -113,7 +112,7 @@
         class="lookbook__hotspot lookbook__hotspot--{{ h_dir }} lookbook__hotspot--{{ v_dir }}"
         style="--x: {{ x }}%; --y: {{ y }}%;"
         {{ block.shopify_attributes }}
-        data-lookbook-hotspot
+        data-lookbook-hotspot data-complete-the-look-hotspot
       >
         <summary class="lookbook__dot" aria-label="{{ hotspot_label }}">
           <span class="lookbook__dot-inner" aria-hidden="true"></span>
@@ -256,19 +255,18 @@
       </details>
     {%- endfor -%}
 
-    <!-- "Shop the Whole Look" Button -->
+    <!-- "Complete the Look" Button -->
     <div class="lookbook__actions">
       <button 
         class="lookbook__whole-look-btn" 
         data-whole-look-btn
         aria-label="{{ 'sections.lookbook.shop_whole_look_aria' | t }}"
-      >
+      >{% if section.settings.complete_look_label != blank %}{{ section.settings.complete_look_label }}{% else %}{{ 'sections.lookbook.shop_whole_look' | t }}{% endif %}
         <svg class="lookbook__whole-look-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="9" cy="20" r="1"></circle>
           <circle cx="18" cy="20" r="1"></circle>
           <path d="M3 3h2l2.2 11.2a2 2 0 0 0 2 1.6h7.5a2 2 0 0 0 2-1.6L21 7H6"></path>
         </svg>
-        {{ 'sections.lookbook.shop_whole_look' | t }}
       </button>
     </div>
   </div>
@@ -285,7 +283,10 @@
   "tag": "section",
   "class": "section-lookbook",
   "disabled_on": {
-    "groups": ["header", "footer"]
+    "groups": [
+      "header",
+      "footer"
+    ]
   },
   "settings": [
     {
@@ -299,9 +300,18 @@
       "id": "heading_size",
       "label": "t:sections.lookbook.settings.heading_size.label",
       "options": [
-        { "value": "small", "label": "t:sections.lookbook.settings.heading_size.options__1.label" },
-        { "value": "medium", "label": "t:sections.lookbook.settings.heading_size.options__2.label" },
-        { "value": "large", "label": "t:sections.lookbook.settings.heading_size.options__3.label" }
+        {
+          "value": "small",
+          "label": "t:sections.lookbook.settings.heading_size.options__1.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.lookbook.settings.heading_size.options__2.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.lookbook.settings.heading_size.options__3.label"
+        }
       ],
       "default": "medium"
     },
@@ -316,14 +326,26 @@
       "id": "content_position",
       "label": "t:sections.lookbook.settings.content_position.label",
       "options": [
-        { "value": "top", "label": "t:sections.lookbook.settings.content_position.options__1.label" },
-        { "value": "left", "label": "t:sections.lookbook.settings.content_position.options__2.label" },
-        { "value": "right", "label": "t:sections.lookbook.settings.content_position.options__3.label" }
+        {
+          "value": "top",
+          "label": "t:sections.lookbook.settings.content_position.options__1.label"
+        },
+        {
+          "value": "left",
+          "label": "t:sections.lookbook.settings.content_position.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.lookbook.settings.content_position.options__3.label"
+        }
       ],
       "default": "top",
       "info": "t:sections.lookbook.settings.content_position.info"
     },
-    { "type": "header", "content": "t:sections.lookbook.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.lookbook.settings.header__1.content"
+    },
     {
       "type": "image_picker",
       "id": "image",
@@ -354,7 +376,10 @@
       "default": 55,
       "info": "How small the image appears before you scroll into the section."
     },
-    { "type": "header", "content": "t:sections.lookbook.settings.header__2.content" },
+    {
+      "type": "header",
+      "content": "t:sections.lookbook.settings.header__2.content"
+    },
     {
       "type": "color",
       "id": "color_dot",
@@ -372,6 +397,18 @@
       "id": "color_card_foreground",
       "label": "t:sections.lookbook.settings.color_card_foreground.label",
       "default": "#121212"
+    },
+    {
+      "type": "text",
+      "id": "look_id",
+      "label": "Look ID (optional)",
+      "info": "Use the same Look ID on a Shop the Kit section to pair them as one Complete the Look system. Only hotspot products (blocks below) are included — never an entire collection."
+    },
+    {
+      "type": "text",
+      "id": "complete_look_label",
+      "label": "Complete the Look button label",
+      "default": "Complete the Look"
     }
   ],
   "blocks": [
@@ -383,7 +420,8 @@
         {
           "type": "product",
           "id": "product",
-          "label": "t:sections.lookbook.blocks.hotspot.settings.product.label"
+          "label": "t:sections.lookbook.blocks.hotspot.settings.product.label",
+          "info": "Select specific products only. Collection-wide products are not loaded."
         },
         {
           "type": "range",
@@ -414,15 +452,24 @@
       "blocks": [
         {
           "type": "hotspot",
-          "settings": { "position_x": 30, "position_y": 35 }
+          "settings": {
+            "position_x": 30,
+            "position_y": 35
+          }
         },
         {
           "type": "hotspot",
-          "settings": { "position_x": 62, "position_y": 55 }
+          "settings": {
+            "position_x": 62,
+            "position_y": 55
+          }
         },
         {
           "type": "hotspot",
-          "settings": { "position_x": 45, "position_y": 80 }
+          "settings": {
+            "position_x": 45,
+            "position_y": 80
+          }
         }
       ]
     }

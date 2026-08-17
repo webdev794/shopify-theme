@@ -17,10 +17,18 @@
       <!-- /theme-check-disable RemoteAsset -->
     {% endunless %}
 
-    {% # Load critical CSS %}
+    {% # Load critical CSS (includes minimal-header + slideshow FOUC safety net) %}
     {{ 'critical.css' | asset_url | stylesheet_tag }}
+    {{ 'suvara-polish.css' | asset_url | stylesheet_tag }}
     {{ 'buttons.css' | asset_url | stylesheet_tag }}
     {{ 'unit-price.css' | asset_url | stylesheet_tag }}
+
+    {% comment %}
+      Above-the-fold CSS — header + hero (common first sections).
+      Section-specific CSS (e.g. slideshow-with-marquee) loads from its own section file.
+    {% endcomment %}
+    {{ 'header.css' | asset_url | stylesheet_tag }}
+    {{ 'hero.css' | asset_url | stylesheet_tag }}
 
     {% comment %} Non-critical motion CSS — load async so it does not block first paint {% endcomment %}
     <link rel="preload" href="{{ 'section-reveal.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -141,6 +149,6 @@
       })();
     </script>
 
+      <script src="{{ 'suvara-polish.js' | asset_url }}" defer></script>
   </body>
 </html>
-

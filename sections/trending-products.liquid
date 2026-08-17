@@ -1,11 +1,11 @@
 {% comment %}
   Trending Products Section
-  Version: 1.1 – fast sliding button swap + Quick View modal
+  Version: 1.2 – multi-image auto-cycle (Serotoninn-style scaleX wipe) + fast sliding button swap + Quick View modal
 {% endcomment %}
 
 {{ 'trending-products.css' | asset_url | stylesheet_tag }}
 
-<div class="trending-products" data-section-id="{{ section.id }}" data-section-type="trending-products">
+<div class="trending-products" data-section-id="{{ section.id }}" data-section-type="trending-products" data-reduced-motion="{{ section.settings.reduced_motion_mode | default: 'system' }}" data-mobile-motion="{{ section.settings.mobile_motion | default: 'lighter' }}" style="--section-anim-duration: {{ section.settings.anim_duration | default: 700 | divided_by: 1000.0 }}s; --section-anim-delay: {{ section.settings.anim_delay | default: 0 | divided_by: 1000.0 }}s;{% if section.settings.background_color != blank %} --tp-bg: {{ section.settings.background_color }}; background-color: {{ section.settings.background_color }};{% endif %}">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <div class="trending-products__header">
@@ -22,16 +22,19 @@
         <div class="trending-products__item" data-index="{{ index }}" style="animation-delay: {{ index | times: 0.1 }}s">
           <div class="trending-products__card">
             {%- if product.featured_image -%}
-              <a href="{{ product.url }}" class="trending-products__image-wrapper">
-                <img
-                  src="{{ product.featured_image | image_url: width: 500, height: 500, crop: 'center' }}"
-                  srcset="{{ product.featured_image | image_url: width: 500, height: 500, crop: 'center' }} 1x, {{ product.featured_image | image_url: width: 1000, height: 1000, crop: 'center' }} 2x"
-                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
-                  loading="lazy"
-                  width="500"
-                  height="500"
-                  class="trending-products__image"
-                >
+              <a href="{{ product.url }}" class="trending-products__image-wrapper"{% if product.images.size > 1 %} data-image-cycle{% endif %}>
+                {%- for image in product.images limit: 5 -%}
+                  <img
+                    src="{{ image | image_url: width: 500, height: 500, crop: 'center' }}"
+                    srcset="{{ image | image_url: width: 500, height: 500, crop: 'center' }} 1x, {{ image | image_url: width: 1000, height: 1000, crop: 'center' }} 2x"
+                    alt="{{ image.alt | default: product.title | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    width="500"
+                    height="500"
+                    class="trending-products__image{% if forloop.first %} is-active{% endif %}"
+                    data-index="{{ forloop.index0 }}"
+                  >
+                {%- endfor -%}
                 {%- if product.compare_at_price > product.price -%}
                   <span class="trending-products__badge">{{ 'products.product.on_sale' | t }}</span>
                 {%- endif -%}
@@ -145,6 +148,12 @@
       "default": "Our most popular products this week"
     },
     {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
       "type": "collection",
       "id": "collection",
       "label": "t:sections.trending_products.settings.collection.label"
@@ -158,7 +167,10 @@
       "step": 1,
       "default": 4
     },
-    { "type": "header", "content": "t:sections.trending_products.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.trending_products.settings.header__1.content"
+    },
     {
       "type": "checkbox",
       "id": "show_vendor",
@@ -176,6 +188,73 @@
       "id": "show_view_all",
       "label": "t:sections.trending_products.settings.show_view_all.label",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Motion"
+    },
+    {
+      "type": "select",
+      "id": "reduced_motion_mode",
+      "label": "Reduced-motion behavior",
+      "options": [
+        {
+          "value": "system",
+          "label": "Follow system preference"
+        },
+        {
+          "value": "animate",
+          "label": "Always allow motion"
+        },
+        {
+          "value": "static",
+          "label": "Always static (no motion)"
+        }
+      ],
+      "default": "system",
+      "info": "Controls how this section behaves when the visitor prefers less motion"
+    },
+    {
+      "type": "range",
+      "id": "anim_duration",
+      "label": "Animation duration",
+      "min": 200,
+      "max": 1200,
+      "step": 100,
+      "default": 700,
+      "unit": "ms",
+      "info": "Entrance duration in milliseconds"
+    },
+    {
+      "type": "range",
+      "id": "anim_delay",
+      "label": "Animation delay",
+      "min": 0,
+      "max": 800,
+      "step": 100,
+      "default": 0,
+      "unit": "ms",
+      "info": "Delay before entrance starts (ms)"
+    },
+    {
+      "type": "select",
+      "id": "mobile_motion",
+      "label": "Mobile motion",
+      "options": [
+        {
+          "value": "match",
+          "label": "Same as desktop"
+        },
+        {
+          "value": "lighter",
+          "label": "Lighter"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "lighter"
     }
   ],
   "presets": [

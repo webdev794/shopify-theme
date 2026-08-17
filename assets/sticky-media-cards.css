@@ -334,3 +334,104 @@
     min-height: 60vh;
   }
 }
+
+/* Suvara: product hover layer + scroll progress */
+.sticky-media-cards__image-wrapper--product {
+  position: relative;
+  overflow: hidden;
+}
+
+.sticky-media-cards__product-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 55%);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.sticky-media-cards__image-wrapper--product:hover .sticky-media-cards__product-layer,
+.sticky-media-cards__image-wrapper--product:focus-within .sticky-media-cards__product-layer {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.sticky-media-cards__product-title {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.sticky-media-cards__product-price {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.sticky-media-cards__product-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sticky-media-cards__qv-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+.sticky-media-cards__qv-btn:hover {
+  background: #fff;
+  color: #111;
+}
+
+.sticky-media-cards__product-link {
+  color: #fff;
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+
+.sticky-media-cards__progress {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: color-mix(in srgb, var(--color-foreground, #111) 12%, transparent);
+  z-index: 20;
+  pointer-events: none;
+}
+
+.sticky-media-cards__progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--color-foreground, #111);
+  transition: width 0.1s linear;
+}
+
+.sticky-media-cards__section.is-active-story .sticky-media-cards__image {
+  transform: scale(1.02);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-media-cards__product-layer,
+  .sticky-media-cards__section.is-active-story .sticky-media-cards__image {
+    transition: none;
+    transform: none;
+  }
+}

@@ -68,3 +68,54 @@ document.addEventListener('shopify:section:load', function(e) {
     track.style.animationPlayState = 'running';
   }
 });
+
+/* Suvara: scroll-velocity link for scrolling-text */
+(function () {
+  'use strict';
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function bind(section) {
+    if (section.dataset.scrollVelocity !== 'true') return;
+    if (section._stVelocity) return;
+    section._stVelocity = true;
+
+    var track = section.querySelector('.scrolling-text__track');
+    if (!track) return;
+
+    var base = parseFloat(section.style.getPropertyValue('--scrolling-text-speed')) ||
+               parseFloat(getComputedStyle(section).getPropertyValue('--scrolling-text-speed')) || 30;
+    // Also try data attribute
+    var baseDuration = parseFloat(section.dataset.baseSpeed) || base || 30;
+    var velocity = 0;
+    var lastY = window.scrollY;
+    var lastT = performance.now();
+    var current = baseDuration;
+
+    window.addEventListener('scroll', function () {
+      var now = performance.now();
+      var y = window.scrollY;
+      var dt = Math.max(now - lastT, 1);
+      velocity = velocity * 0.7 + (Math.abs(y - lastY) / dt) * 0.3;
+      lastY = y;
+      lastT = now;
+    }, { passive: true });
+
+    function tick() {
+      velocity *= 0.92;
+      var boost = 1 - Math.min(velocity * 8, 0.65);
+      var target = baseDuration * Math.max(0.35, Math.min(1.4, boost));
+      current += (target - current) * 0.12;
+      track.style.animationDuration = current.toFixed(2) + 's';
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function init(scope) {
+    (scope || document).querySelectorAll('[data-section-type="scrolling-text"]').forEach(bind);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { init(); });
+  } else init();
+  document.addEventListener('shopify:section:load', function (e) { init(e.target); });
+})();

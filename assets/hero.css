@@ -1,5 +1,4 @@
 /* ========== HERO STYLES ========== */
-/* This file contains all styles for the hero section */
 
 /* ---- Base ---- */
 .hero {
@@ -72,6 +71,39 @@
   z-index: -1;
   overflow: hidden;
 }
+
+/* ---- Suvara signature: subtle breathing on hero media ----
+   Continuous, very slow scale pulse. Disabled for reduced-motion
+   and when the hero uses video (video already has motion). */
+.hero__media .hero__image,
+.hero__media .hero__placeholder {
+  transform-origin: center center;
+  animation: suvara-breathe 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero--has-video .hero__media .hero__image,
+.hero--has-video .hero__media .hero__placeholder {
+  animation: none;
+}
+
+@keyframes suvara-breathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__media .hero__image,
+  .hero__media .hero__placeholder {
+    animation: none !important;
+  }
+}
+
+
 
 /* Absolutely positioned so sizing comes from .hero__media directly.
    Percentage heights through the inline <picture> wrapper are unreliable

@@ -13,6 +13,8 @@
   const initScrollZoom = (section) => {
     if (!section.hasAttribute('data-scroll-zoom')) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Scroll-zoom is disabled on mobile via CSS; skip JS work too
+    if (window.matchMedia('(max-width: 749px)').matches) return;
 
     const track = section.querySelector('.lookbook__scroll-track');
     const target = section.querySelector('.lookbook__scale-target');
@@ -31,13 +33,15 @@
       const trackHeight = track.offsetHeight;
       const viewH = window.innerHeight || document.documentElement.clientHeight;
       const scrollable = Math.max(trackHeight - viewH, 1);
-      // 0 when sticky pins; 1 when track is about to unstick
-      const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-      // Reach full size by ~55% of the track, then HOLD at 1 for the rest
-      // so the full-bleed image stays on screen for a stretch of scroll
-      const zoomEnd = 0.55;
-      const scaleProgress = Math.min(1, progress / zoomEnd);
-      const scale = startScale + (1 - startScale) * scaleProgress;
+
+      // Start zoom as soon as the section header enters the viewport
+      // (track top at bottom of screen). Finish when sticky has scrolled
+      // through ~30% of its range, then HOLD full size for the rest.
+      const zoomStart = viewH;          // rect.top when header first visible
+      const zoomEndAt = -scrollable * 0.30; // rect.top when scale should be 1
+      const range = zoomStart - zoomEndAt;
+      const progress = Math.min(1, Math.max(0, (zoomStart - rect.top) / range));
+      const scale = startScale + (1 - startScale) * progress;
       target.style.transform = 'scale(' + scale + ')';
       ticking = false;
     };
@@ -61,38 +65,39 @@
     initScrollZoom(section);
 
     const hotspots = section.querySelectorAll('[data-lookbook-hotspot]');
-    if (!hotspots.length) return;
 
-    // ---- Popover behavior ----
+    // ---- Popover behavior (only when hotspots exist) ----
     const closeAll = (except) => {
       hotspots.forEach((hotspot) => {
         if (hotspot !== except) hotspot.removeAttribute('open');
       });
     };
 
-    hotspots.forEach((hotspot) => {
-      const summary = hotspot.querySelector(':scope > summary');
-      if (summary) summary.setAttribute('aria-expanded', String(hotspot.open));
-
-      hotspot.addEventListener('toggle', () => {
+    if (hotspots.length) {
+      hotspots.forEach((hotspot) => {
+        const summary = hotspot.querySelector(':scope > summary');
         if (summary) summary.setAttribute('aria-expanded', String(hotspot.open));
-        if (hotspot.open) closeAll(hotspot);
+
+        hotspot.addEventListener('toggle', () => {
+          if (summary) summary.setAttribute('aria-expanded', String(hotspot.open));
+          if (hotspot.open) closeAll(hotspot);
+        });
       });
-    });
 
-    section.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') return;
-      const openHotspot = event.target.closest('details[open]');
-      if (openHotspot) {
-        openHotspot.removeAttribute('open');
-        const summary = openHotspot.querySelector('summary');
-        if (summary) summary.focus();
-      }
-    });
+      section.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        const openHotspot = event.target.closest('details[open]');
+        if (openHotspot) {
+          openHotspot.removeAttribute('open');
+          const summary = openHotspot.querySelector('summary');
+          if (summary) summary.focus();
+        }
+      });
 
-    document.addEventListener('click', (event) => {
-      if (!section.contains(event.target)) closeAll();
-    });
+      document.addEventListener('click', (event) => {
+        if (!section.contains(event.target)) closeAll();
+      });
+    }
 
     // ---- "Shop the Whole Look" batch add to cart ----
     const wholeLookBtn = section.querySelector('[data-whole-look-btn]');
@@ -125,7 +130,7 @@
 
         try {
           wholeLookBtn.disabled = true;
-          wholeLookBtn.textContent = 'Adding...';
+          wholeLookBtn.dataset.label = wholeLookBtn.dataset.label || wholeLookBtn.textContent; wholeLookBtn.textContent = 'Adding...';
 
           // Use the cart add endpoint with items array
           const response = await fetch('/cart/add.js', {
@@ -174,7 +179,7 @@
           showFeedback(section, error.message || 'Something went wrong. Please try again.', 'error');
         } finally {
           wholeLookBtn.disabled = false;
-          wholeLookBtn.textContent = 'Shop the Whole Look';
+          wholeLookBtn.textContent = wholeLookBtn.dataset.label || 'Complete the Look';
         }
       });
     }
@@ -347,3 +352,39 @@
     if (target) target.removeAttribute('open');
   });
 })();
+
+
+/* Suvara Complete the Look — shared batch helper */
+window.SuvaraCompleteTheLook = window.SuvaraCompleteTheLook || {
+  async addItems(items) {
+    if (!items || !items.length) return { ok: false, error: 'No items' };
+    // Deduplicate by variant id, sum quantities
+    const map = new Map();
+    items.forEach((it) => {
+      const id = String(it.id);
+      const qty = Number(it.quantity) || 1;
+      if (!id) return;
+      map.set(id, (map.get(id) || 0) + qty);
+    });
+    const payload = {
+      items: Array.from(map.entries()).map(([id, quantity]) => ({
+        id: Number(id),
+        quantity: quantity
+      }))
+    };
+    const res = await fetch(window.Shopify?.routes?.root
+      ? window.Shopify.routes.root + 'cart/add.js'
+      : '/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.description || err.message || 'Could not add items');
+    }
+    const data = await res.json();
+    document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+    return { ok: true, data };
+  }
+};

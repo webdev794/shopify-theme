@@ -1,0 +1,138 @@
+/**
+ * Suvara polish — consistent premium micro-interactions
+ */
+
+:root {
+  --suvara-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --suvara-duration: 0.45s;
+  --suvara-duration-fast: 0.22s;
+  --suvara-lift: 4px;
+  --suvara-focus: color-mix(in srgb, var(--color-foreground, #111) 55%, transparent);
+}
+
+/* ---------- Focus (keyboard) ---------- */
+:where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--suvara-focus);
+  outline-offset: 3px;
+}
+
+:where(a, button, [role="button"]):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------- Buttons ---------- */
+:where(.button, .shopify-payment-button__button, [type="submit"]):not([disabled]) {
+  transition:
+    transform var(--suvara-duration-fast) var(--suvara-ease),
+    box-shadow var(--suvara-duration-fast) var(--suvara-ease),
+    background-color var(--suvara-duration-fast) ease,
+    color var(--suvara-duration-fast) ease,
+    border-color var(--suvara-duration-fast) ease;
+}
+
+:where(.button, .shopify-payment-button__button, [type="submit"]):not([disabled]):hover {
+  transform: translateY(-1px);
+}
+
+:where(.button, .shopify-payment-button__button, [type="submit"]):not([disabled]):active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---------- Product / media cards ---------- */
+:where(
+  .product-card,
+  .card-wrapper,
+  .card,
+  .shop-the-kit__product,
+  .scrolling-media-cards__card,
+  .featured-products__item .product-card
+) {
+  transition:
+    transform var(--suvara-duration) var(--suvara-ease),
+    box-shadow var(--suvara-duration) var(--suvara-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(
+    .product-card,
+    .card-wrapper,
+    .scrolling-media-cards__card
+  ):hover {
+    transform: translateY(calc(var(--suvara-lift) * -1));
+  }
+
+  :where(.product-card__image, .card__image, .scrolling-media-cards__image) {
+    transition: transform 0.7s var(--suvara-ease);
+  }
+
+  :where(
+    .product-card:hover .product-card__image,
+    .card-wrapper:hover .card__image,
+    .scrolling-media-cards__card:hover .scrolling-media-cards__image
+  ) {
+    transform: scale(1.03);
+  }
+}
+
+/* ---------- Links underlines ---------- */
+:where(.product-card__title-link, .hlt__button, .shop-the-kit__product a) {
+  transition: opacity var(--suvara-duration-fast) ease;
+}
+
+/* ---------- Form fields ---------- */
+:where(input, select, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]) {
+  transition:
+    border-color var(--suvara-duration-fast) ease,
+    box-shadow var(--suvara-duration-fast) ease;
+}
+
+:where(input, select, textarea):not([type="checkbox"]):not([type="radio"]):focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-foreground, #111) 12%, transparent);
+}
+
+/* ---------- Section motion defaults (overridable per section) ---------- */
+.suvara-motion-ready [data-suvara-animate] {
+  --suvara-anim-duration: var(--section-anim-duration, 0.7s);
+  --suvara-anim-delay: var(--section-anim-delay, 0s);
+}
+
+.suvara-motion-ready [data-suvara-animate]:not(.is-inview) {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+
+.suvara-motion-ready [data-suvara-animate].is-inview {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--suvara-anim-duration) var(--suvara-ease) var(--suvara-anim-delay),
+    transform var(--suvara-anim-duration) var(--suvara-ease) var(--suvara-anim-delay);
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --suvara-duration: 0.01ms;
+    --suvara-duration-fast: 0.01ms;
+  }
+
+  :where(.button, .product-card, .card-wrapper, .scrolling-media-cards__card, .product-card__image, .card__image):hover,
+  :where(.button, .product-card, .card-wrapper):active {
+    transform: none !important;
+  }
+
+  .suvara-motion-ready [data-suvara-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Explicit section override: data-reduced-motion="static" */
+[data-reduced-motion="static"] [data-suvara-animate],
+[data-reduced-motion="static"].suvara-anim-target {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}

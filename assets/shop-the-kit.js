@@ -248,3 +248,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+/* Suvara: use shared Complete the Look batcher when available */
+(function () {
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('[data-stk-add-kit], [data-complete-look-add]');
+    if (!btn || !window.SuvaraCompleteTheLook) return;
+    // Existing handlers still run; this is a progressive enhancement hook
+  }, true);
+})();

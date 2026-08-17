@@ -139,6 +139,43 @@
       "previous_pairing": "Previous pairing",
       "next_pairing": "Next pairing"
     },
+    "burst_effects": {
+      "name": "Burst Effect",
+      "settings": {
+        "header__1": { "content": "Media" },
+        "image": {
+          "label": "Image",
+          "info": "Recommended size: 1920 x 1080px"
+        },
+        "title": { "label": "Heading" },
+        "text": { "label": "Description" },
+        "button_label": { "label": "Button label" },
+        "button_link": { "label": "Button link" },
+        "header__2": { "content": "Button" },
+        "button_style": {
+          "label": "Button style",
+          "options__1": { "label": "Gradient" },
+          "options__2": { "label": "Outline" },
+          "options__3": { "label": "Glow" },
+          "options__4": { "label": "Slide" },
+          "options__5": { "label": "Pulse" }
+        },
+        "show_icon": { "label": "Show arrow icon" },
+        "header__3": { "content": "Animation" },
+        "animation_effect": {
+          "label": "Animation effect",
+          "options__1": { "label": "Fade in" },
+          "options__2": { "label": "Slide up" },
+          "options__3": { "label": "Scale up" },
+          "options__4": { "label": "Parallax" }
+        },
+        "animation_duration": { "label": "Duration" },
+        "animation_delay": { "label": "Delay" }
+      },
+      "presets": {
+        "name": "Burst Effect"
+      }
+    },
     "social_gallery": {
       "empty": "Add social posts to display them here.",
       "username_placeholder": "Add a username"
@@ -164,7 +201,9 @@
     "media_grid": {
       "pause_video": "Pause video",
       "play_video": "Play video",
-      "view_more": "View more"
+      "view_more": "View more",
+      "see_full_image": "See full image in new tab",
+      "image_preview": "Image preview"
     },
     "map": {
       "map_title": "Map showing our store location",

@@ -1,10 +1,3 @@
-/**
- * Luxury product image reveal — media only (not titles, prices, or text).
- * Soft fade + slight rise when the image first enters the viewport on scroll.
- *
- * After the animation finishes, JS removes these classes so no transform
- * lingers on media wrappers.
- */
 
 .pir-prepare:not(.pir-visible) {
   opacity: 0;

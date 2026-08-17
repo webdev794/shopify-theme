@@ -1,15 +1,6 @@
-/* ============================================
-   BASE STYLES
-   Recolored: --color-heading / --color-text don't exist anywhere in
-   css-variables.liquid, so they always fell through to hardcoded hex.
-   Fixed to reference the real palette variables. Also replaced the
-   hardcoded purple/indigo (#667eea) brand scheme with the theme's
-   actual accent color.
-   ============================================ */
-
 .blog-posts {
   padding: 4rem 0;
-  background: var(--color-background, #ffffff);
+  background: var(--blog-posts-bg, var(--color-background, #ffffff));
 }
 
 .blog-posts__container {

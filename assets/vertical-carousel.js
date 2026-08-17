@@ -1,6 +1,5 @@
 /**
  * Vertical Carousel JavaScript
- * Version: 1.3 - Fixed slide visibility
  */
 
 (function() {
@@ -128,4 +127,91 @@
   }
 
   document.addEventListener('shopify:section:load', initializeCarousels);
+})();
+
+/* Suvara: editorial chapter rail (unique navigation) */
+(function () {
+  'use strict';
+
+  function enhance(section) {
+    if (!section || section._vcChapters) return;
+    section._vcChapters = true;
+
+    var slides = section.querySelectorAll('.vertical-carousel__slide');
+    if (slides.length < 2) return;
+
+    var rail = document.createElement('div');
+    rail.className = 'vertical-carousel__chapter-rail';
+    rail.setAttribute('role', 'tablist');
+    rail.setAttribute('aria-label', 'Story chapters');
+
+    slides.forEach(function (slide, i) {
+      var titleEl = slide.querySelector('.vertical-carousel__title, h2, h3');
+      var label = titleEl ? titleEl.textContent.trim() : 'Chapter ' + (i + 1);
+      if (label.length > 28) label = label.slice(0, 26) + '…';
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'vertical-carousel__chapter' + (i === 0 ? ' is-active' : '');
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      btn.dataset.index = String(i);
+      btn.innerHTML =
+        '<span class="vertical-carousel__chapter-index">' +
+        String(i + 1).padStart(2, '0') +
+        '</span><span class="vertical-carousel__chapter-label">' +
+        label +
+        '</span>';
+
+      btn.addEventListener('click', function () {
+        var instance = section._verticalCarousel;
+        // Trigger existing indicator if present
+        var ind = section.querySelectorAll('.vertical-carousel__indicator')[i];
+        if (ind) ind.click();
+        else {
+          // Fallback: dispatch custom event
+          section.dispatchEvent(
+            new CustomEvent('vc:go', { detail: { index: i } })
+          );
+        }
+        rail.querySelectorAll('.vertical-carousel__chapter').forEach(function (c, j) {
+          c.classList.toggle('is-active', j === i);
+          c.setAttribute('aria-selected', j === i ? 'true' : 'false');
+        });
+      });
+
+      rail.appendChild(btn);
+    });
+
+    section.appendChild(rail);
+
+    // Sync active chapter when indicators change
+    var observer = new MutationObserver(function () {
+      section.querySelectorAll('.vertical-carousel__indicator').forEach(function (ind, i) {
+        if (ind.classList.contains('is-active') || ind.getAttribute('aria-current') === 'true') {
+          rail.querySelectorAll('.vertical-carousel__chapter').forEach(function (c, j) {
+            c.classList.toggle('is-active', j === i);
+          });
+        }
+      });
+    });
+    section.querySelectorAll('.vertical-carousel__indicator').forEach(function (ind) {
+      observer.observe(ind, { attributes: true, attributeFilter: ['class', 'aria-current'] });
+    });
+  }
+
+  function init(scope) {
+    (scope || document)
+      .querySelectorAll('[data-section-type="vertical-carousel"]')
+      .forEach(enhance);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      init();
+    });
+  } else init();
+  document.addEventListener('shopify:section:load', function (e) {
+    init(e.target);
+  });
 })();

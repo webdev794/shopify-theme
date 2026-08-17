@@ -1,5 +1,4 @@
 /* ========== HIGHLIGHT TEXT WITH IMAGES STYLES ========== */
-/* This file contains all styles for the highlight text with images section */
 
 /* ---- Base ---- */
 .hlt {
@@ -235,5 +234,159 @@
     opacity: 1;
     transform: translateY(0) rotate(var(--hlt-tilt, 0deg));
     transition: none;
+  }
+}
+
+/* ========== Water bubble magnifier ========== */
+.hlt {
+  position: relative;
+  --hlt-bubble-size: 150px;
+  --hlt-bubble-zoom: 2;
+  --hlt-bx: 50%;
+  --hlt-by: 50%;
+}
+
+.hlt__bubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--hlt-bubble-size);
+  height: var(--hlt-bubble-size);
+  margin-left: calc(var(--hlt-bubble-size) / -2);
+  margin-top: calc(var(--hlt-bubble-size) / -2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(var(--hlt-bx), var(--hlt-by), 0) scale(0.55);
+  transition:
+    opacity 0.28s ease,
+    visibility 0.28s ease,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.hlt.is-bubbling .hlt__bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(var(--hlt-bx), var(--hlt-by), 0) scale(1);
+}
+
+.hlt__bubble::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(180, 220, 255, 0.12) 40%,
+    transparent 70%
+  );
+  filter: blur(4px);
+  z-index: 0;
+}
+
+.hlt__bubble-lens {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--hlt-background, #f5f4f2);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.55) inset,
+    0 0 0 1px rgba(0, 40, 80, 0.12),
+    0 12px 28px rgba(0, 30, 60, 0.22),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+  z-index: 1;
+}
+
+.hlt__bubble-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--hlt-section-w, 100%);
+  height: var(--hlt-section-h, 100%);
+  transform-origin: 0 0;
+  transform: translate(
+      calc(-1 * var(--hlt-bx) * var(--hlt-bubble-zoom) + var(--hlt-bubble-size) / 2),
+      calc(-1 * var(--hlt-by) * var(--hlt-bubble-zoom) + var(--hlt-bubble-size) / 2)
+    )
+    scale(var(--hlt-bubble-zoom));
+  pointer-events: none;
+  user-select: none;
+}
+
+.hlt__bubble-content .hlt__inner {
+  max-width: none;
+}
+
+.hlt__bubble-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse 55% 40% at 32% 22%,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(255, 255, 255, 0.25) 35%,
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 68% 72%,
+      rgba(255, 255, 255, 0.18) 0%,
+      transparent 45%
+    );
+  mix-blend-mode: soft-light;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hlt__bubble-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.4),
+    inset 0 -8px 16px rgba(120, 180, 220, 0.15),
+    inset 0 8px 12px rgba(255, 255, 255, 0.2);
+  z-index: 4;
+  pointer-events: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hlt__bubble {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hlt__bubble {
+    display: none !important;
+  }
+}
+
+/* Suvara: parallax + scroll text */
+.hlt__media {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translate3d(0, var(--hlt-img-offset-y, 0px), 0) rotate(var(--hlt-tilt, 0deg));
+  will-change: transform;
+  transition: transform 0.15s linear;
+}
+
+.hlt__word--accent,
+.hlt__word--highlight {
+  display: inline-block;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hlt__media,
+  .hlt__word--accent,
+  .hlt__word--highlight {
+    transform: none !important;
+    transition: none !important;
   }
 }

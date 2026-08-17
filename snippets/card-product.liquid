@@ -4,9 +4,9 @@
 
 {%- assign product = card_product -%}
 
-<div class="card-wrapper">
+<div class="card-wrapper" data-mouse-tilt data-product-card style="--tilt-max: 5;">
   <a href="{{ product.url }}" class="card">
-    <div class="card__media">
+    <div class="card__media" data-tilt-item>
       {%- if product.featured_image -%}
         {%- assign image = product.featured_image -%}
 

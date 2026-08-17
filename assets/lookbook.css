@@ -659,14 +659,61 @@
   margin: 0;
 }
 
+
 /* Keep hotspot cards usable while scaled */
 .lookbook--scroll-zoom .lookbook__hotspot {
   z-index: 2;
 }
 
+/* Disable scroll-zoom on mobile only — scale + sticky misaligns hotspots.
+   Desktop keeps the full sticky zoom effect. */
 @media (max-width: 749px) {
+  .lookbook--scroll-zoom .lookbook__scale-target {
+    transform: none !important;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
   .lookbook__scroll-track {
-    height: 200vh;
+    height: auto;
+  }
+
+  .lookbook__sticky {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    background: transparent;
+  }
+
+  .lookbook--scroll-zoom .lookbook__image,
+  .lookbook--scroll-zoom .lookbook__placeholder {
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--lookbook-aspect-ratio, 4 / 5);
+    object-fit: cover;
+  }
+
+  .lookbook--scroll-zoom .lookbook__content--overlay {
+    position: relative;
+    padding: 0 0 1rem;
+    color: inherit;
+    text-shadow: none;
+    pointer-events: auto;
+  }
+
+  .lookbook--scroll-zoom .lookbook__actions {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .lookbook--scroll-zoom {
+    padding: 2rem 1.25rem;
   }
 }
 

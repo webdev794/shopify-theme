@@ -281,3 +281,55 @@
     animation-duration: 60s !important;
   }
 }
+
+/* Suvara: product hover + quick view on scrolling cards */
+.scrolling-media-cards__image-wrapper--product {
+  position: relative;
+  overflow: hidden;
+}
+
+.scrolling-media-cards__product-layer {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.scrolling-media-cards__image-wrapper--product:hover .scrolling-media-cards__product-layer,
+.scrolling-media-cards__image-wrapper--product:focus-within .scrolling-media-cards__product-layer,
+.scrolling-media-cards__card:hover .scrolling-media-cards__product-layer {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scrolling-media-cards__product-price {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.scrolling-media-cards__qv-btn {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.scrolling-media-cards__qv-btn:hover {
+  background: #fff;
+  color: #111;
+}
