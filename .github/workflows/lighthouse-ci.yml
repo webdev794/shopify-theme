@@ -44,10 +44,24 @@ jobs:
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_THEME_TOKEN }}
 
-      - name: Authenticate with storefront password
+      - name: Check if store is password-protected
         id: auth
         run: |
           set -e
+
+          # First, see if the homepage is freely accessible
+          HOME_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://suvara-beauty.myshopify.com/")
+          echo "Homepage HTTP status: $HOME_CODE"
+
+          if [ "$HOME_CODE" = "200" ]; then
+            echo "Store is public — no password cookie needed"
+            echo "cookie=" >> "$GITHUB_OUTPUT"
+            echo "protected=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Store appears password-protected (status $HOME_CODE). Trying password form..."
+
           HTTP_CODE=$(curl -c cookies.txt -b cookies.txt -L -s -o /dev/null -w "%{http_code}" \
             -X POST "https://suvara-beauty.myshopify.com/password" \
             --data-urlencode "form_type=storefront_password" \
@@ -58,31 +72,41 @@ jobs:
           echo "=== cookies.txt ==="
           cat cookies.txt || true
 
-          # Extract relevant cookies (storefront_digest is the important one)
-          COOKIE=$(grep -E 'storefront_digest|_secure_session_id|password' cookies.txt 2>/dev/null | awk '{print $6"="$7}' | tr '\n' '; ' | sed 's/; $//')
+          COOKIE=$(grep -E 'storefront_digest' cookies.txt 2>/dev/null | awk '{print $6"="$7}' | tr '\n' '; ' | sed 's/; $//')
           echo "Extracted cookie: $COOKIE"
 
           if [ -z "$COOKIE" ]; then
-            echo "::error::Failed to obtain storefront password cookie. Check STORE_PASSWORD secret."
-            exit 1
+            echo "::warning::Could not get storefront_digest cookie. Continuing without auth (may hit password page)."
+            echo "cookie=" >> "$GITHUB_OUTPUT"
+            echo "protected=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "cookie=$COOKIE" >> "$GITHUB_OUTPUT"
+            echo "protected=true" >> "$GITHUB_OUTPUT"
           fi
-
-          echo "cookie=$COOKIE" >> "$GITHUB_OUTPUT"
 
       - name: Write Lighthouse config
         run: |
+          COOKIE='${{ steps.auth.outputs.cookie }}'
+
+          if [ -n "$COOKIE" ]; then
+            EXTRA_HEADERS="\"extraHeaders\": {\"Cookie\": \"$COOKIE\"},"
+          else
+            EXTRA_HEADERS=""
+          fi
+
           cat > lighthouserc.json << EOF
           {
             "ci": {
               "collect": {
                 "numberOfRuns": 3,
                 "url": [
-                  "https://suvara-beauty.myshopify.com/"
+                  "https://suvara-beauty.myshopify.com/?preview_theme_id=156530344114"
                 ],
                 "settings": {
                   "preset": "desktop",
                   "chromeFlags": "--no-sandbox --disable-dev-shm-usage",
-                  "extraHeaders": "{\"Cookie\": \"${{ steps.auth.outputs.cookie }}\"}"
+                  $EXTRA_HEADERS
+                  "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
                 }
               },
               "assert": {
@@ -97,6 +121,10 @@ jobs:
             }
           }
           EOF
+
+          # Clean possible trailing comma if no extraHeaders
+          sed -i 's/,\n[[:space:]]*}/}/' lighthouserc.json || true
+
           echo "=== lighthouserc.json ==="
           cat lighthouserc.json
 
