@@ -2,9 +2,17 @@ name: Shopify Lighthouse CI
 
 on:
   push:
-    branches: [backup-v2]
+    branches:
+      - submit2d
+      - backup-v2
+      - main
+      - master
   pull_request:
-    branches: [backup-v2]
+    branches:
+      - submit2d
+      - backup-v2
+      - main
+      - master
 
 concurrency:
   group: lighthouse-${{ github.ref }}
@@ -40,21 +48,22 @@ jobs:
         id: auth
         run: |
           set -e
-          curl -c cookies.txt -b cookies.txt -L -s -o /dev/null -w "%{http_code}" \
+          HTTP_CODE=$(curl -c cookies.txt -b cookies.txt -L -s -o /dev/null -w "%{http_code}" \
             -X POST "https://suvara-beauty.myshopify.com/password" \
             --data-urlencode "form_type=storefront_password" \
             --data-urlencode "utf8=✓" \
-            --data-urlencode "password=${{ secrets.STORE_PASSWORD }}"
+            --data-urlencode "password=${{ secrets.STORE_PASSWORD }}")
 
+          echo "Password form HTTP status: $HTTP_CODE"
           echo "=== cookies.txt ==="
           cat cookies.txt || true
 
-          # Extract storefront_digest (the important cookie)
-          COOKIE=$(grep -E 'storefront_digest|password' cookies.txt | awk '{print $6"="$7}' | tr '\n' '; ')
+          # Extract relevant cookies (storefront_digest is the important one)
+          COOKIE=$(grep -E 'storefront_digest|_secure_session_id|password' cookies.txt 2>/dev/null | awk '{print $6"="$7}' | tr '\n' '; ' | sed 's/; $//')
           echo "Extracted cookie: $COOKIE"
 
           if [ -z "$COOKIE" ]; then
-            echo "::error::Failed to obtain storefront password cookie"
+            echo "::error::Failed to obtain storefront password cookie. Check STORE_PASSWORD secret."
             exit 1
           fi
 
@@ -110,7 +119,6 @@ jobs:
 
           echo ""
           echo "=== Scores ==="
-          # Only process actual Lighthouse result files (not links.json / manifest)
           for report in .lighthouseci/lhr-*.json .lighthouseci/*-lighthouse-results.json; do
             [ -f "$report" ] || continue
             echo "--- $report ---"
