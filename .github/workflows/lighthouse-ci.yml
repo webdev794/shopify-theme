@@ -3,10 +3,10 @@ name: Shopify Lighthouse CI
 on:
   push:
     branches:
-      - submit2d
+      - submit2e
   pull_request:
     branches:
-      - submit2d
+      - submit2e
 
 concurrency:
   group: lighthouse-${{ github.ref }}
