@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = section.querySelector('.pairing-products__control--next');
     const addToCartBtns = section.querySelectorAll('.pairing-products__add-to-cart');
     const addBundleBtn = section.querySelector('.pairing-products__add-bundle');
-    const totalPriceElement = section.querySelector('#bundle-total-price');
+    const totalPriceElement = section.querySelector('.pairing-products__bundle-price-amount');
     const savingsElement = section.querySelector('#bundle-savings');
     
     let currentScroll = 0;

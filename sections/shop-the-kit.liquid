@@ -134,7 +134,7 @@
         <div class="shop-the-kit__total">
           <div class="shop-the-kit__total-price">
             <span class="shop-the-kit__total-label">{{ section.settings.total_label | default: 'Total' | escape }}:</span>
-            <span class="shop-the-kit__total-amount" id="kit-total-price">
+            <span class="shop-the-kit__total-amount" id="kit-total-price-{{ section.id }}">
               {%- if section.blocks.size > 0 -%}
                 {%- assign total_price = 0 -%}
                 {%- for block in section.blocks -%}

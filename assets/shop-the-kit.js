@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const addToCartBtn = section.querySelector('.shop-the-kit__add-to-cart');
     const variantSelectors = section.querySelectorAll('.shop-the-kit__variant-selector');
-    const totalPriceElement = section.querySelector('#kit-total-price');
+    const totalPriceElement = section.querySelector('.shop-the-kit__total-amount');
     const products = section.querySelectorAll('.shop-the-kit__product');
     
     let selectedVariants = {};
