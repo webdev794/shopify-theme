@@ -248,6 +248,17 @@ body {
   color: var(--color-foreground);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading--family);
+  font-weight: var(--font-heading--weight);
+  font-style: var(--font-heading--style);
+}
+
 /** Section layout utilities */
 
 /**

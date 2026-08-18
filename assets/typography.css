@@ -1,0 +1,207 @@
+/**
+ * Global Typography — consistent theme scale
+ *
+ * Main section headings: 32px
+ * Paragraphs / buttons: 16px
+ * Subheadings and supporting UI text: 15px max
+ *
+ * This file is intentionally loaded last so section-specific CSS cannot
+ * introduce different typography scales.
+ */
+
+/* Base/supporting text: keep secondary UI at 15px maximum. */
+body,
+.shopify-section {
+  font-size: 15px;
+}
+
+.shopify-section :where(
+  small,
+  label,
+  caption,
+  figcaption,
+  .subheading,
+  [class*="__subheading"],
+  [class*="__preheading"],
+  [class*="__caption"],
+  [class*="__meta"],
+  [class*="__vendor"],
+  [class*="__badge"],
+  [class*="__label"],
+  [class*="__count"],
+  [class*="__note"],
+  [class*="__hint"],
+  [class*="__tag"],
+  [class*="__date"],
+  [class*="__read-more"],
+  [class*="__view-all"],
+  [class*="__link"]
+) {
+  font-size: 15px !important;
+}
+
+/* Main section headings — one consistent size across the entire theme. */
+:where(
+  .section-heading,
+  .heading--small,
+  .heading--medium,
+  .heading--large,
+  .featured-products__heading,
+  .blog-posts__heading,
+  .newsletter__heading,
+  .hero-carousel__heading,
+  .highlight-text-with-images__heading,
+  .hlt__heading,
+  .hlt__statement,
+  .image-comparison__heading,
+  .iwt-carousel__heading,
+  .lookbook__heading,
+  .map__heading,
+  .media-grid__heading,
+  .media-with-text-overlay__heading,
+  .mix-match-pack__heading,
+  .pairing-products__heading,
+  .product-recommendations__heading,
+  .scrollable-collection__heading,
+  .scrolling-media-cards__heading,
+  .shop-the-kit__heading,
+  .social-media-gallery__heading,
+  .sticky-media-cards__heading,
+  .testimonials__heading,
+  .text-with-icons__heading,
+  .trending-products__heading,
+  .vertical-carousel__title,
+  .custom-liquid__title,
+  .detailed-contact-form__heading,
+  .product__title
+) {
+  font-size: 42px !important;
+  line-height: 1.2;
+}
+
+
+  .slideshow-with-marquee__heading{
+    font-size: 82px !important;
+  }
+
+   .hero__heading{
+    font-size:72px !important;
+   }
+
+/* Paragraphs and descriptive copy. */
+:where(p, .rte, [class*="__description"], [class*="__description"] p, [class*="__text"]) {
+  font-size: 16px !important;
+  line-height: 1.6;
+}
+
+/* hero section paragraph  font size css */
+
+p.slideshow-with-marquee__subheading.sm-reveal.sm-reveal--delay {
+    font-size: 20px !important;
+    font-weight: 500;
+}
+
+
+/* Footer tagline font size  */
+.footer__tagline{
+  font-size: 23px !important;
+}
+
+
+
+
+/* Buttons and button-like controls. */
+:where(
+  .button,
+  .btn,
+  button,
+  [type="button"],
+  [type="submit"],
+  [type="reset"],
+  [role="button"],
+  .shopify-payment-button__button,
+  [class*="__button"],
+  [class*="__btn"],
+  [class*="__add-to-cart"],
+  [class*="__add-pack"]
+) {
+  font-size: 16px !important;
+  line-height: 1.3;
+}
+
+/* Rich-text headings are treated as supporting/sub headings unless they
+   are the page/section heading styled by a section-specific class. */
+.rte h1,
+.rte h2,
+.rte h3,
+.rte h4,
+.rte h5,
+.rte h6 {
+  font-size: 15px !important;
+  line-height: 1.4;
+}
+
+.rte p,
+.rte li,
+.rte blockquote {
+  font-size: 16px !important;
+  line-height: 1.6;
+}
+
+/* Keep form controls and common navigation/supporting text within the 15px cap. */
+:where(
+  input,
+  textarea,
+  select,
+  option,
+  .field__label,
+  .field__input,
+  .pagination,
+  .pagination a,
+  .header__mega-heading,
+  .header__mega-link,
+  .header__submenu-link,
+  .header__mobile-link,
+  .header__search-input
+) {
+  font-size: 15px !important;
+}
+
+/* Mobile keeps the same scale for consistent hierarchy. */
+@media screen and (max-width: 749px) {
+  :where(
+    .section-heading,
+    .heading--small,
+    .heading--medium,
+    .heading--large,
+    .featured-products__heading,
+    .blog-posts__heading,
+    .newsletter__heading,
+    .hero__heading,
+    .hero-carousel__heading,
+    .image-comparison__heading,
+    .hlt__statement,
+    .iwt-carousel__heading,
+    .lookbook__heading,
+    .map__heading,
+    .media-grid__heading,
+    .media-with-text-overlay__heading,
+    .mix-match-pack__heading,
+    .pairing-products__heading,
+    .scrollable-collection__heading,
+    .scrolling-media-cards__heading,
+    .shop-the-kit__heading,
+    .slideshow-with-marquee__heading,
+    .social-media-gallery__heading,
+    .sticky-media-cards__heading,
+    .testimonials__heading,
+    .text-with-icons__heading,
+    .trending-products__heading,
+    .vertical-carousel__title,
+    .custom-liquid__title,
+    .detailed-contact-form__heading,
+    .product__title
+  ) {
+    font-size: 32px !important;
+  }
+}

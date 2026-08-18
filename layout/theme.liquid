@@ -7,15 +7,109 @@
     {% render 'css-variables' %}
 
     {% comment %}
-      Font loading:
-      1. Preconnect to font CDN for faster connection
-      2. Fonts load on-demand via @font-face
+      Font loading via Google Fonts based on theme select settings.
     {% endcomment %}
-    {% unless settings.type_primary_font.system? %}
+    {% liquid
+      assign primary_font = settings.type_primary_font | default: 'work_sans'
+      assign heading_font = settings.type_heading_font | default: 'work_sans'
+      assign font_query_parts = ''
+
+      if primary_font != 'system'
+        case primary_font
+          when 'work_sans'
+            assign font_query_parts = font_query_parts | append: 'family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'inter'
+            assign font_query_parts = font_query_parts | append: 'family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'montserrat'
+            assign font_query_parts = font_query_parts | append: 'family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'poppins'
+            assign font_query_parts = font_query_parts | append: 'family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'roboto'
+            assign font_query_parts = font_query_parts | append: 'family=Roboto:ital,wght@0,400;0,500;0,700;1,400'
+          when 'open_sans'
+            assign font_query_parts = font_query_parts | append: 'family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'lato'
+            assign font_query_parts = font_query_parts | append: 'family=Lato:ital,wght@0,400;0,700;1,400'
+          when 'nunito'
+            assign font_query_parts = font_query_parts | append: 'family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'raleway'
+            assign font_query_parts = font_query_parts | append: 'family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'source_sans_3'
+            assign font_query_parts = font_query_parts | append: 'family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'dm_sans'
+            assign font_query_parts = font_query_parts | append: 'family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'plus_jakarta_sans'
+            assign font_query_parts = font_query_parts | append: 'family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'outfit'
+            assign font_query_parts = font_query_parts | append: 'family=Outfit:wght@400;500;600;700'
+          when 'manrope'
+            assign font_query_parts = font_query_parts | append: 'family=Manrope:wght@400;500;600;700'
+          when 'space_grotesk'
+            assign font_query_parts = font_query_parts | append: 'family=Space+Grotesk:wght@400;500;600;700'
+          when 'playfair_display'
+            assign font_query_parts = font_query_parts | append: 'family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400'
+          when 'merriweather'
+            assign font_query_parts = font_query_parts | append: 'family=Merriweather:ital,wght@0,400;0,700;1,400'
+          when 'lora'
+            assign font_query_parts = font_query_parts | append: 'family=Lora:ital,wght@0,400;0,600;0,700;1,400'
+          when 'oswald'
+            assign font_query_parts = font_query_parts | append: 'family=Oswald:wght@400;500;600;700'
+        endcase
+      endif
+
+      if heading_font != 'system' and heading_font != primary_font
+        if font_query_parts != blank
+          assign font_query_parts = font_query_parts | append: '&'
+        endif
+        case heading_font
+          when 'work_sans'
+            assign font_query_parts = font_query_parts | append: 'family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'inter'
+            assign font_query_parts = font_query_parts | append: 'family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'montserrat'
+            assign font_query_parts = font_query_parts | append: 'family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'poppins'
+            assign font_query_parts = font_query_parts | append: 'family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'roboto'
+            assign font_query_parts = font_query_parts | append: 'family=Roboto:ital,wght@0,400;0,500;0,700;1,400'
+          when 'open_sans'
+            assign font_query_parts = font_query_parts | append: 'family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'lato'
+            assign font_query_parts = font_query_parts | append: 'family=Lato:ital,wght@0,400;0,700;1,400'
+          when 'nunito'
+            assign font_query_parts = font_query_parts | append: 'family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'raleway'
+            assign font_query_parts = font_query_parts | append: 'family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'source_sans_3'
+            assign font_query_parts = font_query_parts | append: 'family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'dm_sans'
+            assign font_query_parts = font_query_parts | append: 'family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'plus_jakarta_sans'
+            assign font_query_parts = font_query_parts | append: 'family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400'
+          when 'outfit'
+            assign font_query_parts = font_query_parts | append: 'family=Outfit:wght@400;500;600;700'
+          when 'manrope'
+            assign font_query_parts = font_query_parts | append: 'family=Manrope:wght@400;500;600;700'
+          when 'space_grotesk'
+            assign font_query_parts = font_query_parts | append: 'family=Space+Grotesk:wght@400;500;600;700'
+          when 'playfair_display'
+            assign font_query_parts = font_query_parts | append: 'family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400'
+          when 'merriweather'
+            assign font_query_parts = font_query_parts | append: 'family=Merriweather:ital,wght@0,400;0,700;1,400'
+          when 'lora'
+            assign font_query_parts = font_query_parts | append: 'family=Lora:ital,wght@0,400;0,600;0,700;1,400'
+          when 'oswald'
+            assign font_query_parts = font_query_parts | append: 'family=Oswald:wght@400;500;600;700'
+        endcase
+      endif
+    %}
+    {% if font_query_parts != blank %}
       {% # theme-check-disable RemoteAsset %}
-      <link rel="preconnect" href="//fonts.shopifycdn.com" crossorigin>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?{{ font_query_parts }}&display=swap">
       {% # theme-check-enable RemoteAsset %}
-    {% endunless %}
+    {% endif %}
 
     {% # Load critical CSS (includes minimal-header + slideshow FOUC safety net) %}
     {{ 'critical.css' | asset_url | stylesheet_tag }}
@@ -147,5 +241,6 @@
     </script>
 
       <script src="{{ 'theme-polish.js' | asset_url }}" defer></script>
+    {{ 'typography.css' | asset_url | stylesheet_tag }}
   </body>
 </html>

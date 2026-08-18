@@ -6,7 +6,13 @@
 
 {{ 'text-with-icons.css' | asset_url | stylesheet_tag }}
 
-<div class="text-with-icons" data-section-id="{{ section.id }}" data-section-type="text-with-icons" data-reduced-motion="{{ section.settings.reduced_motion_mode | default: 'system' }}" data-mobile-motion="{{ section.settings.mobile_motion | default: 'lighter' }}" style="--section-anim-duration: {{ section.settings.anim_duration | default: 700 | divided_by: 1000.0 }}s; --section-anim-delay: {{ section.settings.anim_delay | default: 0 | divided_by: 1000.0 }}s;">
+<div class="text-with-icons" 
+     data-section-id="{{ section.id }}" 
+     data-section-type="text-with-icons" 
+     data-reduced-motion="{{ section.settings.reduced_motion_mode | default: 'system' }}" 
+     data-mobile-motion="{{ section.settings.mobile_motion | default: 'lighter' }}" 
+     style="--section-anim-duration: {{ section.settings.anim_duration | default: 700 | divided_by: 1000.0 }}s; --section-anim-delay: {{ section.settings.anim_delay | default: 0 | divided_by: 1000.0 }}s; background-color: {{ section.settings.background_color }};"
+     data-background-color="{{ section.settings.background_color }}">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <div class="text-with-icons__header">
@@ -111,6 +117,16 @@
         }
       ],
       "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.text_with_icons.settings.header__2.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.text_with_icons.settings.background_color.label",
+      "default": "#ffffff"
     },
     {
       "type": "header",

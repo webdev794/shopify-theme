@@ -1600,6 +1600,12 @@
         },
         "aria_label": {
           "label": "Screen reader label"
+        },
+        "header__4": {
+          "content": "Styling"
+        },
+        "background_color": {
+          "label": "Background color"
         }
       },
       "blocks": {
@@ -2199,6 +2205,12 @@
           "options__3": {
             "label": "Right"
           }
+        },
+        "header__2": {
+          "content": "Styling"
+        },
+        "background_color": {
+          "label": "Background color"
         }
       },
       "blocks": {

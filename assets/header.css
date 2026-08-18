@@ -129,6 +129,7 @@ body.header-mobile-menu-open {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
+  justify-content:center;
 }
 
 .header__menu-item {
