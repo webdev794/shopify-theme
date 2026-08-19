@@ -5,7 +5,7 @@
 
 .social-media-gallery__header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 52px;
 }
 
 .social-media-gallery__heading {
@@ -22,10 +22,12 @@
   margin: 0;
 }
 
+/* Slightly larger tiles and more breathing room between them —
+   tighter grids read as a widget, more air reads as premium. */
 .social-media-gallery__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+  gap: 36px 32px;
   justify-content: center;
 }
 
@@ -48,45 +50,47 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .social-media-gallery__item {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 .social-media-gallery__link {
   display: block;
   text-decoration: none;
   height: 100%;
 }
 
-/* Applied when no link is set — the card still renders (image, caption,
-   likes/comments) but isn't a fake dead link to "#" */
 .social-media-gallery__link--static {
   cursor: default;
 }
 
+/* Quiet at rest — no drop shadow sitting under every tile by default.
+   The card earns its elevation on hover instead of announcing itself
+   all the time. */
 .social-media-gallery__card {
   background: var(--smg-card-bg, #ffffff);
   border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  /* Rest pose */
-  transform: translate3d(0, 0, 0) rotate(0deg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transform: translate3d(0, 0, 0);
   transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   height: 100%;
   display: flex;
   flex-direction: column;
   will-change: transform;
-  transform-origin: 50% 100%;
 }
 
-/*
- * IPER-style hover: lift up + slight CCW rotation so the right side
- * rises a bit more than the left. Only the hovered card moves.
- * Desktop / fine pointer only.
- */
+/* Quiet lift — no tilt/rotation. A restrained, editorial hover rather
+   than a playful one. */
 @media (hover: hover) and (pointer: fine) {
   .social-media-gallery__card:hover {
-    /* translateY lift; negative rotateZ = right edge higher */
-    transform: translate3d(0, -10px, 0) rotate(-2.25deg);
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.14);
+    transform: translate3d(0, -6px, 0);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -111,9 +115,23 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .social-media-gallery__card:hover .social-media-gallery__image {
+    transform: scale(1.045);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-media-gallery__image {
+    transition: none;
+  }
+  .social-media-gallery__card:hover .social-media-gallery__image {
+    transform: none;
+  }
+}
 
 .social-media-gallery__platform-badge {
   position: absolute;
@@ -122,22 +140,22 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  /* Transparent — logo only, image stays fully visible */
   background: transparent;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Soft edge so white logos stay readable on light or dark photos */
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.3s ease;
   pointer-events: none;
   opacity: 0.72;
+  z-index: 2;
 }
 
-.social-media-gallery__card:hover .social-media-gallery__platform-badge {
-  opacity: 0.95;
-  transform: scale(1.06);
+@media (hover: hover) and (pointer: fine) {
+  .social-media-gallery__card:hover .social-media-gallery__platform-badge {
+    opacity: 0;
+  }
 }
 
 .social-media-gallery__platform-badge svg {
@@ -150,7 +168,6 @@
   opacity: 0.9;
 }
 
-/* Instagram uses stroked paths */
 .social-media-gallery__platform-badge--instagram svg {
   fill: none;
   stroke: currentColor;
@@ -158,6 +175,71 @@
 .social-media-gallery__platform-badge--instagram svg circle[fill] {
   fill: currentColor;
   stroke: none;
+}
+
+/* ---------- Hover overlay ----------
+   A quiet dark scrim with centered stats replaces the platform badge
+   on hover — the classic, recognizable Instagram-grid hover language,
+   but restrained: no borders, no bright colors, generous type. */
+.social-media-gallery__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: color-mix(in srgb, #000000 40%, transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .social-media-gallery__card:hover .social-media-gallery__overlay {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-media-gallery__overlay {
+    transition: none;
+  }
+}
+
+.social-media-gallery__overlay-stats {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.social-media-gallery__overlay-stat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.social-media-gallery__overlay-stat svg {
+  fill: #ffffff;
+}
+
+.social-media-gallery__overlay-view {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, #ffffff 80%, transparent);
+}
+
+/* No hover overlay on touch devices (nothing to hover) — the static
+   stats line under the caption already covers this info. */
+@media not all and (hover: hover) {
+  .social-media-gallery__overlay {
+    display: none;
+  }
 }
 
 .social-media-gallery__placeholder {
@@ -190,43 +272,50 @@
   font-weight: 500;
 }
 
+/* ---------- Content ---------- */
+
 .social-media-gallery__content {
-  padding: 16px 20px 20px;
+  padding: 18px 4px 4px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
+}
+
+.social-media-gallery__credit {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--smg-meta-color, #999999);
 }
 
 .social-media-gallery__caption {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--smg-text-color, #1a1a1a);
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+/* Plain-text stat line — no icons here (icons live in the hover
+   overlay instead), just quiet secondary type. */
 .social-media-gallery__meta {
   display: flex;
-  gap: 16px;
-  font-size: 13px;
-  color: var(--smg-meta-color, #666666);
-  margin-top: auto;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 12.5px;
+  color: var(--smg-meta-color, #999999);
+  margin: 4px 0 0;
 }
 
-.social-media-gallery__likes,
-.social-media-gallery__comments {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.social-media-gallery__likes svg,
-.social-media-gallery__comments svg {
-  fill: var(--smg-meta-color, #666666);
+.social-media-gallery__meta-stat:not(:last-child)::after {
+  content: "\00b7";
+  margin-left: 10px;
+  opacity: 0.6;
 }
 
 .social-media-gallery__footer {
@@ -271,7 +360,6 @@
   grid-column: 1 / -1;
 }
 
-/* Platform badges stay transparent — white glyph only */
 .social-media-gallery__platform-badge--instagram,
 .social-media-gallery__platform-badge--facebook,
 .social-media-gallery__platform-badge--twitter,
@@ -294,16 +382,16 @@
 
   .social-media-gallery__grid {
     grid-template-columns: repeat(auto-fit, minmax(160px, 200px));
-    gap: 16px;
+    gap: 24px 16px;
     justify-content: center;
   }
 
   .social-media-gallery__content {
-    padding: 12px 14px 16px;
+    padding: 14px 2px 2px;
   }
 
   .social-media-gallery__caption {
-    font-size: 13px;
+    font-size: 13.5px;
   }
 
   .social-media-gallery__meta {
@@ -336,7 +424,7 @@
 @media (max-width: 480px) {
   .social-media-gallery__grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 20px 12px;
   }
 
   .social-media-gallery__placeholder-text {

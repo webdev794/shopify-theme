@@ -1,5 +1,6 @@
 {%- comment -%}
-  Images with Text Carousel
+  Images with Text Carousel / The Suvara Ritual
+  Large image ~60% | Text ~40% — editorial story section
 {%- endcomment -%}
 
 {%- liquid
@@ -175,16 +176,26 @@
       "type": "text",
       "id": "carousel_label",
       "label": "t:sections.iwt_carousel.settings.carousel_label.label",
-      "info": "t:sections.iwt_carousel.settings.carousel_label.info"
+      "info": "t:sections.iwt_carousel.settings.carousel_label.info",
+      "default": "The Suvara Ritual"
     },
-    { "type": "header", "content": "t:sections.iwt_carousel.settings.header__1.content" },
+    {
+      "type": "header",
+      "content": "t:sections.iwt_carousel.settings.header__1.content"
+    },
     {
       "type": "select",
       "id": "image_position",
       "label": "t:sections.iwt_carousel.settings.image_position.label",
       "options": [
-        { "value": "left", "label": "t:sections.iwt_carousel.settings.image_position.options__1.label" },
-        { "value": "right", "label": "t:sections.iwt_carousel.settings.image_position.options__2.label" }
+        {
+          "value": "left",
+          "label": "t:sections.iwt_carousel.settings.image_position.options__1.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.iwt_carousel.settings.image_position.options__2.label"
+        }
       ],
       "default": "left"
     },
@@ -193,10 +204,22 @@
       "id": "aspect_ratio",
       "label": "t:sections.iwt_carousel.settings.aspect_ratio.label",
       "options": [
-        { "value": "1 / 1", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__1.label" },
-        { "value": "4 / 3", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__2.label" },
-        { "value": "3 / 4", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__3.label" },
-        { "value": "16 / 9", "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__4.label" }
+        {
+          "value": "1 / 1",
+          "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__1.label"
+        },
+        {
+          "value": "4 / 3",
+          "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__2.label"
+        },
+        {
+          "value": "3 / 4",
+          "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__3.label"
+        },
+        {
+          "value": "16 / 9",
+          "label": "t:sections.iwt_carousel.settings.aspect_ratio.options__4.label"
+        }
       ],
       "default": "4 / 3"
     },
@@ -205,11 +228,20 @@
       "id": "heading_size",
       "label": "t:sections.iwt_carousel.settings.heading_size.label",
       "options": [
-        { "value": "small", "label": "t:sections.iwt_carousel.settings.heading_size.options__1.label" },
-        { "value": "medium", "label": "t:sections.iwt_carousel.settings.heading_size.options__2.label" },
-        { "value": "large", "label": "t:sections.iwt_carousel.settings.heading_size.options__3.label" }
+        {
+          "value": "small",
+          "label": "t:sections.iwt_carousel.settings.heading_size.options__1.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.iwt_carousel.settings.heading_size.options__2.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.iwt_carousel.settings.heading_size.options__3.label"
+        }
       ],
-      "default": "medium"
+      "default": "large"
     },
     {
       "type": "checkbox",
@@ -217,7 +249,10 @@
       "label": "t:sections.iwt_carousel.settings.full_width.label",
       "default": false
     },
-    { "type": "header", "content": "t:sections.iwt_carousel.settings.header__2.content" },
+    {
+      "type": "header",
+      "content": "t:sections.iwt_carousel.settings.header__2.content"
+    },
     {
       "type": "checkbox",
       "id": "show_arrows",
@@ -234,7 +269,7 @@
       "type": "checkbox",
       "id": "autoplay",
       "label": "t:sections.iwt_carousel.settings.autoplay.label",
-      "default": false,
+      "default": true,
       "info": "t:sections.iwt_carousel.settings.autoplay.info"
     },
     {
@@ -245,26 +280,29 @@
       "max": 9,
       "step": 1,
       "unit": "s",
-      "default": 5
+      "default": 6
     },
-    { "type": "header", "content": "t:sections.iwt_carousel.settings.header__3.content" },
+    {
+      "type": "header",
+      "content": "t:sections.iwt_carousel.settings.header__3.content"
+    },
     {
       "type": "color",
       "id": "color_background",
       "label": "t:sections.iwt_carousel.settings.color_background.label",
-      "default": "#f5f4f2"
+      "default": "#F7F4EE"
     },
     {
       "type": "color",
       "id": "color_foreground",
       "label": "t:sections.iwt_carousel.settings.color_foreground.label",
-      "default": "#121212"
+      "default": "#1A1A1A"
     },
     {
       "type": "color",
       "id": "color_accent",
       "label": "t:sections.iwt_carousel.settings.color_accent.label",
-      "default": "#121212"
+      "default": "#1A1A1A"
     }
   ],
   "blocks": [
@@ -283,25 +321,25 @@
           "type": "text",
           "id": "caption",
           "label": "t:sections.iwt_carousel.blocks.slide.settings.caption.label",
-          "default": "New in"
+          "default": "THE SUVARA RITUAL"
         },
         {
           "type": "inline_richtext",
           "id": "heading",
           "label": "t:sections.iwt_carousel.blocks.slide.settings.heading.label",
-          "default": "Image with text"
+          "default": "Your skin deserves a moment of its own."
         },
         {
           "type": "richtext",
           "id": "text",
           "label": "t:sections.iwt_carousel.blocks.slide.settings.text.label",
-          "default": "<p>Pair an image with a short story, collection highlight, or campaign message.</p>"
+          "default": "<p>Thoughtfully crafted essentials designed to make your everyday ritual feel extraordinary.</p>"
         },
         {
           "type": "text",
           "id": "button_label",
           "label": "t:sections.iwt_carousel.blocks.slide.settings.button_label.label",
-          "default": "Shop now"
+          "default": "Discover Our Story"
         },
         {
           "type": "url",
@@ -313,8 +351,14 @@
           "id": "button_style",
           "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.label",
           "options": [
-            { "value": "primary", "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.options__1.label" },
-            { "value": "secondary", "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.options__2.label" }
+            {
+              "value": "primary",
+              "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.options__1.label"
+            },
+            {
+              "value": "secondary",
+              "label": "t:sections.iwt_carousel.blocks.slide.settings.button_style.options__2.label"
+            }
           ],
           "default": "primary"
         }
@@ -325,9 +369,36 @@
     {
       "name": "t:sections.iwt_carousel.presets.name",
       "blocks": [
-        { "type": "slide" },
-        { "type": "slide" },
-        { "type": "slide" }
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "THE SUVARA RITUAL",
+            "heading": "Your skin deserves a moment of its own.",
+            "text": "<p>Thoughtfully crafted essentials designed to make your everyday ritual feel extraordinary.</p>",
+            "button_label": "Discover Our Story",
+            "button_style": "primary"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "THE SUVARA RITUAL",
+            "heading": "Nourish. Restore. Glow.",
+            "text": "<p>A simple, intentional sequence that turns daily care into a quiet luxury.</p>",
+            "button_label": "Discover Our Story",
+            "button_style": "primary"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "caption": "THE SUVARA RITUAL",
+            "heading": "Made for the everyday extraordinary.",
+            "text": "<p>Clean formulas. Sensorial textures. Results you can feel and see.</p>",
+            "button_label": "Discover Our Story",
+            "button_style": "primary"
+          }
+        }
       ]
     }
   ]

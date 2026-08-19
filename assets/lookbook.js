@@ -99,6 +99,38 @@
       });
     }
 
+    // ---- Product strip: click a card to open its hotspot on the image ----
+    const stripItems = section.querySelectorAll('[data-strip-item]');
+
+    if (stripItems.length && hotspots.length) {
+      const syncStripActive = () => {
+        stripItems.forEach((item) => {
+          const targetId = item.dataset.hotspotTarget;
+          const hotspot = targetId ? section.querySelector('#' + CSS.escape(targetId)) : null;
+          item.classList.toggle('is-active', Boolean(hotspot && hotspot.open));
+        });
+      };
+
+      stripItems.forEach((item) => {
+        item.addEventListener('click', () => {
+          const targetId = item.dataset.hotspotTarget;
+          const hotspot = targetId ? section.querySelector('#' + CSS.escape(targetId)) : null;
+          if (!hotspot) return;
+
+          const wasOpen = hotspot.open;
+          hotspot.open = !wasOpen;
+
+          if (!wasOpen) {
+            hotspot.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+          }
+        });
+      });
+
+      hotspots.forEach((hotspot) => {
+        hotspot.addEventListener('toggle', syncStripActive);
+      });
+    }
+
     // ---- "Shop the Whole Look" batch add to cart ----
     const wholeLookBtn = section.querySelector('[data-whole-look-btn]');
     const addIndividualForms = section.querySelectorAll('[data-add-individual]');

@@ -1,16 +1,23 @@
 {% comment %}
-  Text with Icons Section
-  Version: 1.0
-  Design: Clean, accessible, responsive
+  Text with Icons Section ("Why Choose Us")
+  Version: 2.0 — Horizontal row redesign
+
+  Note: previously this section built classes like
+  "text-with-icons__grid--columns-3" and "text-with-icons__grid--align-left",
+  which never matched the CSS's ".text-with-icons__grid--3" /
+  ".text-with-icons__alignment--left" selectors, so the column and alignment
+  settings silently did nothing on the classic grid layout. Fixed below.
 {% endcomment %}
 
 {{ 'text-with-icons.css' | asset_url | stylesheet_tag }}
 
-<div class="text-with-icons" 
-     data-section-id="{{ section.id }}" 
-     data-section-type="text-with-icons" 
-     data-reduced-motion="{{ section.settings.reduced_motion_mode | default: 'system' }}" 
-     data-mobile-motion="{{ section.settings.mobile_motion | default: 'lighter' }}" 
+{%- assign twi_layout = section.settings.layout | default: 'row' -%}
+
+<div class="text-with-icons text-with-icons--{{ twi_layout }} text-with-icons__alignment--{{ section.settings.alignment }}"
+     data-section-id="{{ section.id }}"
+     data-section-type="text-with-icons"
+     data-reduced-motion="{{ section.settings.reduced_motion_mode | default: 'system' }}"
+     data-mobile-motion="{{ section.settings.mobile_motion | default: 'lighter' }}"
      style="--section-anim-duration: {{ section.settings.anim_duration | default: 700 | divided_by: 1000.0 }}s; --section-anim-delay: {{ section.settings.anim_delay | default: 0 | divided_by: 1000.0 }}s; background-color: {{ section.settings.background_color }};"
      data-background-color="{{ section.settings.background_color }}">
   <div class="page-width">
@@ -23,23 +30,66 @@
       </div>
     {%- endif -%}
 
-    <div class="text-with-icons__grid text-with-icons__grid--columns-{{ section.settings.columns }} text-with-icons__grid--align-{{ section.settings.alignment }}">
-      {%- for block in section.blocks -%}
-        <div class="text-with-icons__item" {{ block.shopify_attributes }}>
-          <div class="text-with-icons__card">
-            {%- if block.settings.icon != 'none' -%}
-              <div class="text-with-icons__icon-wrapper">
-                {%- render 'icon', icon: block.settings.icon -%}
+    {%- if twi_layout == 'grid' -%}
+
+      <div class="text-with-icons__grid text-with-icons__grid--{{ section.settings.columns }}">
+        {%- for block in section.blocks -%}
+          <div class="text-with-icons__item" {{ block.shopify_attributes }}>
+            <div class="text-with-icons__card">
+              {%- if block.settings.icon != 'none' -%}
+                <div class="text-with-icons__icon-wrapper">
+                  {%- render 'icon', icon: block.settings.icon -%}
+                </div>
+              {%- endif -%}
+
+              <div class="text-with-icons__content">
+                {%- if block.settings.title != blank -%}
+                  <h3 class="text-with-icons__title">{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+
+                {%- if block.settings.text != blank -%}
+                  <div class="text-with-icons__text rte">{{ block.settings.text }}</div>
+                {%- endif -%}
+
+                {%- if block.settings.button_text != blank and block.settings.button_link != blank -%}
+                  <a href="{{ block.settings.button_link }}" class="text-with-icons__button link">
+                    {{ block.settings.button_text | escape }}
+                    <span class="text-with-icons__button-arrow">→</span>
+                  </a>
+                {%- endif -%}
               </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+    {%- else -%}
+
+      {%- comment -%}
+        Horizontal row: icon + short copy side by side, separated by
+        hairline dividers. No cards, no boxes, no shadows — reads as one
+        clean line rather than a set of equal boxes. Collapses to a
+        stacked list on mobile.
+      {%- endcomment -%}
+      <div class="text-with-icons__row" role="list">
+        {%- for block in section.blocks -%}
+          {%- unless forloop.first -%}
+            <div class="text-with-icons__row-divider" aria-hidden="true"></div>
+          {%- endunless -%}
+          <div class="text-with-icons__row-item" role="listitem" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != 'none' -%}
+              <span class="text-with-icons__row-icon">
+                {%- render 'icon', icon: block.settings.icon -%}
+              </span>
             {%- endif -%}
 
-            <div class="text-with-icons__content">
+            <div class="text-with-icons__row-copy">
               {%- if block.settings.title != blank -%}
-                <h3 class="text-with-icons__title">{{ block.settings.title | escape }}</h3>
+                <h3 class="text-with-icons__row-title">{{ block.settings.title | escape }}</h3>
               {%- endif -%}
 
               {%- if block.settings.text != blank -%}
-                <div class="text-with-icons__text rte">{{ block.settings.text }}</div>
+                <div class="text-with-icons__row-text rte">{{ block.settings.text }}</div>
               {%- endif -%}
 
               {%- if block.settings.button_text != blank and block.settings.button_link != blank -%}
@@ -50,9 +100,10 @@
               {%- endif -%}
             </div>
           </div>
-        </div>
-      {%- endfor -%}
-    </div>
+        {%- endfor -%}
+      </div>
+
+    {%- endif -%}
   </div>
 </div>
 
@@ -80,8 +131,20 @@
     },
     {
       "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "row", "label": "Horizontal row (icon + short sentence)" },
+        { "value": "grid", "label": "Classic icon grid" }
+      ],
+      "default": "row",
+      "info": "Horizontal row lines items up with dividers instead of boxed cards."
+    },
+    {
+      "type": "select",
       "id": "columns",
       "label": "t:sections.text_with_icons.settings.columns.label",
+      "info": "Only applies to the classic icon grid layout.",
       "options": [
         {
           "value": "2",
@@ -102,6 +165,7 @@
       "type": "select",
       "id": "alignment",
       "label": "t:sections.text_with_icons.settings.alignment.label",
+      "info": "For the row layout, controls how items are justified within the row.",
       "options": [
         {
           "value": "left",

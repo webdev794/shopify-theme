@@ -16,10 +16,25 @@
       </div>
     {%- endif -%}
 
-    <div class="testimonials__grid testimonials__grid--{{ section.settings.columns }}">
+    {%- assign is_featured_layout = false -%}
+    {%- if section.settings.layout == 'featured' and section.blocks.size > 1 -%}
+      {%- assign is_featured_layout = true -%}
+    {%- endif -%}
+    <div class="testimonials__grid {% if is_featured_layout %}testimonials__grid--featured{% else %}testimonials__grid--{{ section.settings.columns }}{% endif %}">
       {%- for block in section.blocks -%}
-        <div class="testimonials__item" {{ block.shopify_attributes }}>
-          <div class="testimonials__card">
+        {%- assign item_modifier = '' -%}
+        {%- assign card_modifier = '' -%}
+        {%- if is_featured_layout -%}
+          {%- if forloop.first -%}
+            {%- assign item_modifier = ' testimonials__item--featured' -%}
+            {%- assign card_modifier = ' testimonials__card--featured' -%}
+          {%- else -%}
+            {%- assign item_modifier = ' testimonials__item--secondary' -%}
+            {%- assign card_modifier = ' testimonials__card--secondary' -%}
+          {%- endif -%}
+        {%- endif -%}
+        <div class="testimonials__item{{ item_modifier }}" {{ block.shopify_attributes }}>
+          <div class="testimonials__card{{ card_modifier }}">
             {%- if section.settings.show_rating and block.settings.rating > 0 -%}
               <div class="testimonials__stars">
                 {%- for i in (1..5) -%}
@@ -123,6 +138,23 @@
     },
     {
       "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "featured",
+          "label": "Featured (one large + smaller)"
+        },
+        {
+          "value": "grid",
+          "label": "Equal grid"
+        }
+      ],
+      "default": "featured",
+      "info": "Featured highlights your first testimonial block. Falls back to a single card when only one testimonial is added."
+    },
+    {
+      "type": "select",
       "id": "columns",
       "label": "t:sections.testimonials.settings.columns.label",
       "options": [
@@ -139,7 +171,9 @@
           "label": "3"
         }
       ],
-      "default": "3"
+      "default": "3",
+      "info": "Used only when Layout is set to Equal grid.",
+      "visible_if": "{{ section.settings.layout == 'grid' }}"
     },
     {
       "type": "header",

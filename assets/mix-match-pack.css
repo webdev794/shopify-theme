@@ -1,5 +1,5 @@
 .mix-match-pack {
-  padding: 60px 0;
+  padding: 64px 0;
   background-color: var(--mmp-bg, var(--color-background, #ffffff));
 }
 
@@ -24,41 +24,44 @@
 
 .mix-match-pack__wrapper {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 300px 1fr;
   gap: 40px;
   align-items: start;
 }
+
+/* ---------- Builder tray / summary panel ---------- */
 
 .mix-match-pack__info {
   position: sticky;
   top: 100px;
   background: var(--mmp-info-bg, var(--color-background-secondary, #f8f8f8));
-  border-radius: 2px;
+  border: 1px solid var(--mmp-border, color-mix(in srgb, var(--color-foreground, #1a1a1a) 8%, transparent));
+  border-radius: 4px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .mix-match-pack__selection-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--mmp-border, color-mix(in srgb, var(--color-foreground, #1a1a1a) 12%, transparent));
 }
 
 .mix-match-pack__selection-label {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.08em;
   color: var(--mmp-text-color, var(--color-foreground, #1a1a1a));
 }
 
 .mix-match-pack__selection-count {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: var(--mmp-text-color, var(--color-foreground-secondary, #666666));
 }
 
@@ -67,52 +70,192 @@
   color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
 }
 
+/* Progress bar — the pack fills up as you build it */
+.mix-match-pack__progress {
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-foreground, #1a1a1a) 10%, transparent);
+  overflow: hidden;
+}
+
+.mix-match-pack__progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  border-radius: 999px;
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mix-match-pack__progress-fill {
+    transition: none;
+  }
+}
+
+/* Tray — live thumbnails of the pack being built, the visual link between
+   the grid below and the summary above. */
+.mix-match-pack__tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 52px;
+  padding: 10px;
+  background: var(--mmp-tray-bg, var(--color-background, #ffffff));
+  border: 1px dashed color-mix(in srgb, var(--color-foreground, #1a1a1a) 16%, transparent);
+  border-radius: 3px;
+  align-content: flex-start;
+}
+
+.mix-match-pack__tray-empty {
+  margin: auto;
+  font-size: 12.5px;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--color-foreground-secondary, #666666);
+  padding: 6px 4px;
+}
+
+.mix-match-pack__chip {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 3px;
+  overflow: visible;
+  flex-shrink: 0;
+  animation: mmpChipIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes mmpChipIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mix-match-pack__chip {
+    animation: none;
+  }
+}
+
+.mix-match-pack__chip-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+  display: block;
+  background: var(--color-background-secondary, #f5f5f5);
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 10%, transparent);
+}
+
+.mix-match-pack__chip-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-foreground, #1a1a1a);
+  color: var(--color-background, #ffffff);
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.mix-match-pack__chip-remove:hover {
+  transform: scale(1.12);
+}
+
 .mix-match-pack__total {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--mmp-border, color-mix(in srgb, var(--color-foreground, #1a1a1a) 12%, transparent));
 }
 
 .mix-match-pack__total-label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--mmp-text-color, var(--color-foreground, #1a1a1a));
+  letter-spacing: 0.06em;
+  color: var(--mmp-text-color, var(--color-foreground-secondary, #666666));
 }
 
 .mix-match-pack__total-price {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+  font-variant-numeric: tabular-nums;
+}
+
+.mix-match-pack__savings {
+  margin: -8px 0 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: right;
+  color: var(--mmp-free-shipping-color, var(--color-success, #2e7d32));
+}
+
+.mix-match-pack__savings[hidden] {
+  display: none;
 }
 
 .mix-match-pack__add-pack {
+  position: relative;
   width: 100%;
-  padding: 15px;
+  padding: 16px;
   background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
   color: var(--color-accent-foreground, #ffffff);
   border: none;
-  border-radius: 2px;
+  border-radius: 3px;
   font-weight: 600;
   font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.06em;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
 }
 
-.mix-match-pack__add-pack:hover:not(:disabled) {
-  opacity: 0.85;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+.mix-match-pack__add-pack::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 8px;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .mix-match-pack__add-pack:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .mix-match-pack__add-pack:hover:not(:disabled)::after {
+    transform: translateX(4px);
+  }
 }
 
 .mix-match-pack__add-pack:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   transform: none;
+}
+
+.mix-match-pack__add-pack:disabled::after,
+.mix-match-pack__add-pack.loading::after {
+  display: none;
 }
 
 .mix-match-pack__add-pack.loading {
@@ -120,12 +263,11 @@
   cursor: wait;
 }
 
-/* Free-shipping green is a conventional status color, uses status variable */
 .mix-match-pack__free-shipping {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--mmp-free-shipping-color, var(--color-success, #2e7d32));
   margin: 0;
   justify-content: center;
@@ -133,8 +275,10 @@
 
 .mix-match-pack__free-shipping-icon {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
 }
+
+/* ---------- Product grid ---------- */
 
 .mix-match-pack__products-grid {
   display: grid;
@@ -165,26 +309,44 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .mix-match-pack__product {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 .mix-match-pack__product-card {
   background: var(--mmp-card-bg, var(--color-background, #ffffff));
-  border-radius: 2px;
+  border-radius: 3px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 7%, transparent);
+}
+
+@media (hover: hover) {
+  .mix-match-pack__product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .mix-match-pack__product-card--selected {
   border-color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--color-accent-background, #1a1a1a) 15%, transparent);
+  background: color-mix(in srgb, var(--mmp-accent, var(--color-accent-background, #1a1a1a)) 4%, var(--mmp-card-bg, var(--color-background, #ffffff)));
+  box-shadow: 0 0 0 1px var(--mmp-accent, var(--color-accent-background, #1a1a1a)), 0 12px 28px color-mix(in srgb, var(--color-accent-background, #1a1a1a) 16%, transparent);
 }
 
-.mix-match-pack__product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+@media (prefers-reduced-motion: reduce) {
+  .mix-match-pack__product-card,
+  .mix-match-pack__product-card:hover {
+    transform: none;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
 }
 
 .mix-match-pack__product-image-wrapper {
@@ -198,38 +360,59 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@media (hover: hover) {
+  .mix-match-pack__product-card:hover .mix-match-pack__product-image {
+    transform: scale(1.06);
+  }
+}
 
+@media (prefers-reduced-motion: reduce) {
+  .mix-match-pack__product-image,
+  .mix-match-pack__product-card:hover .mix-match-pack__product-image {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Selection indicator — visible (as an outline) even before selection so
+   the card reads as tappable, then fills solid on select. */
 .mix-match-pack__product-check {
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background: var(--color-background, #ffffff);
-  border: 2px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 15%, transparent);
+  background: color-mix(in srgb, var(--color-background, #ffffff) 85%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 30%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  backdrop-filter: blur(2px);
+}
+
+.mix-match-pack__product-check svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--color-accent-foreground, #ffffff);
   opacity: 0;
-  transform: scale(0.8);
+  transform: scale(0.6);
+  transition: all 0.25s ease;
 }
 
 .mix-match-pack__product-card--selected .mix-match-pack__product-check {
   background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
   border-color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
-  opacity: 1;
-  transform: scale(1);
+  transform: scale(1.05);
 }
 
-.mix-match-pack__product-check svg {
-  width: 16px;
-  height: 16px;
-  fill: var(--color-accent-foreground, #ffffff);
+.mix-match-pack__product-card--selected .mix-match-pack__product-check svg {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .mix-match-pack__product-info {
@@ -253,10 +436,10 @@
 }
 
 .mix-match-pack__product-vendor {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-foreground-secondary, #666666);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.06em;
   margin: 0;
 }
 
@@ -306,23 +489,29 @@
 
 .mix-match-pack__select-product {
   width: 100%;
-  padding: 9px;
+  padding: 10px;
   background: transparent;
   color: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
   border: 1px solid var(--mmp-accent, var(--color-accent-background, #1a1a1a));
   border-radius: 2px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11.5px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.15s ease;
   margin-top: 4px;
 }
 
-.mix-match-pack__select-product:hover {
-  background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
-  color: var(--color-accent-foreground, #ffffff);
+.mix-match-pack__select-product:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .mix-match-pack__select-product:hover {
+    background: var(--mmp-accent, var(--color-accent-background, #1a1a1a));
+    color: var(--color-accent-foreground, #ffffff);
+  }
 }
 
 .mix-match-pack__select-product.selected {
@@ -342,7 +531,8 @@
   grid-column: 1 / -1;
 }
 
-/* Responsive */
+/* ---------- Responsive ---------- */
+
 @media (max-width: 749px) {
   .mix-match-pack {
     padding: 40px 0;
@@ -377,8 +567,8 @@
   }
 
   .mix-match-pack__add-pack {
-    padding: 12px;
-    font-size: 14px;
+    padding: 14px;
+    font-size: 13px;
   }
 }
 
@@ -393,8 +583,8 @@
   }
 
   .mix-match-pack__select-product {
-    font-size: 12px;
-    padding: 6px;
+    font-size: 11px;
+    padding: 8px;
   }
 
   .mix-match-pack__variant-selector {
@@ -403,13 +593,19 @@
   }
 
   .mix-match-pack__total-price {
-    font-size: 18px;
+    font-size: 19px;
+  }
+
+  .mix-match-pack__chip,
+  .mix-match-pack__chip-image {
+    width: 38px;
+    height: 38px;
   }
 }
 
 @media (min-width: 750px) and (max-width: 989px) {
   .mix-match-pack__wrapper {
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 260px 1fr;
     gap: 30px;
   }
 

@@ -76,6 +76,11 @@
     margin-bottom: 0;
   }
 
+  .lookbook--content-left .lookbook__strip-wrap,
+  .lookbook--content-right .lookbook__strip-wrap {
+    grid-column: 1 / -1;
+  }
+
   .lookbook--content-right .lookbook__content {
     order: 2;
   }
@@ -142,13 +147,23 @@
 
 .lookbook__dot-inner {
   position: relative;
-  display: block;
-  width: 18px;
-  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
   background: var(--lookbook-dot, #ffffff);
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s ease;
+}
+
+.lookbook__dot-number {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--lookbook-dot-foreground, #121212);
+  transition: opacity 0.15s ease;
 }
 
 /* Idle pulse to signal interactivity */
@@ -174,6 +189,10 @@
 }
 
 /* Dot becomes a close (x-style rotated plus) marker while open */
+.lookbook__hotspot[open] .lookbook__dot-number {
+  opacity: 0;
+}
+
 .lookbook__hotspot[open] .lookbook__dot-inner::before,
 .lookbook__hotspot[open] .lookbook__dot-inner::after {
   content: '';
@@ -405,21 +424,124 @@
   text-decoration: underline;
 }
 
-/* ---- "Shop the Whole Look" Button ---- */
-.lookbook__actions {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  width: auto;
-  max-width: 90%;
+/* ---- Product strip (numbered, mirrors the hotspot dots) ---- */
+.lookbook__strip-wrap {
+  margin-top: 1.25rem;
+  padding: 0 0.25rem;
 }
 
-.lookbook__whole-look-btn {
-  display: inline-flex;
+.lookbook--full-width .lookbook__strip-wrap {
+  padding: 0 1.25rem;
+}
+
+.lookbook__strip {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0.125rem 0.125rem 0.5rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.lookbook__strip-item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+.lookbook__strip-card {
+  display: flex;
   align-items: center;
   gap: 0.625rem;
+  width: 208px;
+  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  background: var(--lookbook-card-background, #ffffff);
+  color: var(--lookbook-card-foreground, #121212);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lookbook__strip-card:hover {
+  transform: translateY(-2px);
+}
+
+.lookbook__strip-card:focus-visible {
+  outline: 2px solid var(--lookbook-card-foreground, #121212);
+  outline-offset: 2px;
+}
+
+.lookbook__strip-card.is-active {
+  border-color: var(--lookbook-card-foreground, #121212);
+  box-shadow: 0 0 0 1px var(--lookbook-card-foreground, #121212);
+}
+
+.lookbook__strip-index {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--lookbook-card-foreground, #121212);
+  color: var(--lookbook-card-background, #ffffff);
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.lookbook__strip-thumb {
+  flex-shrink: 0;
+  width: 44px;
+  height: 56px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.lookbook__strip-thumb img,
+.lookbook__strip-placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lookbook__strip-placeholder {
+  fill: #a0a0a0;
+  background: #e7e7e7;
+}
+
+.lookbook__strip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.lookbook__strip-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lookbook__strip-price {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* ---- "Shop the Whole Look" Button ---- */
+.lookbook__whole-look-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  width: 100%;
   padding: 0.875rem 1.75rem;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -528,10 +650,12 @@
     justify-content: center;
   }
 
-  .lookbook__actions {
-    bottom: 1rem;
-    width: calc(100% - 2rem);
-    max-width: none;
+  .lookbook__strip-wrap {
+    padding: 0;
+  }
+
+  .lookbook--full-width .lookbook__strip-wrap {
+    padding: 0 1.25rem;
   }
 
   /* On mobile, popovers should open at the bottom to avoid clipping */
@@ -650,15 +774,14 @@
   border-radius: 0;
 }
 
-.lookbook--scroll-zoom .lookbook__actions {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  margin: 0;
+/* The strip sits below the sticky zoom track, in normal flow, so it
+   needs its own horizontal padding since --full-width/--scroll-zoom
+   removes the section's default padding. */
+.lookbook--scroll-zoom .lookbook__strip-wrap {
+  padding: 1.5rem 1.25rem 0;
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
 }
-
 
 /* Keep hotspot cards usable while scaled */
 .lookbook--scroll-zoom .lookbook__hotspot {
@@ -705,11 +828,10 @@
     pointer-events: auto;
   }
 
-  .lookbook--scroll-zoom .lookbook__actions {
-    position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
+  .lookbook--scroll-zoom .lookbook__strip-wrap {
+    padding: 1rem 0 0;
+    max-width: none;
+    margin: 0;
   }
 
   .lookbook--scroll-zoom {

@@ -1,10 +1,11 @@
-/* ========== IMAGES WITH TEXT CAROUSEL STYLES ========== */
+/* ========== THE SUVARA RITUAL — Images with Text Carousel ========== */
+/* Editorial story section: large lifestyle image ~60% | text ~40%     */
 
 /* ---- Base ---- */
 .iwt-carousel {
   max-width: var(--page-width, 1200px);
   margin: 0 auto;
-  padding: 3rem 1.25rem;
+  padding: 4rem 1.25rem;
 }
 
 .iwt-carousel--full-width {
@@ -21,11 +22,13 @@
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  border-radius: 12px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 }
 
 .iwt-carousel--full-width .iwt-carousel__scroller {
   border-radius: 0;
+  box-shadow: none;
 }
 
 .iwt-carousel__scroller::-webkit-scrollbar {
@@ -33,8 +36,8 @@
 }
 
 .iwt-carousel__scroller:focus-visible {
-  outline: 2px solid var(--iwt-accent, #121212);
-  outline-offset: 2px;
+  outline: 2px solid var(--iwt-accent, #1a1a1a);
+  outline-offset: 3px;
 }
 
 /* ---- Slide ---- */
@@ -45,16 +48,16 @@
   min-width: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  background: var(--iwt-background, #f5f4f2);
-  color: var(--iwt-foreground, #121212);
+  background: var(--iwt-background, #f7f4ee);
+  color: var(--iwt-foreground, #1a1a1a);
 }
 
-/* ---- Media ---- */
+/* ---- Media (image side) ---- */
 .iwt-carousel__media {
   position: relative;
   aspect-ratio: var(--iwt-aspect, 4 / 3);
   overflow: hidden;
-  background: #e7e7e7;
+  background: #e8e4df;
 }
 
 .iwt-carousel__image,
@@ -65,35 +68,42 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.iwt-carousel__slide:hover .iwt-carousel__image {
+  transform: scale(1.03);
 }
 
 .iwt-carousel__placeholder {
-  fill: #a0a0a0;
-  background: #e7e7e7;
+  fill: #b0a99f;
+  background: #e8e4df;
 }
 
-/* ---- Content ---- */
+/* ---- Content (text side) ---- */
 .iwt-carousel__content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.875rem;
-  padding: 1.75rem 1.5rem 2.25rem;
+  gap: 1rem;
+  padding: 2rem 1.5rem 2.5rem;
 }
 
 .iwt-carousel__caption {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.75;
+  letter-spacing: 0.14em;
+  opacity: 0.7;
+  color: var(--iwt-foreground, #1a1a1a);
 }
 
 .iwt-carousel__heading {
   margin: 0;
-  font-weight: 700;
-  line-height: 1.15;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .iwt-carousel__heading--small {
@@ -105,11 +115,14 @@
 }
 
 .iwt-carousel__heading--large {
-  font-size: clamp(2rem, 1.3rem + 2.75vw, 3.25rem);
+  font-size: clamp(1.875rem, 1.3rem + 2.5vw, 2.875rem);
 }
 
 .iwt-carousel__text {
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 1rem;
+  max-width: 36ch;
+  opacity: 0.9;
 }
 
 .iwt-carousel__text > p {
@@ -120,35 +133,38 @@
   margin-bottom: 0;
 }
 
-/* ---- Button ----
-   Inherits the theme's .button classes when present; self-contained
-   fallback below so the section works standalone. */
+/* ---- Button ---- */
 .iwt-carousel__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.625rem 1.75rem;
-  margin-top: 0.25rem;
-  font-size: 0.9375rem;
+  min-height: 48px;
+  padding: 0.7rem 1.85rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-decoration: none;
   border-radius: 2px;
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, color 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.2s ease,
+              color 0.2s ease,
+              box-shadow 0.2s ease;
 }
 
 .iwt-carousel__button--primary {
-  color: var(--iwt-background, #ffffff);
-  background-color: var(--iwt-accent, #121212);
-  border: 1px solid var(--iwt-accent, #121212);
+  color: var(--iwt-background, #f7f4ee);
+  background-color: var(--iwt-accent, #1a1a1a);
+  border: 1px solid var(--iwt-accent, #1a1a1a);
 }
 
 .iwt-carousel__button--primary:hover,
 .iwt-carousel__button--primary:focus-visible {
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .iwt-carousel__button--secondary {
@@ -159,12 +175,12 @@
 
 .iwt-carousel__button--secondary:hover,
 .iwt-carousel__button--secondary:focus-visible {
-  background-color: color-mix(in srgb, currentColor 10%, transparent);
+  background-color: color-mix(in srgb, currentColor 8%, transparent);
 }
 
 .iwt-carousel__button[aria-disabled='true'] {
   cursor: default;
-  opacity: 0.6;
+  opacity: 0.55;
   pointer-events: none;
 }
 
@@ -174,7 +190,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .iwt-carousel__arrow,
@@ -185,20 +201,21 @@
   width: 44px;
   height: 44px;
   padding: 0;
-  color: var(--iwt-accent, #121212);
+  color: var(--iwt-accent, #1a1a1a);
   background: transparent;
-  border: 1px solid color-mix(in srgb, var(--iwt-accent, #121212) 35%, transparent);
+  border: 1px solid color-mix(in srgb, var(--iwt-accent, #1a1a1a) 30%, transparent);
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .iwt-carousel__arrow:hover,
 .iwt-carousel__arrow:focus-visible,
 .iwt-carousel__playback:hover,
 .iwt-carousel__playback:focus-visible {
-  background: color-mix(in srgb, var(--iwt-accent, #121212) 8%, transparent);
-  border-color: var(--iwt-accent, #121212);
+  background: color-mix(in srgb, var(--iwt-accent, #1a1a1a) 6%, transparent);
+  border-color: var(--iwt-accent, #1a1a1a);
+  transform: scale(1.05);
 }
 
 .iwt-carousel__arrow svg,
@@ -223,7 +240,7 @@
 .iwt-carousel__dots {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 .iwt-carousel__dot {
@@ -236,42 +253,47 @@
   cursor: pointer;
 }
 
-/* 28px tap target around a 8px visual dot */
 .iwt-carousel__dot::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   transform: translate(-50%, -50%);
-  background: color-mix(in srgb, var(--iwt-accent, #121212) 30%, transparent);
+  background: color-mix(in srgb, var(--iwt-accent, #1a1a1a) 28%, transparent);
   border-radius: 50%;
-  transition: background-color 0.2s ease, width 0.2s ease;
+  transition: background-color 0.25s ease, width 0.25s ease, border-radius 0.25s ease;
 }
 
 .iwt-carousel__dot:hover::after {
-  background: color-mix(in srgb, var(--iwt-accent, #121212) 55%, transparent);
+  background: color-mix(in srgb, var(--iwt-accent, #1a1a1a) 55%, transparent);
 }
 
 .iwt-carousel__dot[aria-current='true']::after {
-  width: 20px;
+  width: 22px;
   border-radius: 4px;
-  background: var(--iwt-accent, #121212);
+  background: var(--iwt-accent, #1a1a1a);
 }
 
 /* ---- Focus states ---- */
 .iwt-carousel :is(a, button):focus-visible {
-  outline: 2px solid var(--iwt-accent, #121212);
+  outline: 2px solid var(--iwt-accent, #1a1a1a);
   outline-offset: 2px;
 }
 
-/* ---- Desktop: image and text side by side ---- */
+/* ========== Desktop: 60% image | 40% text ========== */
 @media (min-width: 990px) {
+  .iwt-carousel {
+    padding: 5rem 2rem;
+  }
+
   .iwt-carousel__slide {
     display: grid;
+    /* 3fr 2fr ≈ 60% / 40% */
     grid-template-columns: 3fr 2fr;
     align-items: stretch;
+    min-height: 480px;
   }
 
   .iwt-carousel--image-right .iwt-carousel__slide .iwt-carousel__media {
@@ -283,17 +305,39 @@
   }
 
   .iwt-carousel__media {
-    aspect-ratio: var(--iwt-aspect, 4 / 3);
+    aspect-ratio: auto;
     height: 100%;
+    min-height: 480px;
   }
 
   .iwt-carousel__content {
     justify-content: center;
-    padding: 3rem 3.5rem;
+    padding: 3.5rem 3.75rem;
+    gap: 1.15rem;
+  }
+
+  .iwt-carousel__text {
+    font-size: 1.0625rem;
+    max-width: 34ch;
   }
 
   .iwt-carousel__controls {
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
+  }
+}
+
+/* Slightly larger screens – more breathing room */
+@media (min-width: 1200px) {
+  .iwt-carousel__content {
+    padding: 4rem 4.5rem;
+  }
+
+  .iwt-carousel__slide {
+    min-height: 520px;
+  }
+
+  .iwt-carousel__media {
+    min-height: 520px;
   }
 }
 
@@ -303,10 +347,15 @@
     scroll-behavior: auto;
   }
 
+  .iwt-carousel__image,
   .iwt-carousel__button,
   .iwt-carousel__arrow,
   .iwt-carousel__playback,
   .iwt-carousel__dot::after {
     transition: none;
+  }
+
+  .iwt-carousel__slide:hover .iwt-carousel__image {
+    transform: none;
   }
 }

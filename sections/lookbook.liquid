@@ -29,6 +29,7 @@
   class="lookbook lookbook--content-{{ section.settings.content_position }}{% if section.settings.full_width or enable_scroll_zoom %} lookbook--full-width{% endif %}{% if enable_scroll_zoom %} lookbook--scroll-zoom{% endif %}"
   style="
     --lookbook-dot: {{ section.settings.color_dot }};
+    --lookbook-dot-foreground: {{ section.settings.color_dot_foreground }};
     --lookbook-card-background: {{ section.settings.color_card_background }};
     --lookbook-card-foreground: {{ section.settings.color_card_foreground }};
     --lookbook-zoom-start: {{ section.settings.scroll_zoom_start | default: 55 | divided_by: 100.0 }};
@@ -106,16 +107,21 @@
         else
           assign hotspot_label = 'sections.lookbook.view_product_fallback' | t
         endif
+
+        assign hotspot_id = 'lookbook-hotspot-' | append: section.id | append: '-' | append: block.id
       -%}
 
       <details
+        id="{{ hotspot_id }}"
         class="lookbook__hotspot lookbook__hotspot--{{ h_dir }} lookbook__hotspot--{{ v_dir }}"
         style="--x: {{ x }}%; --y: {{ y }}%;"
         {{ block.shopify_attributes }}
         data-lookbook-hotspot data-complete-the-look-hotspot
       >
         <summary class="lookbook__dot" aria-label="{{ hotspot_label }}">
-          <span class="lookbook__dot-inner" aria-hidden="true"></span>
+          <span class="lookbook__dot-inner" aria-hidden="true">
+            <span class="lookbook__dot-number">{{ forloop.index }}</span>
+          </span>
         </summary>
 
         <div class="lookbook__card">
@@ -254,11 +260,77 @@
         </div>
       </details>
     {%- endfor -%}
+  </div>
 
-    <!-- "Complete the Look" Button -->
-    <div class="lookbook__actions">
-      <button 
-        class="lookbook__whole-look-btn" 
+  {%- if enable_scroll_zoom -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="lookbook__strip-wrap">
+      <ul class="lookbook__strip" data-lookbook-strip role="list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign product = block.settings.product
+            assign hotspot_id = 'lookbook-hotspot-' | append: section.id | append: '-' | append: block.id
+
+            if product != blank
+              assign strip_title = product.title
+            else
+              assign strip_title = 'sections.lookbook.example_product' | t
+            endif
+          -%}
+          <li class="lookbook__strip-item">
+            <button
+              type="button"
+              class="lookbook__strip-card"
+              data-strip-item
+              data-hotspot-target="{{ hotspot_id }}"
+              aria-label="{{ 'sections.lookbook.view_product' | t: title: strip_title }}"
+            >
+              <span class="lookbook__strip-index" aria-hidden="true">{{ forloop.index }}</span>
+              <span class="lookbook__strip-thumb">
+                {%- if product.featured_image != blank -%}
+                  {{
+                    product.featured_image
+                    | image_url: width: 160
+                    | image_tag:
+                      widths: '80, 160',
+                      sizes: '44px',
+                      loading: 'lazy',
+                      alt: product.featured_image.alt
+                  }}
+                {%- elsif product != blank -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'lookbook__strip-placeholder' }}
+                {%- else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'lookbook__strip-placeholder' }}
+                {%- endif -%}
+              </span>
+              <span class="lookbook__strip-info">
+                <span class="lookbook__strip-title">{{ strip_title | escape }}</span>
+                <span class="lookbook__strip-price">
+                  {%- if product != blank -%}
+                    {%- if product.compare_at_price > product.price -%}
+                      {{ product.price | money }}
+                    {%- elsif product.price_varies -%}
+                      {%- assign strip_min_price = product.price_min | money -%}
+                      {{ 'sections.lookbook.from_price' | t: price: strip_min_price }}
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  {%- else -%}
+                    {{ 1999 | money }}
+                  {%- endif -%}
+                </span>
+              </span>
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <button
+        class="lookbook__whole-look-btn"
         data-whole-look-btn
         aria-label="{{ 'sections.lookbook.shop_whole_look_aria' | t }}"
       >{% if section.settings.complete_look_label != blank %}{{ section.settings.complete_look_label }}{% else %}{{ 'sections.lookbook.shop_whole_look' | t }}{% endif %}
@@ -269,11 +341,6 @@
         </svg>
       </button>
     </div>
-  </div>
-
-  {%- if enable_scroll_zoom -%}
-    </div>
-  </div>
   {%- endif -%}
 </div>
 
@@ -385,6 +452,12 @@
       "id": "color_dot",
       "label": "t:sections.lookbook.settings.color_dot.label",
       "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_dot_foreground",
+      "label": "Hotspot number color",
+      "default": "#121212"
     },
     {
       "type": "color",

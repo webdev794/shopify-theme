@@ -1,4 +1,4 @@
-// ========== IMAGES WITH TEXT CAROUSEL JAVASCRIPT ==========
+// ========== THE SUVARA RITUAL — Images with Text Carousel ==========
 
 (() => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -60,16 +60,15 @@
     /* --- Autoplay --- */
     if (!carousel.hasAttribute('data-autoplay') || reducedMotion.matches) return;
 
-    const speed = (Number(carousel.dataset.autoplaySpeed) || 5) * 1000;
+    const speed = (Number(carousel.dataset.autoplaySpeed) || 6) * 1000;
     let timer = null;
-    let pausedByUser = false; // pause button: permanent until pressed again
+    let pausedByUser = false;
     let hovered = false;
     let focused = false;
     let visible = true;
 
     const setPlaybackState = (paused) => {
       carousel.classList.toggle('iwt-carousel--paused', paused);
-      // Announce slide changes only while not auto-rotating
       scroller.setAttribute('aria-live', paused ? 'polite' : 'off');
       if (playback) {
         const pauseLabel = playback.getAttribute('aria-label');
@@ -143,7 +142,6 @@
     initAll(event.target);
   });
 
-  // Scroll to the slide the merchant selects in the editor sidebar
   document.addEventListener('shopify:block:select', (event) => {
     const slide = event.target.closest ? event.target.closest('[data-iwt-slide]') : null;
     const target = slide || (event.target.querySelector && event.target.querySelector('[data-iwt-slide]'));
