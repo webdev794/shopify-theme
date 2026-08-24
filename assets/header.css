@@ -689,6 +689,7 @@ body.header-mobile-menu-open {
 /* ---- Cart ---- */
 .header__cart-link {
   position: relative;
+  overflow: visible;
 }
 
 .header__cart-count {
@@ -744,6 +745,26 @@ body.header-mobile-menu-open {
 /* ---- Mobile Menu ---- */
 .header__mobile-toggle {
   display: inline-flex;
+}
+
+/* Prevent the icon row (search/account/cart) from overflowing past the
+   viewport on narrow screens, which was pushing the cart icon — and its
+   badge — off the right edge instead of letting it shrink to fit. */
+@media (max-width: 749px) {
+  .header__inner {
+    gap: 0.75rem;
+    padding-inline: 0.75rem;
+  }
+
+  .header__utilities {
+    gap: 0;
+  }
+
+  .header__icon-button,
+  .header__account {
+    min-width: 40px;
+    min-height: 40px;
+  }
 }
 
 .header__mobile-nav {
@@ -826,6 +847,23 @@ body.header-mobile-menu-open {
 @media (min-width: 990px) and (max-width: 1199px) {
   .header__mega-featured {
     flex-basis: 240px;
+  }
+}
+
+/* On mobile the search icon isn't the right-most item in the row (account/
+   cart sit further right), so anchoring the panel to the icon's own
+   right:0 pushes its left edge off-screen. Make .header (full-width,
+   already position:relative) the containing block instead, and constrain
+   both edges so it can never overflow the viewport. */
+@media (max-width: 749px) {
+  .header__search {
+    position: static;
+  }
+
+  .header__search-panel {
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
   }
 }
 

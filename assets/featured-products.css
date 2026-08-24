@@ -28,7 +28,7 @@
 /* Header — intentional editorial treatment */
 .featured-products__header {
   text-align: center;
-  margin-bottom: 48px;
+  /*margin-bottom: 48px;*/
   padding-top: 12px;
 }
 
@@ -743,6 +743,21 @@
   padding-bottom: 2.5rem;
 }
 
+/* The header (subheading/heading/description) sits above the pinned gallery.
+   NOTE: --fp-space-above is the merchant's "Space above products" setting —
+   it's scoped to pad the cards *inside* the pin, not the header, and can be
+   set very low/0. Give the header its own fixed top space instead, matching
+   what non-scroll layouts get by default. */
+.featured-products--scroll .featured-products__header {
+  padding-top: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .featured-products--scroll .featured-products__header {
+    padding-top: 24px;
+  }
+}
+
 /* Bottom “View All” sits under ~3 viewports of scroll — hide it in scroll layout.
    Keep the header View All (above the gallery) if the merchant enabled it. */
 .featured-products--scroll .featured-products__footer {
@@ -766,15 +781,31 @@
   height: 100dvh;
   overflow-x: hidden;
   overflow-y: visible;
-  display: flex;
-  align-items: center;
+  /* Grid with explicit top/bottom rows (instead of flex + padding + align-items:
+     center) so --fp-space-above / --fp-space-below each apply in full and
+     independently, rather than being halved and bleeding into each other. */
+  display: grid;
+  grid-template-rows: var(--fp-space-above, 0px) 1fr var(--fp-space-below, 0px);
   z-index: 2;
   box-sizing: border-box;
-  /* Merchant-controlled vertical space around the product cards inside the pin */
-  padding-top: var(--fp-space-above, 0px);
-  padding-bottom: var(--fp-space-below, 0px);
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.25) 4%,
+    #000 16%,
+    #000 84%,
+    rgba(0, 0, 0, 0.25) 96%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.25) 4%,
+    #000 16%,
+    #000 84%,
+    rgba(0, 0, 0, 0.25) 96%,
+    transparent 100%
+  );
 }
 
 .featured-products__scroll-pin.is-pinned {
@@ -792,6 +823,8 @@
 }
 
 .featured-products__scroll-track {
+  grid-row: 2;
+  align-self: center;
   display: flex;
   align-items: center;
   gap: var(--fp-gap, 24px);
@@ -808,11 +841,26 @@
   overflow: visible !important;
 }
 
-/* Scroll cards: height tracks space above/below so min setting leaves less empty room */
+/* Scroll cards: sized by whichever is tighter — available width, or available
+   vertical height (pin height minus space-above/below minus room for the
+   text/price overlay). This lets the card actually grow to fill vertical
+   space instead of being capped by width alone, which is what left so much
+   empty room above/below on tall screens. The 900px ceiling is just a sanity
+   cap for very tall/4K screens — on normal screens the dvh-based term wins,
+   so the card grows to fill height and the space-above/below settings become
+   the only source of extra gap. */
+.featured-products__grid--scroll {
+  --fp-scroll-card-size: min(
+    58vw,
+    calc(100dvh - var(--fp-space-above, 0px) - var(--fp-space-below, 0px) - 110px),
+    900px
+  );
+}
+
 .featured-products__grid--scroll .featured-products__item {
-  flex: 0 0 min(58vw, 340px);
-  width: min(58vw, 340px);
-  max-width: min(58vw, 340px);
+  flex: 0 0 var(--fp-scroll-card-size);
+  width: var(--fp-scroll-card-size);
+  max-width: var(--fp-scroll-card-size);
   max-height: min(
     92dvh,
     calc(100dvh - var(--fp-space-above, 0px) - var(--fp-space-below, 0px) - 8px)
@@ -833,14 +881,18 @@
   border-radius: 2px;
 }
 
-/* Image area scales with available pin height (space vars reduce empty margin) */
+/* Image area scales with available pin height (space vars reduce empty margin).
+   Close to square (rather than tall portrait) crops much less off the
+   left/right edges of photos that aren't shot in a tall portrait ratio.
+   max-height mirrors the card's own size formula so it doesn't clip the
+   image back down below what the card was actually sized to. */
 .featured-products__grid--scroll .product-card__image-wrapper {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   width: 100%;
   max-height: min(
-    78dvh,
-    calc(100dvh - var(--fp-space-above, 0px) - var(--fp-space-below, 0px) - 48px)
+    92dvh,
+    calc(100dvh - var(--fp-space-above, 0px) - var(--fp-space-below, 0px) - 20px)
   );
   overflow: hidden;
   flex: 0 0 auto;
@@ -999,7 +1051,7 @@
   }
 
   .featured-products__grid--scroll .product-card__image-wrapper {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 1 / 1;
     max-height: min(48dvh, 340px);
   }
 

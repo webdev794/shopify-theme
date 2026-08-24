@@ -359,3 +359,16 @@
     transform: none;
   }
 }
+
+@media (max-width: 989px) {
+  .iwt-carousel,
+  .iwt-carousel__scroller,
+  .iwt-carousel__slide {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .iwt-carousel__slide {
+    flex: 0 0 100%;
+  }
+}

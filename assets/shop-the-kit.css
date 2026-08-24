@@ -74,26 +74,33 @@
   border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  aspect-ratio: 4/5;
+  /* Was 4/5 — a taller portrait box crops more off the sides with
+     object-fit: cover. Closer to square keeps more of the photo visible. */
+  aspect-ratio: 1 / 1;
 }
 
 .shop-the-kit__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Slightly zoomed in at rest so hover can zoom OUT toward natural size,
+     which is what actually reveals the sides that object-fit: cover crops —
+     shrinking the box itself (scale < 1) only adds empty space, it doesn't
+     surface more of the photo. */
+  transform: scale(1.08);
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (hover: hover) {
   .shop-the-kit:hover .shop-the-kit__image {
-    transform: scale(1.03);
+    transform: scale(1);
   }
 }
 
 .shop-the-kit__placeholder {
   width: 100%;
   height: 100%;
-  aspect-ratio: 4/5;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,9 +134,16 @@
   .shop-the-kit--bleed .shop-the-kit__placeholder {
     border-radius: 0;
     box-shadow: none;
-    aspect-ratio: auto;
-    height: 100%;
+    /* Was aspect-ratio: auto + height: 100%, which stretched the box to match
+       the content column's height (which grows with the number of kit
+       products) — on a tall column this made the box very narrow relative to
+       its height, so object-fit: cover cropped heavily off the sides.
+       A bounded ratio keeps the crop sane; max-height still stops it from
+       overflowing the sticky column if the column is taller than this. */
+    aspect-ratio: 1 / 1;
+    height: auto;
     min-height: 720px;
+    max-height: 100%;
     position: sticky;
     top: 0;
   }
@@ -531,7 +545,7 @@
 
   .shop-the-kit__image-wrapper,
   .shop-the-kit--bleed .shop-the-kit__image-wrapper {
-    aspect-ratio: 4/5;
+    aspect-ratio: 1 / 1;
     min-height: 0;
     border-radius: 2px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
@@ -581,7 +595,7 @@
   }
 
   .shop-the-kit--bleed .shop-the-kit__image-wrapper {
-    aspect-ratio: 4/5;
+    aspect-ratio: 1 / 1;
     min-height: 0;
     border-radius: 2px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
