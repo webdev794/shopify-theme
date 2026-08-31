@@ -3,12 +3,53 @@
 (() => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  /* --- Scroll-linked circle-to-full reveal (first slide's image) --- */
+  const initMorph = (carousel) => {
+    const target = carousel.querySelector('[data-iwt-morph]');
+    if (!target || reducedMotion.matches) return;
+
+    let ticking = false;
+
+    const computeProgress = () => {
+      const rect = target.getBoundingClientRect();
+      const elCenter = rect.top + rect.height / 2;
+      const viewportCenter = window.innerHeight / 2;
+      // Start morphing when the image's center is a viewport-height's worth
+      // below center; finish exactly as its center reaches viewport center.
+      const start = window.innerHeight * 0.6;
+      const distance = elCenter - viewportCenter;
+      const progress = (start - distance) / start;
+      return Math.max(0, Math.min(1, progress));
+    };
+
+    const update = () => {
+      ticking = false;
+      target.style.setProperty('--iwt-morph-progress', computeProgress().toFixed(3));
+    };
+
+    const onScrollOrResize = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    // Only let the CSS clip-path apply once JS has actually taken control —
+    // avoids the image staying stuck as a small circle if JS fails to load.
+    target.setAttribute('data-iwt-morph-ready', 'true');
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+    update();
+  };
+
   const initCarousel = (carousel) => {
     if (carousel.dataset.iwtInit) return;
     carousel.dataset.iwtInit = 'true';
 
     const scroller = carousel.querySelector('[data-iwt-scroller]');
     const slides = Array.from(carousel.querySelectorAll('[data-iwt-slide]'));
+
+    initMorph(carousel); // independent of slide count / carousel nav below
+
     if (!scroller || slides.length < 2) return;
 
     const prevButton = carousel.querySelector('[data-iwt-prev]');

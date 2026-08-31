@@ -1,19 +1,21 @@
 /**
  * Floating Video
  *
- * Sits between .featured-products and .shop-the-kit in DOM order.
- * Bleeds into the section ABOVE for free (later DOM = paints on top by
- * default). Bleeding into the section BELOW needs an explicit z-index,
- * since Shop the Kit's own content (.shop-the-kit__content /
- * .shop-the-kit__products) sits at z-index: 2 and would otherwise cover it.
+ * A zero-footprint decorative bridge: it always reserves exactly 0px of
+ * page space (margin-top + margin-bottom always cancels out height
+ * exactly, since both are derived from --fv-height, never set
+ * independently) so it never leaves a gap no matter where it's placed
+ * in the section order or what height a merchant picks. Bleeding into
+ * the section BELOW needs an explicit z-index, since a section like Shop
+ * the Kit's own content sits at z-index: 2 and would otherwise cover it.
  */
 
 .floating-video {
   position: relative;
   z-index: 6; /* above shop-the-kit's z-index:2 content, below its z-index:20 hover preview */
   height: var(--fv-height, 150px);
-  margin-top: calc(var(--fv-bleed, 90px) * -1);
-  margin-bottom: calc(var(--fv-bleed, 90px) * -1);
+  margin-top: calc(var(--fv-height, 150px) / -2);
+  margin-bottom: calc(var(--fv-height, 150px) / -2);
   overflow: visible;
   pointer-events: none; /* never blocks clicks/hover on the sections behind it */
   will-change: transform; /* promote to its own compositor layer, same pattern
@@ -42,7 +44,7 @@
   position: relative;
   width: 100%;
   max-width: var(--fv-max-width, 480px);
-  height: calc(var(--fv-height, 150px) + (var(--fv-bleed, 90px) * 2));
+  height: calc(var(--fv-height, 150px) * 2);
   transform: translate(var(--fv-offset-x, 0px), var(--fv-offset-y, 0px));
   will-change: transform;
 }
@@ -67,7 +69,6 @@
 @media (max-width: 749px) {
   .floating-video {
     --fv-height: 100px;
-    --fv-bleed: 48px;
   }
 
   .floating-video--hide-mobile {

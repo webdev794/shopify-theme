@@ -1017,11 +1017,22 @@ body.header-mobile-menu-open {
   box-shadow: none !important;
 }
 
-/* Logo: fixed so it stays top-left over page content */
+/* Logo: fixed so it stays top-left over page content.
+   Sized/positioned via a shared flex "band" (--header-minimal-band-height)
+   rather than a guessed top+translateY(-50%) offset — flex centering
+   works correctly regardless of the logo's actual rendered height, as
+   long as the band is tall enough to contain it (5rem comfortably fits
+   typical stacked logo + tagline compositions). The exact same band
+   height is used on .header-float-trigger-wrapper--top-right below, so
+   both align on the same visual center with no manual math required. */
 .header--minimal .header__logo-wrapper {
   position: fixed;
-  top: 1rem;
+  top: 0;
   left: 1.25rem;
+  width: fit-content;
+  height: var(--header-minimal-band-height, 5rem);
+  display: flex;
+  align-items: center;
   z-index: 10040;
   margin: 0;
   pointer-events: auto;
@@ -1035,15 +1046,17 @@ body:has(.header--minimal)
   padding-top: 5.5rem;
 }
 
-.header--minimal .header__logo-image {
-  max-height: 40px;
-  width: auto;
-}
+/* No minimal-mode override needed — the base .header__logo-image rule
+   (width: var(--header-logo-width); height: auto;) already sizes it
+   correctly with no distortion risk, and a floating logo has no reason
+   to be capped shorter than classic mode's. This guarantees the logo
+   renders identically in both modes. */
 
-/* ---- Floating trigger button ---- */
+/* ---- Floating trigger button ----
+   Position/z-index live on .header-float-trigger-wrapper (see below);
+   this rule is visual-only so wrapping it doesn't inflate its own
+   padding-driven size. */
 .header-float-trigger {
-  position: fixed;
-  z-index: 2147482900;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1062,6 +1075,9 @@ body:has(.header--minimal)
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
+  pointer-events: auto; /* wrapper is pointer-events:none so clicks pass
+                            through its empty band area, but the button
+                            itself must remain clickable */
 }
 
 .header-float-trigger:hover {
@@ -1089,19 +1105,43 @@ body:has(.header--minimal)
   line-height: 1;
 }
 
-.header-float-trigger--bottom-left {
+
+/* ---- Trigger positioning wrapper ----
+   Bottom variants are simple corner anchors — no alignment relationship
+   with the logo, so they keep straightforward fixed positioning.
+   The top-right variant instead uses the same flex "band" technique as
+   .header--minimal .header__logo-wrapper (matching
+   --header-minimal-band-height), so the button centers on the exact
+   same visual line as the logo regardless of either element's actual
+   height — no guessed offset values involved. */
+.header-float-trigger-wrapper {
+  position: fixed;
+  z-index: 2147482900;
+  pointer-events: none; /* let clicks pass through the wrapper's empty
+                            band area; .header-float-trigger re-enables
+                            pointer-events on itself */
+}
+
+.header-float-trigger-wrapper--bottom-left {
   bottom: 1.5rem;
   left: 1.5rem;
 }
 
-.header-float-trigger--bottom-right {
+.header-float-trigger-wrapper--bottom-right {
   bottom: 1.5rem;
   right: 1.5rem;
 }
 
-.header-float-trigger--top-right {
-  top: 1.25rem;
+.header-float-trigger-wrapper--top-right {
+  top: 0;
   right: 1.5rem;
+  width: fit-content;
+  height: var(--header-minimal-band-height, 5rem);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* pins the button to the wrapper's own
+                                 right edge even if width ends up wider
+                                 than the button for any reason */
 }
 
 @media (max-width: 749px) {
@@ -1110,22 +1150,22 @@ body:has(.header--minimal)
     font-size: 0.75rem;
   }
 
-  .header-float-trigger--bottom-left,
-  .header-float-trigger--bottom-right {
+  .header-float-trigger-wrapper--bottom-left,
+  .header-float-trigger-wrapper--bottom-right {
     bottom: 1rem;
   }
 
-  .header-float-trigger--bottom-left {
+  .header-float-trigger-wrapper--bottom-left {
     left: 1rem;
   }
 
-  .header-float-trigger--bottom-right {
+  .header-float-trigger-wrapper--bottom-right {
     right: 1rem;
   }
 
-  .header-float-trigger--top-right {
-    top: 1rem;
-    right: 1rem;
+  .header-float-trigger-wrapper--top-right {
+    right: 1rem; /* band height stays the same, so vertical alignment
+                     with the logo holds on mobile too */
   }
 }
 
@@ -1343,6 +1383,7 @@ body:has(.header--minimal)
 
 .header-float-overlay__footer {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 1.25rem;
   margin-top: auto;
@@ -1352,6 +1393,7 @@ body:has(.header--minimal)
 
 .header-float-overlay__account {
   display: inline-flex;
+  align-items: center;
 }
 
 .header-float-overlay__footer-link {

@@ -257,3 +257,79 @@ document.addEventListener('DOMContentLoaded', function() {
     // Existing handlers still run; this is a progressive enhancement hook
   }, true);
 })();
+
+/*
+ * Scroll-linked circle reveal for the big kit image (same technique as
+ * images-with-text-carousel.js). Progress is driven by how close the
+ * image is to its sticky pin point, NOT viewport center — since
+ * .shop-the-kit__media is `position: sticky`, once it pins its
+ * getBoundingClientRect() stops changing, so a center-based trigger
+ * would freeze wherever it happened to be. Using distance-from-pin
+ * instead means the circle finishes expanding exactly as the image
+ * settles into place, and reverses naturally on scroll-up.
+ */
+(function () {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function initMorph(target) {
+    if (target.dataset.stkMorphInit) return;
+    target.dataset.stkMorphInit = 'true';
+    if (reducedMotion.matches) return;
+
+    const media = target.closest('.shop-the-kit__media');
+    let ticking = false;
+
+    function computeProgress() {
+      const rect = target.getBoundingClientRect();
+      // Reads the CSS `top` value live, so this works whether the section
+      // is in standard mode (top: 100px) or full-bleed mode (top: 0) —
+      // and on mobile, where .shop-the-kit__media isn't sticky at all
+      // (top: 0, position: relative), without any special-casing here.
+      const pinTop = media ? parseFloat(getComputedStyle(media).top) || 0 : 0;
+      const start = window.innerHeight * 0.75;
+      const distance = rect.top - pinTop;
+      const progress = (start - distance) / start;
+      return Math.max(0, Math.min(1, progress));
+    }
+
+    function update() {
+      ticking = false;
+      target.style.setProperty('--stk-morph-progress', computeProgress().toFixed(3));
+    }
+
+    function onScrollOrResize() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+
+    // Only let the CSS clip-path apply once JS has actually taken control —
+    // avoids the image staying stuck as a small circle if JS fails to load.
+    target.setAttribute('data-stk-morph-ready', 'true');
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+    update();
+  }
+
+  function initAll(root) {
+    const scope = root && typeof root.querySelectorAll === 'function' ? root : document;
+    scope.querySelectorAll('[data-stk-morph]').forEach(initMorph);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { initAll(); });
+  } else {
+    initAll();
+  }
+
+  document.addEventListener('shopify:section:load', function (event) {
+    const target = event.target;
+    if (target && target.querySelectorAll) {
+      target.querySelectorAll('[data-stk-morph]').forEach(function (el) {
+        delete el.dataset.stkMorphInit;
+        el.removeAttribute('data-stk-morph-ready');
+      });
+    }
+    initAll(event.target);
+  });
+})();

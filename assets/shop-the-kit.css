@@ -91,6 +91,28 @@
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ---- Scroll-linked circle reveal ----
+   Starts as a circle crop; --stk-morph-progress (set by JS, 0 → 1) grows
+   the circle as the sticky image settles into its pinned position, until
+   it fully covers the box and shows the photo in its original rectangular
+   form. Progress is driven by distance from the sticky pin point (not
+   viewport center), since a plain center-based trigger would freeze once
+   the image pins. 18% + 60% is safely oversized — a circle only needs
+   ~71% radius to cover a rectangle corner-to-corner regardless of aspect
+   ratio. Gated on [data-stk-morph-ready], set by JS once it takes control,
+   so a JS failure just shows the image uncropped instead of a permanently
+   small circle. */
+.shop-the-kit__image-wrapper[data-stk-morph][data-stk-morph-ready] {
+  clip-path: circle(calc(18% + (60% * var(--stk-morph-progress, 0))) at 50% 50%);
+  will-change: clip-path;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-the-kit__image-wrapper[data-stk-morph][data-stk-morph-ready] {
+    clip-path: none;
+  }
+}
+
 @media (hover: hover) {
   .shop-the-kit:hover .shop-the-kit__image {
     transform: scale(1);

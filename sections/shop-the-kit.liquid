@@ -68,7 +68,7 @@
     <div class="shop-the-kit__wrapper">
       {%- if section.settings.image != blank -%}
         <div class="shop-the-kit__media">
-          <div class="shop-the-kit__image-wrapper">
+          <div class="shop-the-kit__image-wrapper" data-stk-morph>
             <img
               src="{{ section.settings.image | image_url: width: 1000, height: 1250, crop: 'center' }}"
               srcset="{{ section.settings.image | image_url: width: 1000, height: 1250, crop: 'center' }} 1x, {{ section.settings.image | image_url: width: 2000, height: 2500, crop: 'center' }} 2x"

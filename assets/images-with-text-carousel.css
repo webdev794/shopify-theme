@@ -80,6 +80,26 @@
   background: #e8e4df;
 }
 
+/* ---- Scroll-linked circle reveal (first slide's image only) ----
+   Starts as a circle crop; as the slide's vertical center approaches the
+   viewport's center, --iwt-morph-progress (set by JS, 0 → 1) grows the
+   circle until it fully covers the box, revealing the image in its
+   original rectangular form. The radius formula (18% base + 60% range)
+   is safely oversized — a circle needs only ~71% radius to cover any
+   rectangle corner-to-corner, regardless of aspect ratio.
+   Gated behind [data-iwt-morph-ready], which JS sets once it takes
+   control — if JS never runs, the image simply displays uncropped. */
+.iwt-carousel__media[data-iwt-morph][data-iwt-morph-ready] {
+  clip-path: circle(calc(18% + (60% * var(--iwt-morph-progress, 0))) at 50% 50%);
+  will-change: clip-path;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iwt-carousel__media[data-iwt-morph][data-iwt-morph-ready] {
+    clip-path: none;
+  }
+}
+
 /* ---- Content (text side) ---- */
 .iwt-carousel__content {
   display: flex;

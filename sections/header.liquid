@@ -454,24 +454,26 @@
 
   {%- if is_minimal -%}
     <!-- Floating Menu Trigger -->
-    <button
-      type="button"
-      class="header-float-trigger header-float-trigger--{{ float_position }}"
-      data-header-float-trigger
-      aria-expanded="false"
-      aria-controls="HeaderFloatOverlay-{{ section.id }}"
-      aria-label="{{ float_label | escape }}"
-    >
-      <span class="header-float-trigger__icon" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-          <line x1="4" y1="8" x2="20" y2="8"></line>
-          <line x1="4" y1="15" x2="14" y2="15"></line>
-        </svg>
-      </span>
-      {%- if float_label != blank -%}
-        <span class="header-float-trigger__label">{{ float_label | escape }}</span>
-      {%- endif -%}
-    </button>
+    <div class="header-float-trigger-wrapper header-float-trigger-wrapper--{{ float_position }}">
+      <button
+        type="button"
+        class="header-float-trigger"
+        data-header-float-trigger
+        aria-expanded="false"
+        aria-controls="HeaderFloatOverlay-{{ section.id }}"
+        aria-label="{{ float_label | escape }}"
+      >
+        <span class="header-float-trigger__icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <line x1="4" y1="8" x2="20" y2="8"></line>
+            <line x1="4" y1="15" x2="14" y2="15"></line>
+          </svg>
+        </span>
+        {%- if float_label != blank -%}
+          <span class="header-float-trigger__label">{{ float_label | escape }}</span>
+        {%- endif -%}
+      </button>
+    </div>
 
     <!-- Full-screen Floating Menu Overlay -->
     <div

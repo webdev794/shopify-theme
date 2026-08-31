@@ -23,10 +23,9 @@
     overflow: visible;
     pointer-events: none;
     height: var(--fv-height, 150px);
-    margin-top: calc(var(--fv-bleed, 90px) * -1);
-    margin-bottom: calc(var(--fv-bleed, 90px) * -1);
+    margin-top: calc(var(--fv-height, 150px) / -2);
+    margin-bottom: calc(var(--fv-height, 150px) / -2);
     --fv-height: {{ section.settings.height | default: 150 }}px;
-    --fv-bleed: {{ section.settings.bleed | default: 90 }}px;
     --fv-max-width: {{ section.settings.max_width | default: 480 }}px;
     --fv-parallax: {{ section.settings.parallax_strength | default: 14 }}px;
     --fv-offset-x: {{ section.settings.offset_x | default: 0 }}px;
@@ -121,16 +120,8 @@
       "min": 80,
       "max": 600,
       "step": 10,
-      "default": 150
-    },
-    {
-      "type": "range",
-      "id": "bleed",
-      "label": "Overlap into neighboring sections (px)",
-      "min": 0,
-      "max": 400,
-      "step": 10,
-      "default": 90
+      "default": 150,
+      "info": "The section always reserves zero space in the page \u2014 overlap into neighboring sections is calculated automatically as half this value, above and below, so it can never leave a gap."
     },
     {
       "type": "range",
@@ -200,7 +191,6 @@
       "name": "Floating video",
       "settings": {
         "height": 150,
-        "bleed": 90,
         "max_width": 480,
         "horizontal_position": "center",
         "offset_x": 0,

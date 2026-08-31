@@ -56,7 +56,7 @@
         {{ block.shopify_attributes }}
         data-iwt-slide
       >
-        <div class="iwt-carousel__media">
+        <div class="iwt-carousel__media"{% if forloop.first %} data-iwt-morph{% endif %}>
           {%- if image != blank -%}
             {{
               image
