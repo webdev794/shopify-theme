@@ -1,0 +1,82 @@
+/**
+ * Floating Video
+ *
+ * Sits between .featured-products and .shop-the-kit in DOM order.
+ * Bleeds into the section ABOVE for free (later DOM = paints on top by
+ * default). Bleeding into the section BELOW needs an explicit z-index,
+ * since Shop the Kit's own content (.shop-the-kit__content /
+ * .shop-the-kit__products) sits at z-index: 2 and would otherwise cover it.
+ */
+
+.floating-video {
+  position: relative;
+  z-index: 6; /* above shop-the-kit's z-index:2 content, below its z-index:20 hover preview */
+  height: var(--fv-height, 150px);
+  margin-top: calc(var(--fv-bleed, 90px) * -1);
+  margin-bottom: calc(var(--fv-bleed, 90px) * -1);
+  overflow: visible;
+  pointer-events: none; /* never blocks clicks/hover on the sections behind it */
+  will-change: transform; /* promote to its own compositor layer, same pattern
+                              as the reference site's [data-parallax] wrapper */
+}
+
+.floating-video__inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-video--pos-left .floating-video__inner {
+  justify-content: flex-start;
+}
+
+.floating-video--pos-center .floating-video__inner {
+  justify-content: center;
+}
+
+.floating-video--pos-right .floating-video__inner {
+  justify-content: flex-end;
+}
+
+.floating-video__stage {
+  position: relative;
+  width: 100%;
+  max-width: var(--fv-max-width, 480px);
+  height: calc(var(--fv-height, 150px) + (var(--fv-bleed, 90px) * 2));
+  transform: translate(var(--fv-offset-x, 0px), var(--fv-offset-y, 0px));
+  will-change: transform;
+}
+
+.floating-video__video,
+.floating-video__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* If neither a video nor poster renders (e.g. Safari with no .mov source
+   and no poster set), collapse cleanly instead of showing an empty gap. */
+.floating-video:not(:has(.floating-video__video, .floating-video__poster)) {
+  height: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 749px) {
+  .floating-video {
+    --fv-height: 100px;
+    --fv-bleed: 48px;
+  }
+
+  .floating-video--hide-mobile {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-video__stage {
+    will-change: auto;
+  }
+}

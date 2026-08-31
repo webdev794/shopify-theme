@@ -1,0 +1,214 @@
+{% comment %}
+  Floating Video
+  A thin, transparent-video "bridge" section meant to sit between
+  Featured Products and Shop the Kit in the template order. It visually
+  bleeds into both neighboring sections via negative margins + z-index,
+  rather than being a full-height section of its own.
+
+  Codec note: transparent WebM (VP8/VP9 alpha) is not supported by Safari.
+  If section.settings.video_safari is set (an HEVC-alpha .mov), it's offered
+  as a second <source>. Otherwise Safari falls back to the poster image
+  (or the section hides itself if no poster is set — see CSS).
+{% endcomment %}
+
+{{ 'floating-video.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="floating-video floating-video--pos-{{ section.settings.horizontal_position | default: 'center' }}{% if section.settings.hide_on_mobile %} floating-video--hide-mobile{% endif %}"
+  data-section-id="{{ section.id }}"
+  data-section-type="floating-video"
+  style="
+    position: relative;
+    z-index: 6;
+    overflow: visible;
+    pointer-events: none;
+    height: var(--fv-height, 150px);
+    margin-top: calc(var(--fv-bleed, 90px) * -1);
+    margin-bottom: calc(var(--fv-bleed, 90px) * -1);
+    --fv-height: {{ section.settings.height | default: 150 }}px;
+    --fv-bleed: {{ section.settings.bleed | default: 90 }}px;
+    --fv-max-width: {{ section.settings.max_width | default: 480 }}px;
+    --fv-parallax: {{ section.settings.parallax_strength | default: 14 }}px;
+    --fv-offset-x: {{ section.settings.offset_x | default: 0 }}px;
+    --fv-offset-y: {{ section.settings.offset_y | default: 0 }}px;
+  "
+>
+  <div class="floating-video__inner">
+  <div class="floating-video__stage" data-fv-stage>
+    {% if section.settings.video_webm_url != blank or section.settings.video_safari_url != blank %}
+      <video
+        class="floating-video__video"
+        data-fv-video
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        disablepictureinpicture
+        disableRemotePlayback
+        controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
+        preload="auto"
+        {% if section.settings.poster != blank %}poster="{{ section.settings.poster | image_url: width: 800 }}"{% endif %}
+        aria-hidden="true"
+      >
+        {% if section.settings.video_safari_url != blank %}
+          <source src="{{ section.settings.video_safari_url }}" type="video/mp4; codecs=hvc1">
+        {% endif %}
+        {% if section.settings.video_webm_url != blank %}
+          <source src="{{ section.settings.video_webm_url }}" type="video/webm">
+        {% endif %}
+      </video>
+    {% elsif section.settings.poster != blank %}
+      {% comment %} Static fallback if no video files are set yet {% endcomment %}
+      {%- assign fv_poster_w = 800 -%}
+      {%- assign fv_poster_h = 800 -%}
+      {%- if section.settings.poster.aspect_ratio > 0 -%}
+        {%- assign fv_poster_h = fv_poster_w | divided_by: section.settings.poster.aspect_ratio | round -%}
+      {%- endif -%}
+      <img
+        class="floating-video__poster"
+        src="{{ section.settings.poster | image_url: width: 800 }}"
+        width="{{ fv_poster_w }}"
+        height="{{ fv_poster_h }}"
+        alt=""
+        loading="lazy"
+      >
+    {% endif %}
+  </div>
+  </div>
+</div>
+
+<script src="{{ 'floating-video.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Floating video",
+  "tag": "section",
+  "class": "shopify-section--floating-video",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shopify's built-in video picker re-encodes files and strips alpha transparency. Upload rose_transparent.webm via Settings > Files instead, then paste its URL below."
+    },
+    {
+      "type": "url",
+      "id": "video_webm_url",
+      "label": "Transparent WebM URL (Chrome/Firefox/Edge)"
+    },
+    {
+      "type": "url",
+      "id": "video_safari_url",
+      "label": "Transparent HEVC .mov URL (Safari, optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "poster",
+      "label": "Fallback poster image",
+      "info": "Shown while the video loads, and as the fallback for browsers with no supported source."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Visible band height (px)",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "bleed",
+      "label": "Overlap into neighboring sections (px)",
+      "min": 0,
+      "max": 160,
+      "step": 10,
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Video width (px)",
+      "min": 100,
+      "max": 900,
+      "step": 10,
+      "default": 480,
+      "info": "Lower this to make the video smaller."
+    },
+    {
+      "type": "select",
+      "id": "horizontal_position",
+      "label": "Horizontal position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "info": "Move it off-center if it overlaps heading text in the section below."
+    },
+    {
+      "type": "range",
+      "id": "offset_x",
+      "label": "Fine-tune horizontal offset (px)",
+      "min": -300,
+      "max": 300,
+      "step": 10,
+      "default": 0,
+      "info": "Nudges the video further left (negative) or right (positive) from its chosen position."
+    },
+    {
+      "type": "range",
+      "id": "offset_y",
+      "label": "Fine-tune vertical offset (px)",
+      "min": -200,
+      "max": 200,
+      "step": 10,
+      "default": 0,
+      "info": "Nudges the video up (negative) or down (positive) within its band."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Hide on mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Motion"
+    },
+    {
+      "type": "range",
+      "id": "parallax_strength",
+      "label": "Mouse/scroll parallax strength (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 14,
+      "info": "Set to 0 to disable interactivity entirely."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating video",
+      "settings": {
+        "height": 150,
+        "bleed": 90,
+        "max_width": 480,
+        "horizontal_position": "center",
+        "offset_x": 0,
+        "offset_y": 0,
+        "hide_on_mobile": false,
+        "parallax_strength": 14
+      }
+    }
+  ]
+}
+{% endschema %}
