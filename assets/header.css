@@ -1128,7 +1128,7 @@ body:has(.header--minimal)
 }
 
 .header-float-trigger-wrapper--bottom-right {
-  bottom: 1.5rem;
+  bottom: 4.5rem;
   right: 1.5rem;
 }
 
@@ -1150,9 +1150,12 @@ body:has(.header--minimal)
     font-size: 0.75rem;
   }
 
-  .header-float-trigger-wrapper--bottom-left,
-  .header-float-trigger-wrapper--bottom-right {
+  .header-float-trigger-wrapper--bottom-left{
     bottom: 1rem;
+  }
+
+  .header-float-trigger-wrapper--bottom-right {
+    bottom: 4rem;
   }
 
   .header-float-trigger-wrapper--bottom-left {

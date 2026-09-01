@@ -713,42 +713,15 @@ h6 {
   box-shadow: none !important;
 }
 
-.header--minimal .header__logo-wrapper {
-  position: fixed;
-  top: 1rem;
-  left: 1.25rem;
-  z-index: 10040;
-  margin: 0;
-  pointer-events: auto;
-}
+/* Logo/trigger positioning intentionally NOT duplicated here — that used
+   to live in this file as a separate, hand-maintained copy of the same
+   rules in header.css, and the two silently drifted out of sync (this
+   file kept an old max-height:40px logo cap, an old top:1rem logo
+   position, and position:fixed directly on .header-float-trigger from
+   before it was split into its own wrapper). header.css is the single
+   source of truth now; this file only keeps the simple, stable collapse
+   rule above, which prevents a layout flash before header.css loads. */
 
-.header--minimal .header__logo-image {
-  max-height: 40px;
-  width: auto;
-  display: block;
-}
-
-.header-float-trigger {
-  position: fixed;
-  z-index: 2147482900;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.85rem 1.25rem;
-  border: none;
-  border-radius: 999px;
-  background-color: var(--header-foreground, #121212);
-  color: var(--header-background, #ffffff);
-  font-family: var(--font-primary--family, inherit);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
-  -webkit-tap-highlight-color: transparent;
-}
 
 /* --- Slideshow with Marquee (homepage first section) --- */
 .slideshow-with-marquee {

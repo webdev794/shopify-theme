@@ -7,8 +7,11 @@
   const DURATION = 950; // ms – matches CSS transition
 
   const initCarousel = (carousel) => {
-    if (carousel.dataset.hcInit) return;
-    carousel.dataset.hcInit = 'true';
+    // Tear down previous listeners / timer / observer
+    if (carousel._hcAbort) carousel._hcAbort.abort();
+    const abort = new AbortController();
+    carousel._hcAbort = abort;
+    const { signal } = abort;
 
     const scroller = carousel.querySelector('[data-hc-scroller]');
     const slides = Array.from(carousel.querySelectorAll('[data-hc-slide]'));
@@ -22,7 +25,11 @@
     let currentIndex = 0;
     let isAnimating = false;
 
-    // Initial state – first slide active, others collapsed
+    // Shared state – must be in the same scope as the arrow/dot handlers
+    let pausedByUser = false;
+    let update = () => {};          // will be replaced when autoplay is active
+
+    // Initial state
     slides.forEach((slide, i) => {
       slide.setAttribute('data-origin', 'left');
       if (i === 0) {
@@ -48,13 +55,12 @@
     const goTo = (index, direction) => {
       if (isAnimating || slides.length < 2) return;
 
-      // Normalize index
+      // Normalize – this is what makes it loop (3 → 0, -1 → last, …)
       const to = ((index % slides.length) + slides.length) % slides.length;
       if (to === currentIndex) return;
 
       const from = currentIndex;
 
-      // Determine direction if not provided
       if (direction === undefined) {
         direction = to > from || (from === slides.length - 1 && to === 0) ? 1 : -1;
         if (from === 0 && to === slides.length - 1) direction = -1;
@@ -65,7 +71,6 @@
       const entering = slides[to];
 
       if (reducedMotion.matches) {
-        // Instant swap for reduced motion
         leaving.setAttribute('data-active', 'false');
         leaving.setAttribute('aria-hidden', 'true');
         leaving.removeAttribute('data-leaving');
@@ -78,9 +83,6 @@
 
       isAnimating = true;
 
-      // Direction-aware origins:
-      // next → leaving collapses left, entering expands from right
-      // prev → leaving collapses right, entering expands from left
       if (direction >= 0) {
         leaving.setAttribute('data-origin', 'left');
         entering.setAttribute('data-origin', 'right');
@@ -93,8 +95,7 @@
       leaving.setAttribute('data-active', 'false');
       leaving.setAttribute('aria-hidden', 'true');
 
-      // Force reflow so origin is applied before scale
-      void entering.offsetWidth;
+      void entering.offsetWidth; // force reflow
 
       entering.setAttribute('data-active', 'true');
       entering.setAttribute('aria-hidden', 'false');
@@ -105,20 +106,20 @@
       setTimeout(() => {
         leaving.removeAttribute('data-leaving');
         isAnimating = false;
+        update(); // important – restarts the timer after the transition
       }, DURATION);
     };
 
-    /* --- Arrows and dots --- */
+    /* --- Arrows --- */
     if (prevButton) {
       prevButton.addEventListener('click', (e) => {
         e.preventDefault();
         goTo(currentIndex - 1, -1);
-        // Restart autoplay after manual interaction
         if (carousel.hasAttribute('data-autoplay') && !reducedMotion.matches) {
           pausedByUser = false;
           update();
         }
-      });
+      }, { signal });
     }
     if (nextButton) {
       nextButton.addEventListener('click', (e) => {
@@ -128,8 +129,10 @@
           pausedByUser = false;
           update();
         }
-      });
+      }, { signal });
     }
+
+    /* --- Dots --- */
     dots.forEach((dot) => {
       dot.addEventListener('click', () => {
         const idx = Number(dot.dataset.hcDot);
@@ -140,7 +143,7 @@
             update();
           }
         }
-      });
+      }, { signal });
     });
 
     /* --- Keyboard --- */
@@ -152,24 +155,21 @@
         e.preventDefault();
         goTo(currentIndex + 1, 1);
       }
-    });
+    }, { signal });
 
     /* --- Autoplay --- */
     if (!carousel.hasAttribute('data-autoplay') || reducedMotion.matches) {
-      // Still expose a no-op update for consistency
       return;
     }
 
     const speed = (Number(carousel.dataset.autoplaySpeed) || 6) * 1000;
     let timer = null;
-    let pausedByUser = false;
     let hovered = false;
     let focused = false;
     let visible = true;
 
     const setPlaybackState = (paused) => {
       carousel.classList.toggle('hero-carousel--paused', paused);
-      scroller.setAttribute('aria-live', paused ? 'polite' : 'off');
       if (playback) {
         if (!playback.dataset.pauseLabel) {
           playback.dataset.pauseLabel = playback.getAttribute('aria-label') || 'Pause';
@@ -186,32 +186,49 @@
       timer = null;
     };
 
-    const update = () => {
+    // Replace the no-op with the real implementation
+    update = () => {
       const shouldPlay = !pausedByUser && !hovered && !focused && visible && !isAnimating;
+
       if (shouldPlay && !timer) {
         timer = setInterval(() => goTo(currentIndex + 1, 1), speed);
       } else if (!shouldPlay) {
         stop();
       }
-      setPlaybackState(!shouldPlay);
+
+      // Button reflects only the permanent user choice
+      setPlaybackState(pausedByUser);
+
+      // Live region follows the real playing state
+      scroller.setAttribute('aria-live', shouldPlay ? 'off' : 'polite');
     };
 
     if (playback) {
-      playback.addEventListener('click', () => {
+      playback.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         pausedByUser = !pausedByUser;
+
+        // Important: when the user explicitly presses Play,
+        // start immediately even if the mouse is still over the button
+        if (!pausedByUser) {
+          hovered = false;
+          focused = false;
+        }
+
         update();
-      });
+      }, { signal });
     }
 
-    carousel.addEventListener('pointerenter', () => { hovered = true; update(); });
-    carousel.addEventListener('pointerleave', () => { hovered = false; update(); });
-    carousel.addEventListener('focusin', () => { focused = true; update(); });
+    carousel.addEventListener('pointerenter', () => { hovered = true; update(); }, { signal });
+    carousel.addEventListener('pointerleave', () => { hovered = false; update(); }, { signal });
+    carousel.addEventListener('focusin', () => { focused = true; update(); }, { signal });
     carousel.addEventListener('focusout', (event) => {
       if (!carousel.contains(event.relatedTarget)) {
         focused = false;
         update();
       }
-    });
+    }, { signal });
 
     if ('IntersectionObserver' in window) {
       const visibility = new IntersectionObserver(
@@ -224,9 +241,12 @@
         { threshold: 0.3 }
       );
       visibility.observe(carousel);
+      signal.addEventListener('abort', () => visibility.disconnect());
     }
 
-    update();
+    signal.addEventListener('abort', stop);
+
+    update(); // start autoplay
   };
 
   const initAll = (root) => {
@@ -236,20 +256,13 @@
 
   initAll();
 
-  /* --- Theme editor integration --- */
+  /* Theme editor */
   document.addEventListener('shopify:section:load', (event) => {
-    // Reset init flag so the section re-initializes cleanly
-    const carousel = event.target.querySelector
-      ? event.target.querySelector('[data-hero-carousel]')
-      : null;
-    if (carousel) delete carousel.dataset.hcInit;
     initAll(event.target);
   });
 
   document.addEventListener('shopify:block:select', (event) => {
-    const slide = event.target.closest
-      ? event.target.closest('[data-hc-slide]')
-      : null;
+    const slide = event.target.closest ? event.target.closest('[data-hc-slide]') : null;
     if (!slide) return;
     const carousel = slide.closest('[data-hero-carousel]');
     if (!carousel) return;
@@ -258,7 +271,6 @@
     const index = slides.indexOf(slide);
     if (index === -1) return;
 
-    // Instantly show the selected slide in the editor
     slides.forEach((s, i) => {
       if (i === index) {
         s.setAttribute('data-active', 'true');
