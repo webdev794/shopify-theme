@@ -1,0 +1,650 @@
+{%- comment -%}
+  The Edit — Product Showcase (Glow Reveal)
+  Signature interaction: each product image rests in a muted duotone state;
+  as it scrolls into view, true color blooms outward from the center like a
+  glow (tying into a "glow into ritual" skincare narrative). Three layouts:
+  a staggered grid (a clean "brick" pattern that adapts to the chosen
+  column count at every breakpoint, with row spacing that always leaves
+  enough room so offset cards never overlap the next row), a drag/scroll
+  slider, or a continuous auto-scrolling marquee. Cursor tilt + glare on
+  hover (grid/slider), an optional per-product highlight tag, icon-morph
+  quick add with working AJAX add-to-cart, sold-out handling, a wishlist
+  heart (persisted locally, synced across duplicated marquee cards), and
+  optional color-swatch variant switching.
+
+  Split into 3 files:
+  - this .liquid file: markup + schema, plus the one small bit of CSS that
+    genuinely can't live in a static stylesheet (see the <style> block below)
+  - assets/the-edit-glow-reveal.css: all other styling (static, driven by
+    CSS custom properties set inline below)
+  - assets/the-edit-glow-reveal.js: all behaviour (static, driven by
+    data-* attributes set below)
+{%- endcomment -%}
+
+{{ 'the-edit-glow-reveal.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'the-edit-glow-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign te_padding_top = section.settings.padding_top
+  assign te_padding_bottom = section.settings.padding_bottom
+  assign te_padding_top_mobile = te_padding_top | times: 0.5 | round
+  assign te_padding_bottom_mobile = te_padding_bottom | times: 0.5 | round
+  assign product_blocks = section.blocks | where: 'type', 'product'
+  assign te_stagger = section.settings.stagger_amount
+  assign te_gap = section.settings.gap
+  assign te_row_gap = te_gap
+  if section.settings.enable_stagger
+    assign te_row_gap = te_gap | plus: te_stagger
+  endif
+-%}
+
+{%- if section.settings.enable_stagger -%}
+  {%- comment -%}
+    This one block cannot move to the static CSS file: it generates literal
+    nth-child(An+B) selectors based on the chosen column count per
+    breakpoint, and plain CSS custom properties can't be used inside an
+    nth-child() formula (it requires literal numbers). Scoped to this
+    section's id so multiple instances of this section on the same page
+    (possibly with different column-count settings) never bleed into
+    each other.
+  {%- endcomment -%}
+  <style>
+    @media screen and (max-width: 699px) {
+      {%- for i in (1..2) -%}
+        {%- assign te_is_even = i | modulo: 2 -%}
+        {%- if te_is_even == 0 -%}
+      #shopify-section-{{ section.id }} .te__grid[data-te-layout="grid"] .te__card:nth-child(2n+{{ i }}) {
+        margin-top: clamp({{ te_stagger | times: 0.5 }}px, 6vw, {{ te_stagger | times: 0.7 }}px);
+      }
+        {%- endif -%}
+      {%- endfor -%}
+    }
+    @media screen and (min-width: 700px) and (max-width: 999px) {
+      {%- assign te_tablet_cols = section.settings.products_per_row_tablet -%}
+      {%- for i in (1..te_tablet_cols) -%}
+        {%- assign te_is_even = i | modulo: 2 -%}
+        {%- if te_is_even == 0 -%}
+      #shopify-section-{{ section.id }} .te__grid[data-te-layout="grid"] .te__card:nth-child({{ te_tablet_cols }}n+{{ i }}) {
+        margin-top: clamp({{ te_stagger | times: 0.5 }}px, 3vw, {{ te_stagger }}px);
+      }
+        {%- endif -%}
+      {%- endfor -%}
+    }
+    @media screen and (min-width: 1000px) {
+      {%- assign te_desktop_cols = section.settings.products_per_row -%}
+      {%- for i in (1..te_desktop_cols) -%}
+        {%- assign te_is_even = i | modulo: 2 -%}
+        {%- if te_is_even == 0 -%}
+      #shopify-section-{{ section.id }} .te__grid[data-te-layout="grid"] .te__card:nth-child({{ te_desktop_cols }}n+{{ i }}) {
+        margin-top: clamp({{ te_stagger | times: 0.5 }}px, 2.2vw, {{ te_stagger }}px);
+      }
+        {%- endif -%}
+      {%- endfor -%}
+    }
+  </style>
+{%- endif -%}
+
+<noscript>
+  <style>
+    #shopify-section-{{ section.id }} .te__card,
+    #shopify-section-{{ section.id }} .te__info > * {
+      opacity: 1 !important;
+      translate: 0 0 !important;
+    }
+    #shopify-section-{{ section.id }} .te__img-reveal { clip-path: none !important; }
+    #shopify-section-{{ section.id }} .te__img-base { display: none; }
+    #shopify-section-{{ section.id }} .te__quick-add { translate: 0 0 !important; }
+    #shopify-section-{{ section.id }} .te__marquee-track { animation: none !important; overflow-x: auto; }
+  </style>
+</noscript>
+
+{%- capture icon_bag -%}
+  <svg class="te__icon-bag" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8h12l-1 12.5a1.5 1.5 0 0 1-1.5 1.5h-8a1.5 1.5 0 0 1-1.5-1.5L6 8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+{%- endcapture -%}
+{%- capture icon_spinner -%}
+  <svg class="te__icon-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8" stroke-opacity="0.25"/><path d="M20.5 12a8.5 8.5 0 0 0-8.5-8.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+{%- endcapture -%}
+{%- capture icon_check -%}
+  <svg class="te__icon-check" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+{%- endcapture -%}
+{%- capture icon_heart -%}
+  <svg class="te__wishlist-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20.5s-7.5-4.6-9.8-9.2C.7 7.7 2.4 4 6 4c2 0 3.6 1.1 4.5 2.7C11.4 5.1 13 4 15 4c3.6 0 5.3 3.7 3.8 7.3-2.3 4.6-9.8 9.2-9.8 9.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+{%- endcapture -%}
+
+{%- capture te_cards_markup -%}
+  {%- for block in product_blocks -%}
+    {%- assign p = block.settings.product -%}
+    {%- if p != blank -%}
+      {%- liquid
+        assign reveal_image = p.featured_image
+        if p.images[1] != blank
+          assign reveal_image = p.images[1]
+        endif
+        assign is_on_sale = false
+        if p.compare_at_price > p.price
+          assign is_on_sale = true
+        endif
+        assign variant = p.selected_or_first_available_variant
+        assign is_sold_out = true
+        if variant.available
+          assign is_sold_out = false
+        endif
+
+        assign color_index = -1
+        for option in p.options
+          assign opt_down = option | downcase
+          if opt_down == 'color' or opt_down == 'colour'
+            assign color_index = forloop.index0
+          endif
+        endfor
+      -%}
+      <div class="te__card" data-te-card {{ block.shopify_attributes }}>
+        <div class="te__card-media" data-te-tilt>
+          <span
+            class="te__badge"
+            data-te-badge="{% if is_sold_out %}sold-out{% elsif is_on_sale %}sale{% endif %}"
+            {% unless is_sold_out or is_on_sale %}style="display:none;"{% endunless %}
+          >
+            {%- if is_sold_out -%}
+              {{ 'products.product.sold_out' | t | default: 'Sold out' }}
+            {%- else -%}
+              {{ 'products.product.on_sale' | t | default: 'Sale' }}
+            {%- endif -%}
+          </span>
+
+          {%- if section.settings.show_wishlist -%}
+            <button type="button" class="te__wishlist" data-te-wishlist data-handle="{{ p.handle }}" aria-label="Add to wishlist" aria-pressed="false">
+              {{ icon_heart }}
+            </button>
+          {%- endif -%}
+
+          <a href="{{ p.url }}" class="te__card-link" aria-label="{{ p.title | escape }}">
+            {%- if p.featured_image != blank -%}
+              {{ p.featured_image | image_url: width: 800 | image_tag: widths: '400, 600, 800', sizes: '(max-width: 699px) 45vw, 22vw', loading: 'lazy', alt: '', class: 'te__img-base', data_te_img_base: true }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'te__img-base' }}
+            {%- endif -%}
+            <span class="te__img-reveal">
+              {%- if reveal_image != blank -%}
+                {{ reveal_image | image_url: width: 800 | image_tag: widths: '400, 600, 800', sizes: '(max-width: 699px) 45vw, 22vw', loading: 'lazy', alt: p.featured_image.alt, data_te_img_reveal: true }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: '' }}
+              {%- endif -%}
+            </span>
+          </a>
+          <div class="te__card-glare" aria-hidden="true"></div>
+
+          {%- if section.settings.show_quick_add -%}
+            <div class="te__quick-add">
+              {%- if p.has_only_default_variant -%}
+                <button
+                  type="button"
+                  class="te__quick-add-btn"
+                  data-te-quick-add
+                  data-variant-id="{{ variant.id }}"
+                  data-state="{% if is_sold_out %}sold-out{% else %}idle{% endif %}"
+                  {% if is_sold_out %}disabled aria-disabled="true"{% endif %}
+                >
+                  <span class="te__quick-add-icon" aria-hidden="true">{{ icon_bag }}{{ icon_spinner }}{{ icon_check }}</span>
+                </button>
+              {%- else -%}
+                <a href="{{ p.url }}" class="te__quick-add-btn" style="text-decoration:none;" data-state="idle">
+                  <span class="te__quick-add-icon" aria-hidden="true">{{ icon_bag }}</span>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="te__info">
+          {%- if section.settings.show_vendor and p.vendor != blank -%}
+            <p class="te__vendor">{{ p.vendor | escape }}</p>
+          {%- endif -%}
+          <p class="te__title">{{ p.title | escape }}</p>
+          <div class="te__price">
+            <span data-te-price>{{ variant.price | money }}</span>
+            <span class="te__price-compare" data-te-compare-price>{%- if is_on_sale -%}{{ p.compare_at_price | money }}{%- endif -%}</span>
+          </div>
+          {%- if block.settings.highlight_text != blank -%}
+            <span class="te__highlight">{{ block.settings.highlight_text | escape }}</span>
+          {%- endif -%}
+
+          {%- if section.settings.show_color_swatches and color_index > -1 -%}
+            {%- assign seen = '' -%}
+            <div class="te__swatches" data-te-swatches>
+              {%- for v in p.variants -%}
+                {%- liquid
+                  case color_index
+                    when 0
+                      assign val = v.option1
+                    when 1
+                      assign val = v.option2
+                    else
+                      assign val = v.option3
+                  endcase
+                  assign key = val | append: '|'
+                -%}
+                {%- unless seen contains key -%}
+                  {%- assign seen = seen | append: key -%}
+                  {%- assign swatch_image = v.featured_image | default: p.featured_image -%}
+                  {%- assign swatch_reveal = p.images[1] | default: swatch_image -%}
+                  <button
+                    type="button"
+                    class="te__swatch{% if v.id == variant.id %} is-active{% endif %}"
+                    style="background-image:url('{{ swatch_image | image_url: width: 60 }}');"
+                    data-te-swatch
+                    data-variant-id="{{ v.id }}"
+                    data-image="{{ swatch_image | image_url: width: 800 }}"
+                    data-reveal-image="{{ swatch_reveal | image_url: width: 800 }}"
+                    data-price="{{ v.price | money }}"
+                    data-compare-price="{% if v.compare_at_price > v.price %}{{ v.compare_at_price | money }}{% endif %}"
+                    data-available="{{ v.available }}"
+                    aria-label="{{ val | escape }}"
+                    title="{{ val | escape }}"
+                  ></button>
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div
+  class="te-padding"
+  style="
+    --te-bg: {{ section.settings.background_color }};
+    --te-text: {{ section.settings.text_color }};
+    --te-heading: {{ section.settings.heading_color }};
+    --te-card-bg: {{ section.settings.card_background }};
+    --te-accent: {{ section.settings.accent_color }};
+    --te-sale: {{ section.settings.sale_color }};
+    --te-sold-out: {{ section.settings.sold_out_color }};
+    --te-wishlist: {{ section.settings.wishlist_active_color }};
+    --te-btn-bg: {{ section.settings.button_background_color }};
+    --te-btn-text: {{ section.settings.button_text_color }};
+    --te-gap: {{ te_gap }}px;
+    --te-row-gap: {{ te_row_gap }}px;
+    --te-radius: {{ section.settings.border_radius }}px;
+    --te-heading-size: {{ section.settings.heading_font_size }}px;
+    --te-cols-desktop: {{ section.settings.products_per_row }};
+    --te-cols-tablet: {{ section.settings.products_per_row_tablet }};
+    --te-pad-top: {{ te_padding_top }}px;
+    --te-pad-bottom: {{ te_padding_bottom }}px;
+    --te-pad-top-m: {{ te_padding_top_mobile }}px;
+    --te-pad-bottom-m: {{ te_padding_bottom_mobile }}px;
+  "
+>
+  <div
+    id="shopify-section-{{ section.id }}-te"
+    class="te"
+    data-te
+    data-te-tilt-enabled="{{ section.settings.enable_tilt }}"
+    data-te-gap="{{ section.settings.gap }}"
+    data-te-full-bleed="{% if section.settings.layout == 'marquee' %}true{% else %}false{% endif %}"
+  >
+    {%- if section.settings.eyebrow_text != blank or section.settings.heading != blank or section.settings.description != blank or section.settings.show_view_all -%}
+      <div class="te__header">
+        <div class="te__header-text">
+          {%- if section.settings.eyebrow_text != blank -%}
+            <p class="te__kicker">{{ section.settings.eyebrow_text | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="te__heading">{{ section.settings.heading | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.description != blank -%}
+            <div class="te__description">{{ section.settings.description }}</div>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.show_view_all -%}
+          {%- assign te_view_all_url = section.settings.view_all_link | default: routes.all_products_collection_url -%}
+          <a href="{{ te_view_all_url }}" class="te__view-all">
+            {{ section.settings.view_all_text | default: 'View all' | escape }}
+            <span class="te__view-all-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if product_blocks.size > 0 -%}
+      {%- if section.settings.layout == 'marquee' -%}
+        <div
+          class="te__marquee"
+          data-te-marquee
+          data-te-pause="{{ section.settings.marquee_pause_on_hover }}"
+          data-te-reverse="{{ section.settings.marquee_reverse }}"
+          style="--te-marquee-duration: {{ section.settings.marquee_speed }}s;"
+        >
+          <div class="te__marquee-track" data-te-track>
+            {{ te_cards_markup }}
+            {{ te_cards_markup }}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="te__grid" data-te-grid data-te-layout="{{ section.settings.layout }}">
+          {{ te_cards_markup }}
+        </div>
+        {%- if section.settings.layout == 'slider' and product_blocks.size > 1 -%}
+          <div class="te__nav">
+            <button type="button" class="te__nav-btn" data-te-prev aria-label="Previous products">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="te__nav-rail" data-te-rail>
+              <div class="te__nav-rail-fill" data-te-rail-fill></div>
+            </div>
+            <button type="button" class="te__nav-btn" data-te-next aria-label="Next products">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- elsif request.design_mode -%}
+      <div class="te__empty">
+        <p>Add a "Product" block to get started.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "The Edit (Glow Reveal)",
+  "tag": "section",
+  "class": "section-the-edit-glow-reveal",
+  "settings": [
+    { "type": "header", "content": "Header content" },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Kicker line",
+      "default": "A ritual worth repeating"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Start your ritual"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>A curated selection of our most-loved formulas.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show \"View all\" button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all label",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link",
+      "info": "Leave blank to link to the main products collection."
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "grid",
+      "options": [
+        { "value": "grid", "label": "Grid (staggered rhythm)" },
+        { "value": "slider", "label": "Slider (drag / scroll)" },
+        { "value": "marquee", "label": "Auto-scroll (continuous)" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_tilt",
+      "label": "Enable cursor tilt + glare on cards",
+      "default": true,
+      "info": "Desktop mouse only. Automatically disabled for touch devices, reduced-motion, and the Auto-scroll layout."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_stagger",
+      "label": "Enable staggered grid rhythm",
+      "default": true,
+      "info": "Offsets every 2nd column in a clean brick pattern, matched to the column count at each breakpoint. Grid layout only."
+    },
+    {
+      "type": "range",
+      "id": "stagger_amount",
+      "label": "Stagger amount",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products per row (desktop, 1000px+)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_tablet",
+      "label": "Products per row (tablet, 700–999px)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between products",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    { "type": "header", "content": "Auto-scroll settings" },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Loop duration",
+      "min": 15,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "default": 40,
+      "info": "Lower = faster scroll. Only used by the Auto-scroll layout."
+    },
+    {
+      "type": "checkbox",
+      "id": "marquee_reverse",
+      "label": "Reverse direction",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "marquee_pause_on_hover",
+      "label": "Pause on hover / touch",
+      "default": true
+    },
+    { "type": "header", "content": "Card content" },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick-add button",
+      "default": true,
+      "info": "Adds single-variant products straight to cart. Multi-variant products link through to the product page instead."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show wishlist heart",
+      "default": true,
+      "info": "Saved locally in the visitor's browser (no account or app needed)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatches",
+      "label": "Show color swatches",
+      "default": true,
+      "info": "Shown automatically for products with a \"Color\" or \"Colour\" option. Clicking a swatch updates the image, price, and quick-add without reloading the page."
+    },
+    { "type": "header", "content": "Colors" },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F2ECE2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#221F1C"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1B1815"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#EDE3D2"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (kicker / highlight tag)",
+      "default": "#3E5641"
+    },
+    {
+      "type": "color",
+      "id": "sale_color",
+      "label": "Sale badge color",
+      "default": "#A6402F"
+    },
+    {
+      "type": "color",
+      "id": "sold_out_color",
+      "label": "Sold out badge color",
+      "default": "#6B655D"
+    },
+    {
+      "type": "color",
+      "id": "wishlist_active_color",
+      "label": "Wishlist active color",
+      "default": "#A6402F"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#221F1C"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#F2ECE2"
+    },
+    { "type": "header", "content": "Text size" },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading (max size)",
+      "min": 28,
+      "max": 88,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    { "type": "header", "content": "Section padding" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "highlight_text",
+          "label": "Highlight tag (optional)",
+          "info": "e.g. \"Vitamin C · Brightening\". Leave blank to hide."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Edit (Glow Reveal)",
+      "category": "Collection",
+      "settings": {},
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

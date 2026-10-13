@@ -1,0 +1,371 @@
+/* ==========================================================================
+   Sticky Pinned Story — assets/sticky-pinned-story.css
+   Structural styles only. Every merchant-configurable value (colors, sizes,
+   spacing) comes in as a CSS custom property set inline by
+   sticky-pinned-story.liquid on the .ssr-padding / .ssr wrapper elements,
+   so this file stays fully static and safe to edit on its own.
+   ========================================================================== */
+
+.ssr-padding {
+  padding-top: var(--ssr-padding-top, 0px);
+  padding-bottom: var(--ssr-padding-bottom, 0px);
+  background: var(--ssr-bg, transparent);
+  overflow: visible; /* position:sticky breaks if any ancestor clips overflow */
+}
+@media screen and (max-width: 749px) {
+  .ssr-padding {
+    padding-top: calc(var(--ssr-padding-top, 0px) * 0.5);
+    padding-bottom: calc(var(--ssr-padding-bottom, 0px) * 0.5);
+  }
+}
+
+.ssr {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+  color: var(--ssr-text);
+  overflow: visible;
+}
+
+.ssr__intro {
+  max-width: 640px;
+  margin: 0 auto clamp(48px, 8vw, 88px);
+  text-align: center;
+}
+.ssr__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ssr__eyebrow::before {
+  content: '';
+  width: 26px;
+  height: 2px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.ssr__heading {
+  margin: 0 0 16px;
+  font-weight: 800;
+  line-height: 1.15;
+  font-size: clamp(28px, 4.4vw, var(--ssr-heading-size, 44px));
+}
+.ssr__paragraph {
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.8;
+  font-size: clamp(14px, 1.6vw, var(--ssr-paragraph-size, 17px));
+}
+
+/* ---------- Two-column layout ---------- */
+.ssr__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: visible;
+}
+@media screen and (min-width: 990px) {
+  .ssr__layout {
+    grid-template-columns: 0.9fr 1fr;
+    gap: clamp(48px, 7vw, 110px);
+    align-items: start;
+  }
+  .ssr__sticky { order: 1; }
+  .ssr__steps { order: 2; }
+  .ssr--reverse .ssr__sticky { order: 2; }
+  .ssr--reverse .ssr__steps { order: 1; }
+}
+
+/* ---------- Sticky image pane (desktop only) ---------- */
+.ssr__sticky { display: none; }
+@media screen and (min-width: 990px) {
+  .ssr__sticky {
+    display: flex;
+    gap: 20px;
+    position: sticky;
+    top: clamp(80px, 10vh, 120px);
+    align-self: start;
+  }
+  .ssr--reverse .ssr__sticky {
+    flex-direction: row-reverse;
+  }
+}
+.ssr__sticky-inner {
+  position: relative;
+  flex: 1;
+  aspect-ratio: 4 / 5;
+  border-radius: 28px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.04);
+  box-shadow: 0 40px 70px -24px rgba(0, 0, 0, 0.32), 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+.ssr__sticky-inner::after {
+  /* soft inner vignette for depth, sits above every image */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.16);
+  border-radius: inherit;
+}
+.ssr__image {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ssr__image.is-active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1;
+}
+.ssr__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ssr__image-number {
+  position: absolute;
+  z-index: 3;
+  left: 20px;
+  bottom: 18px;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  padding: 7px 13px;
+  border-radius: 999px;
+}
+
+/* ---------- Vertical progress rail beside the sticky image ---------- */
+.ssr__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 22px;
+  flex-shrink: 0;
+}
+.ssr__rail-node {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease, transform 0.3s ease;
+  flex-shrink: 0;
+}
+.ssr__rail-node:focus-visible {
+  outline: 2px solid var(--ssr-accent);
+  outline-offset: 3px;
+}
+.ssr__rail-node.is-active {
+  background: var(--ssr-accent);
+  transform: scale(1.3);
+}
+.ssr__rail-track {
+  position: relative;
+  width: 2px;
+  flex: 1;
+  margin: 4px 0;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ssr__rail-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: var(--ssr-accent);
+  transition: height 0.4s ease;
+}
+
+/* ---------- Steps column ---------- */
+.ssr__steps {
+  display: flex;
+  flex-direction: column;
+}
+.ssr__step {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 0 32px 28px;
+  border-left: 2px solid rgba(0, 0, 0, 0.08);
+}
+@media screen and (min-width: 990px) {
+  .ssr__step {
+    min-height: 72vh;
+  }
+}
+.ssr__step::before {
+  /* the border-left segment "fills" with the accent color as this step activates */
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ssr-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ssr__step.is-active::before {
+  transform: scaleY(1);
+}
+.ssr__step:first-child {
+  padding-top: 0;
+  min-height: 40vh;
+}
+@media screen and (min-width: 990px) {
+  .ssr__step:first-child {
+    min-height: 72vh;
+  }
+}
+.ssr__step:last-child {
+  padding-bottom: 0;
+}
+
+.ssr__step-body {
+  opacity: 0.35;
+  translate: 0 14px;
+  transition: opacity 0.5s ease, translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ssr__step.is-active .ssr__step-body {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.ssr__step-image--mobile {
+  display: block;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+.ssr__step-image--mobile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media screen and (min-width: 990px) {
+  .ssr__step-image--mobile {
+    display: none;
+  }
+}
+
+.ssr__step-top {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.ssr__step-ghost-number {
+  font-weight: 800;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  color: var(--ssr-text);
+  opacity: 0.08;
+  flex-shrink: 0;
+}
+.ssr__step-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ssr-label-color);
+}
+.ssr__step-heading {
+  margin: 0 0 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  font-size: clamp(22px, 2.8vw, 36px);
+}
+.ssr__step-desc {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 16px;
+  line-height: 1.65;
+  opacity: 0.75;
+}
+
+/* ---------- Final CTA ---------- */
+.ssr__cta-wrap {
+  margin-top: clamp(40px, 6vw, 64px);
+  text-align: center;
+}
+.ssr__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 9px 9px 28px;
+  background: var(--ssr-btn-bg);
+  color: var(--ssr-btn-text);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 999px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.ssr__cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.ssr__cta:focus-visible {
+  outline: 2px solid var(--ssr-btn-bg);
+  outline-offset: 3px;
+}
+.ssr__cta-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ssr-btn-text);
+  color: var(--ssr-btn-bg);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.ssr__cta-icon svg { width: 16px; height: 16px; }
+
+.ssr__empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  border: 1.5px dashed rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  opacity: 0.6;
+  font-size: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ssr__image,
+  .ssr__step-body,
+  .ssr__step::before,
+  .ssr__rail-fill,
+  .ssr__rail-node {
+    transition: none !important;
+  }
+}

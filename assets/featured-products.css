@@ -268,11 +268,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
 }
 
 .product-card:hover .product-card__image {
   transform: scale(1.06);
+  filter: saturate(1.08) brightness(1.02);
 }
 
 .product-card__image-placeholder {
@@ -315,6 +316,11 @@
   align-items: center;
   justify-content: space-between;
   pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:hover .product-card__top-row {
+  transform: translateY(-1px);
 }
 
 .product-card__top-row > * {
@@ -438,6 +444,12 @@
   opacity: 0.55;
   margin: 0 0 0.15rem 0;
   font-weight: 600;
+  transition: opacity 0.35s ease, letter-spacing 0.35s ease;
+}
+
+.product-card:hover .product-card__vendor {
+  opacity: 0.8;
+  letter-spacing: 0.16em;
 }
 
 .product-card__title {
@@ -447,6 +459,11 @@
   margin: 0;
   line-height: 1.35;
   color: var(--fp-text-color, var(--color-foreground, #1a1a1a));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:hover .product-card__title {
+  transform: translateX(3px);
 }
 
 .product-card__title a {
@@ -493,6 +510,11 @@
   gap: 0.5rem;
   margin-top: 0.35rem;
   flex-wrap: wrap;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:hover .product-card__price {
+  transform: translateY(-1px);
 }
 
 .product-card__price-current {
@@ -642,6 +664,13 @@
   .product-card,
   .product-card__image,
   .product-card__quick-add,
+  .product-card__quick-add--animated,
+  .product-card__quick-view,
+  .product-card__vendor,
+  .product-card__title,
+  .product-card__price,
+  .product-card__top-row,
+  .product-card__overlay-info,
   .featured-products__view-all,
   .featured-products__carousel-btn {
     transition: none !important;
@@ -649,14 +678,29 @@
   .product-card__image,
   .product-card:hover,
   .product-card:hover .product-card__image,
+  .product-card:hover .product-card__title,
+  .product-card:hover .product-card__price,
+  .product-card:hover .product-card__top-row,
+  .product-card:hover .product-card__overlay-info,
   .featured-products__view-all:hover {
     transform: none !important;
   }
   .product-card:hover .product-card__quick-add {
     transform: translateX(-50%) translateY(0);
   }
+  /* Keep the CTA and Quick View reachable without relying on animated reveal */
+  .product-card__quick-add--animated {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
   .featured-products__grid--carousel {
     scroll-behavior: auto !important;
+  }
+  .product-card__quick-view {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
   }
   .featured-products__notification {
     animation: none;
@@ -670,6 +714,7 @@
 }
 
 .product-card__quick-add:focus-visible,
+.product-card__quick-add--animated:focus-visible,
 .featured-products__view-all:focus-visible,
 .featured-products__carousel-btn:focus-visible {
   outline: 2px solid var(--fp-text-color, var(--color-foreground, #1a1a1a));
@@ -688,6 +733,7 @@
     border: 1px solid #ddd;
   }
   .product-card__quick-add,
+  .product-card__quick-add--animated,
   .featured-products__view-all,
   .featured-products__carousel-nav {
     display: none !important;
@@ -751,10 +797,85 @@
   cursor: pointer;
   color: var(--color-foreground, #1a1a1a);
   -webkit-tap-highlight-color: transparent;
+  /* Position (--qv-y, --qv-x) and scale (--qv-scale) default to "no
+     effect" here so the same rule works whether or not the scroll-gallery
+     enhancements below ever touch them. transform and transition are
+     declared ONCE, here, and nowhere else — a second rule re-declaring
+     `transition` (even for a different property) would silently discard
+     this whole list, since `transition` is a shorthand and doesn't merge
+     across rules. Scroll-scoped rules further down only ever change the
+     custom property *values*, never transform/transition themselves. */
+  --qv-x: 0px;
+  --qv-y: 0px;
+  --qv-scale: 1;
+  transform: translateX(var(--qv-x)) translateY(var(--qv-y)) scale(var(--qv-scale));
+  transform-origin: left top;
+  /* Hidden by default — revealed when the card is hovered or focused.
+     Unscoped (no .featured-products__grid--scroll prefix), same as the
+     Add to Cart button, so it doesn't depend on a specific ancestor class
+     being present. */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease,
+              visibility 0s linear 0.35s,
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:hover .product-card__quick-view,
+.product-card:focus-within .product-card__quick-view {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease,
+              visibility 0s linear 0s,
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Touch devices can't hover — keep it reachable without one */
+@media (hover: none) {
+  .product-card__quick-view {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .quick-view-modal__loading[hidden] {
   display: none;
+}
+
+/* Scroll gallery: Quick View also eases down slightly as the card is
+   hovered, on top of the show/hide above. Only sets --qv-y/--qv-x/
+   --qv-scale here — never transform or transition directly (see the note
+   on the base rule above for why). */
+.featured-products__grid--scroll .product-card:hover .product-card__quick-view,
+.featured-products__grid--scroll .product-card:focus-within .product-card__quick-view {
+  --qv-y: 10px;
+}
+
+/* Touching Quick View directly grows it and nudges it clearly to the
+   right for breathing room (class toggled in JS, which also figures out
+   which side of the card it's on). */
+.featured-products__grid--scroll .product-card__quick-view.fp-quick-view-active {
+  --qv-scale: 1.22;
+  --qv-x: 20px;
+  z-index: 6;
+}
+
+/* Hovering/touching Add to Cart hides Quick View entirely (class toggled
+   in JS) rather than just shifting it — !important is needed here since
+   it must win over the plain card-hover reveal rule further up, which
+   sets opacity/visibility without !important. */
+.featured-products__grid--scroll .product-card__quick-view.fp-quick-view-avoid {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Hovering/touching Quick View hides Add to Cart entirely — the reverse
+   pairing (class toggled in JS on the button itself, mirroring how
+   fp-quick-view-avoid is applied above). Replaces the earlier "shift ATC
+   sideways" approach: if it's hidden, shifting its position is moot. */
+.featured-products__grid--scroll .product-card__quick-add--animated.fp-atc-avoid {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /* ========== Scroll gallery ========== */
@@ -996,6 +1117,47 @@
 /* Soft hover on image */
 .featured-products__grid--scroll .product-card:hover .product-card__image {
   transform: scale(1.02);
+  filter: saturate(1.06) brightness(1.02);
+}
+
+/* Card shadow deepens slightly as it lifts (translateY comes from the
+   general .product-card:hover rule above, which already applies here) */
+.featured-products__grid--scroll .product-card:hover {
+  box-shadow: 0 32px 56px -18px rgba(0, 0, 0, 0.34);
+}
+
+/* Name/price overlay lifts slightly as the CTA fades in at top center
+   (still tied to card hover — this part doesn't need a direct hover). */
+.featured-products__grid--scroll .product-card__overlay-info {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.featured-products__grid--scroll .product-card:hover .product-card__overlay-info {
+  transform: translateY(-4px);
+}
+
+/* Title and price only move when touched — mouseenter (handled in JS)
+   toggles the .fp-slide-right class once, so the element travels to the
+   right end and stays put regardless of further cursor movement. Touching
+   it again slides it back to the left. Using a toggled class instead of
+   :hover avoids the jitter that happens when the element moves out from
+   under the cursor mid-hover. */
+.featured-products__grid--scroll .product-card__overlay-title,
+.featured-products__grid--scroll .product-card__overlay-price {
+  position: relative;
+  width: fit-content;
+  left: 0;
+  transform: translateX(0);
+  transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.featured-products__grid--scroll .product-card__overlay-title.fp-slide-right,
+.featured-products__grid--scroll .product-card__overlay-price.fp-slide-right {
+  left: 100%;
+  transform: translateX(-100%);
 }
 
 /* ========== Mobile ==========
@@ -1107,175 +1269,189 @@
   }
 }
 
-/* ========== Animated Add to cart button ========== */
+/* ========== Animated Add to cart button ==========
+   Position (--atc-y) and scale (--atc-scale) are separate custom
+   properties, composed into ONE transform declared only on the base rule
+   below. This avoids the exact bug we hit on Quick View: if two rules of
+   different specificity each declare their own `transform`/`transition`,
+   the more specific one silently wins outright and the other's motion
+   disappears. Setting only the *variables* elsewhere sidesteps that. */
 .product-card__quick-add--animated {
   position: absolute;                    /* fixed: always at bottom of image */
   left: 14px;
   bottom: 12px;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
+  gap: 0.5rem;
   width: auto;
-  min-height: 2.5rem;
-  /* Reserve left room for incoming left arrow; right room for right arrow.
-     Vertical padding stays 0.35rem. */
-  padding: 0.35rem 2.75rem 0.35rem 2.5rem;
+  min-height: 2.35rem;
+  padding: 0.55rem 2.2rem 0.55rem 1.2rem;
   margin: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent !important;
+  border: 1px solid color-mix(in srgb, var(--fp-text-color, #434343) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fp-card-bg, #fff) 88%, transparent) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: var(--fp-text-color, #434343);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: none !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
   z-index: 3;
+  --atc-y: 10px;
+  --atc-scale: 0.95;
+  transform: translateY(var(--atc-y)) scale(var(--atc-scale));
+  /* Hidden by default — revealed with a soft rise + fade when the card is
+     hovered or focused, so it stays out of the way until invited in. */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease,
+              visibility 0s linear 0.5s;
+}
+
+.product-card:hover .product-card__quick-add--animated,
+.product-card:focus-within .product-card__quick-add--animated,
+.product-card__quick-add--animated:focus-visible {
+  --atc-y: 0px;
+  --atc-scale: 1;
   opacity: 1;
   visibility: visible;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease,
+              visibility 0s linear 0s;
 }
 
-/* Default hover styles (grid / carousel) */
+/* Touch devices can't hover — keep the CTA reachable without one */
+@media (hover: none) {
+  .product-card__quick-add--animated {
+    --atc-y: 0px;
+    --atc-scale: 1;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Zooming in on hover/focus. !important on --atc-scale is required: the
+   "reveal" rule above (.product-card:hover ... ) is MORE specific than
+   this rule and also sets --atc-scale (to 1), so without !important it
+   silently wins and the zoom never shows — same trap as before, just on
+   a custom property's value instead of the whole transform.
+   Grows more than Quick View's 1.22, since this one sits centered with
+   open room on both sides rather than anchored near a card edge.
+   No color inversion — the pill stays light and just becomes fully
+   opaque with a warmer border and a deeper lift, so nothing "flashes
+   black". */
 .product-card__quick-add--animated:hover,
 .product-card__quick-add--animated:focus-visible {
-  background: rgba(0, 0, 0, 0.5) !important;
-  color: #ffffff !important;
-  border-radius: 2px;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  --atc-scale: 1.68 !important;
+  background: var(--fp-text-color, #ffffff) !important;
+  color: var(--fp-bg, #1a1a1a) !important;
+  border-color: var(--fp-text-color, #1a1a1a);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16) !important;
   opacity: 1;
 }
 
+/* Underline sweep — switched off in favor of the pill fill above.
+   Kept in the DOM (harmless) rather than requiring a markup change. */
 .fp-atc__underline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  pointer-events: none;
-}
-
-.fp-atc__u-right,
-.fp-atc__u-left {
-  position: absolute;
-  inset: 0;
-  background: currentColor;
-  transform-origin: right center;
-  transform: scaleX(1);
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.fp-atc__u-left {
-  transform-origin: left center;
-  transform: scaleX(0);
-  transition-duration: 0.5s;
-}
-
-.product-card__quick-add--animated:hover .fp-atc__u-right,
-.product-card__quick-add--animated:focus-visible .fp-atc__u-right {
-  transform: scaleX(0);
-  transition-duration: 0.2s;
-}
-
-.product-card__quick-add--animated:hover .fp-atc__u-left,
-.product-card__quick-add--animated:focus-visible .fp-atc__u-left {
-  transform: scaleX(1);
-  transition-duration: 0.32s;
-  transition-delay: 0.08s;
+  display: none;
 }
 
 .fp-atc__word {
   position: relative;
   display: inline-flex;
-  will-change: transform;
-  padding-right: 2px;
+  padding-right: 0;
 }
 
+/* Per-letter jitter — switched off; the fill + arrow nudge now carry the
+   whole hover motion on their own. */
 .fp-atc__char {
   display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(var(--i, 0) * 30ms);
 }
 
 .product-card__quick-add--animated:hover .fp-atc__char,
 .product-card__quick-add--animated:focus-visible .fp-atc__char {
-  transform: translateX(var(--fp-atc-shift, 10px));
+  transform: none;
 }
 
+/* Single arrow that nudges gently right, rather than two icons swapping
+   places. The left-facing icon is part of the existing markup; hiding it
+   keeps the motion to one simple, unmistakable gesture. */
 .fp-atc__arrow {
   position: absolute;
   top: 50%;
-  right: 0;
-  width: 2.5rem;
-  height: 2.5rem;
+  right: 0.6rem;
+  width: 1.1rem;
+  height: 1.1rem;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   transform: translateY(-50%);
   pointer-events: none;
 }
 
 .fp-atc__arrow--left {
-  right: auto;
-  left: 0;
-  justify-content: flex-start;
-}
-
-.fp-atc__arrow--left svg {
-  opacity: 0;
-  transform: translateX(-28px);
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
+  display: none;
 }
 
 .fp-atc__arrow--right svg {
   opacity: 1;
   transform: translateX(0);
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .product-card__quick-add--animated:hover .fp-atc__arrow--right svg,
 .product-card__quick-add--animated:focus-visible .fp-atc__arrow--right svg {
-  opacity: 0;
-  transform: translateX(28px);
+  transform: translateX(3px);
 }
 
-.product-card__quick-add--animated:hover .fp-atc__arrow--left svg,
-.product-card__quick-add--animated:focus-visible .fp-atc__arrow--left svg {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* ===== SCROLL LAYOUT: keep ATC static (no upward movement) ===== */
+/* ===== SCROLL LAYOUT: hidden until hover, appears top-center ===== */
 .featured-products__grid--scroll .product-card__quick-add--animated {
   position: absolute;
-  left: 14px;
-  bottom: 52px;               /* sits just above the name/price overlay */
+  left: 50%;
+  top: 16px;
+  bottom: auto;
   margin-top: 0;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 3;
+  transform: translateX(-50%) scale(var(--atc-scale)) !important; /* centered at top; only ever scales, never shifts */
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s,
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.featured-products__grid--scroll .product-card:hover .product-card__quick-add--animated,
+.featured-products__grid--scroll .product-card:focus-within .product-card__quick-add--animated {
   opacity: 1;
   visibility: visible;
-  z-index: 3;
-  transform: none !important; /* never moves */
+  transition: opacity 0.4s ease, visibility 0s linear 0s,
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .featured-products__grid--scroll .product-card__quick-add--animated:hover,
 .featured-products__grid--scroll .product-card__quick-add--animated:focus-visible {
-  transform: none !important; /* force static */
-  background: rgba(0, 0, 0, 0.55) !important;
-  color: #ffffff !important;
+  transform: translateX(-50%) scale(var(--atc-scale)) !important; /* stays centered, only scales */
+  background: var(--fp-card-bg, #ffffff) !important;
+  color: var(--fp-text-color, #1a1a1a) !important;
+  border-color: color-mix(in srgb, var(--fp-text-color, #434343) 35%, transparent);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18) !important;
 }
 
-/* Disable the letter-shift and arrow animations that cause movement */
-.featured-products__grid--scroll .product-card__quick-add--animated:hover .fp-atc__char,
-.featured-products__grid--scroll .product-card__quick-add--animated:focus-visible .fp-atc__char {
-  transform: none !important;
-}
-
-.featured-products__grid--scroll .product-card__quick-add--animated:hover .fp-atc__arrow--right svg,
-.featured-products__grid--scroll .product-card__quick-add--animated:focus-visible .fp-atc__arrow--right svg,
-.featured-products__grid--scroll .product-card__quick-add--animated:hover .fp-atc__arrow--left svg,
-.featured-products__grid--scroll .product-card__quick-add--animated:focus-visible .fp-atc__arrow--left svg {
-  transform: none !important;
-  opacity: 1;
+@media (hover: none) {
+  .featured-products__grid--scroll .product-card__quick-add--animated {
+    opacity: 1;
+    visibility: visible;
+  }
 }

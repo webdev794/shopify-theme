@@ -6,7 +6,7 @@
 
 {{ 'social-media-gallery.css' | asset_url | stylesheet_tag }}
 
-<div class="social-media-gallery" data-section-id="{{ section.id }}" data-section-type="social-media-gallery" role="region" aria-label="{{ section.settings.aria_label | escape }}">
+<div class="social-media-gallery" data-section-id="{{ section.id }}" data-section-type="social-media-gallery" role="region" aria-label="{{ section.settings.aria_label | escape }}" style="{% if section.settings.background_color != blank %}background-color: {{ section.settings.background_color }};{% endif %}">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <div class="social-media-gallery__header">
@@ -160,6 +160,12 @@
       "default": "Join our community and stay updated"
     },
     { "type": "header", "content": "t:sections.social_gallery.settings.header__1.content" },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
     {
       "type": "checkbox",
       "id": "show_follow_button",

@@ -42,6 +42,7 @@
   data-complete-the-look
   role="region"
   aria-label="{{ section.settings.aria_label | escape }}"
+  style="background-color: {{ section.settings.background_color | default: '#FBF6F0' }};"
 >
   <div class="page-width">
     {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
@@ -274,6 +275,12 @@
       ],
       "default": "full_bleed",
       "info": "Full-bleed extends the kit image to the edge of the browser on desktop for a more immersive, editorial feel."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FBF6F0"
     },
     {
       "type": "image_picker",

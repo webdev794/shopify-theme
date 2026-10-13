@@ -1,0 +1,324 @@
+{%- comment -%}
+  Sticky Pinned Story (Scroll Reveal)
+  A two-column scrollytelling section: a sticky image pane on one side that
+  crossfades between each step's image as the visitor scrolls past the
+  matching step text on the other side. On mobile the sticky pane is
+  replaced with a small inline image above each step (no sticky behaviour
+  needed at narrow widths).
+
+  Split across three files - editing the CSS or JS on its own will NOT break
+  this section, as long as all three keep the same file name:
+    - assets/sticky-pinned-story.css
+    - assets/sticky-pinned-story.js
+    - sections/sticky-pinned-story.liquid  (this file)
+{%- endcomment -%}
+
+{%- liquid
+  assign ssr_padding_top = section.settings.padding_top
+  assign ssr_padding_bottom = section.settings.padding_bottom
+  assign step_blocks = section.blocks | where: 'type', 'step'
+
+  assign ssr_reverse_class = ''
+  if section.settings.reverse_layout
+    assign ssr_reverse_class = ' ssr--reverse'
+  endif
+
+  assign ssr_label_color = section.settings.accent_color
+  assign ssr_contrast_ratio = section.settings.accent_color | color_contrast: section.settings.background_color
+  if ssr_contrast_ratio < 4.5
+    assign ssr_label_color = section.settings.accent_color | color_darken: 25
+  endif
+-%}
+
+{{ 'sticky-pinned-story.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="ssr-padding"
+  style="
+    --ssr-padding-top: {{ ssr_padding_top }}px;
+    --ssr-padding-bottom: {{ ssr_padding_bottom }}px;
+    --ssr-bg: {{ section.settings.background_color }};
+  "
+>
+  <div
+    class="ssr{{ ssr_reverse_class }}"
+    data-ssr
+    style="
+      --ssr-text: {{ section.settings.text_color }};
+      --ssr-heading-size: {{ section.settings.heading_font_size }}px;
+      --ssr-paragraph-size: {{ section.settings.paragraph_font_size }}px;
+      --ssr-accent: {{ section.settings.accent_color }};
+      --ssr-label-color: {{ ssr_label_color }};
+      --ssr-btn-bg: {{ section.settings.button_background_color }};
+      --ssr-btn-text: {{ section.settings.button_text_color }};
+    "
+  >
+    {%- if section.settings.eyebrow_text != blank or section.settings.heading != blank or section.settings.paragraph != blank -%}
+      <div class="ssr__intro">
+        {%- if section.settings.eyebrow_text != blank -%}
+          <p class="ssr__eyebrow">{{ section.settings.eyebrow_text | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ssr__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.paragraph != blank -%}
+          <div class="ssr__paragraph">{{ section.settings.paragraph }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if step_blocks.size > 0 -%}
+    <div class="ssr__layout">
+      <div class="ssr__sticky">
+        <div class="ssr__sticky-inner">
+          {%- for block in step_blocks -%}
+            <div class="ssr__image{% if forloop.first %} is-active{% endif %}" data-ssr-image="{{ forloop.index0 }}">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(max-width: 989px) 0px, 40vw', loading: 'lazy', alt: block.settings.image.alt }}
+              {%- endif -%}
+              <span class="ssr__image-number">{{ forloop.index | prepend: '0' | slice: -2, 2 }} / {{ step_blocks.size | prepend: '0' | slice: -2, 2 }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if step_blocks.size > 1 -%}
+          <nav class="ssr__rail" aria-label="Jump to a step">
+            {%- for block in step_blocks -%}
+              {%- liquid
+                assign rail_label = 'Go to step ' | append: forloop.index
+                if block.settings.heading != blank
+                  assign rail_label = rail_label | append: ': ' | append: block.settings.heading
+                endif
+              -%}
+              <button type="button" class="ssr__rail-node{% if forloop.first %} is-active{% endif %}" data-ssr-rail-node="{{ forloop.index0 }}" aria-label="{{ rail_label | escape }}"></button>
+              {%- unless forloop.last -%}
+                <span class="ssr__rail-track" aria-hidden="true"><span class="ssr__rail-fill" data-ssr-rail-fill="{{ forloop.index0 }}"></span></span>
+              {%- endunless -%}
+            {%- endfor -%}
+          </nav>
+        {%- endif -%}
+      </div>
+
+      <div class="ssr__steps">
+        {%- for block in step_blocks -%}
+          <div class="ssr__step{% if forloop.first %} is-active{% endif %}" data-ssr-step="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="ssr__step-image--mobile">
+                {{ block.settings.image | image_url: width: 800 | image_tag: widths: '400, 600, 800', sizes: '90vw', loading: 'lazy', alt: block.settings.image.alt }}
+              </div>
+            {%- endif -%}
+            <div class="ssr__step-body">
+              <div class="ssr__step-top">
+                <span class="ssr__step-ghost-number" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                <p class="ssr__step-label">
+                  {%- if block.settings.label != blank -%}
+                    {{ block.settings.label | escape }}
+                  {%- else -%}
+                    Step 0{{ forloop.index }}
+                  {%- endif -%}
+                </p>
+              </div>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="ssr__step-heading">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <div class="ssr__step-desc">{{ block.settings.description }}</div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- elsif request.design_mode -%}
+      <div class="ssr__empty-state">
+        <p>Add a "Step" block to get started.</p>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="ssr__cta-wrap">
+        {%- if section.settings.button_link != blank -%}
+          <a href="{{ section.settings.button_link }}" class="ssr__cta">
+            {{ section.settings.button_label | escape }}
+            <span class="ssr__cta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+        {%- else -%}
+          <a role="link" aria-disabled="true" class="ssr__cta">
+            {{ section.settings.button_label | escape }}
+            <span class="ssr__cta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script src="{{ 'sticky-pinned-story.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Sticky Pinned Story",
+  "tag": "section",
+  "class": "section-sticky-story",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "Reverse layout on desktop",
+      "default": false,
+      "info": "Moves the sticky image to the right and steps to the left."
+    },
+    { "type": "header", "content": "Intro content (optional)" },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow label",
+      "default": "Your Daily Ritual"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A routine that actually works"
+    },
+    {
+      "type": "richtext",
+      "id": "paragraph",
+      "label": "Paragraph",
+      "default": "<p>Follow along as we walk through each step of the ritual.</p>"
+    },
+    { "type": "header", "content": "Final call to action" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop the Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    { "type": "header", "content": "Colors" },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#E94E9E",
+      "info": "Used for step labels, the active border, and the progress rail."
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    { "type": "header", "content": "Text size" },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Intro heading (max size)",
+      "min": 28,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "paragraph_font_size",
+      "label": "Intro paragraph (max size)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    { "type": "header", "content": "Section padding" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Step label",
+          "info": "Leave blank to auto-number as \"Step 01\", \"Step 02\", etc."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Cleanse"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Start with a gentle cleanser to remove impurities without stripping the skin.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticky Pinned Story",
+      "blocks": [
+        { "type": "step", "settings": { "heading": "Cleanse", "description": "<p>Start with a gentle cleanser to remove impurities without stripping the skin.</p>" } },
+        { "type": "step", "settings": { "heading": "Treat", "description": "<p>Apply the serum to target fine lines and restore radiance.</p>" } },
+        { "type": "step", "settings": { "heading": "Moisturize", "description": "<p>Lock everything in with a rich, hydrating cream.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

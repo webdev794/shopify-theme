@@ -145,6 +145,53 @@
   opacity: 0.9;
 }
 
+/* ---- Hover text-color wipe — the text itself changes color, sweeping
+   left to right, rather than a background fill behind it. Technique:
+   a hard-stop two-color gradient twice the element's width, clipped to
+   the text glyphs; sliding its position left reveals more of the "wiped"
+   color from the left edge outward. ---- */
+.iwt-carousel__caption,
+.iwt-carousel__heading,
+.iwt-carousel__text {
+  background-image: linear-gradient(
+    90deg,
+    #ff5f96 0%,
+    #ff5f96 50%,
+    var(--iwt-foreground, #1a1a1a) 50%,
+    var(--iwt-foreground, #1a1a1a) 100%
+  );
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* A quick, decaying shake — plays once per hover, timed to roughly
+   coincide with the color sweep finishing. animation (not transition)
+   since it needs multiple keyframes, and it runs independently of the
+   background-position transition above — different properties, so both
+   play at once without conflict. */
+@keyframes iwt-text-vibrate {
+  0% { transform: translateX(0); }
+  15% { transform: translateX(-3px); }
+  30% { transform: translateX(3px); }
+  45% { transform: translateX(-2px); }
+  60% { transform: translateX(2px); }
+  75% { transform: translateX(-1px); }
+  90% { transform: translateX(1px); }
+  100% { transform: translateX(0); }
+}
+
+.iwt-carousel__caption:hover,
+.iwt-carousel__heading:hover,
+.iwt-carousel__text:hover {
+  background-position: 0% 0;
+  animation: iwt-text-vibrate 0.45s ease-in-out;
+}
+
 .iwt-carousel__text > p {
   margin: 0 0 0.5em;
 }
@@ -371,12 +418,21 @@
   .iwt-carousel__button,
   .iwt-carousel__arrow,
   .iwt-carousel__playback,
-  .iwt-carousel__dot::after {
+  .iwt-carousel__dot::after,
+  .iwt-carousel__caption,
+  .iwt-carousel__heading,
+  .iwt-carousel__text {
     transition: none;
   }
 
   .iwt-carousel__slide:hover .iwt-carousel__image {
     transform: none;
+  }
+
+  .iwt-carousel__caption:hover,
+  .iwt-carousel__heading:hover,
+  .iwt-carousel__text:hover {
+    animation: none;
   }
 }
 

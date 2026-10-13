@@ -105,9 +105,9 @@
    ============================================ */
 
 .blog-posts__post {
+  position: relative;
   background: var(--color-background, #ffffff);
   border-radius: 2px;
-  overflow: hidden;
   transform: translate3d(0, 0, 0) rotate(0deg);
   transform-origin: 50% 100%;
   transition:
@@ -138,6 +138,70 @@
   }
   .blog-posts__post:hover {
     transform: none;
+  }
+}
+
+/* Crown — sits above the card's top edge, hidden until hover, then
+   descends slowly into place from above rather than popping in. Card
+   no longer clips overflow (see .blog-posts__post above) specifically
+   so this can extend past the top edge instead of being cut off.
+   Fill is a gold gradient baked into the SVG itself (see the Liquid
+   markup); the glow/shimmer here is layered on top of that. */
+.blog-posts__crown {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  width: 40px;
+  height: 28px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18))
+          drop-shadow(0 0 0 rgba(255, 215, 120, 0));
+  transform: translate(-50%, -70px);
+  opacity: 0;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.7s ease;
+  pointer-events: none;
+  z-index: 4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .blog-posts__post:hover .blog-posts__crown {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    /* Shimmer starts once it's settled into place, not during the
+       descent itself — the transition above handles the arrival, this
+       animation takes over the glow afterward and loops gently. */
+    animation: blogCrownShimmer 2.4s ease-in-out 0.9s infinite;
+  }
+}
+
+@keyframes blogCrownShimmer {
+  0%, 100% {
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18))
+            drop-shadow(0 0 4px rgba(255, 215, 120, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18))
+            drop-shadow(0 0 12px rgba(255, 225, 150, 0.9));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-posts__crown {
+    transition: opacity 0.3s ease;
+  }
+  .blog-posts__post:hover .blog-posts__crown {
+    transform: translate(-50%, 0);
+    animation: none;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18))
+            drop-shadow(0 0 8px rgba(255, 220, 140, 0.7));
+  }
+}
+
+/* No hover on touch — purely decorative, so just leave it hidden
+   rather than showing a control that can never actually respond */
+@media (hover: none) {
+  .blog-posts__crown {
+    display: none;
   }
 }
 
@@ -317,8 +381,11 @@
   background-size: 100% 1px;
 }
 
-/* Byline — plain-text "By Author · Date", no icons. A single quiet
-   line of secondary type sits between the headline and the excerpt. */
+/* Byline — plain-text "By Author · Date", no icons. Hidden until the
+   card is hovered or focused, then rises in — keeps the card quieter
+   at rest and gives the author/date a small reveal moment like Read
+   More gets. Opacity-only (space stays reserved) so nothing below it
+   (the excerpt) shifts position when it appears. */
 .blog-posts__byline {
   display: flex;
   flex-wrap: wrap;
@@ -327,6 +394,29 @@
   font-size: 0.8rem;
   color: var(--color-foreground-secondary, #6b7280);
   margin: 0 0 0.85rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blog-posts__post:hover .blog-posts__byline,
+.blog-posts__post:focus-within .blog-posts__byline {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (hover: none) {
+  .blog-posts__byline {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-posts__byline {
+    transition: opacity 0.3s ease;
+  }
 }
 
 .blog-posts__author + .blog-posts__date::before {
@@ -342,7 +432,10 @@
   margin-bottom: 1rem;
 }
 
-/* Read More */
+/* Read More — hidden until the card is hovered or focused, then rises
+   in with a soft background pill (rather than being visible the whole
+   time). Direct hover on the link itself fills it solid, matching the
+   "fill" treatment used elsewhere across the theme's buttons. */
 .blog-posts__read-more {
   display: inline-flex;
   align-items: center;
@@ -353,7 +446,43 @@
   letter-spacing: 0.08em;
   color: var(--color-accent-background, #1a1a2e);
   text-decoration: none;
-  transition: opacity 0.3s ease;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background-color: transparent;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.3s ease,
+              color 0.3s ease;
+}
+
+.blog-posts__post:hover .blog-posts__read-more,
+.blog-posts__post:focus-within .blog-posts__read-more {
+  opacity: 1;
+  transform: translateY(0);
+  background-color: color-mix(in srgb, var(--color-accent-background, #1a1a2e) 10%, transparent);
+}
+
+.blog-posts__read-more:hover {
+  background-color: var(--color-accent-background, #1a1a2e);
+  color: var(--color-background, #ffffff);
+}
+
+/* No hover on touch — Read More is the actual link to the article, so
+   unlike the crown it needs to stay reachable, just without the reveal
+   animation or background pill there's no hover to trigger it with. */
+@media (hover: none) {
+  .blog-posts__read-more {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-posts__read-more {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 }
 
 .blog-posts__read-icon {
@@ -364,10 +493,6 @@
 
 .blog-posts__read-more:hover .blog-posts__read-icon {
   transform: translateX(4px);
-}
-
-.blog-posts__read-more:hover {
-  opacity: 0.8;
 }
 
 /* ============================================

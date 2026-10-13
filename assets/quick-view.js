@@ -204,6 +204,19 @@
       '<input type="hidden" name="id" value="' +
       variant.id +
       '" data-quick-view-variant-id>' +
+      '<div class="quick-view-modal__quantity" role="group" aria-label="' +
+      ((window.themeStrings && window.themeStrings.quantity) || 'Quantity') +
+      '">' +
+      '<button type="button" class="quick-view-modal__qty-btn" data-quick-view-qty-minus aria-label="' +
+      ((window.themeStrings && window.themeStrings.decreaseQuantity) || 'Decrease quantity') +
+      '">&minus;</button>' +
+      '<input type="number" class="quick-view-modal__qty-input" data-quick-view-qty-input value="1" min="1" step="1" inputmode="numeric" aria-label="' +
+      ((window.themeStrings && window.themeStrings.quantity) || 'Quantity') +
+      '">' +
+      '<button type="button" class="quick-view-modal__qty-btn" data-quick-view-qty-plus aria-label="' +
+      ((window.themeStrings && window.themeStrings.increaseQuantity) || 'Increase quantity') +
+      '">&plus;</button>' +
+      '</div>' +
       '<button type="submit" class="button button--primary" data-quick-view-submit' +
       (variant.available ? '' : ' disabled') +
       '>' +
@@ -211,6 +224,7 @@
         ? (window.themeStrings && window.themeStrings.addToCart) || 'Add to cart'
         : (window.themeStrings && window.themeStrings.soldOut) || 'Sold out') +
       '</button>' +
+      '<p class="quick-view-modal__submit-error" data-quick-view-submit-error hidden></p>' +
       '</form>' +
       '<a class="quick-view-modal__full-link" href="/products/' +
       product.handle +
@@ -345,12 +359,45 @@
           .forEach(function (t) {
             t.classList.toggle('is-active', t === thumb);
           });
+        return;
+      }
+
+      var qtyBtn = event.target.closest(
+        '[data-quick-view-qty-minus], [data-quick-view-qty-plus]'
+      );
+      if (qtyBtn) {
+        event.preventDefault();
+        var form = qtyBtn.closest('[data-quick-view-form]');
+        var qtyInput = form
+          ? form.querySelector('[data-quick-view-qty-input]')
+          : null;
+        if (!qtyInput) return;
+
+        var current = parseInt(qtyInput.value, 10);
+        if (!current || current < 1) current = 1;
+        var min = parseInt(qtyInput.min, 10) || 1;
+
+        if (qtyBtn.hasAttribute('data-quick-view-qty-minus')) {
+          current = Math.max(min, current - 1);
+        } else {
+          current = current + 1;
+        }
+
+        qtyInput.value = current;
       }
     },
     true
   );
 
   document.addEventListener('change', function (event) {
+    var qtyInput = event.target.closest('[data-quick-view-qty-input]');
+    if (qtyInput) {
+      var value = parseInt(qtyInput.value, 10);
+      var min = parseInt(qtyInput.min, 10) || 1;
+      qtyInput.value = !value || value < min ? min : value;
+      return;
+    }
+
     var select = event.target.closest('[data-option-index]');
     if (!select) return;
 
@@ -405,21 +452,66 @@
     var variantInput = form.querySelector('[data-quick-view-variant-id]');
     if (!variantInput) return;
 
+    var qtyInput = form.querySelector('[data-quick-view-qty-input]');
+    var quantity = qtyInput ? parseInt(qtyInput.value, 10) : 1;
+    if (!quantity || quantity < 1) quantity = 1;
+
+    var submitBtn = form.querySelector('[data-quick-view-submit]');
+    var errorEl = form.querySelector('[data-quick-view-submit-error]');
+    var originalText = submitBtn ? submitBtn.textContent : '';
+
+    if (errorEl) {
+      errorEl.hidden = true;
+      errorEl.textContent = '';
+    }
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent =
+        (window.themeStrings && window.themeStrings.adding) || 'Adding…';
+    }
+
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        items: [{ id: variantInput.value, quantity: 1 }],
+        items: [{ id: variantInput.value, quantity: quantity }],
       }),
     })
       .then(function (res) {
-        return res.json();
+        return res.json().then(function (data) {
+          // Shopify's cart/add.js returns a non-2xx status with a
+          // { description } error body on failure (sold out, invalid
+          // variant, etc.) — check res.ok explicitly rather than assuming
+          // any JSON body means success.
+          if (!res.ok) {
+            throw new Error(
+              data.description ||
+                (window.themeStrings && window.themeStrings.addToCartError) ||
+                'Could not add this item to your cart.'
+            );
+          }
+          return data;
+        });
       })
       .then(function () {
         document.dispatchEvent(new CustomEvent('cart:updated'));
         closeModal();
       })
-      .catch(function () {});
+      .catch(function (err) {
+        if (errorEl) {
+          errorEl.textContent =
+            err.message ||
+            (window.themeStrings && window.themeStrings.addToCartError) ||
+            'Could not add this item to your cart.';
+          errorEl.hidden = false;
+        }
+      })
+      .finally(function () {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      });
   });
 
   document.addEventListener('click', function (event) {

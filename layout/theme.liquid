@@ -167,9 +167,14 @@
         isolation: isolate;
       }
 
-      /* Only force relative when sticky is off */
-      .shopify-section-group-header-group:not(:has(.header--sticky)),
-      .shopify-section:has(> .header:not(.header--sticky)) {
+      /* Only force relative when sticky is off. Minimal mode is excluded —
+         header.css collapses .shopify-section-group-header-group to
+         position:absolute/height:0 in that mode, and without this
+         exclusion this rule's higher specificity ((0,3,0) vs header.css's
+         (0,2,0)) silently overrides that collapse, leaving a reserved
+         gray band above the hero. */
+      .shopify-section-group-header-group:not(:has(.header--sticky)):not(:has(.header--minimal)),
+      .shopify-section:has(> .header:not(.header--sticky)):not(:has(.header--minimal)) {
         position: relative !important;
       }
 

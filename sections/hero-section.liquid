@@ -1,0 +1,896 @@
+{%- comment -%}
+  Floating Product Hero — Slideshow version
+  Multiple slides, each with its own eyebrow/heading/paragraph/button/badge
+  and its own set of floating product images. Organic-blob background,
+  bold rounded heading, pill CTA button. Floating images have a magnetic
+  hover effect: they track the cursor with a snappy, responsive motion while
+  it's nearby, then spring back with a bouncy overshoot the moment the
+  cursor leaves - two different speeds for two different moments, which is
+  what makes a magnetic hover read as "premium" instead of laggy.
+  Desktop only (fine pointer), respects reduced motion.
+
+  CSS  -> assets/floating-product-hero.css
+  JS   -> assets/floating-product-hero.js
+  Dynamic (per-instance) settings are passed to the CSS via CSS custom
+  properties and to the JS via data-* attributes, so both files stay fully
+  static/shared while still respecting each section instance's settings.
+{%- endcomment -%}
+
+{%- liquid
+  assign fh_padding_top = section.settings.padding_top
+  assign fh_padding_bottom = section.settings.padding_bottom
+  assign fh_padding_top_mobile = fh_padding_top | times: 0.5 | round
+  assign fh_padding_bottom_mobile = fh_padding_bottom | times: 0.5 | round
+
+  assign bg_image = section.settings.background_image
+  assign bg_image_mobile = section.settings.background_image_mobile
+
+  assign slide_blocks = section.blocks | where: 'type', 'slide'
+  assign slide_count = slide_blocks.size
+
+  assign heading_color = section.settings.heading_color | default: section.settings.text_color
+-%}
+
+{{ 'floating-product-hero.css' | asset_url | stylesheet_tag }}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --fh-pad-t: {{ fh_padding_top }}px;
+    --fh-pad-b: {{ fh_padding_bottom }}px;
+    --fh-pad-t-m: {{ fh_padding_top_mobile }}px;
+    --fh-pad-b-m: {{ fh_padding_bottom_mobile }}px;
+    --fh-bg-color: {{ section.settings.background_color }};
+    --fh-text-color: {{ section.settings.text_color }};
+    --fh-bg-overlay-opacity: {{ section.settings.background_overlay_opacity | divided_by: 100.0 }};
+    --fh-overlay-color: {{ section.settings.overlay_color }};
+    --fh-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --fh-blob-light: {{ section.settings.blob_light_color }};
+    --fh-blob-accent: {{ section.settings.blob_accent_color }};
+    --fh-eyebrow-size: {{ section.settings.eyebrow_font_size }}px;
+    --fh-heading-size: {{ section.settings.heading_font_size }}px;
+    --fh-heading-color: {{ heading_color }};
+    --fh-heading-max-width: {{ section.settings.heading_max_width }}px;
+    --fh-paragraph-size: {{ section.settings.paragraph_font_size }}px;
+    --fh-btn-bg: {{ section.settings.button_background_color }};
+    --fh-btn-text: {{ section.settings.button_text_color }};
+    --fh-badge-text-color: {{ section.settings.badge_text_color }};
+    --fh-badge-size: {{ section.settings.badge_font_size }}px;
+    --fh-badge-top: {{ section.settings.badge_top_position }}%;
+    --fh-badge-left: {{ section.settings.badge_left_position }}%;
+    --fh-badge-rotate: {{ section.settings.badge_rotate }}deg;
+    --fh-corner-size: {{ section.settings.corner_badge_size }}px;
+    --fh-corner-bg: {{ section.settings.corner_badge_background }};
+  }
+</style>
+
+<div class="fh-padding">
+  <div
+    class="fh fh--{{ section.settings.height }}"
+    data-fh
+    data-section-id="{{ section.id }}"
+    data-transition="{{ section.settings.slide_transition | default: 'fade' }}"
+    data-autoplay="{{ section.settings.autoplay }}"
+    data-autoplay-speed="{{ section.settings.autoplay_speed | default: 5 }}"
+    data-parallax="{{ section.settings.enable_parallax }}"
+    data-magnetic="{{ section.settings.enable_magnetic_hover }}"
+    data-magnet-radius="{{ section.settings.magnet_radius | default: 220 }}"
+    data-magnet-strength="{{ section.settings.magnet_strength | default: 34 }}"
+  >
+  {%- if bg_image != blank -%}
+      <div class="fh__bg">
+        <picture>
+          {%- if bg_image_mobile != blank -%}
+            <source media="(max-width: 749px)" srcset="{{ bg_image_mobile | image_url: width: 750 }} 750w, {{ bg_image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+          {%- endif -%}
+          {{ bg_image | image_url: width: 2600 | image_tag: widths: '750, 1100, 1500, 2000, 2600', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: bg_image.alt }}
+        </picture>
+        <div class="fh__bg-scrim" aria-hidden="true"></div>
+      </div>
+    {%- else -%}
+      {%- if section.settings.show_blobs -%}
+        <div class="fh__blobs" aria-hidden="true">
+          <div class="fh__blob fh__blob--one"></div>
+          <div class="fh__blob fh__blob--two"></div>
+        </div>
+        <div class="fh__wave" aria-hidden="true">
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,160 C240,80 420,220 700,180 C980,140 1140,40 1440,120 L1440,320 L0,320 Z"></path>
+          </svg>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="fh__overlay" aria-hidden="true"></div>
+
+    <div class="fh__slides" data-fh-slides>
+      {%- for block in slide_blocks -%}
+        {%- liquid
+          assign slide_number = forloop.index
+          assign is_first = forloop.first
+        -%}
+        <div
+          class="fh__slide{% if is_first %} is-active-slide{% endif %}"
+          data-fh-slide
+          data-slide-index="{{ slide_number }}"
+          {% unless is_first %}aria-hidden="true"{% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          <div class="fh__content fh__content--{{ section.settings.content_alignment }}">
+            {%- if block.settings.eyebrow_text != blank -%}
+              <p class="fh__eyebrow">{{ block.settings.eyebrow_text | escape }}</p>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h1 class="fh__heading">{{- block.settings.heading -}}</h1>
+            {%- endif -%}
+            {%- if block.settings.paragraph != blank -%}
+              <div class="fh__paragraph">{{ block.settings.paragraph }}</div>
+            {%- endif -%}
+            {%- if block.settings.button_label != blank -%}
+              {%- if block.settings.button_link != blank -%}
+                <a href="{{ block.settings.button_link }}" class="fh__button">
+                  {{ block.settings.button_label | escape }}
+                  <span class="fh__button-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              {%- else -%}
+                <a role="link" aria-disabled="true" class="fh__button">
+                  {{ block.settings.button_label | escape }}
+                  <span class="fh__button-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+
+          {%- if block.settings.badge_text != blank -%}
+            <div class="fh__badge">{{ block.settings.badge_text }}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.corner_badge_image != blank -%}
+      <div class="fh__corner-badge">
+        <img src="{{ section.settings.corner_badge_image | image_url: width: 200 }}" width="200" height="200" alt="{{ section.settings.corner_badge_image.alt | escape }}" loading="lazy">
+      </div>
+    {%- endif -%}
+
+    <div class="fh__stage" data-fh-stage>
+      {%- for block in slide_blocks -%}
+        {%- assign slide_number = forloop.index -%}
+        {%- for n in (1..3) -%}
+          {%- liquid
+            assign img_key = 'floating_image_' | append: n
+            assign width_key = 'floating_width_' | append: n
+            assign top_key = 'floating_top_' | append: n
+            assign left_key = 'floating_left_' | append: n
+            assign rotate_key = 'floating_rotate_' | append: n
+            assign layer_key = 'floating_layer_' | append: n
+            assign delay_key = 'floating_delay_' | append: n
+            assign shadow_key = 'floating_shadow_' | append: n
+            assign tag_key = 'floating_tag_' | append: n
+
+            assign fh_image = block.settings[img_key]
+          -%}
+          {%- if fh_image != blank -%}
+            {%- liquid
+              assign fh_width = block.settings[width_key]
+              assign fh_top = block.settings[top_key]
+              assign fh_left = block.settings[left_key]
+              assign fh_rotate = block.settings[rotate_key]
+              assign fh_layer = block.settings[layer_key]
+              assign fh_delay = block.settings[delay_key]
+              assign fh_shadow = block.settings[shadow_key]
+              assign fh_tag = block.settings[tag_key]
+
+              assign z = 1
+              if fh_layer == 'front'
+                assign z = 3
+              endif
+              assign float_duration = 4.2 | plus: n | times: 0.35 | plus: 4.2
+              assign fh_item_width_mobile = fh_width | times: 0.6 | round
+            -%}
+            {%- capture fh_item_sizes -%}(max-width: 749px) {{ fh_item_width_mobile }}px, {{ fh_width }}px{%- endcapture -%}
+            <div
+              class="fh__item{% if slide_number == 1 %} is-current-slide{% endif %}"
+              data-fh-item
+              data-slide-index="{{ slide_number }}"
+              style="
+                top: {{ fh_top }}%;
+                left: {{ fh_left }}%;
+                --fh-w: {{ fh_width }}px;
+                --fh-z: {{ z }};
+                --fh-rot: {{ fh_rotate }}deg;
+                --fh-delay: {{ fh_delay }}s;
+                --fh-float-duration: {{ float_duration }}s;
+                --fh-shadow: {% if fh_shadow %}drop-shadow(0 18px 26px rgba(0,0,0,0.22)){% else %}none{% endif %};
+              "
+            >
+              <div class="fh__item-inner">
+                {{
+                  fh_image
+                  | image_url: width: 1200
+                  | image_tag: widths: '200, 300, 400, 600, 800, 1000, 1200', sizes: fh_item_sizes, loading: 'lazy', alt: fh_image.alt
+                }}
+                {%- if fh_tag != blank -%}
+                  <span class="fh__item-tag">{{ fh_tag | escape }}</span>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if slide_count > 1 -%}
+      {%- if section.settings.show_arrows -%}
+        <button type="button" class="fh__arrow fh__arrow--prev" data-fh-prev aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="fh__arrow fh__arrow--next" data-fh-next aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      {%- endif -%}
+      {%- if section.settings.show_dots -%}
+        <div class="fh__dots" data-fh-dots>
+          {%- for block in slide_blocks -%}
+            <button
+              type="button"
+              class="fh__dot{% if forloop.first %} is-active{% endif %}"
+              data-fh-dot
+              data-slide-index="{{ forloop.index }}"
+              aria-label="Go to slide {{ forloop.index }}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<script src="{{ 'floating-product-hero.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Floating Product Hero",
+  "tag": "section",
+  "class": "section-floating-hero",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Minimum height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_parallax",
+      "label": "Enable cursor parallax on the whole stage",
+      "default": true,
+      "info": "Desktop only; automatically disabled if the visitor prefers reduced motion."
+    },
+    { "type": "header", "content": "Repel hover" },
+    {
+      "type": "checkbox",
+      "id": "enable_magnetic_hover",
+      "label": "Enable repel hover on floating images",
+      "default": true,
+      "info": "Each image glides away from the cursor when it's nearby, then eases back. Desktop only."
+    },
+    {
+      "type": "range",
+      "id": "magnet_radius",
+      "label": "Repel radius",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 220
+    },
+    {
+      "type": "range",
+      "id": "magnet_strength",
+      "label": "Repel strength",
+      "min": 10,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    { "type": "header", "content": "Slideshow" },
+    {
+      "type": "select",
+      "id": "slide_transition",
+      "label": "Slide transition style",
+      "options": [
+        { "value": "fade", "label": "Fade (smooth crossfade)" },
+        { "value": "slide", "label": "Slide (horizontal carousel)" },
+        { "value": "zoom", "label": "Zoom (scale in/out)" }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dot navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrow navigation",
+      "default": true
+    },
+    { "type": "header", "content": "Background" },
+    {
+      "type": "checkbox",
+      "id": "show_blobs",
+      "label": "Show organic blob background",
+      "default": true,
+      "info": "Turned off automatically if a background image is set."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Base background color",
+      "default": "#F6C445"
+    },
+    {
+      "type": "color",
+      "id": "blob_light_color",
+      "label": "Blob color (light)",
+      "default": "#FBE29A"
+    },
+    {
+      "type": "color",
+      "id": "blob_accent_color",
+      "label": "Bottom wave color",
+      "default": "#F0A93B"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Optional. If set, this replaces the blob background entirely."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile background image"
+    },
+    {
+      "type": "range",
+      "id": "background_overlay_opacity",
+      "label": "Background image tint",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    { "type": "header", "content": "Overlay effect" },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000",
+      "info": "Sits above the background (blobs, image, or plain color), regardless of background type."
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    { "type": "header", "content": "Colors" },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading text color",
+      "info": "Leave blank to use the text color above."
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#E94E9E"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text / icon circle",
+      "default": "#ffffff"
+    },
+    { "type": "header", "content": "Text size" },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "label": "Eyebrow",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading",
+      "min": 28,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "heading_max_width",
+      "label": "Heading max width",
+      "min": 200,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "paragraph_font_size",
+      "label": "Paragraph",
+      "min": 12,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    { "type": "header", "content": "Badge style (applies to each slide's badge)" },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "label": "Badge font size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "badge_top_position",
+      "label": "Badge vertical position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "badge_left_position",
+      "label": "Badge horizontal position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 82
+    },
+    {
+      "type": "range",
+      "id": "badge_rotate",
+      "label": "Badge tilt",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "°",
+      "default": -4
+    },
+    { "type": "header", "content": "Corner icon badge" },
+    {
+      "type": "image_picker",
+      "id": "corner_badge_image",
+      "label": "Corner icon image",
+      "info": "Optional small circular badge in the bottom-right corner. Stays fixed across all slides."
+    },
+    {
+      "type": "color",
+      "id": "corner_badge_background",
+      "label": "Corner badge background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "corner_badge_size",
+      "label": "Corner badge size",
+      "min": 40,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    { "type": "header", "content": "Section padding" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow_text",
+          "label": "Eyebrow label",
+          "default": "Your Daily Ritual"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Glow into stories worth talking about"
+        },
+        {
+          "type": "richtext",
+          "id": "paragraph",
+          "label": "Paragraph",
+          "default": "<p>Skincare made for naturally radiant skin.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop the Collection"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        { "type": "header", "content": "Badge (optional)" },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "default": "Shipping to the USA & Canada"
+        },
+
+        { "type": "header", "content": "Floating image 1" },
+        {
+          "type": "image_picker",
+          "id": "floating_image_1",
+          "label": "Image",
+          "info": "Use a transparent PNG for the best floating effect. Leave blank to skip this image."
+        },
+        {
+          "type": "range",
+          "id": "floating_width_1",
+          "label": "Size",
+          "min": 60,
+          "max": 420,
+          "step": 10,
+          "unit": "px",
+          "default": 220
+        },
+        {
+          "type": "range",
+          "id": "floating_top_1",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 4,
+          "info": "0% is the top of the hero, 100% is the bottom."
+        },
+        {
+          "type": "range",
+          "id": "floating_left_1",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 13,
+          "info": "0% is the left edge, 100% is the right edge."
+        },
+        {
+          "type": "range",
+          "id": "floating_rotate_1",
+          "label": "Tilt",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "unit": "°",
+          "default": -30
+        },
+        {
+          "type": "select",
+          "id": "floating_layer_1",
+          "label": "Layer",
+          "options": [
+            { "value": "front", "label": "In front of text" },
+            { "value": "behind", "label": "Behind text" }
+          ],
+          "default": "behind"
+        },
+        {
+          "type": "range",
+          "id": "floating_delay_1",
+          "label": "Entrance delay",
+          "min": 0,
+          "max": 1.5,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0
+        },
+        {
+          "type": "checkbox",
+          "id": "floating_shadow_1",
+          "label": "Drop shadow",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "floating_tag_1",
+          "label": "Optional tag text",
+          "info": "e.g. \"Vitamin C Serum – $34\". Leave blank to hide the tag."
+        },
+
+        { "type": "header", "content": "Floating image 2" },
+        {
+          "type": "image_picker",
+          "id": "floating_image_2",
+          "label": "Image",
+          "info": "Use a transparent PNG for the best floating effect. Leave blank to skip this image."
+        },
+        {
+          "type": "range",
+          "id": "floating_width_2",
+          "label": "Size",
+          "min": 60,
+          "max": 420,
+          "step": 10,
+          "unit": "px",
+          "default": 420
+        },
+        {
+          "type": "range",
+          "id": "floating_top_2",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 42,
+          "info": "0% is the top of the hero, 100% is the bottom."
+        },
+        {
+          "type": "range",
+          "id": "floating_left_2",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 76,
+          "info": "0% is the left edge, 100% is the right edge."
+        },
+        {
+          "type": "range",
+          "id": "floating_rotate_2",
+          "label": "Tilt",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "unit": "°",
+          "default": -8
+        },
+        {
+          "type": "select",
+          "id": "floating_layer_2",
+          "label": "Layer",
+          "options": [
+            { "value": "front", "label": "In front of text" },
+            { "value": "behind", "label": "Behind text" }
+          ],
+          "default": "front"
+        },
+        {
+          "type": "range",
+          "id": "floating_delay_2",
+          "label": "Entrance delay",
+          "min": 0,
+          "max": 1.5,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.2
+        },
+        {
+          "type": "checkbox",
+          "id": "floating_shadow_2",
+          "label": "Drop shadow",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "floating_tag_2",
+          "label": "Optional tag text",
+          "info": "e.g. \"Vitamin C Serum – $34\". Leave blank to hide the tag."
+        },
+
+        { "type": "header", "content": "Floating image 3" },
+        {
+          "type": "image_picker",
+          "id": "floating_image_3",
+          "label": "Image",
+          "info": "Use a transparent PNG for the best floating effect. Leave blank to skip this image."
+        },
+        {
+          "type": "range",
+          "id": "floating_width_3",
+          "label": "Size",
+          "min": 60,
+          "max": 420,
+          "step": 10,
+          "unit": "px",
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "floating_top_3",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 94,
+          "info": "0% is the top of the hero, 100% is the bottom."
+        },
+        {
+          "type": "range",
+          "id": "floating_left_3",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 27,
+          "info": "0% is the left edge, 100% is the right edge."
+        },
+        {
+          "type": "range",
+          "id": "floating_rotate_3",
+          "label": "Tilt",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "unit": "°",
+          "default": -22
+        },
+        {
+          "type": "select",
+          "id": "floating_layer_3",
+          "label": "Layer",
+          "options": [
+            { "value": "front", "label": "In front of text" },
+            { "value": "behind", "label": "Behind text" }
+          ],
+          "default": "behind"
+        },
+        {
+          "type": "range",
+          "id": "floating_delay_3",
+          "label": "Entrance delay",
+          "min": 0,
+          "max": 1.5,
+          "step": 0.1,
+          "unit": "s",
+          "default": 0.3
+        },
+        {
+          "type": "checkbox",
+          "id": "floating_shadow_3",
+          "label": "Drop shadow",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "floating_tag_3",
+          "label": "Optional tag text",
+          "info": "e.g. \"Vitamin C Serum – $34\". Leave blank to hide the tag."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating Product Hero",
+      "blocks": [
+        { "type": "slide", "settings": {} },
+        {
+          "type": "slide",
+          "settings": {
+            "eyebrow_text": "New Arrival",
+            "heading": "Radiance that follows you everywhere",
+            "paragraph": "<p>Lightweight formulas, visible results.</p>",
+            "button_label": "Discover More",
+            "floating_top_1": 10, "floating_left_1": 78, "floating_rotate_1": 12, "floating_layer_1": "front", "floating_delay_1": 0,
+            "floating_top_2": 80, "floating_left_2": 20, "floating_rotate_2": -14, "floating_layer_2": "behind", "floating_delay_2": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

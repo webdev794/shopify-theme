@@ -19,6 +19,7 @@
 .quick-view-modal__overlay {
   position: fixed;
   inset: 0;
+  z-index: 0;
 }
 
 .quick-view-modal__dialog {
@@ -26,6 +27,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1;
   background: var(--color-background, #fff);
   border-radius: 0.5rem;
   width: min(90vw, 900px);
@@ -61,6 +63,14 @@
   justify-content: center;
   min-height: 300px;
   grid-column: 1 / -1;
+}
+
+/* This file previously relied on featured-products.css happening to also
+   be loaded on the page to hide the spinner — fragile, since the modal
+   can be triggered from anywhere, not just a featured-products section.
+   Declared here directly so this file is self-sufficient. */
+.quick-view-modal__loading[hidden] {
+  display: none;
 }
 
 .quick-view-modal__spinner {
@@ -163,6 +173,63 @@
   border-radius: var(--style-border-radius-inputs, 0.35rem);
 }
 
+.quick-view-modal__quantity {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: fit-content;
+  margin-bottom: 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
+  border-radius: var(--style-border-radius-inputs, 0.35rem);
+  overflow: hidden;
+}
+
+.quick-view-modal__qty-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-foreground, #1a1a1a);
+}
+
+.quick-view-modal__qty-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-foreground, #1a1a1a) 8%, transparent);
+}
+
+.quick-view-modal__qty-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.quick-view-modal__qty-input {
+  width: 2.75rem;
+  height: 2.25rem;
+  border: none;
+  border-left: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--color-foreground, #1a1a1a) 20%, transparent);
+  text-align: center;
+  font-size: 0.9rem;
+  -moz-appearance: textfield;
+}
+
+.quick-view-modal__qty-input::-webkit-outer-spin-button,
+.quick-view-modal__qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quick-view-modal__submit-error {
+  color: var(--color-error, #c62828);
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0;
+}
+
 .quick-view-modal__full-link {
   display: block;
   margin-top: 0.75rem;
@@ -199,23 +266,4 @@
 
 html.quick-view-open {
   overflow: hidden;
-}
-
-.quick-view-modal__full-link {
-  display: inline-block;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  text-decoration: underline;
-  color: inherit;
-}
-
-.quick-view-modal__dialog {
-  position: relative;
-  z-index: 1;
-}
-
-.quick-view-modal__close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
 }

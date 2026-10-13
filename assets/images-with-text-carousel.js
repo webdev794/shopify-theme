@@ -99,7 +99,20 @@
     });
 
     /* --- Autoplay --- */
-    if (!carousel.hasAttribute('data-autoplay') || reducedMotion.matches) return;
+    if (!carousel.hasAttribute('data-autoplay')) return;
+
+    // Reduced motion should stop slides from auto-advancing, but it must
+    // not stop the play/pause button from working at all. The previous
+    // version returned here whenever reducedMotion.matches was true —
+    // before the button's click listener below ever got attached — so the
+    // button rendered but silently did nothing when clicked. Reduced
+    // motion is folded into shouldPlay() instead now, so autoplay still
+    // never runs, but the button itself stays functional.
+    if (reducedMotion.matches) {
+      // Nothing for it to ever start/stop, so don't leave a button that
+      // looks interactive but can never actually do anything.
+      if (playback) playback.hidden = true;
+    }
 
     const speed = (Number(carousel.dataset.autoplaySpeed) || 6) * 1000;
     let timer = null;
@@ -127,13 +140,20 @@
     };
 
     const update = () => {
-      const shouldPlay = !pausedByUser && !hovered && !focused && visible;
-      if (shouldPlay && !timer) {
+      const timerShouldRun =
+        !pausedByUser && !hovered && !focused && visible && !reducedMotion.matches;
+      if (timerShouldRun && !timer) {
         timer = setInterval(() => goTo(currentIndex + 1), speed);
-      } else if (!shouldPlay) {
+      } else if (!timerShouldRun) {
         stop();
       }
-      setPlaybackState(!shouldPlay);
+      // Icon/label reflect only what the user actually chose — not hover
+      // or focus, which pause the timer too but shouldn't visually claim
+      // "paused" every time the cursor is sitting over the carousel
+      // (which it necessarily is while clicking this button). That
+      // mismatch was the actual bug: clicking never looked like it did
+      // anything, because hover was masking the click's effect.
+      setPlaybackState(pausedByUser);
     };
 
     if (playback) {
@@ -145,9 +165,17 @@
 
     carousel.addEventListener('pointerenter', () => { hovered = true; update(); });
     carousel.addEventListener('pointerleave', () => { hovered = false; update(); });
-    carousel.addEventListener('focusin', () => { focused = true; update(); });
-    carousel.addEventListener('focusout', (event) => {
-      if (!carousel.contains(event.relatedTarget)) {
+    // Scoped to the scroller (slide content), not the whole carousel —
+    // this was the actual bug: focus lands on the playback button itself
+    // after every click (normal browser behavior), and since moving the
+    // mouse away doesn't clear keyboard focus, `focused` stayed true
+    // forever after the first click, permanently blocking the timer
+    // regardless of pausedByUser. Scoping to the scroller means only
+    // focus landing inside a slide (e.g. tabbing to its link) pauses
+    // autoplay — focusing the controls doesn't.
+    scroller.addEventListener('focusin', () => { focused = true; update(); });
+    scroller.addEventListener('focusout', (event) => {
+      if (!scroller.contains(event.relatedTarget)) {
         focused = false;
         update();
       }

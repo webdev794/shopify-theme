@@ -1,0 +1,415 @@
+/* Floating Product Hero — styles
+   Dynamic per-instance values (colors, sizes, padding, etc.) come in as
+   CSS custom properties (--fh-*) set inline on #shopify-section-{{ id }}
+   by the section's .liquid file. Do not hardcode values here that should
+   stay editable from the theme editor — add a new --fh-* variable instead. */
+
+.fh-padding {
+  padding-top: var(--fh-pad-t, 0px);
+  padding-bottom: var(--fh-pad-b, 0px);
+  background: var(--fh-bg-color, transparent);
+}
+@media screen and (max-width: 749px) {
+  .fh-padding {
+    padding-top: var(--fh-pad-t-m, 0px);
+    padding-bottom: var(--fh-pad-b-m, 0px);
+  }
+}
+
+.fh {
+  position: relative;
+  overflow: hidden;
+  color: var(--fh-text-color, #1a1a1a);
+}
+.fh--small { min-height: 460px; }
+.fh--medium { min-height: 580px; }
+.fh--large { min-height: 680px; }
+.fh--full { min-height: 100vh; }
+
+.fh__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.fh__bg picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.fh__bg img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.fh__bg-scrim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: var(--fh-bg-overlay-opacity, 0);
+}
+
+/* ---------- General overlay ---------- */
+.fh__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--fh-overlay-color, transparent);
+  opacity: var(--fh-overlay-opacity, 0);
+}
+
+/* ---------- Organic blob background ---------- */
+.fh__blobs {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.fh__blob {
+  position: absolute;
+  background: var(--fh-blob-light, #FBE29A);
+  border-radius: 62% 38% 55% 45% / 48% 52% 48% 52%;
+}
+.fh__blob--one {
+  width: 68%;
+  height: 78%;
+  top: -12%;
+  left: 8%;
+  border-radius: 58% 42% 63% 37% / 45% 55% 45% 55%;
+}
+.fh__blob--two {
+  width: 46%;
+  height: 52%;
+  bottom: -14%;
+  right: -6%;
+  background: var(--fh-blob-light, #FBE29A);
+  border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+  opacity: 0.9;
+}
+.fh__wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 42%;
+  z-index: 0;
+}
+.fh__wave svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.fh__wave path {
+  fill: var(--fh-blob-accent, #F0A93B);
+}
+
+/* ---------- Slides wrapper ---------- */
+.fh__slides {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.fh__slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.55s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fh__slide.is-active-slide {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 3;
+}
+
+/* ---------- Content ---------- */
+.fh__content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  padding: clamp(20px, 4vw, 40px) clamp(20px, 6vw, 80px);
+  display: flex;
+  flex-direction: column;
+}
+.fh__content--center {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  align-items: center;
+}
+.fh__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  font-size: var(--fh-eyebrow-size, 14px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  translate: 0 16px;
+  transition: opacity 0.7s ease, translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fh__eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 2px;
+  background: currentColor;
+  display: block;
+}
+.fh__heading {
+  margin: 0 0 20px;
+  font-family: 'Poppins', 'Segoe UI Rounded', 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+  font-size: var(--fh-heading-size, 92px);
+  color: var(--fh-heading-color, currentColor);
+  max-width: var(--fh-heading-max-width, 700px);
+  opacity: 0;
+  translate: 0 20px;
+  transition: opacity 0.7s ease 0.12s, translate 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+}
+.fh__content--center .fh__heading { margin-left: auto; margin-right: auto; }
+.fh__paragraph {
+  margin: 0 0 28px;
+  font-size: var(--fh-paragraph-size, 17px);
+  line-height: 1.5;
+  max-width: 40ch;
+  opacity: 0;
+  translate: 0 20px;
+  transition: opacity 0.7s ease 0.24s, translate 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.24s;
+}
+.fh__content--center .fh__paragraph { max-width: 46ch; margin-left: auto; margin-right: auto; }
+
+.fh__button {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 8px 8px 26px;
+  background: var(--fh-btn-bg, #E94E9E);
+  color: var(--fh-btn-text, #ffffff);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  border-radius: 999px;
+  opacity: 0;
+  translate: 0 20px;
+  transition: opacity 0.7s ease 0.36s, translate 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.36s, background 0.25s ease;
+}
+.fh__button-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--fh-btn-text, #ffffff);
+  color: var(--fh-btn-bg, #E94E9E);
+  flex-shrink: 0;
+}
+.fh__button-arrow svg { width: 16px; height: 16px; }
+.fh__content--center .fh__button { align-self: center; }
+.fh__button:hover { filter: brightness(1.05); }
+
+/* entrance classes (added/removed by JS on view + on slide change) */
+.fh__eyebrow.is-in,
+.fh__heading.is-in,
+.fh__paragraph.is-in,
+.fh__button.is-in {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---------- Shipping / info badge (per slide) ---------- */
+.fh__badge {
+  position: absolute;
+  z-index: 3;
+  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-size: var(--fh-badge-size, 20px);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--fh-badge-text-color, #1a1a1a);
+  text-align: center;
+  top: var(--fh-badge-top, 40%);
+  left: var(--fh-badge-left, 82%);
+  rotate: var(--fh-badge-rotate, -4deg);
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity 0.8s ease 0.5s, translate 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+}
+.fh__badge.is-in {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---------- Corner icon badge (global, not per-slide) ---------- */
+.fh__corner-badge {
+  position: absolute;
+  z-index: 4;
+  right: clamp(16px, 4vw, 48px);
+  bottom: clamp(16px, 4vw, 48px);
+  width: var(--fh-corner-size, 64px);
+  height: var(--fh-corner-size, 64px);
+  border-radius: 50%;
+  background: var(--fh-corner-bg, #1a1a1a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity 0.8s ease 0.6s, translate 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+}
+.fh.is-in .fh__corner-badge {
+  opacity: 1;
+  translate: 0 0;
+}
+.fh__corner-badge img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+/* ---------- Floating product stage (shared across slides) ---------- */
+.fh__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: translate 0.4s ease-out;
+}
+.fh__item {
+  position: absolute;
+  width: var(--fh-w);
+  translate: calc(-50% + var(--fh-mx, 0px)) calc(-50% + var(--fh-my, 0px));
+  /* Single smooth transition for both the push-away and the settle-back -
+     the reference has no bounce, just an even glide either direction. */
+  transition: translate 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: var(--fh-z, 1);
+  display: none; /* hidden unless it belongs to the active slide */
+}
+.fh__item.is-current-slide {
+  display: block;
+}
+@media screen and (max-width: 749px) {
+  .fh__item { width: calc(var(--fh-w) * 0.6); }
+}
+.fh__item-inner {
+  opacity: 0;
+  rotate: calc(var(--fh-rot) - 8deg);
+  translate: 0 34px;
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), translate 0.85s cubic-bezier(0.16, 1, 0.3, 1), rotate 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--fh-delay);
+}
+.fh__item.is-in .fh__item-inner {
+  opacity: 1;
+  rotate: var(--fh-rot);
+  translate: 0 0;
+}
+.fh__item.is-floating .fh__item-inner {
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fh-bob var(--fh-float-duration) ease-in-out infinite;
+}
+.fh__item-inner img {
+  width: 100%;
+  display: block;
+  filter: var(--fh-shadow);
+}
+@keyframes fh-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -12px; }
+}
+
+.fh__item-tag {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  translate: -50% 0;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a1a;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+.fh__item-tag strong { font-weight: 700; margin-left: 4px; }
+
+/* ---------- Slideshow navigation ---------- */
+.fh__dots {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: clamp(18px, 4vw, 34px);
+  translate: -50% 0;
+  display: flex;
+  gap: 10px;
+}
+.fh__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--fh-text-color, #1a1a1a);
+  opacity: 0.3;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.fh__dot.is-active {
+  opacity: 1;
+  transform: scale(1.25);
+}
+.fh__arrow {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  translate: 0 -50%;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fh-btn-bg, #E94E9E);
+  color: var(--fh-btn-text, #ffffff);
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+.fh__arrow:hover { opacity: 1; }
+.fh__arrow svg { width: 16px; height: 16px; }
+.fh__arrow--prev { left: clamp(10px, 3vw, 24px); }
+.fh__arrow--next { right: clamp(10px, 3vw, 24px); }
+@media screen and (max-width: 749px) {
+  .fh__arrow { width: 34px; height: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fh__eyebrow,
+  .fh__heading,
+  .fh__paragraph,
+  .fh__button,
+  .fh__badge,
+  .fh__corner-badge,
+  .fh__item-inner,
+  .fh__item,
+  .fh__stage,
+  .fh__slide {
+    transition: none !important;
+    animation: none !important;
+    translate: 0 0 !important;
+    opacity: 1 !important;
+  }
+}

@@ -205,40 +205,49 @@
             <div class="hero-carousel__content-wrapper hero-carousel__content-wrapper--{{ block.settings.content_position }}">
               <div class="hero-carousel__content hero-carousel__content--align-{{ block.settings.content_alignment }}">
                 {%- if block.settings.caption != blank -%}
-                  <p class="hero-carousel__caption">{{ block.settings.caption | escape }}</p>
+                  <p class="hero-carousel__caption" style="font-size: {{ block.settings.caption_font_size }}px !important;">{{ block.settings.caption | escape }}</p>
                 {%- endif -%}
                 {%- if block.settings.heading != blank -%}
                   {%- if forloop.first and section.index == 1 -%}
-                    <h1 class="hero-carousel__heading hero-carousel__heading--{{ section.settings.heading_size }}">
-                      {{ block.settings.heading }}
-                    </h1>
+                    <h1 class="hero-carousel__heading hero-carousel__heading--{{ section.settings.heading_size }}" style="font-size: {{ block.settings.heading_font_size }}px !important; text-indent: 0 !important; padding: 0 !important; margin: 0 0 0.5em 0 !important;">{{- block.settings.heading -}}</h1>
                   {%- else -%}
-                    <h2 class="hero-carousel__heading hero-carousel__heading--{{ section.settings.heading_size }}">
-                      {{ block.settings.heading }}
-                    </h2>
+                    <h2 class="hero-carousel__heading hero-carousel__heading--{{ section.settings.heading_size }}" style="font-size: {{ block.settings.heading_font_size }}px !important; text-indent: 0 !important; padding: 0 !important; margin: 0 0 0.5em 0 !important;">{{- block.settings.heading -}}</h2>
                   {%- endif -%}
                 {%- endif -%}
                 {%- if block.settings.text != blank -%}
-                  <div class="hero-carousel__text">{{ block.settings.text }}</div>
+                  <div class="hero-carousel__text" style="font-size: {{ block.settings.text_font_size }}px !important;">{{ block.settings.text }}</div>
                 {%- endif -%}
 
                 {%- if block.settings.button_label_1 != blank or block.settings.button_label_2 != blank -%}
+                  {%- liquid
+                    assign btn1_class = 'hero-carousel__button button'
+                    if block.settings.button_style_1 == 'secondary'
+                      assign btn1_class = btn1_class | append: ' button--secondary hero-carousel__button--secondary'
+                    else
+                      assign btn1_class = btn1_class | append: ' button--primary hero-carousel__button--primary'
+                    endif
+
+                    assign btn2_class = 'hero-carousel__button button'
+                    if block.settings.button_style_2 == 'secondary'
+                      assign btn2_class = btn2_class | append: ' button--secondary hero-carousel__button--secondary'
+                    else
+                      assign btn2_class = btn2_class | append: ' button--primary hero-carousel__button--primary'
+                    endif
+                  -%}
                   <div class="hero-carousel__buttons">
                     {%- if block.settings.button_label_1 != blank -%}
-                      <a
-                        {% if block.settings.button_link_1 != blank %}href="{{ block.settings.button_link_1 }}"{% else %}role="link" aria-disabled="true"{% endif %}
-                        class="hero-carousel__button button {% if block.settings.button_style_1 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
-                      >
-                        {{ block.settings.button_label_1 | escape }}
-                      </a>
+                      {%- if block.settings.button_link_1 != blank -%}
+                        <a href="{{ block.settings.button_link_1 }}" class="{{ btn1_class }}" style="font-size: {{ block.settings.button_font_size }}px !important;">{{ block.settings.button_label_1 | escape }}</a>
+                      {%- else -%}
+                        <a role="link" aria-disabled="true" class="{{ btn1_class }}" style="font-size: {{ block.settings.button_font_size }}px !important;">{{ block.settings.button_label_1 | escape }}</a>
+                      {%- endif -%}
                     {%- endif -%}
                     {%- if block.settings.button_label_2 != blank -%}
-                      <a
-                        {% if block.settings.button_link_2 != blank %}href="{{ block.settings.button_link_2 }}"{% else %}role="link" aria-disabled="true"{% endif %}
-                        class="hero-carousel__button button {% if block.settings.button_style_2 == 'secondary' %}button--secondary hero-carousel__button--secondary{% else %}button--primary hero-carousel__button--primary{% endif %}"
-                      >
-                        {{ block.settings.button_label_2 | escape }}
-                      </a>
+                      {%- if block.settings.button_link_2 != blank -%}
+                        <a href="{{ block.settings.button_link_2 }}" class="{{ btn2_class }}" style="font-size: {{ block.settings.button_font_size }}px !important;">{{ block.settings.button_label_2 | escape }}</a>
+                      {%- else -%}
+                        <a role="link" aria-disabled="true" class="{{ btn2_class }}" style="font-size: {{ block.settings.button_font_size }}px !important;">{{ block.settings.button_label_2 | escape }}</a>
+                      {%- endif -%}
                     {%- endif -%}
                   </div>
                 {%- endif -%}
@@ -508,6 +517,47 @@
             { "value": "right", "label": "t:sections.hero_carousel.blocks.slide.settings.content_alignment.options__3.label" }
           ],
           "default": "center"
+        },
+        { "type": "header", "content": "Text Size" },
+        {
+          "type": "range",
+          "id": "caption_font_size",
+          "label": "Caption text size",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "heading_font_size",
+          "label": "Heading text size",
+          "min": 20,
+          "max": 90,
+          "step": 2,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "text_font_size",
+          "label": "Body text size",
+          "min": 10,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "button_font_size",
+          "label": "Button text size",
+          "min": 10,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "default": 16
         },
         { "type": "header", "content": "t:sections.hero_carousel.blocks.slide.settings.header__4.content" },
         {

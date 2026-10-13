@@ -299,6 +299,97 @@
     }, 3000);
   }
 
+  /* ---------------- Quick View grow + Add to Cart avoidance ---------------- */
+
+  function initQuickViewAvoidance(section) {
+    if (section.dataset.layout !== 'scroll') return;
+
+    var buttons = section.querySelectorAll('.product-card__quick-view');
+
+    buttons.forEach(function (btn) {
+      var card = btn.closest('.product-card');
+      if (!card) return;
+      var atc = card.querySelector('.product-card__quick-add--animated');
+
+      function activate() {
+        btn.classList.add('fp-quick-view-active');
+        if (atc) atc.classList.add('fp-atc-avoid');
+      }
+
+      function deactivate() {
+        btn.classList.remove('fp-quick-view-active');
+        if (atc) atc.classList.remove('fp-atc-avoid');
+      }
+
+      btn.addEventListener('mouseenter', activate);
+      btn.addEventListener('mouseleave', deactivate);
+      btn.addEventListener('focus', activate);
+      btn.addEventListener('blur', deactivate);
+      // Touch devices: treat touch as hover-in, release on touchend
+      btn.addEventListener('touchstart', activate, { passive: true });
+      btn.addEventListener('touchend', deactivate);
+      btn.addEventListener('touchcancel', deactivate);
+    });
+  }
+
+  /* ---------------- Add to Cart avoidance (reverse pairing) ---------------- */
+
+  function initAddToCartAvoidance(section) {
+    if (section.dataset.layout !== 'scroll') return;
+
+    var atcButtons = section.querySelectorAll('.product-card__quick-add--animated');
+
+    atcButtons.forEach(function (atc) {
+      var card = atc.closest('.product-card');
+      if (!card) return;
+      var quickView = card.querySelector('.product-card__quick-view');
+      if (!quickView) return;
+
+      function activate() {
+        quickView.classList.add('fp-quick-view-avoid');
+      }
+
+      function deactivate() {
+        quickView.classList.remove('fp-quick-view-avoid');
+      }
+
+      atc.addEventListener('mouseenter', activate);
+      atc.addEventListener('mouseleave', deactivate);
+      atc.addEventListener('focus', activate);
+      atc.addEventListener('blur', deactivate);
+      atc.addEventListener('touchstart', activate, { passive: true });
+      atc.addEventListener('touchend', deactivate);
+      atc.addEventListener('touchcancel', deactivate);
+    });
+  }
+
+  /* ---------------- Overlay name/price slide toggle ---------------- */
+
+  function initOverlaySlide(section) {
+    if (section.dataset.layout !== 'scroll') return;
+
+    var targets = section.querySelectorAll(
+      '.product-card__overlay-title, .product-card__overlay-price'
+    );
+
+    targets.forEach(function (el) {
+      // One touch = one move. It slides to the right end and stays there,
+      // ignoring further cursor movement, until it's touched again — then
+      // it slides back to the left. mouseenter (not mousemove/hover-css)
+      // is what gives us that "fire once per touch" behavior.
+      el.addEventListener('mouseenter', function () {
+        el.classList.toggle('fp-slide-right');
+      });
+
+      // Touch devices have no hover state — a tap does the same toggle.
+      el.addEventListener('click', function () {
+        if (!window.matchMedia('(hover: hover)').matches) {
+          el.classList.toggle('fp-slide-right');
+        }
+      });
+    });
+  }
+
   /* ---------------- Init ---------------- */
 
   function initSection(section) {
@@ -307,6 +398,9 @@
     initCarousel(section);
     initScrollGallery(section);
     initQuickAdd(section);
+    initQuickViewAvoidance(section);
+    initAddToCartAvoidance(section);
+    initOverlaySlide(section);
   }
 
   function initAll(root) {

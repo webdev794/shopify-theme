@@ -158,16 +158,21 @@
             if logo.alt != blank
               assign logo_alt = logo.alt
             endif
+
+            assign logo_w = section.settings.logo_width
+
+            assign logo_sizes = '(max-width: 749px) min(50vw, ' | append: logo_w | append: 'px), ' | append: logo_w | append: 'px'
           -%}
+
           {{
             logo
-            | image_url: width: 500
+            | image_url: width: 800
             | image_tag:
               class: 'header__logo-image',
-              widths: '100, 200, 300, 400, 500',
-              sizes: '(max-width: 749px) 50vw, 250px',
+              widths: '120, 200, 300, 400, 600, 800',
+              sizes: logo_sizes,
               alt: logo_alt,
-              loading: 'lazy'
+              loading: 'eager'
           }}
         {%- else -%}
           <span class="header__shop-name">{{ shop.name }}</span>
@@ -178,7 +183,7 @@
     {%- else -%}
       </div>
     {%- endif -%}
-
+    
     <!-- Desktop Navigation -->
     {%- if menu != blank -%}
       <nav class="header__nav" aria-label="{{ 'sections.header.nav_label' | t }}">
